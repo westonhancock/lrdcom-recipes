@@ -135,6 +135,24 @@
 				<h2 class="blog-title">${htmlUtil.escape(blogs_entry.getTitle())}</h2>
 				<span class="blog-author">${htmlUtil.escape(blogs_entry.getUserName())}</span>
 				<time class="blog-date">${dateUtil.getDate(blogs_entry.getCreateDate(), "MMM dd", locale)}</time>
+				<div class="social-media-share"><@liferay_ui.message key="share" />
+					<a href="">
+						<svg class="svg-align" id="shareEmail"><use xlink:href="#blogs-email" /></svg>
+					</a>
+					<a href="">
+						<svg class="svg-align" id="shareFB"><use xlink:href="#blogs-fb" /></svg>
+					</a>
+					<a href="">
+						<svg class="svg-align" id="shareGooglePlus"><use xlink:href="#blogs-googleplus" /></svg>
+					</a>
+					<a href="">
+						<svg class="svg-align" id="shareLinkedIn"><use xlink:href="#blogs-linkedin" /></svg>
+					</a>
+					<a href="">
+						<svg class="svg-align" id="shareTwitter"><use xlink:href="#blogs-twitter" /></svg>
+					</a>
+				</div>
+
 				<div class="blog-content">${blogs_entry.getContent()}</div>
 
 				</form>
@@ -205,6 +223,11 @@
 		margin: 0;
 	}
 
+	#blogs svg {
+		height: 21px;
+		width: 21px;
+	}
+
 	#blogs #blogsDisplay, #blogs #blogsList {
 		min-height: 500px;
 	}
@@ -268,15 +291,11 @@
 	#blogs #categoriesNav #tech,
 	#blogs #categoriesNav #trending {
 		fill: transparent;
-		height: 21px;
 		stroke: #FFF;
-		width: 24px;
 	}
 
 	#blogs #categoriesNav #lrlogo {
 		fill: #FFF;
-		height: 21px;
-		width: 24px;
 	}
 
 	#blogs #categoriesNav .child-category:hover {
@@ -291,14 +310,47 @@
 		font-weight: bold;
 	}
 
-	#blogs .blog-author, #blogs .blog-date, #blogs .blog-summary {
-		color: #909295;
-	}
-
+	#blogs .blog-author,
+	#blogs .blog-date,
+	#blogs .blog-summary,
 	#blogs .blogs-menu a {
 		color: #909295;
 	}
 
+	#blogs .blog-entry .social-media-share #shareEmail {
+		fill: transparent;
+		stroke: #909295;
+	}
+
+	#blogs .blog-entry .social-media-share #shareEmail:hover {
+		fill: transparent;
+		stroke: #1C75B9;
+	}
+
+	#blogs .blog-entry .social-media-share #shareFB,
+	#blogs .blog-entry .social-media-share #shareGooglePlus,
+	#blogs .blog-entry .social-media-share #shareLinkedIn,
+	#blogs .blog-entry .social-media-share #shareTwitter {
+		fill: #909295;
+	}
+
+	#blogs .blog-entry .social-media-share #shareFB:hover,
+	#blogs .blog-entry .social-media-share #shareGooglePlus:hover,
+	#blogs .blog-entry .social-media-share #shareLinkedIn:hover,
+	#blogs .blog-entry .social-media-share #shareTwitter:hover {
+		fill: #1C75B9;
+	}
+
+	#blogs .blog-entry .social-media-share {
+		display: inline;
+	}
+
+	#blogs .blog-entry .social-media-share a {
+		text-decoration: none;
+		padding: 0 5px;
+	}
+
+	#blogs .blogs-menu a:hover,
 	#blogs .blogs-menu a:active,
 	#blogs .blogs-menu a:focus {
 		color: #1C75B9;
@@ -311,9 +363,7 @@
 	}
 
 	#blogs .blogs-menu svg {
-		height: 21px;
 		stroke: #909295;
-		width: 21px;
 	}
 
 	#blogs .blog-title {
@@ -362,7 +412,6 @@
 		fill: #909295;
 		height: 40px;
 		stroke: transparent;
-		width: 21px;
 	}
 
 	.aui #main-content.columns-1, .aui footer.doc-footer {
@@ -379,7 +428,7 @@
 	}
 
 	.svg-align {
-		vertical-align: text-bottom;
+		vertical-align: sub;
 	}
 </style>
 
