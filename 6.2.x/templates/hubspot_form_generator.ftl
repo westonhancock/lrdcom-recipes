@@ -2,6 +2,8 @@
 Todo:
 Dependant fields
 Override number of fields (possibly resorting order)
+More robust implementation of 2-col layout
+Add checks and implementation for text field 
 check hidden multi select hack
 check if we need field_to_skip variable
 check asset primary buyers stage event firing stuff
