@@ -1,8 +1,3 @@
-<#assign liferay_ui = taglibLiferayHash["/WEB-INF/tld/liferay-ui.tld"] />
-
-<#assign dl_file_entry_local_service_util = staticUtil["com.liferay.portlet.documentlibrary.service.DLFileEntryLocalServiceUtil"]>
-<#assign journal_article_local_service_util = staticUtil["com.liferay.portlet.journal.service.JournalArticleLocalServiceUtil"] />
-
 <style>
 	.portlet-asset-publisher .portlet-body {
 		display: flex;
@@ -12,6 +7,28 @@
 		background-size: contain;
 	}
 </style>
+
+<#assign liferay_ui = taglibLiferayHash["/WEB-INF/tld/liferay-ui.tld"] />
+
+<#assign dl_file_entry_local_service_util = staticUtil["com.liferay.portlet.documentlibrary.service.DLFileEntryLocalServiceUtil"]>
+<#assign journal_article_local_service_util = staticUtil["com.liferay.portlet.journal.service.JournalArticleLocalServiceUtil"] />
+
+<#assign service_context = objectUtil("com.liferay.portal.service.ServiceContextThreadLocal").getServiceContext() />
+<#assign http_servlet_request = service_context.getRequest() />
+
+<#assign order_by_comparator_factory_util = staticUtil["com.liferay.portal.kernel.util.OrderByComparatorFactoryUtil"]>
+
+<#assign category_ids = jsonFactoryUtil.createJSONObject(paramUtil.getString(request, "categoryIds")) />
+
+<#if category_ids.length() == 0>
+	<#assign category_ids = jsonFactoryUtil.createJSONObject() />
+	<#assign parameter_map = httpUtil.getParameterMap(themeDisplay.getURLCurrent()?split("?")[1]) />
+
+	<#list parameter_map?keys as parameter>
+		<#assign value = stringUtil.merge(parameter_map[parameter]) />
+		<#assign void = category_ids.put(parameter, stringUtil.replace(value, " ", "+")) />
+	</#list>
+</#if>
 
 <#list entries as entry>
 	<#assign entry = entry />

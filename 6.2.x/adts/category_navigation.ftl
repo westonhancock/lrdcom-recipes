@@ -235,6 +235,7 @@
 						var value = value.replace(',', '+');
 
 						data['${portlet_namespace}' + name] = value;
+						data[assetPublisherNamespace + name] = value;
 
 						if ((value != '') && (name != 'formDate')) {
 							if (!data[assetPublisherNamespace + 'categoryIds']) {
@@ -255,6 +256,8 @@
 						}
 					}
 				);
+
+				data[assetPublisherNamespace + 'categoryIds'] = JSON.stringify(data[assetPublisherNamespace + 'categoryIds']);
 
 				data['url'] = url;
 			}
