@@ -35,35 +35,37 @@
 
 				<#list asset_categories as asset_category>
 					<#if asset_category.categoryId == 167001>
-						<#assign svg_icon_id = "tech">
+						<#assign category_name = "tech">
 					<#elseif asset_category.categoryId == 166998>
-						<#assign svg_icon_id = "lrlogo">
+						<#assign category_name = "liferay">
 					<#elseif asset_category.categoryId == 166999>
-						<#assign svg_icon_id = "business">
+						<#assign category_name = "business">
 					<#else>
-						<#assign svg_icon_id = "trending">
+						<#assign category_name = "trending">
 					</#if>
 
-					<li class="category parent-category">
-						<a href="javascript:;" data-category-id="${asset_category.getCategoryId()}" onclick="${portlet_namespace}getBlogEntries('${asset_category.getCategoryId()}');">
-							<h4>
-								<svg class="svg-align" id="${svg_icon_id}"><use xlink:href="#blogs-${svg_icon_id}" /></svg>
-								${asset_category.getName()}
-							</h4>
-						</a>
+					<#if category_name != "trending">
+						<li class="category parent-category">
+							<a class="${category_name}" href="javascript:;" data-category-id="${asset_category.getCategoryId()}" onclick="${portlet_namespace}getBlogEntries('${asset_category.getCategoryId()}');">
+								<h4>
+									<svg class="svg-align" id="${category_name}"><use xlink:href="#blogs-${category_name}" /></svg>
+									${asset_category.getName()}
+								</h4>
+							</a>
 
-						<ul>
-							<#list asset_category_local_service.getChildCategories(asset_category.getCategoryId()) as child_asset_category>
-								<li class="category child-category">
-									<a href="javascript:;" data-category-id="${child_asset_category.getCategoryId()}" onclick="${portlet_namespace}getBlogEntries('${child_asset_category.getCategoryId()}');">${child_asset_category.getName()}</a>
-								</li>
-							</#list>
-						</ul>
-					</li>
+							<ul>
+								<#list asset_category_local_service.getChildCategories(asset_category.getCategoryId()) as child_asset_category>
+									<li class="category child-category">
+										<a href="javascript:;" data-category-id="${child_asset_category.getCategoryId()}" onclick="${portlet_namespace}getBlogEntries('${child_asset_category.getCategoryId()}');">${child_asset_category.getName()}</a>
+									</li>
+								</#list>
+							</ul>
+						</li>
+					</#if>
 				</#list>
 			</ul>
 
-			<div class="social-nav">
+			<div class="block-container justify-space-around social-nav">
 				<a href="">
 					<svg><use xlink:href="#blogs-fb" /></svg>
 				</a>
@@ -125,13 +127,31 @@
 		</div>
 	</div>
 
-	<div id="blogsDisplay">
+	<div class="block-container" id="blogsDisplay">
 		<#if asset_entry_id != 0>
 			<#assign asset_entry = asset_entry_local_service.getEntry(asset_entry_id) />
 			<#assign blogs_entry = blogs_entry_local_service.getBlogsEntryByUuidAndGroupId(asset_entry.getClassUuid(), asset_entry.getGroupId()) />
 
+<#-- undefined -->
+<#-- 		<#assign previous_entry = asset_entry_local_service.getPreviousEntry(asset_entry_id) />
+			<#assign next_entry = asset_entry_local_service.getNextEntry(asset_entry_id) /> -->
+
+			<div class="block-container previous-next">
+				<a class="element-background" href="">
+					<svg class="svg-align"><use xlink:href="#blogs-previous" /></svg>
+					grab previous post title
+				</a>
+				<a class="element-background" href="">
+					grab next post title
+					<svg class="svg-align"><use xlink:href="#blogs-next" /></svg>
+				</a>
+			</div>
+
 			<div class="blog-entry" >
-				<img src="${blogs_entry.getSmallImageURL()}">
+				<#if blogs_entry.smallImage == true>
+					<img src="${blogs_entry.getSmallImageURL()}">
+				</#if>
+
 				<h2 class="blog-title">${htmlUtil.escape(blogs_entry.getTitle())}</h2>
 				<span class="blog-author">${htmlUtil.escape(blogs_entry.getUserName())}</span>
 				<time class="blog-date">${dateUtil.getDate(blogs_entry.getCreateDate(), "MMM dd", locale)}</time>
@@ -171,7 +191,10 @@
 				</#if>
 
 				<a class="blog-preview standard-padding" href="javascript:;" onclick="${portlet_namespace}getBlogEntryContent('${asset_entry.getEntryId()}', '${asset_category_id}')">
-					<img src="${blogs_entry.getSmallImageURL()}">
+					<#if blogs_entry.smallImage == true>
+						<img src="${blogs_entry.getSmallImageURL()}">
+					</#if>
+
 					<h2 class="blog-title">${htmlUtil.escape(blogs_entry.getTitle())}</h2>
 					<span class="blog-author">${htmlUtil.escape(blogs_entry.getUserName())}</span>
 					<time class="blog-date">${dateUtil.getDate(blogs_entry.getCreateDate(), "MMM dd", locale)}</time>
@@ -228,23 +251,39 @@
 		width: 21px;
 	}
 
+	#blogs #blogsDisplay {
+		box-sizing: border-box;
+		margin: 0 auto;
+		max-width: 720px;
+		overflow: hidden;
+	}
+
 	#blogs #blogsDisplay, #blogs #blogsList {
 		min-height: 500px;
 	}
 
-	#blogs #blogsDisplay .blog-preview {
+	#blogs #blogsDisplay .blog-preview, #blogs #blogsDisplay .previous-next {
 		text-decoration: none;
+	}
+
+	#blogs #blogsDisplay .blog-preview {
+		-ms-flex: 1 0 30%;
+		-moz-flex: 1 0 30%;
+		-webkit-flex: 1 0 30%;
+		flex: 1 0 30%;
+	}
+
+	#blogs #blogsDisplay .blog-preview:first-child {
+		flex-basis: 100%;
+	}
+
+	#blogs #blogsDisplay .previous-next svg {
+		fill: transparent;
+		stroke: #4C4C4E;
 	}
 
 	#blogs #blogsList {
 		width: 300px;
-	}
-
-	#blogsDisplay {
-		box-sizing: border-box;
-		margin: 0 auto;
-		max-width: 720px
-		overflow: hidden;
 	}
 
 	#blogs #blogsList .blogs-menu {
@@ -294,16 +333,28 @@
 		stroke: #FFF;
 	}
 
-	#blogs #categoriesNav #lrlogo {
+	#blogs #categoriesNav #liferay {
 		fill: #FFF;
+	}
+
+	#blogs #categoriesNav .categories-content {
+		bottom: 100px;
 	}
 
 	#blogs #categoriesNav .child-category:hover {
 		background-color: #1C75B9;
 	}
 
-	#blogs #categoriesNav .categories-content {
-		bottom: 100px;
+	#blogs #categoriesNav .parent-category .business:hover {
+		background-color: #00B8B9;
+	}
+
+	#blogs #categoriesNav .parent-category .liferay:hover {
+		background-color: #1C75B9;
+	}
+
+	#blogs #categoriesNav .parent-category .tech:hover {
+		background-color: #F6AE3D;
 	}
 
 	#blogs .blog-author {
@@ -403,8 +454,6 @@
 
 	#blogs .social-nav {
 		border-top: 1px solid #E3E4E5;
-		display: flex;
-		justify-content: space-around;
 		margin-top: 10px;
 	}
 
@@ -412,6 +461,14 @@
 		fill: #909295;
 		height: 40px;
 		stroke: transparent;
+	}
+
+	#blogs .social-nav svg:hover {
+		fill: #FFF;
+	}
+
+	.aui img {
+		width: 100%;
 	}
 
 	.aui #main-content.columns-1, .aui footer.doc-footer {
