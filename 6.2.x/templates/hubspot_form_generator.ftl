@@ -3,7 +3,7 @@ Todo:
 Dependant fields
 Override number of fields (possibly resorting order)
 More robust implementation of 2-col layout
-Add checks and implementation for text field 
+Add checks and implementation for text field
 check hidden multi select hack
 check if we need field_to_skip variable
 check asset primary buyers stage event firing stuff
@@ -265,7 +265,7 @@ in get options${localization_map}
 					);
 
 					if (leave) {
-						console.log('Please fill in required fields');
+console.log('Please fill in required fields');
 
 						return;
 					}
@@ -380,6 +380,7 @@ in get options${localization_map}
 		AUI().ready(
 			'aui-base',
 			'json-parse',
+			'osb-form',
 			function(A) {
 				var countrySelect = A.one('#${article_namespace}_country select');
 				var stateSelect = A.one('#${article_namespace}_state select');
@@ -429,6 +430,12 @@ in get options${localization_map}
 				populateStateField();
 
 				countrySelect.on('change', populateStateField);
+
+				new A.OSBForm(
+					{
+						formId: '#${article_namespace}fm'
+					}
+				).render();
 			}
 		);
 	</script>

@@ -1,5 +1,5 @@
 <div class="class-toggle-carousel faq-wrapper standard-padding-vertical" id="togglerDisplayWrapper">
-	<#if faqs.data?has_content>
+	<#if faqs.data??>
 		<div class="mobile-only mobile-title">
 			${faqs.data}
 		</div>
@@ -50,12 +50,6 @@
 	padding: 20px;
 	position: relative;
 }
-
-/*.answers-container .answer {
-	opacity: 1;
-	transform: translate(0px, 0px);
-	transition: all 0.8s ease-in-out 0s;
-}*/
 
 .answer.default {
 	text-align: center;
