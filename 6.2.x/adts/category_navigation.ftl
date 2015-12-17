@@ -1,13 +1,13 @@
 <#assign aui = taglibLiferayHash["/WEB-INF/tld/aui.tld"] />
 <#assign liferay_portlet = taglibLiferayHash["/WEB-INF/tld/liferay-portlet.tld"] />
 
-<#assign assetCategoryLocalServiceUtil = objectUtil("com.liferay.portlet.asset.service.AssetCategoryLocalServiceUtil") />
-<#assign assetVocabularyLocalServiceUtil = objectUtil("com.liferay.portlet.asset.service.AssetVocabularyLocalServiceUtil") />
+<#assign asset_category_local_service_util = objectUtil("com.liferay.portlet.asset.service.AssetCategoryLocalServiceUtil") />
+<#assign asset_vocabulary_local_service_util = objectUtil("com.liferay.portlet.asset.service.AssetVocabularyLocalServiceUtil") />
 
-<#assign portletURLUtil = objectUtil("com.liferay.portlet.PortletURLUtil") />
-<#assign portletURLFactoryUtil = objectUtil("com.liferay.portlet.PortletURLFactoryUtil") />
+<#assign portal_util = objectUtil("com.liferay.portal.util.PortalUtil") />
+<#assign portlet_url_util = objectUtil("com.liferay.portlet.PortletURLUtil") />
 
-<#assign allSelectedCategories = objectUtil("com.liferay.portal.kernel.util.UniqueList") />
+<#assign all_selected_categories = objectUtil("com.liferay.portal.kernel.util.UniqueList") />
 
 <#assign portlet_namespace = renderResponse.getNamespace()>
 
@@ -15,6 +15,24 @@
 <#assign http_servlet_request = service_context.getRequest() />
 
 <@liferay_portlet.renderURL varImpl="searchURL" />
+
+<#assign http_request = portal_util.getOriginalServletRequest(portal_util.getHttpServletRequest(renderRequest)) />
+
+<#assign category_ids = paramUtil.getParameterValues(http_request, "categoryIds") />
+<#assign category_ids_json = jsonFactoryUtil.createJSONObject() />
+
+<#list category_ids as categories>
+	<#attempt>
+		<#assign categories_array = stringUtil.split(categories, " ") />
+
+		<#assign cur_category = asset_category_local_service_util.fetchAssetCategory(getterUtil.getLong(categories_array[0])) />
+
+		<#assign cur_vocabulary = asset_vocabulary_local_service_util.fetchAssetVocabulary(cur_category.getVocabularyId()) />
+
+		<#assign void = category_ids_json.put(cur_vocabulary.getName(), categories) />
+	<#recover>
+	</#attempt>
+</#list>
 
 <div class="categories-navigation" id="${portlet_namespace}categoriesNavigation">
 	<@aui.form
@@ -25,40 +43,35 @@
 	>
 		<#if entries?has_content>
 			<div class="align-center block-container justify-center navigation-inputs">
-				<#list entries as curVocabulary>
-					<#assign curVocabularyName = stringUtil.replace(curVocabulary.getName(), " ", "_")?lower_case />
+				<#list entries as cur_vocabulary>
+					<#assign cur_vocabulary_name = stringUtil.replace(cur_vocabulary.getName(), " ", "_")?lower_case />
 
-					<#assign curVocabularyValue = paramUtil.getString(request, curVocabularyName) />
+					<#assign cur_vocabulary_value = category_ids_json.getString(cur_vocabulary.getName()) />
 
-					<#if !curVocabularyValue?has_content>
-						<#assign curVocabularyValue = paramUtil.getString(http_servlet_request, curVocabularyName) />
-						<#assign curVocabularyValue = stringUtil.replace(curVocabularyValue, " ", "+") />
-					</#if>
+					<#assign cur_vocabulary_array = stringUtil.split(cur_vocabulary_value, " ") />
 
-					<#assign curVocabularyArray = stringUtil.split(curVocabularyValue, "+") />
-
-					<#assign selectedCategories = objectUtil("com.liferay.portal.kernel.util.UniqueList") />
-					<#assign v = selectedCategories.addAll(curVocabularyArray) />
-					<#assign v = allSelectedCategories.add(selectedCategories) />
+					<#assign selected_categories = objectUtil("com.liferay.portal.kernel.util.UniqueList") />
+					<#assign v = selected_categories.addAll(cur_vocabulary_array) />
+					<#assign v = all_selected_categories.add(selected_categories) />
 
 					<@aui.input
 						cssClass="hidden-select-field"
-						id="${portlet_namespace + curVocabularyName}"
-						name=curVocabularyName
+						id="${portlet_namespace + cur_vocabulary_name}"
+						name=cur_vocabulary_name
 						type="hidden"
-						value=curVocabularyValue
+						value=cur_vocabulary_value
 					/>
 
 					<@aui.select
 						cssClass="select-box"
-						id="${portlet_namespace + curVocabularyName}_select"
+						id="${portlet_namespace + cur_vocabulary_name}_select"
 						label=""
-						name="${curVocabularyName}_select"
+						name="${cur_vocabulary_name}_select"
 
-						onChange="${portlet_namespace}filter('${curVocabularyName}', this.value);"
+						onChange="${portlet_namespace}filter('${cur_vocabulary_name}', this.value);"
 					>
 						<@aui.option
-							label=curVocabulary.getName()
+							label=cur_vocabulary.getName()
 							value=""
 						/>
 
@@ -67,13 +80,13 @@
 							value="-1"
 						/>
 
-						<#assign categories = curVocabulary.getCategories() />
+						<#assign categories = cur_vocabulary.getCategories() />
 
 						<#if categories?has_content>
 							<#list categories as category>
 								<#assign category_css_class = "category-option" />
 
-								<#if selectedCategories.contains(category.getCategoryId()?string)>
+								<#if selected_categories.contains(category.getCategoryId()?string)>
 									<#assign category_css_class = "${category_css_class} selected" />
 								</#if>
 
@@ -105,16 +118,16 @@
 			</div>
 		</#if>
 
-		<#if !allSelectedCategories.isEmpty()>
+		<#if !all_selected_categories.isEmpty()>
 			<div class="align-center block-container justify-center navigation-categories">
-				<#list allSelectedCategories as curCategoryIdsList>
+				<#list all_selected_categories as curCategoryIdsList>
 					<#if !curCategoryIdsList.isEmpty()>
 						<div class="category-container">
 							<#assign vocabularyName = "" />
 
-							<#if assetCategoryLocalServiceUtil.fetchAssetCategory(getterUtil.getLong(curCategoryIdsList?first))??>
-								<#assign assetCategory = assetCategoryLocalServiceUtil.fetchAssetCategory(getterUtil.getLong(curCategoryIdsList?first)) />
-								<#assign assetVocabulary = assetVocabularyLocalServiceUtil.fetchAssetVocabulary(assetCategory.getVocabularyId()) />
+							<#if asset_category_local_service_util.fetchAssetCategory(getterUtil.getLong(curCategoryIdsList?first))??>
+								<#assign assetCategory = asset_category_local_service_util.fetchAssetCategory(getterUtil.getLong(curCategoryIdsList?first)) />
+								<#assign assetVocabulary = asset_vocabulary_local_service_util.fetchAssetVocabulary(assetCategory.getVocabularyId()) />
 							</#if>
 
 							<#if assetVocabulary?? && assetVocabulary?has_content>
@@ -124,8 +137,8 @@
 							</#if>
 
 							<#list curCategoryIdsList as curCategoryId>
-								<#if assetCategoryLocalServiceUtil.fetchAssetCategory(getterUtil.getLong(curCategoryId))??>
-									<#assign curAssetCategory = assetCategoryLocalServiceUtil.fetchAssetCategory(getterUtil.getLong(curCategoryId)) />
+								<#if asset_category_local_service_util.fetchAssetCategory(getterUtil.getLong(curCategoryId))??>
+									<#assign curAssetCategory = asset_category_local_service_util.fetchAssetCategory(getterUtil.getLong(curCategoryId)) />
 
 									<span class="asset-category-title">
 										<#assign filterOnly = renderResponse.getNamespace() + "filter('" + vocabularyName + "', '" + curAssetCategory.getCategoryId() + "', 'only');" />
@@ -192,14 +205,14 @@
 				var values = inputEl.get('value');
 
 				if (values.indexOf(value) != -1) {
-					var newValues = values.split('+');
+					var newValues = values.split(' ');
 
 					newValues.splice(newValues.indexOf(value), 1);
 
-					inputEl.set('value', newValues.join());
+					inputEl.set('value', newValues.join(' '));
 				}
 				else {
-					inputEl.set('value', values + '+' + value);
+					inputEl.set('value', values + ' ' + value);
 				}
 			}
 
@@ -225,6 +238,7 @@
 			if (!data) {
 				var push = true;
 
+				var categoryIds = [];
 				var data = {};
 				var url = '${themeDisplay.getURLCurrent()?split("?")[0]}';
 
@@ -232,19 +246,9 @@
 					function(item, index, collection) {
 						var name = item.attr('name');
 						var value = item.attr('value');
-						var value = value.replace(',', '+');
-
-						data['${portlet_namespace}' + name] = value;
-						data[assetPublisherNamespace + name] = value;
 
 						if ((value != '') && (name != 'formDate')) {
-							if (!data[assetPublisherNamespace + 'categoryIds']) {
-								data[assetPublisherNamespace + 'categoryIds'] = {};
-							}
-
-							var categoryIds = data[assetPublisherNamespace + 'categoryIds'];
-
-							categoryIds[name] = value;
+							categoryIds.push(value);
 
 							var connector = '&';
 
@@ -252,17 +256,17 @@
 								connector = '?';
 							}
 
-							url += connector + name + '=' + value;
+							url += connector + 'categoryIds=' + value.replace(/ /g, '+');
 						}
 					}
 				);
 
-				data[assetPublisherNamespace + 'categoryIds'] = JSON.stringify(data[assetPublisherNamespace + 'categoryIds']);
+				data['categoryIds'] = categoryIds;
 
 				data['url'] = url;
 			}
 
-			var refreshURL = '${portletURLUtil.getRefreshURL(request, themeDisplay)}';
+			var refreshURL = '${portlet_url_util.getRefreshURL(request, themeDisplay)}';
 
 			var params = {};
 
@@ -292,7 +296,7 @@
 					url: refreshURL
 				}
 			);
-
+console.log(data);
 			Liferay.Portlet.refresh('#p_p_id' + assetPublisherNamespace, data);
 
 			if (push) {
