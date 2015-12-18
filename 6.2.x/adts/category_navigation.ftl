@@ -54,6 +54,12 @@
 					<#assign v = selected_categories.addAll(cur_vocabulary_array) />
 					<#assign v = all_selected_categories.add(selected_categories) />
 
+					<#assign select_label = cur_vocabulary.getName()/>
+
+					<#if selected_categories.size() gt 0>
+						<#assign select_label = cur_vocabulary.getName() + " (" + selected_categories.size()?string + " Selected)" />
+					</#if>
+
 					<@aui.input
 						cssClass="hidden-select-field"
 						id="${portlet_namespace + cur_vocabulary_name}"
@@ -71,7 +77,7 @@
 						onChange="${portlet_namespace}filter('${cur_vocabulary_name}', this.value);"
 					>
 						<@aui.option
-							label=cur_vocabulary.getName()
+							label=select_label
 							value=""
 						/>
 
