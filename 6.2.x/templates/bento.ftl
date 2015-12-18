@@ -21,7 +21,7 @@
 			<#assign background_image_selector = "" />
 		</#if>
 
-		<div class="bento bento-section-${block_index + 1} block ${color_class} ${block.width.data} ${block.data} responsive-justify-center" ${background_image_selector}>
+		<div class="bento bento-section-${block_index + 1} block ${color_class} ${block.width.data} ${block.data}" ${background_image_selector}>
 			<#if block.article_id.data?has_content && journal_article_local_service.hasArticle(groupId, block.article_id.data)>
 				${journal_content_util.getContent(groupId, block.article_id.data, "", locale, xmlRequest)}
 

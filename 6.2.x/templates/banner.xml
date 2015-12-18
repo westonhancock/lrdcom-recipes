@@ -1,9 +1,95 @@
 
 <root available-locales="en_US" default-locale="en_US">
-	<dynamic-element dataType="document-library" fieldNamespace="ddm" indexType="keyword" localizable="true" name="image" readOnly="false" repeatable="false" required="false" showLabel="true" type="ddm-documentlibrary" width="">
+	<dynamic-element dataType="string" indexType="keyword" localizable="true" name="media" readOnly="false" repeatable="false" required="false" showLabel="true" type="text" width="small">
+		<dynamic-element dataType="document-library" fieldNamespace="ddm" indexType="keyword" localizable="true" name="image" readOnly="false" repeatable="false" required="false" showLabel="true" type="ddm-documentlibrary" width="">
+			<meta-data locale="en_US">
+				<entry name="label">
+					<![CDATA[Image]]>
+				</entry>
+				<entry name="predefinedValue">
+					<![CDATA[]]>
+				</entry>
+				<entry name="tip">
+					<![CDATA[]]>
+				</entry>
+			</meta-data>
+		</dynamic-element>
+		<dynamic-element dataType="document-library" fieldNamespace="ddm" indexType="keyword" localizable="true" name="video" readOnly="false" repeatable="false" required="false" showLabel="true" type="ddm-documentlibrary" width="">
+			<meta-data locale="en_US">
+				<entry name="label">
+					<![CDATA[Video]]>
+				</entry>
+				<entry name="predefinedValue">
+					<![CDATA[]]>
+				</entry>
+				<entry name="tip">
+					<![CDATA[]]>
+				</entry>
+			</meta-data>
+		</dynamic-element>
+		<dynamic-element dataType="document-library" fieldNamespace="ddm" indexType="keyword" localizable="true" name="fallback_video" readOnly="false" repeatable="false" required="false" showLabel="true" type="ddm-documentlibrary" width="">
+			<meta-data locale="en_US">
+				<entry name="label">
+					<![CDATA[Fallback Video]]>
+				</entry>
+				<entry name="predefinedValue">
+					<![CDATA[]]>
+				</entry>
+				<entry name="tip">
+					<![CDATA[]]>
+				</entry>
+			</meta-data>
+		</dynamic-element>
+		<dynamic-element dataType="string" indexType="keyword" localizable="true" name="article_id" readOnly="false" repeatable="false" required="false" showLabel="true" type="text" width="small">
+			<dynamic-element dataType="string" indexType="keyword" localizable="true" multiple="false" name="article_position" readOnly="false" repeatable="false" required="false" showLabel="true" type="select" width="">
+				<dynamic-element name="option8597" type="option" value="justify-start">
+					<meta-data locale="en_US">
+						<entry name="label">
+							<![CDATA[Left]]>
+						</entry>
+					</meta-data>
+				</dynamic-element>
+				<dynamic-element name="option8598" type="option" value="justify-center">
+					<meta-data locale="en_US">
+						<entry name="label">
+							<![CDATA[Center]]>
+						</entry>
+					</meta-data>
+				</dynamic-element>
+				<dynamic-element name="option8599" type="option" value="justify-end">
+					<meta-data locale="en_US">
+						<entry name="label">
+							<![CDATA[Right]]>
+						</entry>
+					</meta-data>
+				</dynamic-element>
+				<meta-data locale="en_US">
+					<entry name="label">
+						<![CDATA[Article Position]]>
+					</entry>
+					<entry name="predefinedValue">
+						<![CDATA[[""]]]>
+					</entry>
+					<entry name="tip">
+						<![CDATA[]]>
+					</entry>
+				</meta-data>
+			</dynamic-element>
+			<meta-data locale="en_US">
+				<entry name="label">
+					<![CDATA[Article ID]]>
+				</entry>
+				<entry name="predefinedValue">
+					<![CDATA[]]>
+				</entry>
+				<entry name="tip">
+					<![CDATA[]]>
+				</entry>
+			</meta-data>
+		</dynamic-element>
 		<meta-data locale="en_US">
 			<entry name="label">
-				<![CDATA[Image]]>
+				<![CDATA[media]]>
 			</entry>
 			<entry name="predefinedValue">
 				<![CDATA[]]>
@@ -98,63 +184,63 @@
 		<dynamic-element name="option8780" type="option" value="#00B8B9">
 			<meta-data locale="en_US">
 				<entry name="label">
-					<![CDATA[Accent Color]]>
-				</entry>
-			</meta-data>
-		</dynamic-element>
-		<dynamic-element name="option8781" type="option" value="#909295">
-			<meta-data locale="en_US">
-				<entry name="label">
-					<![CDATA[Alt Font Color]]>
-				</entry>
-			</meta-data>
-		</dynamic-element>
-		<dynamic-element name="option8782" type="option" value="#005B96">
-			<meta-data locale="en_US">
-				<entry name="label">
-					<![CDATA[Alt Primary Color]]>
-				</entry>
-			</meta-data>
-		</dynamic-element>
-		<dynamic-element name="option8783" type="option" value="#1B3A6A">
-			<meta-data locale="en_US">
-				<entry name="label">
-					<![CDATA[Alt Secondary Color]]>
+					<![CDATA[Teal (accent color)]]>
 				</entry>
 			</meta-data>
 		</dynamic-element>
 		<dynamic-element name="option8784" type="option" value="#F5A11D">
 			<meta-data locale="en_US">
 				<entry name="label">
-					<![CDATA[Complementary Color]]>
-				</entry>
-			</meta-data>
-		</dynamic-element>
-		<dynamic-element name="option8785" type="option" value="#E3E4E5">
-			<meta-data locale="en_US">
-				<entry name="label">
-					<![CDATA[Element Color]]>
+					<![CDATA[Orange (complementary color)]]>
 				</entry>
 			</meta-data>
 		</dynamic-element>
 		<dynamic-element name="option8786" type="option" value="#1C75B9">
 			<meta-data locale="en_US">
 				<entry name="label">
-					<![CDATA[Primary Color]]>
+					<![CDATA[Blue (primary color)]]>
+				</entry>
+			</meta-data>
+		</dynamic-element>
+		<dynamic-element name="option8782" type="option" value="#005B96">
+			<meta-data locale="en_US">
+				<entry name="label">
+					<![CDATA[Blue (alternative primary color)]]>
 				</entry>
 			</meta-data>
 		</dynamic-element>
 		<dynamic-element name="option8787" type="option" value="#124680">
 			<meta-data locale="en_US">
 				<entry name="label">
-					<![CDATA[Secondary Color]]>
+					<![CDATA[Dark Blue (secondary color)]]>
+				</entry>
+			</meta-data>
+		</dynamic-element>
+		<dynamic-element name="option8783" type="option" value="#1B3A6A">
+			<meta-data locale="en_US">
+				<entry name="label">
+					<![CDATA[Dark Blue (alternative secondary color)]]>
 				</entry>
 			</meta-data>
 		</dynamic-element>
 		<dynamic-element name="option8788" type="option" value="#FFF">
 			<meta-data locale="en_US">
 				<entry name="label">
-					<![CDATA[Light Color]]>
+					<![CDATA[White]]>
+				</entry>
+			</meta-data>
+		</dynamic-element>
+		<dynamic-element name="option8785" type="option" value="#E3E4E5">
+			<meta-data locale="en_US">
+				<entry name="label">
+					<![CDATA[Light Gray (element color)]]>
+				</entry>
+			</meta-data>
+		</dynamic-element>
+		<dynamic-element name="option8781" type="option" value="#909295">
+			<meta-data locale="en_US">
+				<entry name="label">
+					<![CDATA[Gray (alternative text color)]]>
 				</entry>
 			</meta-data>
 		</dynamic-element>
