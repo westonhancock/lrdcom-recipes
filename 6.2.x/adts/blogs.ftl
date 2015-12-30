@@ -14,8 +14,8 @@
 
 <#assign blogs_vocabulary_id = getterUtil.getLong(166994) />
 <#assign highlighted_category_id = getterUtil.getLong(211321) />
-<#assign asset_category_id = paramUtil.getLong(request, "asset_category_id") />
-<#assign asset_entry_id = paramUtil.getLong(request, "asset_entry_id") />
+<#assign asset_category_id = paramUtil.getLong(request, "assetCategoryId") />
+<#assign asset_entry_id = paramUtil.getLong(request, "assetEntryId") />
 
 <#assign default_end_count = getterUtil.getInteger(10) />
 <#assign default_start_count = getterUtil.getInteger(0) />
@@ -506,7 +506,7 @@
 		window,
 		'${portlet_namespace}getBlogEntries',
 		function(asset_category_id) {
-			var data = {${portlet_namespace}asset_category_id: asset_category_id};
+			var data = {${portlet_namespace}assetCategoryId: asset_category_id};
 
 			${portlet_namespace}refreshPortlets(data);
 		},
@@ -516,10 +516,10 @@
 	Liferay.provide(
 		window,
 		'${portlet_namespace}getBlogEntryContent',
-		function(asset_entry_id, asset_category_id) {
+		function(asset_entry_id, assetCategoryId) {
 			var data = {
-				${portlet_namespace}asset_category_id: asset_category_id,
-				${portlet_namespace}asset_entry_id: asset_entry_id
+				${portlet_namespace}assetCategoryId: assetCategoryId,
+				${portlet_namespace}assetEntryId: asset_entry_id
 			};
 
 			${portlet_namespace}refreshPortlets(data);

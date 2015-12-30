@@ -126,37 +126,37 @@
 
 		<#if !all_selected_categories.isEmpty()>
 			<div class="align-center block-container justify-center navigation-categories">
-				<#list all_selected_categories as curCategoryIdsList>
-					<#if !curCategoryIdsList.isEmpty()>
+				<#list all_selected_categories as cur_category_ids_list>
+					<#if !cur_category_ids_list.isEmpty()>
 						<div class="category-container">
 							<#assign vocabularyName = "" />
 
-							<#if asset_category_local_service_util.fetchAssetCategory(getterUtil.getLong(curCategoryIdsList?first))??>
-								<#assign assetCategory = asset_category_local_service_util.fetchAssetCategory(getterUtil.getLong(curCategoryIdsList?first)) />
-								<#assign assetVocabulary = asset_vocabulary_local_service_util.fetchAssetVocabulary(assetCategory.getVocabularyId()) />
+							<#if asset_category_local_service_util.fetchAssetCategory(getterUtil.getLong(cur_category_ids_list?first))??>
+								<#assign asset_category = asset_category_local_service_util.fetchAssetCategory(getterUtil.getLong(cur_category_ids_list?first)) />
+								<#assign asset_vocabulary = asset_vocabulary_local_service_util.fetchAssetVocabulary(asset_category.getVocabularyId()) />
 							</#if>
 
-							<#if assetVocabulary?? && assetVocabulary?has_content>
-								<#assign vocabularyName = stringUtil.replace(assetVocabulary.getName(), " ", "_")?lower_case />
+							<#if asset_vocabulary?? && asset_vocabulary?has_content>
+								<#assign vocabularyName = stringUtil.replace(asset_vocabulary.getName(), " ", "_")?lower_case />
 
-								<span class="asset-vocabulary-title">${htmlUtil.escape(assetVocabulary.getTitle(locale))}</span>
+								<span class="asset-vocabulary-title">${htmlUtil.escape(asset_vocabulary.getTitle(locale))}</span>
 							</#if>
 
-							<#list curCategoryIdsList as curCategoryId>
-								<#if asset_category_local_service_util.fetchAssetCategory(getterUtil.getLong(curCategoryId))??>
-									<#assign curAssetCategory = asset_category_local_service_util.fetchAssetCategory(getterUtil.getLong(curCategoryId)) />
+							<#list cur_category_ids_list as cur_category_id>
+								<#if asset_category_local_service_util.fetchAssetCategory(getterUtil.getLong(cur_category_id))??>
+									<#assign cur_asset_category = asset_category_local_service_util.fetchAssetCategory(getterUtil.getLong(cur_category_id)) />
 
 									<span class="asset-category-title">
-										<#assign filterOnly = renderResponse.getNamespace() + "filter('" + vocabularyName + "', '" + curAssetCategory.getCategoryId() + "', 'only');" />
+										<#assign filter_only = renderResponse.getNamespace() + "filter('" + vocabularyName + "', '" + cur_asset_category.getCategoryId() + "', 'only');" />
 
-										<#assign remove = renderResponse.getNamespace() + "filter('" + vocabularyName + "', '" + curAssetCategory.getCategoryId() + "');" />
+										<#assign remove = renderResponse.getNamespace() + "filter('" + vocabularyName + "', '" + cur_asset_category.getCategoryId() + "');" />
 
 										<@aui.a
 											href="javascript:;"
-											onclick=filterOnly
+											onclick=filter_only
 											title="Filter Only"
 										>
-											${htmlUtil.escape(curAssetCategory.getTitle(locale))}
+											${htmlUtil.escape(cur_asset_category.getTitle(locale))}
 										</@aui.a>
 
 										<@aui.a
