@@ -1,9 +1,3 @@
-<style>
-	.portlet-asset-publisher .portlet-body {
-		display: flex;
-	}
-</style>
-
 <#assign liferay_ui = taglibLiferayHash["/WEB-INF/tld/liferay-ui.tld"] />
 
 <#assign asset_category_local_service_util = objectUtil("com.liferay.portlet.asset.service.AssetCategoryLocalServiceUtil") />
@@ -11,42 +5,41 @@
 <#assign dl_file_entry_local_service_util = staticUtil["com.liferay.portlet.documentlibrary.service.DLFileEntryLocalServiceUtil"]>
 <#assign journal_article_local_service_util = staticUtil["com.liferay.portlet.journal.service.JournalArticleLocalServiceUtil"] />
 
-<#list entries as entry>
-	<#assign assetRenderer = entry.getAssetRenderer() />
+<div class="block-container justify-center">
+	<#list entries as entry>
+		<#assign assetRenderer = entry.getAssetRenderer() />
+		<#assign background_image = "/html/themes/control_panel/images/file_system/large/pdf.png" />
 
-	<#if assetRenderer.getClassName() == "com.liferay.portlet.documentlibrary.model.DLFileEntry">
-		<#assign dl_file_entry = dl_file_entry_local_service_util.fetchDLFileEntryByUuidAndGroupId(assetRenderer.getUuid(), assetRenderer.getGroupId()) >
+		<#if assetRenderer.getClassName() == "com.liferay.portlet.documentlibrary.model.DLFileEntry">
+			<#assign dl_file_entry = dl_file_entry_local_service_util.fetchDLFileEntryByUuidAndGroupId(assetRenderer.getUuid(), assetRenderer.getGroupId()) >
 
-		<#assign resource_id = dl_file_entry.getFileEntryId() />
-	</#if>
+			<#assign resource_id = dl_file_entry.getFileEntryId() />
+			<#assign view_url = "/resource?folderId=" + dl_file_entry.getFolderId() + "&title=" + stringUtil.replace(dl_file_entry.getTitle(), " ", "+") />
+		<#elseif assetRenderer.getClassName() == "com.liferay.portlet.journal.model.JournalArticle">
+			<#assign article = journal_article_local_service_util.fetchJournalArticleByUuidAndGroupId(assetRenderer.getUuid(), assetRenderer.getGroupId()) >
 
-	<#if assetRenderer.getClassName() == "com.liferay.portlet.journal.model.JournalArticle">
-		<#assign article = journal_article_local_service_util.fetchJournalArticleByUuidAndGroupId(assetRenderer.getUuid(), assetRenderer.getGroupId()) >
+			<#assign background_image = "/html/themes/control_panel/images/file_system/large/pdf.png" />
+			<#assign view_url = "/resource?title=" + article.getUrlTitle() />
+		</#if>
 
-		<#assign resource_id = article.getArticleId() />
-	</#if>
+		<#if view_url??>
+			<div class="block link-tile responsive-w50 standard-padding w25">
+				<a href="${view_url}" style="background-image: url(${background_image});">
+					<div class="link-tile-content">
+						<h3 class="asset-entry-title">${htmlUtil.escape(assetRenderer.getTitle(locale))}</h3>
 
-	<#assign viewURL = "/resource" />
+						<p class="asset-entry-summary">${htmlUtil.escape(assetRenderer.getSummary(locale))}</p>
 
-	<#if resource_id??>
-		<#assign viewURL = "${viewURL}?resource_id=" + resource_id />
-	</#if>
+						<div class="asset-entry-categories">
+							<#list entry.getCategoryIds() as category_id >
+								<#assign category = asset_category_local_service_util.fetchAssetCategory(category_id) />
 
-	<div class="link-tile standard-padding w33">
-		<a href="${viewURL}" >
-			<div class="link-tile-content">
-				<h3 class="asset-entry-title">${htmlUtil.escape(assetRenderer.getTitle(locale))}</h3>
-
-				<p class="asset-entry-summary">${htmlUtil.escape(assetRenderer.getSummary(locale))}</p>
-
-				<div class="asset-entry-categories">
-					<#list entry.getCategoryIds() as category_id >
-						<#assign category = asset_category_local_service_util.fetchAssetCategory(category_id) />
-
-						<span class="asset-entry-category">${category.getName()}</span>
-					</#list>
-				</div>
+								<span class="asset-entry-category">${category.getName()}</span>
+							</#list>
+						</div>
+					</div>
+				</a>
 			</div>
-		</a>
-	</div>
-</#list>
+		</#if>
+	</#list>
+</div>
