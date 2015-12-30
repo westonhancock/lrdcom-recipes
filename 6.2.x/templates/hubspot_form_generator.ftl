@@ -3,32 +3,18 @@ Todo:
 Dependant fields
 Override number of fields (possibly resorting order)
 More robust implementation of 2-col layout
-Add checks and implementation for text field
-check hidden multi select hack
 check if we need field_to_skip variable
 check asset primary buyers stage event firing stuff
-hs-contact undefined error on L-591 `<#if value.indexOf(option.getString("value")) != -1>` replicate incognito
-null catch for the localization template (43374) so that if something breaks there, it doesn't break the form generator
+form validator
+google utm pulling
  -->
 
-<#-- <#function clean_up string>
-	<#assign string = stringUtil.replace(string, "[", "") />
-	<#assign string = stringUtil.replace(string, "]", "") />
-	<#assign string = stringUtil.replace(string, '"', '') />
-
-	<#if string == "_blank">
-		<#assign string = "" />
-	</#if>
-
-	<#return string>
-</#function> -->
-
-<#function get_options field>
-	<#if localization_map?? && localization_map?has_content>
+<#function get_options localization_map field>
+	<#if localization_map?has_content>
 		<#assign localized_field_name = "" />
 
-		<#assign localized_field_name = "${field.getString('name')}_${stringUtil.lowerCase(locale)}" />
-in get options${localization_map}
+		<#assign localized_field_name = field.getString("name") + "_" + stringUtil.lowerCase(locale?string) />
+
 		<#if localization_map.getJSONObject(localized_field_name)??>
 			<#return localization_map.getJSONObject(localized_field_name).getJSONArray("options")>
 		</#if>
@@ -37,18 +23,26 @@ in get options${localization_map}
 	<#return field.getJSONArray('options')>
 </#function>
 
-<#include "${templatesPath}/43374" />
+<#attempt>
+	<#include "${templatesPath}/43374" />
+<#recover>
+	<script type="text/javascript">console.log("Error in Localization Template")</script>
+</#attempt>
 
 <#assign portlet_bean_locator = objectUtil("com.liferay.portal.kernel.bean.PortletBeanLocatorUtil") />
 
 <#assign hs_form_local_service = portlet_bean_locator.locate("hubspot-portlet", "com.liferay.hubspot.service.HSFormLocalService") />
 
 <#if request.lifecycle == 'RENDER_PHASE'>
-	<#-- Testing Hubspot Account -->
+	<#--
+	Testing Hubspot Account
+	-->
 	<#assign hs_account_id = "299703" />
 
-	<#-- Production Hubspot Account
-	<#assign hs_account_id = "252686" /> -->
+	<#--
+	Production Hubspot Account
+	<#assign hs_account_id = "252686" />
+	-->
 
 	<#attempt>
 		<#assign ip_geocoder_util = objectUtil("com.liferay.ipgeocoder.util.IPGeocoderUtil") />
@@ -61,7 +55,8 @@ in get options${localization_map}
 
 	<#assign number_of_fields_displayed = getterUtil.getInteger(number_of_fields.data) />
 
-	<#-- <#list number_of_fields.override_key.siblings as key>
+	<#--
+	<#list number_of_fields.override_key.siblings as key>
 		<#list key.override_value.siblings as value>
 			<#if hs_url_map.get(key.data) == value.data || hs_default_map.get(key.data) == value.data>
 				<#assign number_of_fields_displayed = getterUtil.getInteger(value.num_of_fields.data) />
@@ -75,7 +70,8 @@ in get options${localization_map}
 		<#if break>
 			#break
 		</#if>
-	</#list> -->
+	</#list>
+	 -->
 
 	<#-- Create a state to country map -->
 
@@ -87,66 +83,76 @@ in get options${localization_map}
 
 	<#assign portlet_namespace = request["portlet-namespace"]>
 
-	<#attempt>
+	<#if request.attributes.OSB_WWW_HUBSPOT_UTK??>
 		<#assign hsutk = request.attributes.OSB_WWW_HUBSPOT_UTK />
 
 		<#assign hs_contact_local_service = portlet_bean_locator.locate("hubspot-portlet", "com.liferay.hubspot.service.HSContactLocalService") />
 
-		<#assign hs_contact = hs_contact_local_service.fetchHSContactByUserToken(hsutk) />
-		<#assign hs_contact_object = hs_contact.getHSContactJSONObject().getJSONObject("properties") />
-	<#recover>
-	</#attempt>
+		<#if hs_contact_local_service.fetchHSContactByUserToken(hsutk)??>
+			<#assign hs_contact = hs_contact_local_service.fetchHSContactByUserToken(hsutk) />
+			<#assign hs_contact_object = hs_contact.getHSContactJSONObject().getJSONObject("properties") />
+		</#if>
+	</#if>
 
-	<#if locale != "en_US">
-		<#attempt>
-			<#-- Testing Localization Form -->
-			<#assign localization_form = hs_form_local_service.fetchHSFormByGUID("72293d1f-6e98-4655-a0f5-e57ac01a7060") />
+	<#--
+	Testing Localization Form
+	-->
+	<#assign localization_form_id = "72293d1f-6e98-4655-a0f5-e57ac01a7060" />
 
-			<#-- Production Localization Form -->
-			<#-- <#assign localization_form = hs_form_local_service.fetchHSFormByGUID("6e0954fa-8f47-44a7-996d-e47c6f298f05") /> -->
+	<#--
+	Production Localization Form
+	<#assign localization_form_id = "6e0954fa-8f47-44a7-996d-e47c6f298f05" />
+	-->
 
-			<#assign localization_form_fields = localization_form.getHSFormJSONObject().getJSONArray("fields") />
-			<#assign localization_map = jsonFactoryUtil.createJSONObject() />
+	<#assign localization_map = jsonFactoryUtil.createJSONObject() />
 
-			<#assign localization_form_start = 0 />
-			<#assign localization_form_end = localization_form_fields.length() - 1 />
-			<#assign localization_form_range = localization_form_start..localization_form_end />
+	<#if locale != "en_US" && hs_form_local_service.fetchHSFormByGUID(localization_form_id)??>
+		<#assign localization_form = hs_form_local_service.fetchHSFormByGUID(localization_form_id) />
 
-			<#list localization_form_range as i>
-				<#assign localization_form_field = localization_form_fields.getJSONObject(i) />
+		<#assign localization_form_fields = localization_form.getHSFormJSONObject().getJSONArray("fields") />
 
-				<#assign field_map = jsonFactoryUtil.createJSONObject() />
+		<#assign localization_form_start = 0 />
+		<#assign localization_form_end = localization_form_fields.length() - 1 />
+		<#assign localization_form_range = localization_form_start..localization_form_end />
 
-				<#assign VOID = field_map.put("label", localization_form_field.getString("label")) />
-				<#assign VOID = field_map.put("options", localization_form_field.getJSONArray("options")) />
+		<#list localization_form_range as i>
+			<#assign localization_form_field = localization_form_fields.getJSONObject(i) />
 
-				<#assign VOID = localization_map.put(localization_form_field.getString("name"), field_map) />
-			</#list>
-		<#recover>
-		</#attempt>
+			<#assign field_map = jsonFactoryUtil.createJSONObject() />
+
+			<#assign VOID = field_map.put("label", localization_form_field.getString("label")) />
+			<#assign VOID = field_map.put("options", localization_form_field.getJSONArray("options")) />
+
+			<#assign VOID = localization_map.put(localization_form_field.getString("name"), field_map) />
+		</#list>
 	</#if>
 
 	<#assign hs_form = hs_form_local_service.fetchHSFormByGUID(hs_form_id.data) />
 
 	<#assign hs_form_fields = hs_form.getHSFormJSONObject().getJSONArray("fields") />
-	<#assign form_rules_json = jsonFactoryUtil.createJSONObject() />
 
+	<#assign field_strings_json = jsonFactoryUtil.createJSONObject() />
+	<#assign form_rules_json = jsonFactoryUtil.createJSONObject() />
 	<#assign asset_info = jsonFactoryUtil.createJSONObject() />
 
 	<#if asset_id.data?has_content>
-		<#attempt>
-			<#assign dl_file_entry_local_service_util = staticUtil["com.liferay.portlet.documentlibrary.service.DLFileEntryLocalServiceUtil"]>
+		<#assign dl_file_entry_local_service_util = staticUtil["com.liferay.portlet.documentlibrary.service.DLFileEntryLocalServiceUtil"]>
+
+		<#if dl_file_entry_local_service_util.fetchDLFileEntry(getterUtil.getLong(asset_id.data))??>
+			<#assign dl_file_entry = dl_file_entry_local_service_util.fetchDLFileEntry(getterUtil.getLong(asset_id.data)) >
+
+			<#assign void = asset_info.put("asset_folder_id", dl_file_entry.getFolderId()) />
+			<#assign void = asset_info.put("asset_id", asset_id.data) />
+			<#assign void = asset_info.put("asset_title", dl_file_entry.getTitle()) />
+
 			<#assign dl_file_entry_type_local_service_util = staticUtil["com.liferay.portlet.documentlibrary.service.DLFileEntryTypeLocalServiceUtil"]>
 
-			<#assign dl_file_entry = dl_file_entry_local_service_util.fetchDLFileEntryByUuidAndGroupId(asset_id.data, groupId) >
-			<#assign dl_file_entry_type = dl_file_entry_type_local_service_util.fetchDLFileEntryType(dl_file_entry.getFileEntryTypeId()) />
+			<#if dl_file_entry_type_local_service_util.fetchDLFileEntryType(dl_file_entry.getFileEntryTypeId())??>
+				<#assign dl_file_entry_type = dl_file_entry_type_local_service_util.fetchDLFileEntryType(dl_file_entry.getFileEntryTypeId()) />
 
-			<#assign void = asset_info.put("asset_id", asset_id.data) />
-			<#assign void = asset_info.put("asset_name", dl_file_entry.getTitle()) />
-			<#assign void = asset_info.put("asset_type", dl_file_entry_type.getName(locale)) />
-		<#recover>
-			<script>console.log('asset info error');</script>
-		</#attempt>
+				<#assign void = asset_info.put("asset_type", dl_file_entry_type.getName(locale)) />
+			</#if>
+		</#if>
 	</#if>
 
 	<div class="lrdcom-form">
@@ -184,15 +190,11 @@ in get options${localization_map}
 		</form>
 	</div>
 
-	<#attempt>
+	<#if request.attributes.OSB_WWW_REMOTE_ADDRESS??>
 		<#assign ip_address = request.attributes.OSB_WWW_REMOTE_ADDRESS />
-	<#recover>
-	</#attempt>
+	</#if>
 
 	<#assign page_url = request.attributes.FRIENDLY_URL />
-	<#assign page_name = "" />
-
-	<#assign redirect_asset_url = "" />
 
 	<#assign redirect_url = "" />
 
@@ -265,8 +267,6 @@ in get options${localization_map}
 					);
 
 					if (leave) {
-console.log('Please fill in required fields');
-
 						return;
 					}
 
@@ -277,17 +277,19 @@ console.log('Please fill in required fields');
 					}
 
 					var guid = '${hs_form_id.data}';
+
 					<#if ip_address??>
 						var ipAddress = '${ip_address}';
 					<#else>
 						var ipAddress = '';
 					</#if>
+
 					var pageURL = '${page_url}';
 					var pageName = document.title;
-					var redirectAssetURL = '${redirect_asset_url}';
+					var assetURL = '';
 
 					if (fields["asset_id"]) {
-						redirectAssetURL = 'documents/${groupId}/'+ fields["asset_id"];
+						assetURL = 'documents/${groupId}/'+ fields["asset_folder_id"] + '/' + fields["asset_title"];
 					}
 
 					var redirectURL = '${redirect_url}';
@@ -303,8 +305,8 @@ console.log('Please fill in required fields');
 						var userToken = '';
 					</#if>
 
-					if ((redirectAssetURL != "") && (form.getAttribute('data-asset-new-tab') == "true")) {
-						window.open(redirectAssetURL, '_blank');
+					if ((assetURL != "") && (form.getAttribute('data-asset-new-tab') == "true")) {
+						window.open(assetURL, '_blank');
 					}
 
 					if (fields["asset_primary_buyers_stage"]) {
@@ -376,12 +378,19 @@ console.log('Please fill in required fields');
 				}
 			);
 		};
-
 		AUI().ready(
 			'aui-base',
 			'json-parse',
 			'osb-form',
 			function(A) {
+				new A.OSBForm(
+					{
+						fieldStrings: ${field_strings_json},
+						formId: '#${article_namespace}fm',
+						rules: ${form_rules_json}
+					}
+				).render();
+
 				var countrySelect = A.one('#${article_namespace}_country select');
 				var stateSelect = A.one('#${article_namespace}_state select');
 
@@ -430,12 +439,6 @@ console.log('Please fill in required fields');
 				populateStateField();
 
 				countrySelect.on('change', populateStateField);
-
-				new A.OSBForm(
-					{
-						formId: '#${article_namespace}fm'
-					}
-				).render();
 			}
 		);
 	</script>
@@ -495,14 +498,18 @@ console.log('Please fill in required fields');
 	<#assign field_css_class = "${field_css_class} field-${field_count}" />
 
 	<#if required>
-		<#assign field_css_class = "${field_css_class} field-required" />
-		<#assign field_input_css_class = "${field_input_css_class} field-required" />
-		<#assign label_text = "${label_text} *" />
-		<#assign required_attr = "required" />
+		<#assign field_string = jsonFactoryUtil.createJSONObject() />
+		<#assign void = field_string.put("required", localize("x-is-required", label_text)) />
+		<#assign void = field_strings_json.put(field_name, field_string) />
 
 		<#assign form_rule = jsonFactoryUtil.createJSONObject() />
 		<#assign void = form_rule.put("required", true) />
 		<#assign void = form_rules_json.put(field_name, form_rule) />
+
+		<#assign field_css_class = "${field_css_class} field-required" />
+		<#assign field_input_css_class = "${field_input_css_class} field-required" />
+		<#assign label_text = "${label_text} *" />
+		<#assign required_attr = "required" />
 	</#if>
 
 	<#-- <#if field_name == "state">
@@ -520,13 +527,13 @@ console.log('Please fill in required fields');
 			<#if hidden>
 				<input class="${field_input_css_class}" type="hidden" name="${field_name}" value="${value}"/>
 			<#elseif field_type == "select">
-				<#assign select_options_map = get_options(item) />
+				<#assign select_options_map = get_options(localization_map, item) />
 				<#assign select_options_start = 0 />
 				<#assign select_options_end = select_options_map.length() - 1 />
 				<#assign select_options_range = select_options_start..select_options_end />
 
 				<select class="${field_input_css_class}" name="${field_name}" ${required_attr}>
-					<option value="">${label_text}</option>
+					<option value=""></option>
 
 					<#list select_options_range as i>
 						<#assign option = select_options_map.getJSONObject(i) />
@@ -590,7 +597,7 @@ console.log('Please fill in required fields');
 					${label_text}
 				</label>
 			<#elseif field_type == "checkbox" || field_type == "radio">
-				<#assign checkbox_options_map = get_options(item) />
+				<#assign checkbox_options_map = get_options(localization_map, item) />
 				<#assign checkbox_options_start = 0 />
 				<#assign checkbox_options_end = checkbox_options_map.length() - 1 />
 				<#assign checkbox_options_range = checkbox_options_start..checkbox_options_end />
@@ -599,7 +606,7 @@ console.log('Please fill in required fields');
 					<#list checkbox_options_range as i>
 						<#assign option = checkbox_options_map.getJSONObject(i) />
 
-						<#if value.indexOf(option.getString("value")) != -1>
+						<#if value?has_content && value.indexOf(option.getString("value")) != -1>
 							<#assign checked = "checked" />
 						<#else>
 							<#assign checked = "" />
@@ -640,7 +647,6 @@ console.log('Please fill in required fields');
 
 	<#assign dependent_field_filters = item.getJSONArray("dependentFieldFilters") />
 
-	<#--
 	<#if dependent_field_filters.length() gt 0>
 		<#assign dependent_field_filters_object = dependent_field_filters.getJSONObject(0) />
 
@@ -648,11 +654,14 @@ console.log('Please fill in required fields');
 		<#assign form_field_action = dependent_field_filters_object.getString("formFieldAction") />
 		<#assign dependent_form_field = dependent_field_filters_object.getJSONObject("dependentFormField") />
 
+		<@print_item item=dependent_form_field />
+
+	<#--
 ${dependent_field_filters}
 ${filters}
 ${form_field_action}
 ${dependent_form_field}
-	</#if>
 	-->
+	</#if>
 
 </#macro>

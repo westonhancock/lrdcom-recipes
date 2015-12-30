@@ -129,8 +129,13 @@
 			zh_CN: '省份 *'
 		},
 
+		x-is-required: {
+			en_US: '{0} is required',
+			zh_CN: 'China requires {0}'
+		},
+
 		your_request_completed_successfully: {
-			en_US: 'Your request completed successfully.',
+			en_US: 'Your request completed successfully.'
 		},
 
 		your_request_failed_to_complete: {
@@ -139,12 +144,18 @@
 	}
 ") />
 
-<#function localize key>
+<#function localize key vars...>
+	<#assign localized_key = key />
+
 	<#if localization_json_object.getJSONObject(key)?? && localization_json_object.getJSONObject(key).getString(locale)?has_content>
-		<#return localization_json_object.getJSONObject(key).getString(locale)>
+		<#assign localized_key = localization_json_object.getJSONObject(key).getString(locale) />
 	<#elseif localization_json_object.getJSONObject(key)?? && localization_json_object.getJSONObject(key).getString("en_US")?has_content>
-		<#return localization_json_object.getJSONObject(key).getString("en_US")>
-	<#else>
-		<#return key>
+		<#assign localized_key = localization_json_object.getJSONObject(key).getString("en_US") />
 	</#if>
+
+	<#list vars as var>
+		<#assign localized_key = stringUtil.replace(localized_key, "{" + var_index + "}", var) />
+	</#list>
+
+	<#return localized_key>
 </#function>
