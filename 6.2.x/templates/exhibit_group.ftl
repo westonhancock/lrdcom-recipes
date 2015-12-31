@@ -2,11 +2,11 @@
 	<#if title.data?has_content || subtitle.data?has_content>
 		<div class="section-heading text-center">
 			<#if title.data?has_content>
-				<h2>${title.data}</h2>
+				<h2 class="${title.text_color.data}">${title.data}</h2>
 			</#if>
 
 			<#if subtitle.data?has_content>
-				<p class="max-med">${subtitle.data}</p>
+				<p class="max-med ${subtitle.color.data}">${subtitle.data}</p>
 			</#if>
 		</div>
 	</#if>
@@ -18,12 +18,12 @@
 			<#assign block_width = 100 / block_title.siblings?size />
 		</#if>
 
-		<#list block_title.siblings as block>
-			<#assign transition_css = "on-screen-helper slide-up" />
+		<#assign transition_css = "on-screen-helper slide-up" />
 
+		<#list block_title.siblings as block>
 			<div class="block exhibit standard-padding ${transition_css} ${block.animation_delay.data} w${block_width?round}">
 				<#if block.svg_code.data?has_content>
-					<div class="exhibit-media primary-color text-center">
+					<div class="exhibit-media text-center">
 						${block.svg_code.data}
 					</div>
 				</#if>
@@ -57,3 +57,9 @@
 		</a>
 	</#if>
 </div>
+
+<style>
+	.exhibit-media svg {
+		width: 100%;
+	}
+</style>

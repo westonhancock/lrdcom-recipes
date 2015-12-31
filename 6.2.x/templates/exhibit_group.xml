@@ -1,7 +1,7 @@
 
 <root available-locales="en_US" default-locale="en_US">
 	<dynamic-element dataType="string" indexType="keyword" localizable="true" name="title" readOnly="false" repeatable="false" required="false" showLabel="true" type="text" width="large">
-		<dynamic-element dataType="string" indexType="keyword" localizable="true" multiple="false" name="title_text_color" readOnly="false" repeatable="false" required="false" showLabel="true" type="select" width="">
+		<dynamic-element dataType="string" indexType="keyword" localizable="true" multiple="false" name="text_color" readOnly="false" repeatable="false" required="false" showLabel="true" type="select" width="">
 			<dynamic-element name="option11553" type="option" value="complementary-color">
 				<meta-data locale="en_US">
 					<entry name="label">
@@ -65,6 +65,13 @@
 					</entry>
 				</meta-data>
 			</dynamic-element>
+			<dynamic-element name="option6825" type="option" value="light-color">
+				<meta-data locale="en_US">
+					<entry name="label">
+						<![CDATA[White]]>
+					</entry>
+				</meta-data>
+			</dynamic-element>
 			<meta-data locale="en_US">
 				<entry name="label">
 					<![CDATA[Title Text Color]]>
@@ -90,7 +97,7 @@
 		</meta-data>
 	</dynamic-element>
 	<dynamic-element dataType="string" indexType="keyword" localizable="true" name="subtitle" readOnly="false" repeatable="false" required="false" showLabel="true" type="textarea" width="large">
-		<dynamic-element dataType="string" indexType="keyword" localizable="true" multiple="false" name="subtitle_text_color" readOnly="false" repeatable="false" required="false" showLabel="true" type="select" width="">
+		<dynamic-element dataType="string" indexType="keyword" localizable="true" multiple="false" name="color" readOnly="false" repeatable="false" required="false" showLabel="true" type="select" width="">
 			<dynamic-element name="option7553" type="option" value="complementary-color">
 				<meta-data locale="en_US">
 					<entry name="label">
@@ -151,6 +158,13 @@
 				<meta-data locale="en_US">
 					<entry name="label">
 						<![CDATA[Dark Gray (text color)]]>
+					</entry>
+				</meta-data>
+			</dynamic-element>
+			<dynamic-element name="option7364" type="option" value="light-color">
+				<meta-data locale="en_US">
+					<entry name="label">
+						<![CDATA[White]]>
 					</entry>
 				</meta-data>
 			</dynamic-element>
