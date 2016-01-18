@@ -7,7 +7,10 @@
 <#assign layout = layout_service.getLayout(plid) />
 <#assign user_has_permissions = layoutPermission.contains(permissionChecker, layout, "UPDATE") />
 
-<div class="block-container no-padding" id="article${.vars['reserved-article-id'].data}">
+<div class="block-container no-padding
+	<#if custom_class?? && custom_class.data?has_content>
+		${custom_class.data}
+	</#if>" id="article${.vars['reserved-article-id'].data}">
 	<#list block.siblings as block>
 		<#if block.background_color.data?has_content>
 			<#assign color_class = block.background_color.data />
