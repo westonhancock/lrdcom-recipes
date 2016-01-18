@@ -23,7 +23,7 @@
 <#assign banner_css = "align-center block-container justify-center main-banner no-padding" />
 <#assign banner_style = "" />
 
-<#if video_info?has_content && !browserSniffer.isMobile(http_servlet_request)>
+<#if video_info?has_content && !browserSniffer.isMobile(http_servlet_request) && !browserSniffer.isIe(http_servlet_request)>
 	<#assign banner_css = banner_css + " video-banner" />
 	<#assign banner_style = "min-height: ${min_height}" />
 <#else>
@@ -31,7 +31,7 @@
 </#if>
 
 <div class="${banner_css}" id="article-${.vars['reserved-article-id'].data}" style="${banner_style}" >
-	<#if video_info?has_content && !browserSniffer.isMobile(http_servlet_request)>
+	<#if video_info?has_content && !browserSniffer.isMobile(http_servlet_request) && !browserSniffer.isIe(http_servlet_request)>
 		<video autoplay loop muted style="height: 100%; min-height: ${min_height};" width="100%" >
 			${video_info}
 			${video_image_info}
@@ -39,7 +39,7 @@
 	</#if>
 
 	<div class="align-center block-container main-banner-content max-full no-margin w100 ${position.data}">
-		<#if heading.data?has_content || sub_heading.data?has_content || button_text.data?has_content >
+		<#if heading.data?has_content || subheading.data?has_content || button_text.data?has_content >
 			<div class="max-med no-margin no-padding">
 				<#include "${templatesPath}/898140" />
 

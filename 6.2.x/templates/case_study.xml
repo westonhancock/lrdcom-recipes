@@ -1,36 +1,10 @@
 
 <root available-locales="en_US" default-locale="en_US">
-	<dynamic-element dataType="string" indexType="keyword" localizable="true" name="customer_id" readOnly="false" repeatable="false" required="false" showLabel="true" type="text" width="large">
-		<meta-data locale="en_US">
-			<entry name="label">
-				<![CDATA[Customer Id]]>
-			</entry>
-			<entry name="predefinedValue">
-				<![CDATA[]]>
-			</entry>
-			<entry name="tip">
-				<![CDATA[]]>
-			</entry>
-		</meta-data>
-	</dynamic-element>
-	<dynamic-element dataType="document-library" fieldNamespace="ddm" indexType="keyword" localizable="true" name="media_element" readOnly="false" repeatable="true" required="false" showLabel="true" type="ddm-documentlibrary" width="">
-		<meta-data locale="en_US">
-			<entry name="label">
-				<![CDATA[Media Element]]>
-			</entry>
-			<entry name="predefinedValue">
-				<![CDATA[]]>
-			</entry>
-			<entry name="tip">
-				<![CDATA[]]>
-			</entry>
-		</meta-data>
-	</dynamic-element>
-	<dynamic-element dataType="string" indexType="keyword" localizable="true" name="section_heading" readOnly="false" repeatable="true" required="false" showLabel="true" type="text" width="large">
-		<dynamic-element dataType="string" indexType="keyword" localizable="true" name="section_content" readOnly="false" repeatable="true" required="false" showLabel="true" type="textarea" width="large">
+	<dynamic-element dataType="string" indexType="keyword" localizable="true" name="company_name" readOnly="false" repeatable="false" required="true" showLabel="true" type="text" width="medium">
+		<dynamic-element dataType="document-library" fieldNamespace="ddm" indexType="keyword" localizable="true" name="logo" readOnly="false" repeatable="false" required="false" showLabel="true" type="ddm-documentlibrary" width="">
 			<meta-data locale="en_US">
 				<entry name="label">
-					<![CDATA[Section Content]]>
+					<![CDATA[Company Logo]]>
 				</entry>
 				<entry name="predefinedValue">
 					<![CDATA[]]>
@@ -42,7 +16,33 @@
 		</dynamic-element>
 		<meta-data locale="en_US">
 			<entry name="label">
-				<![CDATA[Section Heading]]>
+				<![CDATA[Company Name]]>
+			</entry>
+			<entry name="predefinedValue">
+				<![CDATA[]]>
+			</entry>
+			<entry name="tip">
+				<![CDATA[]]>
+			</entry>
+		</meta-data>
+	</dynamic-element>
+	<dynamic-element dataType="string" indexType="keyword" localizable="true" name="subheading" readOnly="false" repeatable="true" required="false" showLabel="true" type="text" width="large">
+		<dynamic-element dataType="string" indexType="keyword" localizable="true" name="summary_paragraph" readOnly="false" repeatable="true" required="false" showLabel="true" type="textarea" width="large">
+			<meta-data locale="en_US">
+				<entry name="label">
+					<![CDATA[Summary Paragraph]]>
+				</entry>
+				<entry name="predefinedValue">
+					<![CDATA[]]>
+				</entry>
+				<entry name="tip">
+					<![CDATA[]]>
+				</entry>
+			</meta-data>
+		</dynamic-element>
+		<meta-data locale="en_US">
+			<entry name="label">
+				<![CDATA[Subheading]]>
 			</entry>
 			<entry name="predefinedValue">
 				<![CDATA[]]>
@@ -53,10 +53,23 @@
 		</meta-data>
 	</dynamic-element>
 	<dynamic-element dataType="string" indexType="keyword" localizable="true" name="quick_fact" readOnly="false" repeatable="true" required="false" showLabel="true" type="text" width="large">
-		<dynamic-element dataType="string" indexType="keyword" localizable="true" name="fact_detail" readOnly="false" repeatable="false" required="false" showLabel="true" type="textarea" width="large">
+		<dynamic-element dataType="string" indexType="keyword" localizable="true" name="unit" readOnly="false" repeatable="false" required="false" showLabel="true" type="text" width="small">
 			<meta-data locale="en_US">
 				<entry name="label">
-					<![CDATA[Fact Detail]]>
+					<![CDATA[Unit]]>
+				</entry>
+				<entry name="predefinedValue">
+					<![CDATA[]]>
+				</entry>
+				<entry name="tip">
+					<![CDATA[]]>
+				</entry>
+			</meta-data>
+		</dynamic-element>
+		<dynamic-element dataType="string" indexType="keyword" localizable="true" name="description" readOnly="false" repeatable="false" required="false" showLabel="true" type="text" width="large">
+			<meta-data locale="en_US">
+				<entry name="label">
+					<![CDATA[Brief Description]]>
 				</entry>
 				<entry name="predefinedValue">
 					<![CDATA[]]>
@@ -68,7 +81,7 @@
 		</dynamic-element>
 		<meta-data locale="en_US">
 			<entry name="label">
-				<![CDATA[Quick Fact Unit]]>
+				<![CDATA[Quick Fact]]>
 			</entry>
 			<entry name="predefinedValue">
 				<![CDATA[]]>
@@ -78,11 +91,24 @@
 			</entry>
 		</meta-data>
 	</dynamic-element>
-	<dynamic-element dataType="string" indexType="keyword" localizable="true" name="quote" readOnly="false" repeatable="true" required="false" showLabel="true" type="textarea" width="large">
+	<dynamic-element dataType="string" indexType="keyword" localizable="true" name="quote" readOnly="false" repeatable="false" required="false" showLabel="true" type="textarea" width="large">
 		<dynamic-element dataType="string" indexType="keyword" localizable="true" name="quotee" readOnly="false" repeatable="false" required="false" showLabel="true" type="text" width="large">
 			<meta-data locale="en_US">
 				<entry name="label">
 					<![CDATA[Quotee]]>
+				</entry>
+				<entry name="predefinedValue">
+					<![CDATA[]]>
+				</entry>
+				<entry name="tip">
+					<![CDATA[]]>
+				</entry>
+			</meta-data>
+		</dynamic-element>
+		<dynamic-element dataType="string" indexType="keyword" localizable="true" name="quotee_info" readOnly="false" repeatable="false" required="false" showLabel="true" type="text" width="small">
+			<meta-data locale="en_US">
+				<entry name="label">
+					<![CDATA[Quotee Info]]>
 				</entry>
 				<entry name="predefinedValue">
 					<![CDATA[]]>
@@ -105,25 +131,51 @@
 		</meta-data>
 	</dynamic-element>
 	<dynamic-element dataType="document-library" fieldNamespace="ddm" indexType="keyword" localizable="true" name="asset" readOnly="false" repeatable="true" required="false" showLabel="true" type="ddm-documentlibrary" width="">
-		<dynamic-element dataType="string" indexType="keyword" localizable="true" name="external_asset_link" readOnly="false" repeatable="false" required="false" showLabel="true" type="text" width="large">
-			<meta-data locale="en_US">
-				<entry name="label">
-					<![CDATA[External Asset Link]]>
-				</entry>
-				<entry name="predefinedValue">
-					<![CDATA[]]>
-				</entry>
-				<entry name="tip">
-					<![CDATA[]]>
-				</entry>
-			</meta-data>
-		</dynamic-element>
 		<meta-data locale="en_US">
 			<entry name="label">
 				<![CDATA[Asset]]>
 			</entry>
 			<entry name="predefinedValue">
 				<![CDATA[]]>
+			</entry>
+			<entry name="tip">
+				<![CDATA[]]>
+			</entry>
+		</meta-data>
+	</dynamic-element>
+	<dynamic-element dataType="document-library" fieldNamespace="ddm" indexType="keyword" localizable="true" name="additional_img" readOnly="false" repeatable="true" required="false" showLabel="true" type="ddm-documentlibrary" width="">
+		<meta-data locale="en_US">
+			<entry name="label">
+				<![CDATA[Additional Image]]>
+			</entry>
+			<entry name="predefinedValue">
+				<![CDATA[]]>
+			</entry>
+			<entry name="tip">
+				<![CDATA[]]>
+			</entry>
+		</meta-data>
+	</dynamic-element>
+	<dynamic-element dataType="string" indexType="keyword" localizable="true" name="video_id" readOnly="false" repeatable="false" required="false" showLabel="true" type="text" width="large">
+		<meta-data locale="en_US">
+			<entry name="label">
+				<![CDATA[Case Study Video URL]]>
+			</entry>
+			<entry name="predefinedValue">
+				<![CDATA[]]>
+			</entry>
+			<entry name="tip">
+				<![CDATA[]]>
+			</entry>
+		</meta-data>
+	</dynamic-element>
+	<dynamic-element dataType="boolean" indexType="keyword" localizable="false" name="hightlighted" readOnly="false" repeatable="false" required="false" showLabel="true" type="checkbox" width="">
+		<meta-data locale="en_US">
+			<entry name="label">
+				<![CDATA[Highlighted]]>
+			</entry>
+			<entry name="predefinedValue">
+				<![CDATA[false]]>
 			</entry>
 			<entry name="tip">
 				<![CDATA[]]>

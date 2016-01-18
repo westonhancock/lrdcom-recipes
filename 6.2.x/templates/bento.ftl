@@ -24,14 +24,17 @@
 		<#assign bento_section_css = "bento-section bento-section-${block_index + 1} block ${block.background_color.data} ${block.width.data} ${block.block_class.data}" />
 		<#assign bento_section_style = "" />
 
-		<#if video_info?has_content>
+		<#assign service_context = staticUtil["com.liferay.portal.service.ServiceContextThreadLocal"].getServiceContext() />
+		<#assign http_servlet_request = service_context.getRequest() />
+
+		<#if video_info?has_content && !browserSniffer.isMobile(http_servlet_request) && !browserSniffer.isIe(http_servlet_request)>
 			<#assign bento_section_css = bento_section_css + " video-banner" />
 		<#else>
 			<#assign bento_section_style = "style='${image_info}'" />
 		</#if>
 
 		<div class="${bento_section_css}" ${bento_section_style} ${block.data}>
-			<#if video_info?has_content>
+			<#if video_info?has_content && !browserSniffer.isMobile(http_servlet_request) && !browserSniffer.isIe(http_servlet_request)>
 				<video autoplay class="background-video" height="100%" loop muted width="100%">
 					${video_info}
 					${video_image_info}
@@ -43,9 +46,6 @@
 					${journal_content_util.getContent(groupId, article_id.data, "", locale, xmlRequest)!}
 
 					<#if layoutPermission.contains(permissionChecker, layout, "UPDATE")>
-						<#assign service_context = staticUtil["com.liferay.portal.service.ServiceContextThreadLocal"].getServiceContext() />
-						<#assign http_servlet_request = service_context.getRequest() />
-
 						<#assign current_url = request.attributes.CURRENT_COMPLETE_URL! />
 
 						<#assign edit_url = portletURLFactory.create(http_servlet_request, "15", plid, "0") />
@@ -74,22 +74,3 @@
 		${css.data}
 	</style>
 </#if>
-
-<#-- This to go in theme -->
-<style type="text/css">
-	.aui .bento-section {
-		background-position: center;
-		background-size: cover;
-		position: relative;
-		overflow: hidden;
-	}
-
-	.aui .background-video {
-		bottom: 0;
-		left: 0;
-		min-width: 100%;
-		object-fit: cover !important;
-		position: absolute;
-		z-index: 0;
-	}
-</style>
