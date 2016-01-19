@@ -1,120 +1,68 @@
-<#if image.data?has_content>
-	<#assign style = "style='background-image: url(${image.data});'" />
-<#else>
-	<#assign style = "" />
+<#assign min_height = "768px" />
+
+<#if height.data?has_content>
+	<#assign min_height = height.data />
 </#if>
 
-<#assign font_color = "light-color" />
+<#assign image_info = "" />
+<#assign video_image_info = "" />
+<#assign video_info = "" />
 
-<#if opacity.data?has_content>
-	<#assign opacity_color = opacity.data />
-	<#assign opacity_overlay = "opacity-overlay" />
-
-	<#if opacity_color == "#FFF">
-		<#assign font_color = "font-color" />
+<#list media.siblings?reverse as cur_media>
+	<#if cur_media.video_type.data?has_content>
+		<#assign video_info = video_info + "<source src='" + cur_media.data + "' type='" + cur_media.video_type.data + "'>" />
+	<#else>
+		<#assign video_image_info = video_image_info + "<img src='" + cur_media.data + "' >" />
+		<#assign image_info = image_info + "background-image: url(" + cur_media.data + ");" />
 	</#if>
+</#list>
+
+<#assign banner_css = "align-center block-container justify-center main-banner no-padding" />
+<#assign banner_style = "" />
+
+<#if video_info?has_content>
+	<#assign banner_css = banner_css + " video-banner" />
+	<#assign banner_style = "min-height: ${min_height}" />
 <#else>
-	<#assign opacity_color = "" />
-	<#assign opacity_overlay = "" />
+	<#assign banner_style = image_info + "min-height: ${min_height}" />
 </#if>
 
-<div class="align-center block-container justify-center main-banner ${opacity_overlay} ${position.data}" ${style}>
-	<div class="block ${font_color} main-banner-content max-med">
-		<#if heading.data?has_content>
-			<div class="page-heading">
-				<h1>${heading.data}</h1>
+<div class="${banner_css}" id="article-${.vars['reserved-article-id'].data}" style="${banner_style}" >
+	<#if video_info?has_content>
+		<video autoplay loop muted style="height: 100%; min-height: ${min_height};" width="100%" >
+			${video_info}
+			${video_image_info}
+		</video>
+	</#if>
+
+	<div class="block main-banner-content max-full w100 ${text_color.data}-color text-${position.data}">
+		<#if heading.data?has_content || sub_heading.data?has_content || button_text.data?has_content >
+			<div class="max-med no-margin no-padding page-heading">
+				<#if heading.data?has_content>
+					<h1>${heading.data}</h1>
+				</#if>
 
 				<#if sub_heading.data?has_content>
-					<p class="${font_color}">${sub_heading.data}</p>
+					<p class="${text_color.data}-color">${sub_heading.data}</p>
+				</#if>
+
+				<#if button_text.data?has_content && button_text.button_link.data?has_content>
+					<a class="btn btn-${text_color.data}" href="${button_text.button_link.data}">${button_text.data}</a>
 				</#if>
 			</div>
 		</#if>
 
+		<#if article_id.data?has_content>
+			<#assign journal_content_util = staticUtil["com.liferay.portlet.journalcontent.util.JournalContentUtil"] />
+			<#assign content_display = journal_content_util.getDisplay(groupId, article_id.data, "", locale, xmlRequest) />
+
+			${content_display.getContent()}
+		</#if>
 	</div>
 </div>
 
-<#assign min_height = "400px" />
-
-<#if height?? && height.data?has_content>
-	<#assign min_height = height.data />
-</#if>
-
 <style type="text/css">
-	.aui .main-banner {
-		background-position: center;
-		background-size: cover;
-		min-height: ${min_height};
-		overflow: hidden;
-		position: relative;
-	}
-
-	.aui .main-banner .main-banner-content {
-		margin: 30px 10%;
-		position: relative;
-		z-index: 5;
-	}
-
-	.main-banner.opacity-overlay .main-banner-content:after {
-		background-color: ${opacity_color};
-		bottom: -200%;
-		content: "";
-		display: block;
-		left: -200%;
-		opacity: .75;
-		position: absolute;
-		right: -200%;
-		top: -200%;
-		z-index: -1;
-		-ms-transform: skew(135deg);
-		-webkit-transform: skew(135deg);
-		-moz-transform: skew(135deg);
-		-o-transform: skew(135deg);
-		transform: skew(135deg);
-		transform-origin: center;
-	}
-
-	.main-banner.lower-left, .main-banner.upper-left {
-		justify-content: flex-start;
-	}
-
-	.main-banner.upper-left .main-banner-content:after {
-		right: -25%;
-	}
-
-	.main-banner.lower-left .main-banner-content:after {
-		right: -25%;
-		-ms-transform: skew(45deg);
-		-webkit-transform: skew(45deg);
-		-moz-transform: skew(45deg);
-		-o-transform: skew(45deg);
-		transform: skew(45deg);
-	}
-
-	.main-banner.lower-right, .main-banner.upper-right {
-		justify-content: flex-end;
-	}
-
-	.main-banner.upper-right .main-banner-content:after {
-		left: -25%;
-	}
-
-	.main-banner.lower-right .main-banner-content:after {
-		left: -25%;
-		-ms-transform: skew(45deg);
-		-webkit-transform: skew(45deg);
-		-moz-transform: skew(45deg);
-		-o-transform: skew(45deg);
-		transform: skew(45deg);
-	}
-
-	@media (max-width: 720px) {
-		.responsive .main-banner.opacity-overlay .main-banner-content:after {
-			left: -200%;
-			right: -200%;
-		}
-	}
-
-	<#if css?? && css.data?has_content>
-			${css.data}
+	<#if css.data?has_content>
+		${css.data}
 	</#if>
 </style>
