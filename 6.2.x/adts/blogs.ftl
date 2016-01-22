@@ -467,6 +467,7 @@
 		fill: #FFF;
 	}
 
+/*will break nav*/
 	.aui img {
 		width: 100%;
 	}
