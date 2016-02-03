@@ -35,28 +35,21 @@
 		</video>
 	</#if>
 
-	<div class="block main-banner-content max-full w100 ${text_color.data}-color text-${position.data}">
+	<div class="align-center block-container main-banner-content max-full no-margin w100 ${position.data}">
 		<#if heading.data?has_content || sub_heading.data?has_content || button_text.data?has_content >
-			<div class="max-med no-margin no-padding page-heading">
-				<#if heading.data?has_content>
-					<h1>${heading.data}</h1>
-				</#if>
+			<div class="max-med no-margin no-padding">
+				<#include "${templatesPath}/898140" />
 
-				<#if sub_heading.data?has_content>
-					<p class="${text_color.data}-color">${sub_heading.data}</p>
-				</#if>
-
-				<#if button_text.data?has_content && button_text.button_link.data?has_content>
-					<a class="btn btn-${text_color.data}" href="${button_text.button_link.data}">${button_text.data}</a>
+				<#if button_text.data?has_content>
+					<div class="${button_alignment.data}">
+						<#list button_text.siblings as button>
+							<#if button.data?has_content && button.button_link.data?has_content>
+								<a class="btn btn-${button.button_color.data}" href="${button.button_link.data}">${button.data}</a>
+							</#if>
+						</#list>
+					</div>
 				</#if>
 			</div>
-		</#if>
-
-		<#if article_id.data?has_content>
-			<#assign journal_content_util = staticUtil["com.liferay.portlet.journalcontent.util.JournalContentUtil"] />
-			<#assign content_display = journal_content_util.getDisplay(groupId, article_id.data, "", locale, xmlRequest) />
-
-			${content_display.getContent()}
 		</#if>
 	</div>
 </div>
@@ -66,3 +59,17 @@
 		${css.data}
 	</#if>
 </style>
+
+<script>
+	AUI().ready(
+		'aui-base',
+		function(A) {
+			var WIN = A.getWin();
+			var winHeight = WIN.get('innerHeight');
+
+			var mainBanner = A.one('#article-${.vars['reserved-article-id'].data}');
+
+			mainBanner.setStyle('max-height', winHeight);
+		}
+	);
+</script>

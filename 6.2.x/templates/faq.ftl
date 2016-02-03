@@ -1,64 +1,37 @@
 <#if request.lifecycle == "RENDER_PHASE">
-	<div class="align-center block-container justify-center exhibit-group large-padding-vertical" id="article-${.vars['reserved-article-id'].data}">
+	<div class="faq-section" id="article-${.vars['reserved-article-id'].data}">
 		<#include "${templatesPath}/898140" />
 		<#assign number_of_heading_fields = 2 />
 
-		<div class="align-baseline alt-font-color block-container justify-center">
-			<#if block_title.siblings?size gt 5>
-				<#assign block_width = 33 />
-			<#else>
-				<#assign block_width = 100 / block_title.siblings?size />
-			</#if>
+		<#list question.siblings as cur_question>
+			<div class="question">
+				<h4><strong
+					class="live-edit"
+					data-article-id='${.vars["reserved-article-id"].data}'
+					data-field-name="${cur_question.name}"
+					data-level-path="${cur_question_index}"
+					data-namespace='${request["portlet-namespace"]}'
+					data-resource-url='${request["resource-url"]}'
+				>
+					${cur_question.data}
+				</strong></h4>
 
-			<#list block_title.siblings as block>
-				<#assign transition_css = "on-screen-helper slide-up" />
-
-				<div class="block exhibit standard-padding ${transition_css} ${block.animation_delay.data} w${block_width?round}">
-					<#if block.svg_code.data?has_content>
-						<div class="exhibit-media text-center">
-							${block.svg_code.data}
-						</div>
-					</#if>
-
-					<div class="exhibit-body">
-						<#if block.data?has_content>
-							<h3
-								class="live-edit"
-								data-article-id='${.vars["reserved-article-id"].data}'
-								data-field-name="${block.name}"
-								data-level-path="0"
-								data-namespace='${request["portlet-namespace"]}'
-								data-resource-url='${request["resource-url"]}'
-							>
-								${block.data}
-							</h3>
-						</#if>
-
-						<#if block.block_content.data?has_content>
-							<p
-								class="live-edit"
-								data-article-id='${.vars["reserved-article-id"].data}'
-								data-field-name="${block.block_content.name}"
-								data-level-path="${number_of_heading_fields + block_index},0"
-								data-namespace='${request["portlet-namespace"]}'
-								data-resource-url='${request["resource-url"]}'
-							>
-								${block.block_content.data}
-							</p>
-						</#if>
-					</div>
-				</div>
-			</#list>
-		</div>
-
-		<#if button_text.data?has_content && button_text.button_link.data?has_content>
-			<a class="btn ${button_text.button_class.data}" href="${button_text.button_link.data}">
-				${button_text.data}
-
-				${button_text.icon_svg_code.data}
-			</a>
-		</#if>
+				<#list cur_question.answer.siblings as cur_answer>
+					<p
+						class="live-edit"
+						data-article-id='${.vars["reserved-article-id"].data}'
+						data-field-name="${cur_question.answer.name}"
+						data-level-path="${number_of_heading_fields + cur_question_index},${cur_answer_index}"
+						data-namespace='${request["portlet-namespace"]}'
+						data-resource-url='${request["resource-url"]}'
+					>
+						${cur_answer.data}
+					</p>
+				</#list>
+			</div>
+		</#list>
 	</div>
+
 <#-- This to go in theme -->
 	<#assign layout_service = serviceLocator.findService("com.liferay.portal.service.LayoutLocalService") />
 	<#assign theme_display = request["theme-display"] />

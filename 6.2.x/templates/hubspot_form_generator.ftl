@@ -127,9 +127,7 @@ google utm pulling
 		</#list>
 	</#if>
 
-	<#assign hs_form = hs_form_local_service.fetchHSFormByGUID(form_id.data) />
-
-	<#assign hs_form_fields = hs_form.getHSFormJSONObject().getJSONArray("fields") />
+	<#assign hs_form = hs_form_local_service.fetchHSFormByGUID(form_id.data)! />
 
 	<#assign field_strings_json = jsonFactoryUtil.createJSONObject() />
 	<#assign form_rules_json = jsonFactoryUtil.createJSONObject() />
@@ -155,325 +153,309 @@ google utm pulling
 		</#if>
 	</#if>
 
-	<div class="lrdcom-form">
-		<div id="${article_namespace}msg"></div>
+	<#if hs_form?has_content>
+		<#assign hs_form_fields = hs_form.getHSFormJSONObject().getJSONArray("fields") />
 
-		<form action="https://forms.hubspot.com/uploads/form/v2/${hs_account_id}/${form_id.data}" data-asset-info="${asset_info?html}" data-asset-new-tab="true" id="${article_namespace}fm" method="POST" onsubmit="submitHSForm${article_namespace}('#${article_namespace}fm', this.getAttribute('data-asset-info')); return false;">
-			<#assign field_count = 0 />
-			<#assign start = 0 />
-			<#assign end = hs_form_fields.length() - 1 />
-			<#assign range = start..end />
+		<div class="lrdcom-form">
+			<div id="${article_namespace}msg"></div>
 
-			<div class="form-col form-col-1">
-				<#list range as i>
-					<#assign item = hs_form_fields.getJSONObject(i) />
+			<form action="https://forms.hubspot.com/uploads/form/v2/${hs_account_id}/${form_id.data}" data-asset-info="${asset_info?html}" data-asset-new-tab="true" id="${article_namespace}fm" method="POST" onsubmit="submitHSForm${article_namespace}('#${article_namespace}fm', this.getAttribute('data-asset-info')); return false;">
+				<#assign field_count = 0 />
+				<#assign start = 0 />
+				<#assign end = hs_form_fields.length() - 1 />
+				<#assign range = start..end />
 
-					<@print_item item=item />
-				</#list>
+				<div class="form-col form-col-1">
+					<#list range as i>
+						<#assign item = hs_form_fields.getJSONObject(i) />
 
-				<#if submit_text.data?has_content>
-					<#assign btn_text = localize(submit_text.data) />
-				</#if>
+						<@print_item item=item />
+					</#list>
 
-				<#if !btn_text?has_content>
-					<#assign btn_text = hs_form.getSubmitText() />
-				</#if>
+					<#if submit_text.data?has_content>
+						<#assign btn_text = localize(submit_text.data) />
+					</#if>
 
-				<#if !btn_text?has_content>
-					<#assign btn_text = localize("submit") />
-				</#if>
+					<#if !btn_text?has_content>
+						<#assign btn_text = hs_form.getSubmitText() />
+					</#if>
 
-				<div class="btn-wrapper">
-					<input class="btn" type="submit" value="${btn_text}" />
+					<#if !btn_text?has_content>
+						<#assign btn_text = localize("submit") />
+					</#if>
+
+					<div class="btn-wrapper">
+						<input class="btn" type="submit" value="${btn_text}" />
+					</div>
 				</div>
-			</div>
-		</form>
-	</div>
+			</form>
+		</div>
 
-	<#if request.attributes.OSB_WWW_REMOTE_ADDRESS??>
-		<#assign ip_address = request.attributes.OSB_WWW_REMOTE_ADDRESS />
-	</#if>
+		<#assign ip_address = request.attributes.OSB_WWW_REMOTE_ADDRESS! />
 
-	<#assign page_url = "" />
+		<#assign page_url = "" />
 
-	<#if request.attributes.FRIENDLY_URL??>
-		<#assign page_url = request.attributes.FRIENDLY_URL />
-	</#if>
+		<#assign page_url = request.attributes.FRIENDLY_URL! />
 
-	<#assign redirect_url = "" />
+		<#assign redirect_url = hs_form.getRedirect()! />
 
-	<#if hs_form.getRedirect()?? && hs_form.getRedirect()?has_content>
-		<#assign redirect_url = hs_form.getRedirect() />
-	</#if>
+		<#assign salesforce_campaign_id = hs_form.getLeadNurturingCampaignId()! />
 
-	<#assign salesforce_campaign_id = "" />
+		<#if thank_you_text.data?has_content>
+			<#assign thank_you_message = localize(thank_you_text.data) />
+		<#else>
+			<#assign thank_you_message = hs_form.getHSFormJSONObject().getString("inlineMessage")!localize("thank-you") />
+		</#if>
 
-	<#if hs_form.getLeadNurturingCampaignId()?? && hs_form.getLeadNurturingCampaignId()?has_content>
-		<#assign salesforce_campaign_id = hs_form.getLeadNurturingCampaignId() />
-	</#if>
+		<script type="text/javascript">
+			function submitHSForm${article_namespace}(formId, assetInfo) {
+				AUI().ready(
+					'aui-base',
+					'aui-io-request',
+					'json-parse',
+					function(A) {
+						var form = A.one(formId);
+						var msg = A.one('#${article_namespace}msg');
 
-	<#assign thank_you_message = localize(thank_you_text.data) />
-
-	<#if hs_form.getHSFormJSONObject().getString("inlineMessage")?has_content>
-		<#assign thank_you_message = hs_form.getHSFormJSONObject().getString("inlineMessage") />
-	</#if>
-
-	<script type="text/javascript">
-		function submitHSForm${article_namespace}(formId, assetInfo) {
-			AUI().ready(
-				'aui-base',
-				'aui-io-request',
-				'json-parse',
-				function(A) {
-					var form = A.one(formId);
-					var msg = A.one('#${article_namespace}msg');
-
-					if (!form) {
-						return;
-					}
-
-					var fields = {};
-
-					if (assetInfo && (assetInfo != "")) {
-						fields = A.JSON.parse(assetInfo);
-					}
-
-					var leave = false;
-
-					form.all('.field').each(
-						function(node) {
-							var value = node.get('value');
-
-							if (node.hasClass('field-booleancheckbox')) {
-								value = node.get('checked');
-							}
-
-							if ((node.hasClass('field-required') && value == '') || (node.hasClass('field-required') && !value)) {
-								leave = true;
-
-								return;
-							}
-
-							if (!node.hasClass('hidden-field') && (node.hasClass('field-checkbox') || node.hasClass('field-radio'))) {
-								if (node.get('checked') == true) {
-									if (fields[node.get('name')]) {
-										fields[node.get('name')] += ',' + value;
-									}
-									else {
-										fields[node.get('name')] = value;
-									}
-								}
-							}
-							else if ((value != '') || node.hasClass('field-booleancheckbox')) {
-								fields[node.get('name')] = value;
-							}
-						}
-					);
-
-					if (leave) {
-						return;
-					}
-
-					var fieldsString = "";
-
-					for(field in fields) {
-						fieldsString = fieldsString + field + ':;:' + fields[field] + ':;:';
-					}
-
-					var guid = '${form_id.data}';
-
-					<#if ip_address??>
-						var ipAddress = '${ip_address}';
-					<#else>
-						var ipAddress = '';
-					</#if>
-
-					var pageURL = '${page_url}';
-					var pageName = document.title;
-					var assetURL = '';
-
-					if (fields["asset_id"]) {
-						assetURL = 'documents/${groupId}/'+ fields["asset_folder_id"] + '/' + fields["asset_title"];
-					}
-
-					var redirectURL = '${redirect_url}';
-					var salesforceCampaignId = '${salesforce_campaign_id}';
-
-					if (fields["campaign"]) {
-						salesforceCampaignId = fields["campaign"];
-					}
-
-					<#if hsutk??>
-						var userToken = '${hsutk}';
-					<#else>
-						var userToken = '';
-					</#if>
-
-					if ((assetURL != "") && (form.getAttribute('data-asset-new-tab') == "true")) {
-						window.open(assetURL, '_blank');
-					}
-
-					if (fields["asset_primary_buyers_stage"]) {
-						var assetPrimaryBuyersStage = fields["asset_primary_buyers_stage"];
-
-						if (assetPrimaryBuyersStage == "Awareness") {
-							var trackEventId = "000000245927";
-						}
-						else if (assetPrimaryBuyersStage == "Education") {
-							var trackEventId = "000000245928";
-						}
-						else if (assetPrimaryBuyersStage == "Evaluation") {
-							var trackEventId = "000000245929";
-						}
-						else if (assetPrimaryBuyersStage == "Justification") {
-							var trackEventId = "000000245931";
-						}
-
-						try {
-							_hsq.push(
-								[
-									"trackEvent", {
-										id: trackEventId,
-										value: null
-									}
-								]
-							);
-						}
-						catch (error) {
-							console.log('_hsq error caught');
-						}
-					}
-
-					A.io.request(
-						'${request["resource-url"]}',
-						{
-							data: {
-								${portlet_namespace}fields: fieldsString,
-								${portlet_namespace}guid: guid,
-								${portlet_namespace}ipAddress: ipAddress,
-								${portlet_namespace}pageURL: pageURL,
-								${portlet_namespace}pageName: pageName,
-								${portlet_namespace}redirectURL: redirectURL,
-								${portlet_namespace}salesforceCampaignId: salesforceCampaignId,
-								${portlet_namespace}userToken: userToken
-							},
-							dataType: 'json',
-							on: {
-								success: function(event, id, obj) {
-									<#if on_success_javascript?has_content && (on_success_javascript.data != "")>
-										${on_success_javascript.data}
-									<#else>
-										if (redirectURL != "") {
-											window.location.href = redirectURL;
-										}
-										else {
-											msg.setContent('<h3>${thank_you_message}</h3>');
-
-											form.hide();
-										}
-									</#if>
-								},
-								failure: function(event, id, obj) {
-									msg.setContent('<div class="portlet-msg-error">${localize("your_request_failed_to_complete")}</div>');
-								}
-							}
-						}
-					);
-				}
-			);
-		};
-		AUI().ready(
-			'aui-base',
-			'json-parse',
-			'osb-form',
-			function(A) {
-				new A.OSBForm(
-					{
-						fieldStrings: ${field_strings_json},
-						formId: '#${article_namespace}fm',
-						rules: ${form_rules_json}
-					}
-				).render();
-
-				var form = A.one('#${article_namespace}fm');
-
-				var populateStateField = function(field, value) {
-					if (!stateJSON) {
-						return;
-					}
-
-					field.empty();
-
-					field.appendChild('<option value="_blank"></option>');
-
-					var stateOptions = stateJSON[value];
-
-					if (!field || !stateOptions) {
-						return;
-					}
-
-					var keyArray = stateOptions["key"];
-
-					for (var key in keyArray) {
-						var stateValue = keyArray[key];
-						var selected = "";
-
-						if (stateValue == stateJSON['selected_option']) {
-							selected = "selected";
-						}
-
-						field.appendChild('<option value="' + stateValue + '"' + selected + '>' + stateOptions[stateValue] + '</option>');
-					}
-				};
-
-				<#if states_options_json?has_content>
-					var stateJSON = A.JSON.parse('${states_options_json}');
-				</#if>
-
-				var toggleDependantField = function(node, targetValues, value) {
-					if (targetValues.indexOf(value) > -1) {
-						if (node.one("#${article_namespace}_state")) {
-							populateStateField(node.one('select'), value);
-						}
-
-						node.show()
-					}
-					else {
-						node.hide()
-					}
-				};
-
-				var countryFieldSelect = A.one("#${article_namespace}_country select");
-				var stateFieldSelect = A.one("#${article_namespace}_state select");
-
-				if(countryFieldSelect && stateFieldSelect) {
-					populateStateField(stateFieldSelect, countryFieldSelect.get('value'));
-				}
-
-				form.all('.dependant-field').each(
-					function(node) {
-						var targetFieldName = node.getAttribute('data-target-field');
-						var targetField = form.one('#${article_namespace}_' + targetFieldName + ' select')
-
-						if (!targetField) {
+						if (!form) {
 							return;
 						}
 
-						var targetValues = node.getAttribute('data-target-values');
+						var fields = {};
 
-						toggleDependantField(node, targetValues, targetField.get('value'));
+						if (assetInfo && (assetInfo != "")) {
+							fields = A.JSON.parse(assetInfo);
+						}
 
-						targetField.on(
-							'change',
-							function(event) {
-								toggleDependantField(node, targetValues, event.currentTarget.get('value'));
+						var leave = false;
+
+						form.all('.field').each(
+							function(node) {
+								var value = node.get('value');
+
+								if (node.hasClass('field-booleancheckbox')) {
+									value = node.get('checked');
+								}
+
+								if ((node.hasClass('field-required') && value == '') || (node.hasClass('field-required') && !value)) {
+									leave = true;
+
+									return;
+								}
+
+								if (!node.hasClass('hidden-field') && (node.hasClass('field-checkbox') || node.hasClass('field-radio'))) {
+									if (node.get('checked') == true) {
+										if (fields[node.get('name')]) {
+											fields[node.get('name')] += ',' + value;
+										}
+										else {
+											fields[node.get('name')] = value;
+										}
+									}
+								}
+								else if ((value != '') || node.hasClass('field-booleancheckbox')) {
+									fields[node.get('name')] = value;
+								}
+							}
+						);
+
+						if (leave) {
+							return;
+						}
+
+						var fieldsString = "";
+
+						for(field in fields) {
+							fieldsString = fieldsString + field + ':;:' + fields[field] + ':;:';
+						}
+
+						var guid = '${form_id.data}';
+
+						var ipAddress = '${ip_address}';
+
+						var pageURL = '${page_url}';
+						var pageName = document.title;
+						var assetURL = '';
+
+						if (fields["asset_id"]) {
+							assetURL = 'documents/${groupId}/'+ fields["asset_folder_id"] + '/' + fields["asset_title"];
+						}
+
+						var redirectURL = '${redirect_url}';
+						var salesforceCampaignId = '${salesforce_campaign_id}';
+
+						if (fields["campaign"]) {
+							salesforceCampaignId = fields["campaign"];
+						}
+
+						var userToken = '${hsutk}';
+
+						if ((assetURL != "") && (form.getAttribute('data-asset-new-tab') == "true")) {
+							window.open(assetURL, '_blank');
+						}
+
+						if (fields["asset_primary_buyers_stage"]) {
+							var assetPrimaryBuyersStage = fields["asset_primary_buyers_stage"];
+
+							if (assetPrimaryBuyersStage == "Awareness") {
+								var trackEventId = "000000245927";
+							}
+							else if (assetPrimaryBuyersStage == "Education") {
+								var trackEventId = "000000245928";
+							}
+							else if (assetPrimaryBuyersStage == "Evaluation") {
+								var trackEventId = "000000245929";
+							}
+							else if (assetPrimaryBuyersStage == "Justification") {
+								var trackEventId = "000000245931";
+							}
+
+							try {
+								_hsq.push(
+									[
+										"trackEvent", {
+											id: trackEventId,
+											value: null
+										}
+									]
+								);
+							}
+							catch (error) {
+								console.log('_hsq error caught');
+							}
+						}
+
+						A.io.request(
+							'${request["resource-url"]}',
+							{
+								data: {
+									${portlet_namespace}fields: fieldsString,
+									${portlet_namespace}guid: guid,
+									${portlet_namespace}ipAddress: ipAddress,
+									${portlet_namespace}pageURL: pageURL,
+									${portlet_namespace}pageName: pageName,
+									${portlet_namespace}redirectURL: redirectURL,
+									${portlet_namespace}salesforceCampaignId: salesforceCampaignId,
+									${portlet_namespace}userToken: userToken
+								},
+								dataType: 'json',
+								on: {
+									success: function(event, id, obj) {
+										<#if on_success_javascript?has_content && (on_success_javascript.data != "")>
+											${on_success_javascript.data}
+										<#else>
+											if (redirectURL != "") {
+												window.location.href = redirectURL;
+											}
+											else {
+												msg.setContent('<h3>${thank_you_message}</h3>');
+
+												form.hide();
+											}
+										</#if>
+									},
+									failure: function(event, id, obj) {
+										msg.setContent('<div class="portlet-msg-error">${localize("your_request_failed_to_complete")}</div>');
+									}
+								}
 							}
 						);
 					}
 				);
-			}
-		);
-	</script>
+			};
+			AUI().ready(
+				'aui-base',
+				'json-parse',
+				'osb-form',
+				function(A) {
+					new A.OSBForm(
+						{
+							fieldStrings: ${field_strings_json},
+							formId: '#${article_namespace}fm',
+							rules: ${form_rules_json}
+						}
+					).render();
+
+					var form = A.one('#${article_namespace}fm');
+
+					var populateStateField = function(field, value) {
+						if (!stateJSON) {
+							return;
+						}
+
+						field.empty();
+
+						field.appendChild('<option value="_blank"></option>');
+
+						var stateOptions = stateJSON[value];
+
+						if (!field || !stateOptions) {
+							return;
+						}
+
+						var keyArray = stateOptions["key"];
+
+						for (var key in keyArray) {
+							var stateValue = keyArray[key];
+							var selected = "";
+
+							if (stateValue == stateJSON['selected_option']) {
+								selected = "selected";
+							}
+
+							field.appendChild('<option value="' + stateValue + '"' + selected + '>' + stateOptions[stateValue] + '</option>');
+						}
+					};
+
+					<#if states_options_json?has_content>
+						var stateJSON = A.JSON.parse('${states_options_json}');
+					</#if>
+
+					var toggleDependantField = function(node, targetValues, value) {
+						if (targetValues.indexOf(value) > -1) {
+							if (node.one("#${article_namespace}_state")) {
+								populateStateField(node.one('select'), value);
+							}
+
+							node.show()
+						}
+						else {
+							node.hide()
+						}
+					};
+
+					var countryFieldSelect = A.one("#${article_namespace}_country select");
+					var stateFieldSelect = A.one("#${article_namespace}_state select");
+
+					if(countryFieldSelect && stateFieldSelect) {
+						populateStateField(stateFieldSelect, countryFieldSelect.get('value'));
+					}
+
+					form.all('.dependant-field').each(
+						function(node) {
+							var targetFieldName = node.getAttribute('data-target-field');
+							var targetField = form.one('#${article_namespace}_' + targetFieldName + ' select')
+
+							if (!targetField) {
+								return;
+							}
+
+							var targetValues = node.getAttribute('data-target-values');
+
+							toggleDependantField(node, targetValues, targetField.get('value'));
+
+							targetField.on(
+								'change',
+								function(event) {
+									toggleDependantField(node, targetValues, event.currentTarget.get('value'));
+								}
+							);
+						}
+					);
+				}
+			);
+		</script>
+	</#if>
 <#elseif request.lifecycle == 'RESOURCE_PHASE'>
 	<#assign fields = stringUtil.split(request.parameters.fields, ":;:") />
 
@@ -500,9 +482,7 @@ google utm pulling
 	<#assign label_text = localize(item.getString("label")) />
 	<#assign required = getterUtil.getBoolean(item.getString("required")) />
 
-	<#if item.getString("defaultValue")?? && item.getString("defaultValue")?has_content>
-		<#assign value = item.getString("defaultValue") />
-	</#if>
+	<#assign value = item.getString("defaultValue")! />
 
 	<#if !hidden && hs_contact_object?? && hs_contact_object.getJSONObject(field_name)??>
 		<#assign hs_value = hs_contact_object.getJSONObject(field_name).getString("value") />

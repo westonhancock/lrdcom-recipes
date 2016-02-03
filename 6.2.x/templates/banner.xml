@@ -1,58 +1,6 @@
 
 <root available-locales="en_US" default-locale="en_US">
-	<dynamic-element dataType="document-library" fieldNamespace="ddm" indexType="keyword" localizable="true" name="media" readOnly="false" repeatable="true" required="false" showLabel="true" type="ddm-documentlibrary" width="">
-		<dynamic-element dataType="string" indexType="keyword" localizable="true" name="video_type" readOnly="false" repeatable="false" required="false" showLabel="true" type="text" width="large">
-			<meta-data locale="en_US">
-				<entry name="label">
-					<![CDATA[Video Type]]>
-				</entry>
-				<entry name="predefinedValue">
-					<![CDATA[]]>
-				</entry>
-				<entry name="tip">
-					<![CDATA[Filling this in will tell the template it is a video. The content should look like video/mp4 (or whatever file type it should be)]]>
-				</entry>
-			</meta-data>
-		</dynamic-element>
-		<meta-data locale="en_US">
-			<entry name="label">
-				<![CDATA[Media]]>
-			</entry>
-			<entry name="predefinedValue">
-				<![CDATA[]]>
-			</entry>
-			<entry name="tip">
-				<![CDATA[]]>
-			</entry>
-		</meta-data>
-	</dynamic-element>
-	<dynamic-element dataType="string" indexType="keyword" localizable="true" name="heading" readOnly="false" repeatable="false" required="false" showLabel="true" type="text" width="large">
-		<meta-data locale="en_US">
-			<entry name="label">
-				<![CDATA[Heading]]>
-			</entry>
-			<entry name="predefinedValue">
-				<![CDATA[]]>
-			</entry>
-			<entry name="tip">
-				<![CDATA[]]>
-			</entry>
-		</meta-data>
-	</dynamic-element>
-	<dynamic-element dataType="string" indexType="keyword" localizable="true" name="sub_heading" readOnly="false" repeatable="false" required="false" showLabel="true" type="textarea" width="large">
-		<meta-data locale="en_US">
-			<entry name="label">
-				<![CDATA[Sub Heading]]>
-			</entry>
-			<entry name="predefinedValue">
-				<![CDATA[]]>
-			</entry>
-			<entry name="tip">
-				<![CDATA[]]>
-			</entry>
-		</meta-data>
-	</dynamic-element>
-	<dynamic-element dataType="string" indexType="keyword" localizable="true" name="button_text" readOnly="false" repeatable="false" required="false" showLabel="true" type="text" width="large">
+	<dynamic-element dataType="string" indexType="keyword" localizable="true" name="button_text" readOnly="false" repeatable="true" required="false" showLabel="true" type="text" width="large">
 		<dynamic-element dataType="string" indexType="keyword" localizable="true" name="button_link" readOnly="false" repeatable="false" required="false" showLabel="true" type="text" width="large">
 			<meta-data locale="en_US">
 				<entry name="label">
@@ -60,6 +8,40 @@
 				</entry>
 				<entry name="predefinedValue">
 					<![CDATA[]]>
+				</entry>
+				<entry name="tip">
+					<![CDATA[]]>
+				</entry>
+			</meta-data>
+		</dynamic-element>
+		<dynamic-element dataType="string" indexType="keyword" localizable="true" multiple="false" name="button_color" readOnly="false" repeatable="false" required="false" showLabel="true" type="select" width="">
+			<dynamic-element name="option15138" type="option" value="light">
+				<meta-data locale="en_US">
+					<entry name="label">
+						<![CDATA[White (light color)]]>
+					</entry>
+				</meta-data>
+			</dynamic-element>
+			<dynamic-element name="option15139" type="option" value="primary">
+				<meta-data locale="en_US">
+					<entry name="label">
+						<![CDATA[Blue (primary color)]]>
+					</entry>
+				</meta-data>
+			</dynamic-element>
+			<dynamic-element name="option15140" type="option" value="font">
+				<meta-data locale="en_US">
+					<entry name="label">
+						<![CDATA[Gray (font color)]]>
+					</entry>
+				</meta-data>
+			</dynamic-element>
+			<meta-data locale="en_US">
+				<entry name="label">
+					<![CDATA[Button Color]]>
+				</entry>
+				<entry name="predefinedValue">
+					<![CDATA[["light"]]]>
 				</entry>
 				<entry name="tip">
 					<![CDATA[]]>
@@ -78,10 +60,57 @@
 			</entry>
 		</meta-data>
 	</dynamic-element>
-	<dynamic-element dataType="string" indexType="keyword" localizable="true" name="article_id" readOnly="false" repeatable="false" required="false" showLabel="true" type="text" width="small">
+	<dynamic-element dataType="string" indexType="keyword" localizable="true" multiple="false" name="button_alignment" readOnly="false" repeatable="false" required="false" showLabel="true" type="select" width="">
+		<dynamic-element name="option6655" type="option" value="text-left">
+			<meta-data locale="en_US">
+				<entry name="label">
+					<![CDATA[Left]]>
+				</entry>
+			</meta-data>
+		</dynamic-element>
+		<dynamic-element name="option6656" type="option" value="text-center">
+			<meta-data locale="en_US">
+				<entry name="label">
+					<![CDATA[Center]]>
+				</entry>
+			</meta-data>
+		</dynamic-element>
+		<dynamic-element name="option6657" type="option" value="text-right">
+			<meta-data locale="en_US">
+				<entry name="label">
+					<![CDATA[Right]]>
+				</entry>
+			</meta-data>
+		</dynamic-element>
 		<meta-data locale="en_US">
 			<entry name="label">
-				<![CDATA[Article ID]]>
+				<![CDATA[Button Alignment]]>
+			</entry>
+			<entry name="predefinedValue">
+				<![CDATA[[""]]]>
+			</entry>
+			<entry name="tip">
+				<![CDATA[]]>
+			</entry>
+		</meta-data>
+	</dynamic-element>
+	<dynamic-element dataType="document-library" fieldNamespace="ddm" indexType="keyword" localizable="true" name="media" readOnly="false" repeatable="true" required="false" showLabel="true" type="ddm-documentlibrary" width="">
+		<dynamic-element dataType="string" indexType="keyword" localizable="true" name="video_type" readOnly="false" repeatable="false" required="false" showLabel="true" type="text" width="large">
+			<meta-data locale="en_US">
+				<entry name="label">
+					<![CDATA[Video Type]]>
+				</entry>
+				<entry name="predefinedValue">
+					<![CDATA[]]>
+				</entry>
+				<entry name="tip">
+					<![CDATA[Filling this in will tell the template this document is a video. The content should look like video/mp4 (or whatever file type it should be)]]>
+				</entry>
+			</meta-data>
+		</dynamic-element>
+		<meta-data locale="en_US">
+			<entry name="label">
+				<![CDATA[Media]]>
 			</entry>
 			<entry name="predefinedValue">
 				<![CDATA[]]>
@@ -92,21 +121,21 @@
 		</meta-data>
 	</dynamic-element>
 	<dynamic-element dataType="string" indexType="keyword" localizable="true" multiple="false" name="position" readOnly="false" repeatable="false" required="false" showLabel="true" type="select" width="">
-		<dynamic-element name="option7262" type="option" value="left">
+		<dynamic-element name="option6077" type="option" value="justify-start">
 			<meta-data locale="en_US">
 				<entry name="label">
 					<![CDATA[Left]]>
 				</entry>
 			</meta-data>
 		</dynamic-element>
-		<dynamic-element name="option7263" type="option" value="center">
+		<dynamic-element name="option6078" type="option" value="justify-center">
 			<meta-data locale="en_US">
 				<entry name="label">
 					<![CDATA[Center]]>
 				</entry>
 			</meta-data>
 		</dynamic-element>
-		<dynamic-element name="option7264" type="option" value="right">
+		<dynamic-element name="option6079" type="option" value="justify-end">
 			<meta-data locale="en_US">
 				<entry name="label">
 					<![CDATA[Right]]>
@@ -119,40 +148,6 @@
 			</entry>
 			<entry name="predefinedValue">
 				<![CDATA[[""]]]>
-			</entry>
-			<entry name="tip">
-				<![CDATA[]]>
-			</entry>
-		</meta-data>
-	</dynamic-element>
-	<dynamic-element dataType="string" indexType="keyword" localizable="true" multiple="false" name="text_color" readOnly="false" repeatable="false" required="false" showLabel="true" type="select" width="">
-		<dynamic-element name="option15138" type="option" value="light">
-			<meta-data locale="en_US">
-				<entry name="label">
-					<![CDATA[White (light color)]]>
-				</entry>
-			</meta-data>
-		</dynamic-element>
-		<dynamic-element name="option15139" type="option" value="primary">
-			<meta-data locale="en_US">
-				<entry name="label">
-					<![CDATA[Blue (primary color)]]>
-				</entry>
-			</meta-data>
-		</dynamic-element>
-		<dynamic-element name="option15140" type="option" value="font">
-			<meta-data locale="en_US">
-				<entry name="label">
-					<![CDATA[Gray (font color)]]>
-				</entry>
-			</meta-data>
-		</dynamic-element>
-		<meta-data locale="en_US">
-			<entry name="label">
-				<![CDATA[Text Color]]>
-			</entry>
-			<entry name="predefinedValue">
-				<![CDATA[["light"]]]>
 			</entry>
 			<entry name="tip">
 				<![CDATA[]]>
