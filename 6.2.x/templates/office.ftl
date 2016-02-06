@@ -11,7 +11,7 @@
 	<div>${company_title.data}</div>
 
 	<address class="vcard">
-		<div class="adr">
+		<div class="adr" itemprop="address">
 			<div>${address.data}</div>
 
 			<#list address.additional_line.siblings as line>
@@ -22,19 +22,19 @@
 		<#list phone.getSiblings() as cur_phone>
 			<div class="tel">
 				<#if getterUtil.getBoolean(cur_phone.fax.data)>
-					<span class="fax">${localize("fax")}: ${cur_phone.data}</span>
+					<span class="fax" itemprop="faxNumber">${localize("fax")}: ${cur_phone.data}</span>
 				<#else>
-					${localize("tel")}: ${cur_phone.data}
+					<span itemprop="telephone">${localize("tel")}: ${cur_phone.data}</span>
 				</#if>
 			</div>
 		</#list>
 	</address>
 
-	<#if office_hours?has_content>
+	<#if office_hours.data?has_content>
 		<div>${localize("office-hours")}: ${office_hours.data}</div>
 	</#if>
 
-	<#if additional_details?has_content>
+	<#if additional_details.data?has_content>
 		<#list additional_details.siblings as detail>
 			<div>${detail.data}</div>
 		</#list>
