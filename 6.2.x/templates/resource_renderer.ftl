@@ -10,6 +10,8 @@
 <#assign resource_id = paramUtil.getLong(http_servlet_request, "resourceId") />
 <#assign title = paramUtil.getString(http_servlet_request, "title") />
 
+<#assign hubspot_form_article_id = "691288" />
+
 <a href="/resources">< Back</a>
 
 <div class="resource-display">
@@ -27,14 +29,14 @@
 
 	<#if article??>
 		<div class="block-container">
-			${journal_content_util.getContent(groupId, article.getArticleId()?string, "", locale, xmlRequest)}
+		${journal_content_util.getContent(groupId, article.getArticleId()?string, "", locale, xmlRequest)}
 		</div>
 	<#elseif dl_file_entry??>
-		<#-- <#assign dl_file_entry_url = dl_file_util.getImagePreviewURL(dl_file_entry, http_servlet_request.getAttribute("LIFERAY_SHARED_THEME_DISPLAY")) /> -->
-		<#-- <#assign dl_file_entry_url = "/html/themes/control_panel/images/file_system/large/pdf.png" /> -->
+	<#-- <#assign dl_file_entry_url = dl_file_util.getImagePreviewURL(dl_file_entry, http_servlet_request.getAttribute("LIFERAY_SHARED_THEME_DISPLAY")) /> -->
+	<#-- <#assign dl_file_entry_url = "/html/themes/control_panel/images/file_system/large/pdf.png" /> -->
 		<#assign dl_file_entry_url = "/documents/" + groupId + "/" + dl_file_entry.getFolderId() + "/" + dl_file_entry.getTitle() />
 
-		<div class="align-center block-container justify-center max-lg">
+		<div class="align-center block-container justify-center large-padding max-lg">
 			<div class="block left-block text-center title-image w30">
 				<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 145 188">
 					<style type="text/css">
@@ -59,7 +61,7 @@
 					<path class="st2" d="M83,1l61,61V4c0-1.7-1.3-3-3-3H83z"/>
 					<polygon class="st3" points="144,62 144,25.1 125.5,43.5 "/>
 					<path class="st4" d="M141.5,187.5H3.5c-1.6,0-3-1.4-3-3V3.5c0-1.6,1.4-3,3-3h138c1.6,0,3,1.4,3,3v181
-						C144.5,186.1,143.1,187.5,141.5,187.5z"/>
+							C144.5,186.1,143.1,187.5,141.5,187.5z"/>
 					<rect x="15" y="72.1" class="st5" width="115" height="75.9"/>
 					<use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#liferayLogo" width="120" x="15"></use>
 				</svg>
@@ -69,9 +71,9 @@
 				<h1 class="title">${dl_file_entry.getTitle()}</h1>
 				<p class="description">${dl_file_entry.getDescription()}</p>
 
-				<runtime-portlet name="56" instance="hs_resource_form" />
+				<#--<#assign embed_asset_id = dl_file_entry.getFileEntryId() />-->
 
-				<a class="btn" href="${dl_file_entry_url}">Download</a>
+				${journal_content_util.getContent(groupId, hubspot_form_article_id, "", locale, xmlRequest)!}
 			</div>
 		</div>
 	<#else>

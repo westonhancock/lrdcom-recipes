@@ -6,7 +6,7 @@
 <#assign layout_service = serviceLocator.findService("com.liferay.portal.service.LayoutLocalService") />
 <#assign layout = layout_service.getLayout(plid)! />
 
-<div class="bento block-container no-padding ${(article_class.data)!}" id="article${.vars['reserved-article-id'].data}">
+<div class="bento block-container no-padding ${(article_class.data)!}" id="article-${.vars['reserved-article-id'].data}">
 	<#list block.siblings as block>
 		<#assign image_info = "" />
 		<#assign video_image_info = "" />

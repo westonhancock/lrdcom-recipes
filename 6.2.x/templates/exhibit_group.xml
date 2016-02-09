@@ -27,8 +27,136 @@
 				</entry>
 			</meta-data>
 		</dynamic-element>
-		<dynamic-element dataType="string" indexType="keyword" localizable="false" multiple="false" name="animation_delay" readOnly="false" repeatable="false" required="false" showLabel="true" type="select" width="">
+		<dynamic-element dataType="string" indexType="keyword" localizable="true" name="block_link_text" readOnly="false" repeatable="true" required="false" showLabel="true" type="text" width="large">
+			<dynamic-element dataType="string" indexType="keyword" localizable="true" name="block_link_url" readOnly="false" repeatable="false" required="false" showLabel="true" type="text" width="large">
+				<meta-data locale="en_US">
+					<entry name="label">
+						<![CDATA[Block Link URL]]>
+					</entry>
+					<entry name="predefinedValue">
+						<![CDATA[]]>
+					</entry>
+					<entry name="tip">
+						<![CDATA[]]>
+					</entry>
+				</meta-data>
+			</dynamic-element>
+			<meta-data locale="en_US">
+				<entry name="label">
+					<![CDATA[Block Link Text]]>
+				</entry>
+				<entry name="predefinedValue">
+					<![CDATA[]]>
+				</entry>
+				<entry name="tip">
+					<![CDATA[If the Exhibit item has more than one CTA then they should be added as links here.]]>
+				</entry>
+			</meta-data>
+		</dynamic-element>
+		<dynamic-element dataType="string" indexType="keyword" localizable="true" name="block_button_text" readOnly="false" repeatable="false" required="false" showLabel="true" type="text" width="small">
+			<dynamic-element dataType="string" indexType="keyword" localizable="true" name="block_button_url" readOnly="false" repeatable="false" required="false" showLabel="true" type="text" width="small">
+				<meta-data locale="en_US">
+					<entry name="label">
+						<![CDATA[Block Button URL]]>
+					</entry>
+					<entry name="predefinedValue">
+						<![CDATA[]]>
+					</entry>
+					<entry name="tip">
+						<![CDATA[]]>
+					</entry>
+				</meta-data>
+			</dynamic-element>
+			<dynamic-element dataType="string" indexType="keyword" localizable="true" multiple="false" name="block_button_color" readOnly="false" repeatable="false" required="false" showLabel="true" type="select" width="">
+				<dynamic-element name="option13773" type="option" value="btn-accent">
+					<meta-data locale="en_US">
+						<entry name="label">
+							<![CDATA[Teal (accent color)]]>
+						</entry>
+					</meta-data>
+				</dynamic-element>
+				<dynamic-element name="option13774" type="option" value="btn-alt-font">
+					<meta-data locale="en_US">
+						<entry name="label">
+							<![CDATA[Gray (alternative text color)]]>
+						</entry>
+					</meta-data>
+				</dynamic-element>
+				<dynamic-element name="option13775" type="option" value="btn-alt-primary">
+					<meta-data locale="en_US">
+						<entry name="label">
+							<![CDATA[Blue (alternative primary color)]]>
+						</entry>
+					</meta-data>
+				</dynamic-element>
+				<dynamic-element name="option13776" type="option" value="btn-alt-secondary">
+					<meta-data locale="en_US">
+						<entry name="label">
+							<![CDATA[Dark Blue (secondary color)]]>
+						</entry>
+					</meta-data>
+				</dynamic-element>
+				<dynamic-element name="option13777" type="option" value="btn-complementary">
+					<meta-data locale="en_US">
+						<entry name="label">
+							<![CDATA[Orange (complementary color)]]>
+						</entry>
+					</meta-data>
+				</dynamic-element>
+				<dynamic-element name="option13778" type="option" value="btn-font">
+					<meta-data locale="en_US">
+						<entry name="label">
+							<![CDATA[Dark Grey (font color)]]>
+						</entry>
+					</meta-data>
+				</dynamic-element>
+				<dynamic-element name="option13779" type="option" value="btn-light">
+					<meta-data locale="en_US">
+						<entry name="label">
+							<![CDATA[White]]>
+						</entry>
+					</meta-data>
+				</dynamic-element>
+				<dynamic-element name="option13780" type="option" value="btn-secondary">
+					<meta-data locale="en_US">
+						<entry name="label">
+							<![CDATA[Dark Blue (alternative secondary color)]]>
+						</entry>
+					</meta-data>
+				</dynamic-element>
+				<meta-data locale="en_US">
+					<entry name="label">
+						<![CDATA[Block Button Color]]>
+					</entry>
+					<entry name="predefinedValue">
+						<![CDATA[["btn-complementary"]]]>
+					</entry>
+					<entry name="tip">
+						<![CDATA[]]>
+					</entry>
+				</meta-data>
+			</dynamic-element>
+			<meta-data locale="en_US">
+				<entry name="label">
+					<![CDATA[Block Button Text]]>
+				</entry>
+				<entry name="predefinedValue">
+					<![CDATA[]]>
+				</entry>
+				<entry name="tip">
+					<![CDATA[Use this for the primary CTA of the block]]>
+				</entry>
+			</meta-data>
+		</dynamic-element>
+		<dynamic-element dataType="string" indexType="keyword" localizable="false" multiple="false" name="animation" readOnly="false" repeatable="false" required="false" showLabel="true" type="select" width="">
 			<dynamic-element name="option6001" type="option" value="">
+				<meta-data locale="en_US">
+					<entry name="label">
+						<![CDATA[No Animation]]>
+					</entry>
+				</meta-data>
+			</dynamic-element>
+			<dynamic-element name="option7934" type="option" value="no-delay">
 				<meta-data locale="en_US">
 					<entry name="label">
 						<![CDATA[No Delay]]>
@@ -58,10 +186,10 @@
 			</dynamic-element>
 			<meta-data locale="en_US">
 				<entry name="label">
-					<![CDATA[Animation Delay]]>
+					<![CDATA[Animation]]>
 				</entry>
 				<entry name="predefinedValue">
-					<![CDATA[[""]]]>
+					<![CDATA[["no-delay"]]]>
 				</entry>
 				<entry name="tip">
 					<![CDATA[]]>
@@ -81,10 +209,10 @@
 		</meta-data>
 	</dynamic-element>
 	<dynamic-element dataType="string" indexType="keyword" localizable="true" name="button_text" readOnly="false" repeatable="false" required="false" showLabel="true" type="text" width="large">
-		<dynamic-element dataType="string" indexType="keyword" localizable="true" name="button_class" readOnly="false" repeatable="false" required="false" showLabel="true" type="text" width="large">
+		<dynamic-element dataType="string" indexType="keyword" localizable="true" name="button_url" readOnly="false" repeatable="false" required="false" showLabel="true" type="text" width="large">
 			<meta-data locale="en_US">
 				<entry name="label">
-					<![CDATA[Button Class]]>
+					<![CDATA[Button URL]]>
 				</entry>
 				<entry name="predefinedValue">
 					<![CDATA[]]>
@@ -94,26 +222,69 @@
 				</entry>
 			</meta-data>
 		</dynamic-element>
-		<dynamic-element dataType="string" indexType="keyword" localizable="true" name="button_link" readOnly="false" repeatable="false" required="false" showLabel="true" type="text" width="large">
+		<dynamic-element dataType="string" indexType="keyword" localizable="true" multiple="false" name="button_color" readOnly="false" repeatable="false" required="false" showLabel="true" type="select" width="">
+			<dynamic-element name="option113773" type="option" value="btn-accent">
+				<meta-data locale="en_US">
+					<entry name="label">
+						<![CDATA[Teal (accent color)]]>
+					</entry>
+				</meta-data>
+			</dynamic-element>
+			<dynamic-element name="option113774" type="option" value="btn-alt-font">
+				<meta-data locale="en_US">
+					<entry name="label">
+						<![CDATA[Gray (alternative text color)]]>
+					</entry>
+				</meta-data>
+			</dynamic-element>
+			<dynamic-element name="option113775" type="option" value="btn-alt-primary">
+				<meta-data locale="en_US">
+					<entry name="label">
+						<![CDATA[Blue (alternative primary color)]]>
+					</entry>
+				</meta-data>
+			</dynamic-element>
+			<dynamic-element name="option113776" type="option" value="btn-alt-secondary">
+				<meta-data locale="en_US">
+					<entry name="label">
+						<![CDATA[Dark Blue (secondary color)]]>
+					</entry>
+				</meta-data>
+			</dynamic-element>
+			<dynamic-element name="option113777" type="option" value="btn-complementary">
+				<meta-data locale="en_US">
+					<entry name="label">
+						<![CDATA[Orange (complementary color)]]>
+					</entry>
+				</meta-data>
+			</dynamic-element>
+			<dynamic-element name="option113778" type="option" value="btn-font">
+				<meta-data locale="en_US">
+					<entry name="label">
+						<![CDATA[Dark Grey (font color)]]>
+					</entry>
+				</meta-data>
+			</dynamic-element>
+			<dynamic-element name="option113779" type="option" value="btn-light">
+				<meta-data locale="en_US">
+					<entry name="label">
+						<![CDATA[White]]>
+					</entry>
+				</meta-data>
+			</dynamic-element>
+			<dynamic-element name="option113780" type="option" value="btn-secondary">
+				<meta-data locale="en_US">
+					<entry name="label">
+						<![CDATA[Dark Blue (alternative secondary color)]]>
+					</entry>
+				</meta-data>
+			</dynamic-element>
 			<meta-data locale="en_US">
 				<entry name="label">
-					<![CDATA[Button Link]]>
+					<![CDATA[Button Color]]>
 				</entry>
 				<entry name="predefinedValue">
-					<![CDATA[]]>
-				</entry>
-				<entry name="tip">
-					<![CDATA[]]>
-				</entry>
-			</meta-data>
-		</dynamic-element>
-		<dynamic-element dataType="string" indexType="keyword" localizable="true" name="icon_svg_code" readOnly="false" repeatable="false" required="false" showLabel="true" type="text" width="large">
-			<meta-data locale="en_US">
-				<entry name="label">
-					<![CDATA[Icon SVG Code]]>
-				</entry>
-				<entry name="predefinedValue">
-					<![CDATA[]]>
+					<![CDATA[["btn-complementary"]]]>
 				</entry>
 				<entry name="tip">
 					<![CDATA[]]>
@@ -126,6 +297,47 @@
 			</entry>
 			<entry name="predefinedValue">
 				<![CDATA[]]>
+			</entry>
+			<entry name="tip">
+				<![CDATA[]]>
+			</entry>
+		</meta-data>
+	</dynamic-element>
+	<dynamic-element dataType="string" indexType="keyword" localizable="false" multiple="false" name="row_percent" readOnly="false" repeatable="false" required="false" showLabel="true" type="select" width="">
+		<dynamic-element name="option11504" type="option" value="25">
+			<meta-data locale="en_US">
+				<entry name="label">
+					<![CDATA[4]]>
+				</entry>
+			</meta-data>
+		</dynamic-element>
+		<dynamic-element name="option11505" type="option" value="33">
+			<meta-data locale="en_US">
+				<entry name="label">
+					<![CDATA[3]]>
+				</entry>
+			</meta-data>
+		</dynamic-element>
+		<dynamic-element name="option11506" type="option" value="50">
+			<meta-data locale="en_US">
+				<entry name="label">
+					<![CDATA[2]]>
+				</entry>
+			</meta-data>
+		</dynamic-element>
+		<dynamic-element name="option11507" type="option" value="100">
+			<meta-data locale="en_US">
+				<entry name="label">
+					<![CDATA[1]]>
+				</entry>
+			</meta-data>
+		</dynamic-element>
+		<meta-data locale="en_US">
+			<entry name="label">
+				<![CDATA[Exhibits Per Row]]>
+			</entry>
+			<entry name="predefinedValue">
+				<![CDATA[["33"]]]>
 			</entry>
 			<entry name="tip">
 				<![CDATA[]]>

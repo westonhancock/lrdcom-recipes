@@ -36,6 +36,13 @@
 					</entry>
 				</meta-data>
 			</dynamic-element>
+			<dynamic-element name="option5344" type="option" value="complementary">
+				<meta-data locale="en_US">
+					<entry name="label">
+						<![CDATA[Orange (complementary color)]]>
+					</entry>
+				</meta-data>
+			</dynamic-element>
 			<meta-data locale="en_US">
 				<entry name="label">
 					<![CDATA[Button Color]]>

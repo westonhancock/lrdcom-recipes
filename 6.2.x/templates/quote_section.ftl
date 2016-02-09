@@ -1,7 +1,7 @@
 <#if request.lifecycle == "RENDER_PHASE">
 	<div class="quote-section ${text_color.data}">
 		<#if quote.data?has_content>
-			<div class="max-med quote">
+			<div class="large-padding max-med quote">
 				<span >${quote.data}</span>
 
 				<div class="triangle upper-left ${quote_color.data}"></div>
