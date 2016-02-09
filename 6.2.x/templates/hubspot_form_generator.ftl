@@ -1,10 +1,3 @@
-<#--
-Todo:
-Override number of fields (possibly resorting order)
-check asset primary buyers stage event firing stuff
-google utm pulling
- -->
-
 <#function get_options localization_map field>
 	<#if localization_map?has_content>
 		<#assign localized_field_name = "" />
@@ -19,12 +12,6 @@ google utm pulling
 	<#return field.getJSONArray('options')>
 </#function>
 
-<#attempt>
-	<#include "${templatesPath}/43374" />
-<#recover>
-	<script type="text/javascript">console.log("Error in Localization Template")</script>
-</#attempt>
-
 <#assign portlet_bean_locator = objectUtil("com.liferay.portal.kernel.bean.PortletBeanLocatorUtil") />
 
 <#assign service_context = objectUtil("com.liferay.portal.service.ServiceContextThreadLocal").getServiceContext() />
@@ -33,6 +20,14 @@ google utm pulling
 <#assign hs_form_local_service = portlet_bean_locator.locate("hubspot-portlet", "com.liferay.hubspot.service.HSFormLocalService") />
 
 <#if request.lifecycle == 'RENDER_PHASE'>
+	<#attempt>
+		<#include "${templatesPath}/43374" />
+	<#recover>
+		<script type="text/javascript">console.log("Error in Localization Template")</script>
+	</#attempt>
+
+	<#include "${templatesPath}/898140" />
+
 	<#--
 	Testing Hubspot Account
 	-->
@@ -133,14 +128,20 @@ google utm pulling
 	<#assign form_rules_json = jsonFactoryUtil.createJSONObject() />
 	<#assign asset_info = jsonFactoryUtil.createJSONObject() />
 
-	<#if asset_id.data?has_content>
+	<#assign asset_id = asset_id.data />
+
+	<#if !asset_id?has_content>
+		<#assign asset_id = paramUtil.getLong(http_servlet_request, "assetId") />
+	</#if>
+
+	<#if asset_id?has_content>
 		<#assign dl_file_entry_local_service_util = staticUtil["com.liferay.portlet.documentlibrary.service.DLFileEntryLocalServiceUtil"]>
 
-		<#if dl_file_entry_local_service_util.fetchDLFileEntry(getterUtil.getLong(asset_id.data))??>
-			<#assign dl_file_entry = dl_file_entry_local_service_util.fetchDLFileEntry(getterUtil.getLong(asset_id.data)) >
+		<#if dl_file_entry_local_service_util.fetchDLFileEntry(getterUtil.getLong(asset_id))??>
+			<#assign dl_file_entry = dl_file_entry_local_service_util.fetchDLFileEntry(getterUtil.getLong(asset_id)) >
 
 			<#assign void = asset_info.put("asset_folder_id", dl_file_entry.getFolderId()) />
-			<#assign void = asset_info.put("asset_id", asset_id.data) />
+			<#assign void = asset_info.put("asset_id", asset_id) />
 			<#assign void = asset_info.put("asset_title", dl_file_entry.getTitle()) />
 
 			<#assign dl_file_entry_type_local_service_util = staticUtil["com.liferay.portlet.documentlibrary.service.DLFileEntryTypeLocalServiceUtil"]>
@@ -156,7 +157,13 @@ google utm pulling
 	<#if hs_form?has_content>
 		<#assign hs_form_fields = hs_form.getHSFormJSONObject().getJSONArray("fields") />
 
-		<div class="lrdcom-form">
+		<#assign form_css = "lrdcom-form"/>
+
+		<#if text_color?? && text_color.data?has_content>
+			<#assign form_css = form_css + " form-${text_color.data}"/>
+		</#if>
+
+		<div class="${form_css}">
 			<div id="${article_namespace}msg"></div>
 
 			<form action="https://forms.hubspot.com/uploads/form/v2/${hs_account_id}/${form_id.data}" data-asset-info="${asset_info?html}" data-asset-new-tab="true" id="${article_namespace}fm" method="POST" onsubmit="submitHSForm${article_namespace}('#${article_namespace}fm', this.getAttribute('data-asset-info')); return false;">
@@ -185,7 +192,7 @@ google utm pulling
 					</#if>
 
 					<div class="btn-wrapper">
-						<input class="btn" type="submit" value="${btn_text}" />
+						<input class="btn ${button_color.data}" type="submit" value="${btn_text}" />
 					</div>
 				</div>
 			</form>
@@ -212,6 +219,7 @@ google utm pulling
 				AUI().ready(
 					'aui-base',
 					'aui-io-request',
+					'cookie',
 					'json-parse',
 					function(A) {
 						var form = A.one(formId);
@@ -225,6 +233,32 @@ google utm pulling
 
 						if (assetInfo && (assetInfo != "")) {
 							fields = A.JSON.parse(assetInfo);
+						}
+
+						var utmCookie = A.Cookie.get("__utmz");
+
+						if (utmCookie) {
+							var utmSource = utmCookie.match(new RegExp('utmcsr=(.*?)([|]|$)'))[1];
+							var utmCampaign = utmCookie.match(new RegExp('utmccn=(.*?)([|]|$)'))[1];
+							var utmMedium = utmCookie.match(new RegExp('utmcmd=(.*?)([|]|$)'))[1];
+							var utmTerm = utmCookie.match(new RegExp('utmctr=(.*?)([|]|$)'))[1];
+							var utmContent = utmCookie.match(new RegExp('utmcct=(.*?)([|]|$)'))[1];
+
+							if (utmSource && utmSource != '(not set)') {
+								fields['recent_conversion_source'] = utmSource;
+							}
+							if (utmCampaign && utmCampaign != '(not set)') {
+								fields['campaign'] = utmCampaign;
+							}
+							if (utmMedium && utmMedium != '(not set)') {
+								fields['recent_conversion_medium'] = utmMedium;
+							}
+							if (utmTerm && utmTerm != '(not set)') {
+								fields['recent_conversion_source_term'] = utmTerm;
+							}
+							if (utmContent && utmContent != '(not set)') {
+								fields['recent_conversion_source_content'] = utmContent;
+							}
 						}
 
 						var leave = false;
@@ -284,11 +318,11 @@ google utm pulling
 						var redirectURL = '${redirect_url}';
 						var salesforceCampaignId = '${salesforce_campaign_id}';
 
-						if (fields["campaign"]) {
-							salesforceCampaignId = fields["campaign"];
+						if (fields["sfCampaign"]) {
+							salesforceCampaignId = fields["sfCampaign"];
 						}
 
-						var userToken = '${hsutk}';
+						var userToken = '${hsutk!}';
 
 						if ((assetURL != "") && (form.getAttribute('data-asset-new-tab') == "true")) {
 							window.open(assetURL, '_blank');
