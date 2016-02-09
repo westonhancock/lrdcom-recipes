@@ -14,9 +14,6 @@
 
 <#assign portlet_bean_locator = objectUtil("com.liferay.portal.kernel.bean.PortletBeanLocatorUtil") />
 
-<#assign service_context = objectUtil("com.liferay.portal.service.ServiceContextThreadLocal").getServiceContext() />
-<#assign http_servlet_request = service_context.getRequest() />
-
 <#assign hs_form_local_service = portlet_bean_locator.locate("hubspot-portlet", "com.liferay.hubspot.service.HSFormLocalService") />
 
 <#if request.lifecycle == 'RENDER_PHASE'>
@@ -131,7 +128,7 @@
 	<#assign asset_id = asset_id.data />
 
 	<#if !asset_id?has_content>
-		<#assign asset_id = paramUtil.getLong(http_servlet_request, "assetId") />
+		<#assign asset_id = request["asset-id"]! />
 	</#if>
 
 	<#if asset_id?has_content>

@@ -64,7 +64,7 @@
 
 						<#if block.block_button_text.data?has_content>
 							<div>
-								<a class="btn ${block.block_button_text.block_button_color.data}" href="${block.block_button_text.block_button_url.data}">${block.block_button_text.data}</a>
+								<a class="btn btn-sm ${block.block_button_text.block_button_color.data}" href="${block.block_button_text.block_button_url.data}">${block.block_button_text.data}</a>
 							</div>
 						</#if>
 					</div>
