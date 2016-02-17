@@ -14,6 +14,20 @@ Basic popup instantiation:
 	);
 	</script>
 
+Popup for video:
+<script>
+	AUI().ready(
+	'pop-up',
+	function(A) {
+		new A.PopUp(
+			{
+				overlayCssClass: 'video-overlay'
+			}
+		).render();
+	}
+);
+</script>
+
 Custom class names:
 
 	<div class="video-pop-up">
