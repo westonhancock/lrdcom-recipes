@@ -235,11 +235,35 @@
 						var utmCookie = A.Cookie.get("__utmz");
 
 						if (utmCookie) {
-							var utmSource = utmCookie.match(new RegExp('utmcsr=(.*?)([|]|$)'))[1];
-							var utmCampaign = utmCookie.match(new RegExp('utmccn=(.*?)([|]|$)'))[1];
-							var utmMedium = utmCookie.match(new RegExp('utmcmd=(.*?)([|]|$)'))[1];
-							var utmTerm = utmCookie.match(new RegExp('utmctr=(.*?)([|]|$)'))[1];
-							var utmContent = utmCookie.match(new RegExp('utmcct=(.*?)([|]|$)'))[1];
+							var utmSource = utmCookie.match(new RegExp('utmcsr=(.*?)([|]|$)'));
+
+							if (utmSource && utmSource[1]) {
+								var utmSource = utmSource[1];
+							}
+
+							var utmCampaign = utmCookie.match(new RegExp('utmccn=(.*?)([|]|$)'));
+
+							if (utmCampaign && utmCampaign[1]) {
+								var utmCampaign = utmCampaign[1];
+							}
+
+							var utmMedium = utmCookie.match(new RegExp('utmcmd=(.*?)([|]|$)'));
+
+							if (utmMedium && utmMedium[1]) {
+								var utmMedium = utmMedium[1];
+							}
+
+							var utmTerm = utmCookie.match(new RegExp('utmctr=(.*?)([|]|$)'));
+
+							if (utmTerm && utmTerm[1]) {
+								var utmTerm = utmTerm[1];
+							}
+
+							var utmContent = utmCookie.match(new RegExp('utmcct=(.*?)([|]|$)'));
+
+							if (utmContent && utmContent[1]) {
+								var utmContent = utmContent[1];
+							}
 
 							if (utmSource && utmSource != '(not set)') {
 								fields['recent_conversion_source'] = utmSource;
