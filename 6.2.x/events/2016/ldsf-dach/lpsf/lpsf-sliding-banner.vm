@@ -1,0 +1,279 @@
+<style type="text/css">
+.special-font {
+	font-weight: normal;
+}
+
+.content .span-left {
+	background: url('/documents/47511614/49230629/lightbulb.png/ccbd7d36-7536-44f1-8c69-55cc585f7765');
+	color: #FFF;
+	display: inline-block;
+	height: 126px;
+	vertical-align: top;
+	width: 90px;
+}
+
+.content .span-right {
+	color: #FFF;
+	display: inline-block;
+	margin-top: 5px;
+    max-width: 340px;
+	text-align: left;
+}
+
+.content .event-title {
+	text-transform: uppercase;
+}
+
+.content .event-title.top {
+	font-size: 42px;
+}
+
+.content .event-title.bottom {
+	font-size: 36px;
+	margin-top: -10px;
+}
+
+.content .event-subtitle {
+	font-size: 16px;
+}
+
+.content .event-subtitle.top {
+	margin-top: 20px;
+}
+
+.content .register-button {
+	margin-top: 40px;
+}
+
+.fade {
+	opacity: 0;
+	transition: opacity 1s ease-in-out;
+}
+
+.fade.in {
+	opacity: 1;
+}
+
+#intro {
+	background: url($background_image.data) no-repeat center bottom;
+	background-size: cover;
+}
+
+#intro .content {
+	left: 38%;
+	position: relative;
+	top: 200px;
+	transition: all 1s ease-in-out;
+	z-index: 3;
+}
+
+#intro .content img {
+	height: 190px;
+}
+
+#introCover, #introCover:after {
+	background-color: #0066AA;
+	position: relative;
+	width: 100%;
+	z-index: 2;
+}
+
+#introCover {
+	left: 0;
+	transition: all 1s ease-in-out;
+}
+
+#introCover:after {
+	content: "";
+	display: block;
+	top: -250px;
+	-ms-transform: skew(45deg);
+	-webkit-transform: skew(-45deg);
+	-moz-transform: skew(-45deg);
+	-o-transform: skew(-45deg);
+	transform: skew(-45deg);
+	transform-origin: bottom;
+}
+
+.safari #introCover::after {
+    width: 143%;
+} 
+
+#intro {
+	overflow: hidden;
+}
+
+#intro, #introCover, #introCover:after {
+	height: 800px;
+}
+
+.ie8 #introCover, .ie9 #introCover {
+	left: -1200px;
+}
+
+.ie8 #intro .content, .ie9 #intro .content {
+	left: 800px;
+}
+
+@media(max-width:1360px) {
+	#intro .content {
+		left: 34%;
+	}
+}
+
+@media(max-width:1040px) {
+	#intro .content {
+		left: 26%;
+	}
+}
+
+@media(max-width: 760px) {
+	.register-button {
+		display: none;
+	}
+
+	#introCover:after {
+		top: -180px;
+	}
+}
+
+@media(max-width: 840px) {
+	#intro, #introCover {
+		height: 548px;;
+	}
+
+	#introCover:after {
+		height: 555px;
+	}
+
+	#introCover {
+		left: -60%;
+	}
+
+	#intro .content {
+		left: 70%;
+		top: 160px;
+	}
+}
+
+@media(max-width: 590px) {
+	.content .span-left {
+		background-size: contain;
+		margin-top: 20px;
+		height: 82px;
+		width: 60px;
+	}
+
+	.content .event-title.top {
+		font-size: 36px;
+	}
+
+	.content .event-title.bottom {
+		font-size: 28px;
+	}
+
+	#intro, #introCover {
+		height: 378px;;
+	}
+
+	#introCover:after {
+		height: 385px;
+		top: -160px;
+	}
+
+	#intro .content {
+		left: 65%;
+		top: 100px;
+	}
+}
+
+@media(max-width: 420px) {
+	.content .span-left {
+		height: 66px;
+		width: 48px;
+	}
+
+	.content .event-title.top {
+		font-size: 25px;
+	}
+
+	.content .event-title.bottom {
+		font-size: 22px;
+	}
+
+	.content .span-right {
+		margin-top: 25px;
+	}
+
+	#introCover:after {
+		left: -90px;
+		width: 130%;
+	}
+
+	#introCover{
+		left: -85%;
+		height: 380px;
+	}
+
+	#intro .content {
+		left: 88%;
+		top: 60px;
+	}
+}
+</style>
+<div id="intro">
+	<div class="border">
+		<div id="introCover">
+			<div class="content fade">
+				$content.data
+			</div>
+		</div>
+	</div>
+</div>
+<script>
+AUI().ready(
+	'aui-base',
+	function(A) {
+		var fadeIn = function(node) {
+			node.addClass('in');
+		};
+
+		var animateDistance = function() {
+			var screenWidth = window.innerWidth;
+			
+			return (3/4 * screenWidth);
+		};
+
+		A.on(
+			'load',
+			function() {
+				var html = A.one('html');
+
+				fadeIn(A.one('.content.fade'));
+
+				if (!html.hasClass('ie8') && !html.hasClass('ie9') && window.innerWidth > 840) {
+					window.setTimeout(
+						function () {
+							var contentSlider = A.one('#intro .content');
+							var slider = A.one('#introCover');
+
+							fadeInNodes = A.all('#intro .fade');
+
+							fadeInNodes.each(
+								function(node) {
+									fadeIn(node);
+								}
+							);
+
+							slider.setStyle('left', '-' + animateDistance() + 'px');
+
+							contentSlider.setStyle('left', (animateDistance() + (contentSlider.getX()/2)) + 'px');
+						},
+						2000
+					);
+				}
+			}
+		);
+	}
+);
+</script>

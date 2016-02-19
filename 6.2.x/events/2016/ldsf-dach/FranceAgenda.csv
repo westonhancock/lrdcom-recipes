@@ -1,0 +1,32 @@
+Display on Live,Display in Mobile App,Title,Date,Start Time Hour,Start Time Minutes,End Time Hour,End Time Minutes,Session Type,Speaker UUID,Session Summary,Survey Questions,Room,Video URL,Download Label,Download URL,Sponsor UUID,Slides Tactic ID,Audio URL,Enable Ratings,Enable Notes,Custom CSS Class,Filter Categories,Liferay 7?
+true,true,Cocktail de Networking,2016-6-1,17,30,19,00,blank,,,,Salle des Cuivres,,,,,,,true,true,,,false
+true,true,Session de Clôture,2016-6-1,17,20,17,30,blank,,,,Salle des Lustres,,,,,,,true,true,,,false
+true,true,Roadmap Liferay,2016-6-1,16,45,17,20,blank,,,,Salle des Lustres,,,,,,,true,true,,,false
+true,true,Retour d'expérience 7,2016-6-1,16,10,16,45,blank,,,,Salle des Lustres,,,,,,,true,true,,,false
+true,true,Pause Café,2016-6-1,15,50,16,10,blank,,,,Salle des Cuivres,,,,,,,true,true,,,false
+true,true,Retour d'expérience 6,2016-6-1,15,15,15,50,blank,,,,Salle des Lustres,,,,,,,true,true,,,false
+true,true,Retour d'expérience 5,2016-6-1,14,40,15,15,blank,,,,Salle des Lustres,,,,,,,true,true,,,false
+true,true,Retour d'expérience 4,2016-6-1,14,05,14,40,blank,,,,Salle des Lustres,,,,,,,true,true,,,false
+true,true,Déjeuner,2016-6-1,12,30,14,00,blank,,,,Salle des Cuivres,,,,,,,true,true,,,false
+true,true,Retour d'expérience 3,2016-6-1,11,55,12,30,blank,,,,Salle des Lustres,,,,,,,true,true,,,false
+true,true,Retour d'expérience 2,2016-6-1,11,20,11,55,blank,,,,Salle des Lustres,,,,,,,true,true,,,false
+true,true,Retour d'expérience 1,2016-6-1,10,45,11,20,blank,,,,Salle des Lustres,,,,,,,true,true,,,false
+true,true,Pause Café,2016-6-1,10,20,10,40,blank,,,,Salle des Cuivres,,,,,,,true,true,,,false
+true,true,Keynote 2,2016-6-1,9,45,10,20,blank,,,,Salle des Cuivres,,,,,,,true,true,,,false
+true,true,Keynote 1,2016-6-1,9,10,9,45,blank,,,,Salle des Lustres,,,,,,,true,true,,,false
+true,true,Mot de bienvenue,2016-6-1,9,00,9,10,blank,,,,Salle des Lustres,,,,,,,true,true,,,false
+true,true,Accueil - Inscription,2016-6-1,8,30,9,00,blank,,,,Salon d'Honneur,,,,,,,true,true,,,false
+true,true,Mot de bienvenue,2016-5-31,9,00,9,15,blank,,,,Salle des Lustres,,,,,,,true,true,,,false
+true,true,Session de Clôture,2016-5-31,17,10,17,30,blank,,,,Salle des Lustres,,,,,,,true,true,,,false
+true,true,Session Technique 8,2016-5-31,16,30,17,10,blank,,,,Salle des Lustres,,,,,,,true,true,,,false
+true,true,Session Technique 7,2016-5-31,15,50,16,30,blank,,,,Salle des Lustres,,,,,,,true,true,,,false
+true,true,Pause Café,2016-5-31,15,20,15,50,blank,,,,Salle des Cuivres,,,,,,,true,true,,,false
+true,true,Session Technique 6,2016-5-31,14,40,15,20,blank,,,,Salle des Lustres,,,,,,,true,true,,,false
+true,true,Session Technique 5,2016-5-31,14,00,14,40,blank,,,,Salle des Lustres,,,,,,,true,true,,,false
+true,true,Déjeuner,2016-5-31,12,20,14,00,blank,,,,Salle des Cuivres,,,,,,,true,true,,,false
+true,true,Session Technique 4,2016-5-31,11,40,12,20,blank,,,,Salle des Lustres,,,,,,,true,true,,,false
+true,true,Session Technique 3,2016-5-31,11,00,11,40,blank,,,,Salle des Lustres,,,,,,,true,true,,,false
+true,true,Pause Café,2016-5-31,10,35,11,00,blank,,,,Salle des Cuivres,,,,,,,true,true,,,false
+true,true,Session Technique 2,2016-5-31,9,55,10,35,blank,,,,Salle des Lustres,,,,,,,true,true,,,false
+true,true,Session Technique 1,2016-5-31,9,15,9,55,blank,,,,Salle des Lustres,,,,,,,true,true,,,false
+true,true,Accueil - Inscription,2016-5-31,8,30,9,00,blank,,,,Salon d'Honneur,,,,,,,true,true,,,false
