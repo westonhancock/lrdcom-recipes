@@ -35,14 +35,18 @@
 	<#assign hs_account_id = "252686" />
 	-->
 
-	<#attempt>
-		<#assign ip_geocoder_util = objectUtil("com.liferay.ipgeocoder.util.IPGeocoderUtil") />
+	<#--Double check if IP Geocoder is working -->
+	<#--<#assign ip_geocoder_util = portlet_bean_locator.locate("ip-geocoder-portlet", "com.liferay.ipgeocoder.util.IPGeocoderUtil") />-->
+	<#--<#assign ip_geocoder_util = objectUtil("com.liferay.ipgeocoder.util.IPGeocoderUtil")! />-->
+	<#assign ip_geocoder_util = serviceLocator.findService("com.liferay.ipgeocoder.util.IPGeocoderUtil")! />
 
-		<#assign ip_info = ip_geocoder_util.getIPInfo(request.attributes.OSB_WWW_REMOTE_ADDRESS) />
+	<#if ip_geocoder_util?has_content>
+		<#assign ip_info = ip_geocoder_util.getIPInfo(request.attributes.OSB_WWW_REMOTE_ADDRESS)! />
+	</#if>
 
-		<#assign country_from_ip = ip_info.getCountryName() />
-	<#recover>
-	</#attempt>
+	<#if ip_info?has_content>
+		<#assign country_from_ip = ip_info.getCountryName()! />
+	</#if>
 
 	<#assign number_of_fields_displayed = getterUtil.getInteger(number_of_fields.data) />
 
@@ -601,7 +605,7 @@
 						<#assign option = select_options_map.getJSONObject(i) />
 						<#assign selected = "" />
 
-						<#if value == option.getString("value") || ((field_name == "country") && country_from_ip?? && (option.getString("value") == country_from_ip))>
+						<#if value == option.getString("value") || ((field_name == "country") && country_from_ip?has_content && (option.getString("value") == country_from_ip))>
 							<#assign selected = "selected" />
 						</#if>
 
