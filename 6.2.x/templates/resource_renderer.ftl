@@ -45,7 +45,7 @@
 					<polygon class="accent-fill" points="144,62 144,25.1 125.5,43.5 "/>
 					<path class="element-stroke transparent-fill" d="M141.5,187.5H3.5c-1.6,0-3-1.4-3-3V3.5c0-1.6,1.4-3,3-3h138c1.6,0,3,1.4,3,3v181 C144.5,186.1,143.1,187.5,141.5,187.5z"/>
 
-					<svg x="10%" width="80%">
+					<svg x="10%" viewBox="0 0 152 36" width="80%">
 						<use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#liferayLogo-liferay"></use>
 						<use class="logo-border" xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#liferayLogo-logoBorder"></use>
 						<use class="light-fill" xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#liferayLogo-gradientLightest"></use>
