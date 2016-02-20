@@ -1,0 +1,1055 @@
+<com.liferay.portlet.dynamicdatamapping.model.impl.DDMTemplateImpl>
+  <__cachedModel>false</__cachedModel>
+  <__new>false</__new>
+  <__uuid>0a0838bb-d3c4-4e18-a84f-d455320769ce</__uuid>
+  <__originalUuid>0a0838bb-d3c4-4e18-a84f-d455320769ce</__originalUuid>
+  <__templateId>56972805</__templateId>
+  <__groupId>47511614</__groupId>
+  <__originalGroupId>47511614</__originalGroupId>
+  <__setOriginalGroupId>false</__setOriginalGroupId>
+  <__companyId>1</__companyId>
+  <__userId>31522702</__userId>
+  <__userUuid>3dc75225-2e4e-40cd-8079-4a0e8d65b4a5</__userUuid>
+  <__userName>Luke Shackelford</__userName>
+  <__createDate class="sql-timestamp">2015-07-31 18:52:33.0</__createDate>
+  <__modifiedDate class="sql-timestamp">2015-10-29 18:36:33.0</__modifiedDate>
+  <__structureId>53045429</__structureId>
+  <__originalStructureId>53045429</__originalStructureId>
+  <__setOriginalStructureId>false</__setOriginalStructureId>
+  <__name>&lt;?xml version=&apos;1.0&apos; encoding=&apos;UTF-8&apos;?&gt;&lt;root available-locales=&quot;en_US&quot; default-locale=&quot;en_US&quot;&gt;&lt;Name language-id=&quot;en_US&quot;&gt;NAS 2015 Day 1.1&lt;/Name&gt;&lt;/root&gt;</__name>
+  <__description></__description>
+  <__type>list</__type>
+  <__originalType>list</__originalType>
+  <__mode></__mode>
+  <__originalMode></__originalMode>
+  <__language>vm</__language>
+  <__originalLanguage>vm</__originalLanguage>
+  <__script>#*
+    This template basically loops once through all the records creating a treemap
+    object and then loops through that map object to generate the table. When
+    constructing the map it starts at the bottom (that is the deepest branches)
+    of the tree and works its way up, since we are adding individual records in the
+    correct places in tree. It is basically structured like this:
+
+    agenda={
+        day-2013-1-1={
+            row-100={
+                end-time=000900,
+                end-time-display=9:00am,
+                extended-sessions= {
+                    room-1=001000
+                },
+                sessions={
+                    room-1={
+                        end-time=000900,
+                        map-id=290837,
+                    record={},
+            room-name=Grand Ballroom,
+            room-number=1
+          }
+        },
+        start-time=000800,
+        start-time=8:00am
+      }
+    }
+  }
+*#
+
+&lt;div class=&quot;categorySelectors category-toggle-container desktop-hidden&quot;&gt;
+  &lt;div class=&quot;aui-toggler-header aui-toggler-header-collapsed toggle-header&quot;&gt;
+    Filter by &lt;span class=&quot;arrow&quot;&gt;&lt;/span&gt;
+  &lt;/div&gt;
+  &lt;div class=&quot;aui-toggler-content aui-toggler-content-collapsed toggle-content&quot;&gt;
+    &lt;a class=&quot;category&quot; data-target-class=&quot;marketing&quot; data-selected=&quot;false&quot;&gt;Digital Marketing &amp; Web Experiences&lt;/a&gt;
+    &lt;a class=&quot;category&quot; data-target-class=&quot;using&quot; data-selected=&quot;false&quot;&gt;Case Study&lt;/a&gt;
+    &lt;a class=&quot;category&quot; data-target-class=&quot;customize&quot; data-selected=&quot;false&quot;&gt;Customizing Liferay&lt;/a&gt;
+    &lt;a class=&quot;category&quot; data-target-class=&quot;develop&quot; data-selected=&quot;false&quot;&gt;Developing with Liferay&lt;/a&gt;
+    &lt;a class=&quot;category&quot; data-target-class=&quot;production&quot; data-selected=&quot;false&quot;&gt;Liferay in Production&lt;/a&gt;
+    &lt;a class=&quot;category&quot; data-target-class=&quot;features&quot; data-selected=&quot;false&quot;&gt;Liferay New Products &amp; Features&lt;/a&gt;
+    &lt;a class=&quot;category&quot; data-target-class=&quot;technologies&quot; data-selected=&quot;false&quot;&gt;Mobile Technologies &amp; Development&lt;/a&gt;
+    &lt;a class=&quot;category&quot; data-target-class=&quot;ui&quot; data-selected=&quot;false&quot;&gt;UI &amp; UX&lt;/a&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+
+#macro (mark_as_extended5 $end_time $row_end_time $row_start_time)
+  #if ($end_time &gt; $row_end_time)
+    #set ($extension_count = $extension_count + 1)
+    #set ($next_row = false)
+    #set ($next_row = $day.higherEntry(&quot;row-$row_start_time&quot;))
+
+    #if ($next_row)
+      #set($next_row = $next_row.getValue())
+      #set($void = $next_row.get(&quot;extended-sessions&quot;).put(&quot;room-$room_number&quot;, $end_time))
+
+      #set($next_row_end_time = $integer.parseInt($next_row.get(&quot;end-time&quot;)))
+      #set($next_row_start_time = $next_row.get(&quot;start-time&quot;))
+
+      #mark_as_extended5($end_time $next_row_end_time $next_row_start_time)
+    #end
+  #end
+#end
+
+#set ($days_to_print = &quot;day-2015-11-15,day-2015-11-16,day-2015-11-17&quot;)
+
+#set ($default_col_span = 2)
+#set ($integer = 0)
+#set ($link_to_speakers_page = &quot;/web/events2015/northamerica/speakers&quot;)
+
+## Prep work for Edit button
+#set ($layout_id = $request.get(&quot;theme-display&quot;).get(&quot;plid&quot;))
+#set ($layout_service = $serviceLocator.findService(&quot;com.liferay.portal.service.LayoutLocalService&quot;))
+#set ($layout_long = $getterUtil.getLong($layout_id))
+#set ($layout = $layout_service.getLayout($layout_long))
+#set ($user_has_permissions = $layoutPermission.contains($permissionChecker, $layout, &quot;UPDATE&quot;))
+
+## Get DDL Records
+#set ($ddl_records_local_service = $serviceLocator.findService(&quot;com.liferay.portlet.dynamicdatalists.service.DDLRecordLocalService&quot;))
+#set ($record_set_id = $getterUtil.getLong($reserved_record_set_id.data))
+#set ($records = $ddl_records_local_service.getRecords($record_set_id))
+
+## Create the empty map that will hold all the agenda info
+#set ($agenda = $portal.getClass().forName(&quot;java.util.TreeMap&quot;).newInstance())
+
+## Loop Through records and place them in the correct place in the map
+#foreach ($record in $records)
+  #if ($record.getFieldValue(&quot;display_on_live&quot;))
+    ## Get date, start-time, end-time and room for sorting purposes
+    #set ($date = $record.getFieldValue(&quot;date&quot;))
+
+    #set ($start_time_hour = $record.getFieldValue(&quot;start_time_hour&quot;))
+    #set ($start_time_hour = $stringUtil.replace($start_time_hour, &quot;[&quot;, &quot;&quot;))
+    #set ($start_time_hour = $stringUtil.replace($start_time_hour, &quot;]&quot;, &quot;&quot;))
+    #set ($start_time_hour = $stringUtil.replace($start_time_hour, &apos;&quot;&apos;, &apos;&apos;))
+    #set ($start_time_hour_int = $integer.parseInt($start_time_hour))
+    #if ($start_time_hour_int &gt;= 12)
+      #set ($start_time_am_pm = &quot;pm&quot;)
+      #if ($start_time_hour_int &gt; 12)
+        #set ($start_time_hour_int = $start_time_hour_int - 12)
+      #end
+    #else
+      #set ($start_time_am_pm = &quot;am&quot;)
+    #end
+
+    #if ($start_time_hour.length() == 1)
+      #set ($start_time_hour_sort = &quot;0&quot; + $start_time_hour)
+    #else
+      #set ($start_time_hour_sort = $start_time_hour)
+    #end
+
+    #set ($start_time_minutes = $record.getFieldValue(&quot;start_time_minutes&quot;))
+    #set ($start_time_minutes = $stringUtil.replace($start_time_minutes, &quot;[&quot;, &quot;&quot;))
+    #set ($start_time_minutes = $stringUtil.replace($start_time_minutes, &quot;]&quot;, &quot;&quot;))
+    #set ($start_time_minutes = $stringUtil.replace($start_time_minutes, &apos;&quot;&apos;, &apos;&apos;))
+    #if ($start_time_minutes == &quot;0&quot; || $start_time_minutes == &quot;5&quot;)
+      #set ($start_time_minutes = &quot;0&quot; + $start_time_minutes)
+    #end
+
+    #set ($start_time_display = $start_time_hour_int + &quot;:&quot; + $start_time_minutes + $start_time_am_pm)
+    #set ($start_time_sort = $start_time_hour_sort + $start_time_minutes)
+
+    #set ($end_time_hour = $record.getFieldValue(&quot;end_time_hour&quot;))
+    #set ($end_time_hour = $stringUtil.replace($end_time_hour, &quot;[&quot;, &quot;&quot;))
+    #set ($end_time_hour = $stringUtil.replace($end_time_hour, &quot;]&quot;, &quot;&quot;))
+    #set ($end_time_hour = $stringUtil.replace($end_time_hour, &apos;&quot;&apos;, &apos;&apos;))
+
+    #set ($end_time_hour_int = $integer.parseInt($end_time_hour))
+    #if ($end_time_hour_int &gt;= 12)
+      #set ($end_time_am_pm = &quot;pm&quot;)
+      #if ($end_time_hour_int &gt; 12)
+        #set ($end_time_hour_int = $end_time_hour_int - 12)
+      #end
+    #else
+      #set ($end_time_am_pm = &quot;am&quot;)
+    #end
+
+    #if ($end_time_hour.length() == 1)
+      #set ($end_time_hour_sort = &quot;0&quot; + $end_time_hour)
+    #else
+      #set ($end_time_hour_sort = $end_time_hour)
+    #end
+
+    #set ($end_time_minutes = $record.getFieldValue(&quot;end_time_minutes&quot;))
+    #set ($end_time_minutes = $stringUtil.replace($end_time_minutes, &quot;[&quot;, &quot;&quot;))
+    #set ($end_time_minutes = $stringUtil.replace($end_time_minutes, &quot;]&quot;, &quot;&quot;))
+    #set ($end_time_minutes = $stringUtil.replace($end_time_minutes, &apos;&quot;&apos;, &apos;&apos;))
+    #if ($end_time_minutes == &quot;0&quot; || $end_time_minutes == &quot;5&quot;)
+      #set ($end_time_minutes = &quot;0&quot; + $end_time_minutes)
+    #end
+
+    #set ($end_time_display = $end_time_hour_int + &quot;:&quot; +$end_time_minutes + $end_time_am_pm)
+    #set ($end_time_sort = $end_time_hour_sort + $end_time_minutes)
+
+    #set ($room_uuid = $record.getFieldValue(&quot;room_uuid&quot;))
+    #set ($room_uuid = $stringUtil.replace($room_uuid, &quot;[&quot;, &quot;&quot;))
+    #set ($room_uuid = $stringUtil.replace($room_uuid, &quot;]&quot;, &quot;&quot;))
+    #set ($room_uuid = $stringUtil.replace($room_uuid, &apos;&quot;&apos;, &apos;&apos;))
+
+    #set ($room_record_info = $ddl_records_local_service.getDDLRecordByUuidAndGroupId($room_uuid, $groupId))
+    #set ($room_record = $ddl_records_local_service.fetchDDLRecord($getterUtil.getLong($room_record_info.recordId)))
+
+    #if ($room_record)
+      #set ($room_name = $room_record.getFieldValue(&quot;room_name&quot;))
+      #set ($room_number = $room_record.getFieldValue(&quot;room_number&quot;))
+      #set ($map_id = $room_record.getFieldValue(&quot;map_id&quot;))
+    #else
+      #set ($room_name = &quot;&quot;)
+      #set ($room_number = 0)
+      #set ($map_id = &quot;&quot;)
+    #end
+
+    ## Create parts of map that dont exist
+    #if (!$agenda.get(&quot;day-$date&quot;))
+      #set ($void = $agenda.put(&quot;day-$date&quot;, $portal.getClass().forName(&quot;java.util.TreeMap&quot;).newInstance()))
+    #end
+
+    #if (!$agenda.get(&quot;day-$date&quot;).get(&quot;row-$start_time_sort&quot;))
+      #set ($row_map = $portal.getClass().forName(&quot;java.util.TreeMap&quot;).newInstance())
+      #set ($void = $row_map.put(&quot;end-time&quot;, $end_time_sort))
+      #set ($void = $row_map.put(&quot;end-time-display&quot;, $end_time_display))
+      #set ($void = $row_map.put(&quot;extended-sessions&quot;, $portal.getClass().forName(&quot;java.util.TreeMap&quot;).newInstance()))
+      #set ($void = $row_map.put(&quot;sessions&quot;, $portal.getClass().forName(&quot;java.util.TreeMap&quot;).newInstance()))
+      #set ($void = $row_map.put(&quot;start-time&quot;, $start_time_sort))
+      #set ($void = $row_map.put(&quot;start-time-display&quot;, $start_time_display))
+      #set ($void = $agenda.get(&quot;day-$date&quot;).put(&quot;row-$start_time_sort&quot;, $row_map))
+    #end
+
+    ## Add content to map
+    #set ($existing_row_map = $agenda.get(&quot;day-$date&quot;).get(&quot;row-$start_time_sort&quot;))
+    #set ($existing_session_map = $existing_row_map.get(&quot;sessions&quot;))
+    #set ($session_map_info = $portal.getClass().forName(&quot;java.util.TreeMap&quot;).newInstance())
+    #set ($void = $session_map_info.put(&quot;custom-css-class&quot;, $record.getFieldValue(&quot;custom_css_class&quot;)))
+    #set ($void = $session_map_info.put(&quot;filter-categories&quot;, $record.getFieldValue(&quot;filter_categories&quot;)))
+    #set ($void = $session_map_info.put(&quot;is-liferay-seven&quot;, $record.getFieldValue(&quot;is_liferay_seven&quot;)))
+    #set ($void = $session_map_info.put(&quot;end-time&quot;, $end_time_sort))
+    #set ($void = $session_map_info.put(&quot;end-time-display&quot;, $end_time_display))
+    #set ($void = $session_map_info.put(&quot;map-id&quot;, $map_id))
+    #set ($void = $session_map_info.put(&quot;room-name&quot;, $room_name))
+    #set ($void = $session_map_info.put(&quot;record&quot;, $record))
+    #set ($int_room_number = $getterUtil.getInteger($room_number))
+    #set ($mod_room_number = 100 + $int_room_number)
+    #set ($void = $session_map_info.put(&quot;room-number&quot;, $mod_room_number))
+    #set ($void = $existing_session_map.put(&quot;room-$mod_room_number&quot;, $session_map_info))
+    #set ($void = $existing_row_map.put(&quot;sessions&quot;, $existing_session_map))
+
+    #set ($existing_end_time = $existing_row_map.get(&quot;end-time&quot;))
+
+    #if ($integer.parseInt($end_time_sort) &lt; $integer.parseInt($existing_end_time))
+      #set ($void = $existing_row_map.put(&quot;end-time&quot;, $end_time_sort))
+      #set ($void = $existing_row_map.put(&quot;end-time-display&quot;, $end_time_display))
+    #end
+  #end
+#end
+
+#set ($day-1 = &quot;Sunday, November 15&quot;)
+#set ($day-2 = &quot;Monday, November 16&quot;)
+#set ($day-3 = &quot;Tuesday, November 17&quot;)
+
+&lt;div class=&quot;&quot; id=&quot;agendaWrapper&quot;&gt;
+  &lt;div id=&quot;agendaTabs&quot; class=&quot;togglers sticky-watch&quot; data-offset=&apos;{&quot;top&quot;: &quot;-88&quot;}&apos;&gt;
+    #foreach ($day_to_print in $stringUtil.split($days_to_print))
+      &lt;span class=&quot;aui-w33 select-day select-day-$velocityCount class-toggle-carousel&quot; data-target-class=&quot;day-$velocityCount&quot; data-target-node=&quot;#wrapper&quot; data-value=&quot;date-$velocityCount&quot;&gt;
+        #if ($velocityCount == 1)
+          $day-1
+        #elseif ($velocityCount == 2)
+          $day-2
+        #elseif ($velocityCount == 3)
+          $day-3
+        #end
+      &lt;/span&gt;
+    #end
+  &lt;/div&gt;
+
+  #foreach ($day_to_print in $stringUtil.split($days_to_print))
+
+    #set ($day = {})
+    #set ($day = $agenda.get(&quot;$day_to_print&quot;))
+    #set ($start_time_display = {})
+
+    &lt;table id=&quot;agenda-$day_to_print&quot; class=&quot;agenda-table agenda-$velocityCount&quot;&gt;
+      #foreach ($row in $day)
+        #set ($row_count = $velocityCount)
+
+        &lt;tr class=&quot;table-row $row_count&quot;&gt;
+          #set ($room_count = 0)
+          #set ($row_end_time_display = $row.get(&quot;end-time-display&quot;))
+          #set ($start_time = $row.get(&quot;start-time&quot;))
+          #if ($start_time_display == $row.get(&quot;start-time-display&quot;))
+            #set($same-as-previous = true)
+          #end
+          #set ($start_time_display = $row.get(&quot;start-time-display&quot;))
+
+          #if ($same-as-previous)
+            &lt;td class=&quot;first-col&quot;&gt;&lt;/td&gt;
+          #else
+            &lt;td class=&quot;first-col on-ryan-screen-helper&quot; data-offset=&apos;{&quot;top&quot;: &quot;-155&quot;}&apos;&gt;
+              &lt;div&gt;$start_time_display&lt;/div&gt;
+            &lt;/td&gt;
+          #end
+
+          #foreach ($session in $row.get(&quot;sessions&quot;))
+            #set ($custom_css_class = $session.get(&quot;custom-css-class&quot;))
+            #set ($end_time = $integer.parseInt($session.get(&quot;end-time&quot;)))
+            #set ($extensions_time = false)
+            #set ($is_liferay_seven = $session.get(&quot;is-liferay-seven&quot;))
+            #set ($room_count = $room_count + 1)
+            #set ($room_name = $session.get(&quot;room-name&quot;))
+            #set ($room_number = $session.get(&quot;room-number&quot;))
+            #set ($row_end_time = $integer.parseInt($row.get(&quot;end-time&quot;)))
+            #set ($row_sessions_size = $row.get(&quot;sessions&quot;).size())
+
+            ## Find all extended sessions and mark them in the next array
+            #set ($extension_count = 1)
+            #mark_as_extended5($end_time $row_end_time $start_time)
+
+            ## Get current rows extensions and generate all empty sessions
+            #set ($extensions = $row.get(&quot;extended-sessions&quot;))
+            #set ($number_of_skipped_rooms = $room_number - $room_count)
+
+            ## Set all variables needed for printing the td
+            #set ($end_time_display = $session.get(&quot;end-time-display&quot;))
+
+            #set ($record = $session.get(&quot;record&quot;))
+
+            #set ($session_summary = $record.getFieldValue(&quot;session_summary&quot;))
+
+            #set ($session_type = $record.getFieldValue(&quot;session_type&quot;))
+            #set ($session_type = $stringUtil.replace($session_type, &quot;[&quot;, &quot;&quot;))
+            #set ($session_type = $stringUtil.replace($session_type, &quot;]&quot;, &quot;&quot;))
+            #set ($session_type = $stringUtil.replace($session_type, &apos;&quot;&apos;, &apos;&apos;))
+
+            #set ($speaker_record = false)
+            #if ($record.getFieldValue(&quot;speakers_uuid&quot;) != &quot;&quot;)
+              #set ($speaker_record_info = $ddl_records_local_service.getDDLRecordByUuidAndGroupId($record.getFieldValue(&quot;speakers_uuid&quot;), $groupId))
+              #set ($speaker_record = $ddl_records_local_service.fetchDDLRecord($getterUtil.getLong($speaker_record_info.recordId)))
+            #end
+            #if ($speaker_record)
+              #set ($speaker_bio = $speaker_record.getFieldValue(&quot;speaker_bio&quot;))
+              #set ($speaker_company = $speaker_record.getFieldValue(&quot;speaker_company&quot;))
+              #set ($speaker_name = $speaker_record.getFieldValue(&quot;speaker_name&quot;))
+              #set ($speaker_title = $speaker_record.getFieldValue(&quot;speaker_title&quot;))
+            #else
+              #set ($speaker_bio = &quot;&quot;)
+              #set ($speaker_company = &quot;&quot;)
+              #set ($speaker_name = &quot;&quot;)
+              #set ($speaker_title = &quot;&quot;)
+            #end
+
+            #set ($title = $record.getFieldValue(&quot;title&quot;))
+            #set ($filter_categories = $record.getFieldValue(&quot;filter_categories&quot;))
+            #set ($filter_categories = $stringUtil.replace($filter_categories, &quot;[&quot;, &quot;&quot;))
+            #set ($filter_categories = $stringUtil.replace($filter_categories, &quot;]&quot;, &quot;&quot;))
+            #set ($filter_categories = $stringUtil.replace($filter_categories, &apos;&quot;&apos;, &apos;&apos;))
+            #set ($filter_categories = $stringUtil.replace($filter_categories, &apos;,&apos;, &apos; &apos;))
+
+            #set ($pop_up_css_class = &quot;pop-up&quot;)
+
+            #if ($custom_css_class)
+              #set ($pop_up_css_class = &quot;$pop_up_css_class $custom_css_class&quot;)
+            #end
+
+            #if ($row_sessions_size == 1 &amp;&amp; $extensions.size() == 0)
+              #set ($colspan = &quot;colspan=&apos;$default_col_span&apos;&quot;)
+              #set ($pop_up_css_class = &quot;$pop_up_css_class single-row-td&quot;)
+            #else
+              #set ($colspan = &quot;&quot;)
+
+              #set ($pop_up_css_class = &quot;$pop_up_css_class multi-room-td room-$room_number&quot;)
+            #end
+
+            #if ($filter_categories != &quot;&quot; &amp;&amp; $filter_categories)
+              #set ($pop_up_css_class = &quot;$pop_up_css_class $filter_categories&quot;)
+            #end
+
+            #if($extension_count &gt; 1)
+              #set ($rowspan = &quot;rowspan=&apos;$extension_count&apos;&quot;)
+            #else
+              #set ($rowspan = &quot;&quot;)
+            #end
+
+            ## Print td
+            &lt;td class=&quot;$pop_up_css_class&quot; $colspan $rowspan onclick=&quot;ga(&apos;send&apos;, &apos;event&apos;, &apos;Conferences - North America 2015&apos;, &apos;Agenda Session Clicks&apos;, &apos;$title - $speaker_name&apos;);&quot;&gt;
+              #if ($session_type != &quot;blank&quot; &amp;&amp; $session_type != &quot;&quot;)
+                &lt;span&gt;$session_type:&lt;/span&gt;
+              #end
+
+              #if ($title != &quot;&quot;)
+                &lt;span class=&quot;trigger&quot;&gt;$title&lt;/span&gt;&lt;br&gt;
+              #end
+
+              #if ($is_liferay_seven == &quot;true&quot; &amp;&amp; $validator.isNotNull($is_liferay_seven))
+                  &lt;div class=&quot;liferay-seven-icon&quot;&gt;&lt;/div&gt;
+              #end
+
+              &lt;div class=&quot;pop-up-content&quot;&gt;
+                &lt;span class=&quot;data&quot;&gt;
+                  &lt;div class=&quot;room-session&quot;&gt;
+                    #if ($room_name != &quot;&quot;) Room: $room_name,#end Time: $start_time_display - $end_time_display&lt;br&gt;
+                  &lt;/div&gt;
+
+                  #set ($speaker_array_uuid = $stringUtil.split($record.getFieldValue(&quot;speakers_uuid&quot;)))
+
+                  #foreach ($speakers_uuid in $speaker_array_uuid)
+                    #set ($speakers_uuid = $stringUtil.trim($speakers_uuid))
+                    #set ($speaker_record = false)
+                    #if (&quot;$speakers_uuid&quot; != &quot;&quot;)
+                      #set ($speaker_record_info = $ddl_records_local_service.getDDLRecordByUuidAndGroupId($speakers_uuid, $groupId))
+                      #set ($speaker_record = $ddl_records_local_service.fetchDDLRecord($getterUtil.getLong($speaker_record_info.recordId)))
+                    #end
+                    #if ($speaker_record)
+                      #set ($speaker_bio = $speaker_record.getFieldValue(&quot;speaker_bio&quot;))
+                      #set ($speaker_company = $speaker_record.getFieldValue(&quot;speaker_company&quot;))
+                      #set ($speaker_name = $speaker_record.getFieldValue(&quot;speaker_name&quot;))
+                      #set ($speaker_title = $speaker_record.getFieldValue(&quot;speaker_title&quot;))
+                    #else
+                      #set ($speaker_bio = &quot;&quot;)
+                      #set ($speaker_company = &quot;&quot;)
+                      #set ($speaker_name = &quot;&quot;)
+                      #set ($speaker_title = &quot;&quot;)
+                    #end
+
+                    &lt;div class=&quot;speaker-information&quot;&gt;
+                      #if ($speaker_name != &quot;&quot;)
+                        &lt;strong&gt;$speaker_name&lt;/strong&gt;
+                      #end
+                      &lt;div&gt;
+                        #if ($speaker_title != &quot;&quot; &amp;&amp; $speaker_company != &quot;&quot;)
+                          $speaker_title, $speaker_company
+                        #end
+                      &lt;/div&gt;
+                    &lt;/div&gt;
+                  #end
+
+                  #if ($session_summary != &quot;&quot;)
+                    Session Summary:&lt;br /&gt;&lt;p&gt;$session_summary&lt;/p&gt;
+                  #end
+                &lt;/span&gt;
+              &lt;/div&gt;
+
+              #if (&quot;speakers_uuid&quot; != &quot;&quot;)
+                &lt;div class=&quot;speakers-agenda-info&quot;&gt;
+                  #foreach ($speakers_uuid in $speaker_array_uuid)
+                    #set ($speakers_uuid = $stringUtil.trim($speakers_uuid))
+                    #set ($speaker_record = false)
+                    #if (&quot;$speakers_uuid&quot; != &quot;&quot;)
+                      #set ($speaker_record_info = $ddl_records_local_service.getDDLRecordByUuidAndGroupId($speakers_uuid, $groupId))
+                      #set ($speaker_record = $ddl_records_local_service.fetchDDLRecord($getterUtil.getLong($speaker_record_info.recordId)))
+                    #end
+                    #if ($speaker_record)
+                      #set ($speaker_name = $speaker_record.getFieldValue(&quot;speaker_name&quot;))
+                      #set ($speaker_company = $speaker_record.getFieldValue(&quot;speaker_company&quot;))
+                      #set ($speaker_title = $speaker_record.getFieldValue(&quot;speaker_title&quot;))
+                    #else
+                      #set ($speaker_name = &quot;&quot;)
+                      #set ($speaker_company = &quot;&quot;)
+                      #set ($speaker_title = &quot;&quot;)
+                    #end
+
+                    &lt;div class=&quot;speaker-entry&quot;&gt;
+                      #if ($speaker_name != &quot;&quot; &amp;&amp; $speaker_company != &quot;&quot;)
+                        $speaker_name, $speaker_company
+                                                    #else 
+                                 $speaker_name
+                      #end
+                    &lt;/div&gt;
+                  #end
+                &lt;/div&gt;
+              #end
+
+              #if ($room_name != &quot;&quot;)
+                ($room_name)
+              #end
+
+              #if ($user_has_permissions)
+                &lt;a class=&quot;taglib-icon edit-only&quot; href=&quot;/web/events2015/northamerica/admin?p_p_id=169_INSTANCE_eAy8Mn7LeZLJ&amp;p_p_lifecycle=0&amp;p_p_state=maximized&amp;p_p_mode=view&amp;p_p_col_id=column-1&amp;p_p_col_pos=4&amp;p_p_col_count=8&amp;_169_INSTANCE_eAy8Mn7LeZLJ_struts_action=%2Fdynamic_data_list_display%2Fedit_record&amp;_169_INSTANCE_eAy8Mn7LeZLJ_cmd=update&amp;_169_INSTANCE_eAy8Mn7LeZLJ_redirect=https%3A%2F%2Fwww.liferay.com%2Fweb%2Fevents2015%2Fnorthamerica%2Fadmin%3Fp_p_id%3D169_INSTANCE_eAy8Mn7LeZLJ%26p_p_lifecycle%3D0%26p_p_state%3Dnormal%26p_p_mode%3Dview%26p_p_col_id%3Dcolumn-1%26p_p_col_pos%3D4%26p_p_col_count%3D8&amp;_169_INSTANCE_eAy8Mn7LeZLJ_recordId=$record.getRecordId()&quot;&gt;
+                  &lt;img class=&quot;icon&quot; src=&quot;/osb-community-theme/images/common/edit.png&quot; alt=&quot;Edit DDL Record&quot; title=&quot;Edit DDL Record&quot;&gt;
+                &lt;/a&gt;
+              #end
+            &lt;/td&gt;
+          #end
+        &lt;/tr&gt;
+      #end
+    &lt;/table&gt;
+  #end
+
+  &lt;div class=&quot;categorySelectors desktop-only sticky-watch&quot; data-offset=&apos;{&quot;top&quot;: &quot;-176&quot;}&apos;&gt;
+    &lt;span class=&quot;filter-header&quot;&gt;Filter by:&lt;/span&gt;
+    &lt;a class=&quot;category&quot; data-target-class=&quot;marketing&quot; data-selected=&quot;false&quot;&gt;Digital Marketing &amp; Web Experiences&lt;/a&gt;
+    &lt;a class=&quot;category&quot; data-target-class=&quot;using&quot; data-selected=&quot;false&quot;&gt;Case Study&lt;/a&gt;
+    &lt;a class=&quot;category&quot; data-target-class=&quot;customize&quot; data-selected=&quot;false&quot;&gt;Customizing Liferay&lt;/a&gt;
+    &lt;a class=&quot;category&quot; data-target-class=&quot;develop&quot; data-selected=&quot;false&quot;&gt;Developing with Liferay&lt;/a&gt;
+    &lt;a class=&quot;category&quot; data-target-class=&quot;production&quot; data-selected=&quot;false&quot;&gt;Liferay in Production&lt;/a&gt;
+    &lt;a class=&quot;category&quot; data-target-class=&quot;features&quot; data-selected=&quot;false&quot;&gt;Liferay New Products &amp; Features&lt;/a&gt;
+    &lt;a class=&quot;category&quot; data-target-class=&quot;technologies&quot; data-selected=&quot;false&quot;&gt;Mobile Technologies &amp; Development&lt;/a&gt;
+    &lt;a class=&quot;category&quot; data-target-class=&quot;ui&quot; data-selected=&quot;false&quot;&gt;UI &amp; UX&lt;/a&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+
+&lt;style&gt;
+#agendaTabs .select-day {
+  height: 100%;
+}
+
+#agendaTabs.sticky {
+  position: fixed;
+  top: 88px;
+}
+
+#agendaWrapper {
+  margin: auto;
+  min-height: 670px;
+  overflow: hidden;
+  position: relative;
+}
+
+#agendaWrapper table {
+  box-sizing: border-box;
+}
+
+#agendaWrapper tr {
+  border-bottom: 1px solid #E3E4E5;
+}
+
+#agendaWrapper td {
+    display: inline-block;
+    padding: 10px;
+    min-height: 75px;
+    max-width: calc(100% - 220px);
+}
+
+#agendaWrapper td.empty-session {
+  display: none;
+}
+
+#agendaWrapper td.multi-room-td {
+  border-bottom: 1px solid #E3E4E5;
+  display: block;
+}
+
+#agendaWrapper td.pop-up.last {
+  border-bottom-width: 0;
+}
+
+#agendaWrapper td.multi-room-td:last-child {
+  border-bottom: 0;
+}
+
+#agendaWrapper.hide-all tr, #agendaWrapper.hide-all td {
+  display: none;
+}
+
+#agendaWrapper.hide-all .display-marketing .marketing .first-col,
+#agendaWrapper.hide-all .display-customize .customize .first-col,
+#agendaWrapper.hide-all .display-develop .develop .first-col,
+#agendaWrapper.hide-all .display-production .production .first-col,
+#agendaWrapper.hide-all .display-features .features .first-col,
+#agendaWrapper.hide-all .display-technologies .technologies .first-col,
+#agendaWrapper.hide-all .display-ui .ui .first-col,
+#agendaWrapper.hide-all .display-using .using .first-col {
+  display: table-cell;
+  margin-bottom: -1px;
+}
+
+#agendaWrapper.hide-all .display-marketing td.marketing,
+#agendaWrapper.hide-all .display-customize td.customize,
+#agendaWrapper.hide-all .display-develop td.develop,
+#agendaWrapper.hide-all .display-production td.production,
+#agendaWrapper.hide-all .display-features td.features,
+#agendaWrapper.hide-all .display-technologies td.technologies,
+#agendaWrapper.hide-all .display-ui td.ui,
+#agendaWrapper.hide-all .display-using td.using {
+  display: block;
+  margin-bottom: -1px;
+}
+
+#agendaWrapper.hide-all .display-marketing tr.marketing,
+#agendaWrapper.hide-all .display-customize tr.customize,
+#agendaWrapper.hide-all .display-develop tr.develop,
+#agendaWrapper.hide-all .display-production tr.production,
+#agendaWrapper.hide-all .display-features tr.features,
+#agendaWrapper.hide-all .display-technologies tr.technologies,
+#agendaWrapper.hide-all .display-ui tr.ui,
+#agendaWrapper.hide-all .display-using tr.using {
+  display: table-row;
+}
+
+#agendaWrapper .first-col {
+  background: #FFF;
+  color: #909295;
+  display: table-cell;
+  font-size: 36px;
+  font-weight: lighter;
+  text-align: left;
+  vertical-align: top;
+  width: 20%;
+}
+
+#agendaWrapper .pop-up {
+  width: 100%;
+  width: calc(100% - 20px)
+}
+
+#agendaWrapper .pop-up:hover {
+  cursor: pointer;
+}
+
+#agendaWrapper .pop-up-content {
+  display: none;
+}
+
+#agendaWrapper .single-row-td {
+  background: #F2F2F2;
+}
+
+#agendaWrapper .speaker-entry {
+  color: #818183;
+}
+
+#agendaWrapper .togglers {
+  background: #FFF;
+  border: 1px solid #CCC;
+  border-left: 0px solid;
+  border-right: 0px solid;
+  text-align: center;
+  width: 100%;
+  z-index: 10;
+}
+
+#agendaWrapper .togglers span:last-of-type {
+  border-right: none;
+}
+
+#agendaWrapper .togglers .class-toggle-carousel {
+  border-right: 1px solid #CCC;
+  box-sizing: border-box;
+  cursor: pointer;
+  display: inline-block;
+  font-size: 18px;
+  margin-left: -3px;
+  padding: 20px;
+  text-align: center;
+  text-decoration: none;
+  vertical-align: top;
+  width: 33.33%;
+}
+
+#agendaWrapper .trigger {
+  font-size: 18px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+}
+
+#wrapper .agenda-1,
+#wrapper .agenda-3,
+#wrapper.class-toggle-carousel-day-1 .agenda-2,
+#wrapper.class-toggle-carousel-day-2 .agenda-1,
+#wrapper.class-toggle-carousel-day-2 .agenda-3,
+#wrapper.class-toggle-carousel-day-3 .agenda-1,
+#wrapper.class-toggle-carousel-day-3 .agenda-2,
+#wrapper.hide-all td {
+    display: none;
+}
+
+#wrapper #agendaWrapper,
+#wrapper #agendaWrapper .select-day-2,
+#wrapper.class-toggle-carousel-day-1 #agendaWrapper .select-day-1,
+#wrapper.class-toggle-carousel-day-3 #agendaWrapper .select-day-3 {
+  font-weight: normal;
+}
+
+#wrapper #agendaWrapper .select-day-2, #wrapper.class-toggle-carousel-day-2 #agendaWrapper .select-day-2.class-toggle-carousel,
+#wrapper.class-toggle-carousel-day-1 #agendaWrapper .select-day-1.class-toggle-carousel,
+#wrapper.class-toggle-carousel-day-3 #agendaWrapper .select-day-3.class-toggle-carousel {
+  background: #178ACB;
+  color: #FFF;
+}
+
+#wrapper #agendaWrapper .select-day-1,
+#wrapper #agendaWrapper .select-day-3,
+#wrapper.class-toggle-carousel-day-1 #agendaWrapper .select-day-2,
+#wrapper.class-toggle-carousel-day-2 #agendaWrapper .select-day-1,
+#wrapper.class-toggle-carousel-day-2 #agendaWrapper .select-day-3,
+#wrapper.class-toggle-carousel-day-3 #agendaWrapper .select-day-1,
+#wrapper.class-toggle-carousel-day-3 #agendaWrapper .select-day-2 {
+  background: #FFF;
+  color: #4C4C4E;
+    font-weight: lighter;
+}
+
+#wrapper #agendaWrapper .togglers .class-toggle-carousel:hover {
+  background: #F7BC20;
+  color: #FFF;
+}
+
+#wrapper.class-toggle-carousel-day-1 .agenda-1,
+#wrapper.class-toggle-carousel-day-2 #agendaWrapper .agenda-2,
+#wrapper.class-toggle-carousel-day-3 #agendaWrapper .agenda-3 {
+    display: table;
+}
+
+#wrapper .agenda-3, #wrapper.class-toggle-carousel-day-2 .agenda-1, #wrapper.class-toggle-carousel-day-2 .agenda-3, #wrapper.class-toggle-carousel-day-3 .agenda-1, #wrapper.class-toggle-carousel-day-3 .agenda-2, #wrapper.hide-all td {
+  display: none;
+}
+
+.agenda-table.sticky-nav {
+  margin-top: 60px;
+}
+
+.categorySelectors {
+  text-align: center;
+}
+
+.categorySelectors div {
+  display: inline-block;
+  padding: 5px 20px;
+}
+
+.categorySelectors.desktop-only {
+  background: #FFF;
+  border-bottom: 0px solid;
+  border-right: 0px solid;
+  border: 1px solid #CCC;
+  box-sizing: border-box;
+  height: 100%;
+  padding: 30px 15px;
+  position: absolute;
+  right: 0px;
+  text-align: left;
+  top: 68px;
+  width: 200px;
+  z-index: 10;
+}
+
+.categorySelectors.desktop-only.sticky {
+  position: fixed;
+  top: 156px;
+}
+
+.categorySelectors .category {
+  background: url(/documents/35935946/36204249/Close-Icon.png) no-repeat;
+  color: #1A1A1A;
+  cursor: pointer;
+  display: block;
+  margin: 5px;
+  padding: 8px 25px 8px 8px;
+  text-decoration: none;
+}
+
+.categorySelectors .filter-header {
+  font-weight: normal;
+  padding: 15px;
+}
+
+.categorySelectors .marketing-selected,
+.categorySelectors .customize-selected,
+.categorySelectors .develop-selected,
+.categorySelectors .production-selected,
+.categorySelectors .features-selected,
+.categorySelectors .technologies-selected,
+.categorySelectors .ui-selected,
+.categorySelectors .using-selected {
+  background-position: 92% 50%;
+  color: #178ACB;
+  font-weight: normal;
+}
+
+.category-toggle-container .aui-toggler-content-collapsed, .controls-hidden .edit-only, .controls-hidden form .separator, .controls-hidden form .aui-button, .desktop-hidden, .taglib-header {
+  display: none;
+}
+
+.category-toggle-container .aui-toggler-header-collapsed .arrow {
+  border: 7px solid transparent;
+  border-bottom-width: 0;
+  border-top-color: #4C4C4C;
+  content: &quot;&quot;;
+  display: inline-block;
+  height: 0;
+  margin: 0 5px;
+  width: 0;
+}
+
+.category-toggle-container .aui-toggler-header-expanded .arrow {
+  border: 7px solid transparent;
+  border-bottom-color: #4C4C4C;
+  border-top-width: 0;
+  content: &quot;&quot;;
+  display: inline-block;
+  height: 0;
+  margin: 0 5px;
+  width: 0;
+}
+
+.category-toggle-container .toggle-header {
+  cursor: pointer;
+  margin: 10px;
+}
+
+.keynote {
+  color: #005E8E;
+  font-weight: normal;
+}
+
+.lfr-meta-actions, .portlet-body {
+  clear: both;
+}
+
+.liferay-seven-icon {
+    background: url(&apos;/documents/47511614/51371158/Liferay-7-Icon.png&apos;) no-repeat center center;
+    background-size: cover;
+    float: right;
+    height: 34px;
+    width: 34px;
+}
+
+.on-screen-bop {
+  position: relative;
+  z-index: -1;
+}
+
+.on-screen-bop div {
+  background: #FFF;
+  position: fixed;
+  text-align: left;
+  top: 168px;
+  width: 130px;
+}
+
+.on-screen-bop.on-screen-boo-bop div {
+  position: absolute;
+  top: 0;
+}
+
+.pop-up-content {
+  color: #6B6C6B;
+}
+
+.pop-up-content .view-all-bio-link, .pop-up-content .room-session, .pop-up-content .speaker-information {
+  padding-bottom: 1em;
+}
+
+.ie8 .pop-up-content {
+  background: #6B6C6B;
+  color: #FFF;
+}
+
+@media all and (max-width: 900px) {
+#agendaWrapper td {
+    max-width: 100%;
+}
+
+  #agendaWrapper .first-col, .on-screen-bop div, .on-screen-bop.on-screen-boo-bop div {
+    width: 120px;
+  }
+
+  #agendaWrapper .togglers {
+    margin-right: 0;
+    width: 100%;
+    position: initial;
+  }
+
+  #agendaWrapper table {
+    max-width: 100%;
+  }
+
+  #agendaWrapper td.multi-room-td {
+    box-sizing: border-box;
+    width: 100%;
+  }
+
+  .agenda-table.sticky-nav {
+    margin-top: 0;
+  }
+
+  .desktop-hidden {
+    display: block;
+  }
+
+  .desktop-only {
+    display: none;
+  }
+
+  .first-col div {
+    text-align: left;
+  }
+
+  .on-screen-bop div, .on-screen-bop.on-screen-boo-bop div  {
+    position: initial;
+  }
+}
+&lt;/style&gt;
+
+&lt;script&gt;
+AUI().use(
+  &apos;node&apos;,
+  function(A) {
+    var category = A.all(&apos;.category&apos;);
+
+    var displayClass = function(event) {
+      event.stopPropagation();
+
+      var agendaTable = A.all(&apos;.agenda-table&apos;);
+
+      var agendaWrapper = A.one(&apos;#agendaWrapper&apos;);
+
+      var currentTargetNode = event.currentTarget;
+
+      var dataSelected = currentTargetNode.attr(&apos;data-selected&apos;);
+
+      var targetClass = currentTargetNode.attr(&apos;data-target-class&apos;);
+
+      var displayTargetClass = &apos;display-&apos; + targetClass;
+
+      var selectedCategoryClass = targetClass + &apos;-selected&apos;;
+
+      if (targetClass) {
+        agendaTable.toggleClass(displayTargetClass);
+
+        A.all(&apos;.&apos; + targetClass).each(
+          function(node) {
+            node.ancestorsByClassName(&apos;table-row&apos;).addClass(targetClass);
+          }
+        );
+      }
+
+      if (dataSelected == &apos;false&apos;) {
+        currentTargetNode.setAttribute(&apos;data-selected&apos;, &apos;true&apos;);
+      }
+      else {
+        currentTargetNode.setAttribute(&apos;data-selected&apos;, &apos;false&apos;);
+      }
+
+      var hideAll = false;
+
+      category.each(
+        function(node) {
+          if (node.getAttribute(&apos;data-selected&apos;) == &apos;true&apos;) {
+            hideAll = true;
+          }
+        }
+      );
+
+      if (hideAll) {
+        agendaWrapper.addClass(&apos;hide-all&apos;);
+
+        currentTargetNode.toggleClass(selectedCategoryClass);
+      }
+      else {
+        agendaWrapper.removeClass(&apos;hide-all&apos;);
+
+        currentTargetNode.toggleClass(selectedCategoryClass);
+      }
+    };
+
+    category.on(&apos;click&apos;, displayClass);
+
+    /**
+     * Multiple Room Action
+     **/
+
+    var MRAction= function() {
+      this.prototype = {
+        get_categories : function(node) {
+          var data = [];
+
+          A.all(node).each(
+            function(el) {
+              if (el.getAttribute(&quot;data-selected&quot;) === &quot;true&quot;) {
+                data.push(el.getAttribute(&quot;data-target-class&quot;));
+              }
+            }
+          );
+
+          return data;
+        },
+
+        get_table_cells : function(filterArray, nodes) {
+          var data = [];
+          var queryNode = A.all(nodes);
+
+          queryNode.each(
+            function(node) {
+              var nodeCollectionSet = [];
+
+              var containerNode = A.one(node.getDOM().parentNode);
+              var classListenerNode = containerNode.all(&apos;.pop-up&apos;);
+
+              classListenerNode.each(
+                function(el) {
+                  var nodeHasProperty = false;
+
+                  A.all(filterArray).each(
+                    function(filter) {
+                      if (el.hasClass(filter)) {
+                        nodeHasProperty = true;
+                      }
+                    }
+                  );
+
+                  if (nodeHasProperty) {
+                    nodeCollectionSet.push(el);
+                  }
+                }
+              );
+
+              data.push(nodeCollectionSet);
+            }
+          );
+
+          return data;
+        },
+
+        remove_last_class : function(valueArray) {
+          A.each(valueArray, function(nodeArray) {
+            A.each(nodeArray, function(node) {
+              if (node.hasClass(&apos;last&apos;)) {
+                node.removeClass(&apos;last&apos;);
+              }
+            });
+          });
+        },
+
+        apply_last_class : function(valueArray) {
+          A.each(valueArray, function(sousArray) {
+            if (sousArray.length !== 0) {
+              var node = sousArray[sousArray.length - 1];
+
+              node.addClass(&apos;last&apos;);
+            }
+          });
+        }
+      };
+
+      return this.prototype;
+    };
+
+    category.on(
+      &apos;click&apos;, function() {
+        var multiple_room = new MRAction();
+
+        var cat = multiple_room.get_categories(&quot;.categorySelectors .category&quot;);
+        var tableCells = multiple_room.get_table_cells(cat, &apos;#agendaWrapper .first-col&apos;);
+
+        multiple_room.remove_last_class(tableCells);
+        multiple_room.apply_last_class(tableCells);
+      }
+    );
+  }
+);
+
+AUI().use(
+  &apos;aui-toggler&apos;,
+  function(A) {
+    new A.TogglerDelegate(
+      {
+        animated: false,
+        closeAllOnExpand: false,
+        container: &apos;.category-toggle-container&apos;,
+        content: &apos;.toggle-content&apos;,
+        expanded: false,
+        header: &apos;.toggle-header&apos;
+      }
+    );
+  }
+);
+&lt;/script&gt;</__script>
+  <__columnBitmask>0</__columnBitmask>
+</com.liferay.portlet.dynamicdatamapping.model.impl.DDMTemplateImpl>

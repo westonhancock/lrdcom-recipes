@@ -1,0 +1,24 @@
+<com.liferay.portlet.dynamicdatalists.model.impl.DDLRecordSetImpl>
+  <__cachedModel>false</__cachedModel>
+  <__new>false</__new>
+  <__uuid>b7fd8926-320e-45ef-af94-265197fc08ba</__uuid>
+  <__originalUuid>b7fd8926-320e-45ef-af94-265197fc08ba</__originalUuid>
+  <__recordSetId>53045433</__recordSetId>
+  <__groupId>47511614</__groupId>
+  <__originalGroupId>47511614</__originalGroupId>
+  <__setOriginalGroupId>false</__setOriginalGroupId>
+  <__companyId>1</__companyId>
+  <__userId>31522702</__userId>
+  <__userUuid>3dc75225-2e4e-40cd-8079-4a0e8d65b4a5</__userUuid>
+  <__userName>Luke Shackelford</__userName>
+  <__createDate class="sql-timestamp">2015-04-27 22:32:21.0</__createDate>
+  <__modifiedDate class="sql-timestamp">2015-10-22 21:16:19.0</__modifiedDate>
+  <__DDMStructureId>53045429</__DDMStructureId>
+  <__recordSetKey>53045432</__recordSetKey>
+  <__originalRecordSetKey>53045432</__originalRecordSetKey>
+  <__name>&lt;?xml version=&apos;1.0&apos; encoding=&apos;UTF-8&apos;?&gt;&lt;root available-locales=&quot;en_US&quot; default-locale=&quot;en_US&quot;&gt;&lt;Name language-id=&quot;en_US&quot;&gt;NAS 2015 | Agenda&lt;/Name&gt;&lt;/root&gt;</__name>
+  <__description>&lt;?xml version=&apos;1.0&apos; encoding=&apos;UTF-8&apos;?&gt;&lt;root available-locales=&quot;en_US&quot; default-locale=&quot;en_US&quot;&gt;&lt;Description language-id=&quot;en_US&quot;&gt;Agenda List&lt;/Description&gt;&lt;/root&gt;</__description>
+  <__minDisplayRows>20</__minDisplayRows>
+  <__scope>0</__scope>
+  <__columnBitmask>0</__columnBitmask>
+</com.liferay.portlet.dynamicdatalists.model.impl.DDLRecordSetImpl>

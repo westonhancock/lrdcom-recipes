@@ -1,0 +1,938 @@
+<com.liferay.portlet.dynamicdatamapping.model.impl.DDMTemplateImpl>
+  <__cachedModel>false</__cachedModel>
+  <__new>false</__new>
+  <__uuid>a727a0e2-8c99-4765-89b4-8dd7aabd562f</__uuid>
+  <__originalUuid>a727a0e2-8c99-4765-89b4-8dd7aabd562f</__originalUuid>
+  <__templateId>63307189</__templateId>
+  <__groupId>47511614</__groupId>
+  <__originalGroupId>47511614</__originalGroupId>
+  <__setOriginalGroupId>false</__setOriginalGroupId>
+  <__companyId>1</__companyId>
+  <__userId>27987786</__userId>
+  <__userUuid>752c956a-503d-4989-b028-d2ec7395f069</__userUuid>
+  <__userName>Joan Kim</__userName>
+  <__createDate class="sql-timestamp">2015-11-14 02:58:07.0</__createDate>
+  <__modifiedDate class="sql-timestamp">2015-11-14 02:58:07.0</__modifiedDate>
+  <__structureId>53045429</__structureId>
+  <__originalStructureId>53045429</__originalStructureId>
+  <__setOriginalStructureId>false</__setOriginalStructureId>
+  <__name>&lt;?xml version=&apos;1.0&apos; encoding=&apos;UTF-8&apos;?&gt;&lt;root available-locales=&quot;en_US&quot; default-locale=&quot;en_US&quot;&gt;&lt;Name language-id=&quot;en_US&quot;&gt;NAS 2015 - Agenda Template&lt;/Name&gt;&lt;/root&gt;</__name>
+  <__description></__description>
+  <__type>list</__type>
+  <__originalType>list</__originalType>
+  <__mode></__mode>
+  <__originalMode></__originalMode>
+  <__language>vm</__language>
+  <__originalLanguage>vm</__originalLanguage>
+  <__script>#set ($portletBeanLocator = $portal.getClass().forName(&apos;com.liferay.portal.kernel.bean.PortletBeanLocatorUtil&apos;))
+
+#set ($dlFileEntryLocalService = $serviceLocator.findService(&quot;com.liferay.portlet.documentlibrary.service.DLFileEntryLocalService&quot;))
+#set ($ddlRecordLocalService = $serviceLocator.findService(&quot;com.liferay.portlet.dynamicdatalists.service.DDLRecordLocalService&quot;))
+#set ($hsContactLocalService = $portletBeanLocator.locate(&quot;hubspot-portlet&quot;, &quot;com.liferay.hubspot.service.HSContactLocalService.velocity&quot;))
+#set ($layoutLocalService = $serviceLocator.findService(&quot;com.liferay.portal.service.LayoutLocalService&quot;))
+
+&lt;style&gt;
+    .aui-overlaycontextpanel-pointer {
+        display: none;
+	}
+
+	.aui-overlaymask-content {
+		cursor: pointer;
+		opacity: 0.7 !important;
+	}Ac
+
+	.aui-panel-bd {
+		padding: 0;
+	}
+
+	.video-overlay {
+		background-position: center;
+		background-size: cover;
+		cursor: pointer;
+		height: 250px;
+		margin: 0 auto;
+		position: relative;
+		width: 100%;
+	}
+
+	.video-overlay:after {
+		background-image: url(&apos;/documents/14/43237314/icon_sprite.png&apos;);
+		bottom: 0;
+		content: &quot;&quot;;
+		height: 127px;
+		left: 0;
+		margin: auto;
+		position: absolute;
+		right: 0;
+		top: 0;
+		width: 128px;
+	}
+
+	.video-playing {
+		background-image: none !important;
+		margin: 0 auto;
+		max-width: 500px;
+		width: 100%;
+	}
+
+	.page-pop-up .pop-up-content  {
+		box-sizing: border-box;
+		max-width: 800px;
+		padding: 60px;
+	}
+
+	.page-pop-up .pop-up-info {
+		border-bottom: 1px solid #CCC;
+	}
+
+	.page-pop-up .pop-up-slides {
+		padding-top: 15px;
+	}
+
+	.page-pop-up .pop-up-content .hubspot-form {
+		width: auto;
+	}
+
+	.page-pop-up .pop-up-content .content-wrapper {
+		background: #FFF;
+		color: #000;
+		padding: 2em 0;
+	}
+
+	.download-label-wrapper {
+		background: #FFF;
+		padding-top: 1em;
+	}
+
+	.download-label {
+		color: #325F84;
+		width: 80px;
+	}
+
+	.download-label:hover {
+		text-decoration: underline;
+	}
+
+	.download-heading {
+		color: #008BCE;
+		display: inline-block;
+		font-size: 26px;
+		padding: 10px 5px 20px;
+	}
+
+	.download-label .label-content {
+		padding: 21% 0;
+	}
+
+	#downloadsContainer {
+		margin: 0 auto;
+		max-width: 800px;
+		padding-bottom: 50px;
+		width: 100%;
+	}
+
+	#downloadsWrapper .session-speaker-company {
+		font-size: 10px;
+		font-weight: normal;
+		line-height: 12px;
+		margin: 0;
+	}
+
+	#downloadsWrapper .session-speaker-name {
+		font-size: 16px;
+	}
+
+	#downloadsWrapper .session-speaker-name:hover {
+		text-decoration: underline;
+	}
+
+	.edit-only {
+		bottom: 5px;
+		display: none;
+		position: absolute;
+		right: 5px;
+	}
+
+	.label-message {
+		bottom: 7px;
+		left: 8px;
+		position: relative;
+	}
+
+	.media-info {
+		display: none;
+	}
+
+	.media-wrapper {
+		background: #FFF;
+		border-bottom: 1px solid #CCC;
+		color: #000;
+		padding: 2em;
+	}
+
+	.media-wrapper .download-label {
+		height: 400px;
+		width: 100%;
+	}
+
+	.outer-bottom {
+		background: #294E75;
+		color: #FFF;
+	}
+
+	.pop-up-speaker {
+		font-size: 16px;
+	}
+
+	.pop-up-title {
+		display: inline-block;
+		font-size: 20px;
+		font-weight: bold;
+		margin: 0;
+		width: 100%;
+	}
+
+	.presentation-title {
+		font-weight: bold;
+		font-size: 0.9em;
+		margin: 0;
+		padding-bottom: 12px;
+	}
+
+	.share-link {
+		margin: 20px 0 0;
+		width: 100%;
+	}
+
+	.share-link input {
+		height: 12px;
+		width: 100%;
+	}
+
+	.share-link .share-text {
+		display: inline-block;
+		padding-bottom: 5px;
+	}
+
+	.speaker-hover-img {
+		background-position: -200px bottom;
+		background-repeat: no-repeat;
+		height: 100%;
+		opacity: 0;
+		position: absolute;
+		top: 0;
+		width: 100%;
+		-moz-transition: opacity 0.3s;
+		-webkit-transition: opacity 0.3s;
+		-o-transition: opacity 0.3s;
+	}
+
+	.session-download:hover .speaker-hover-img {
+		opacity: 1;
+		-moz-transition: opacity 0.3s;
+		-webkit-transition: opacity 0.3s;
+		-o-transition: opacity 0.3s;
+		transition: opacity 0.3s;
+	}
+
+	.speaker-img {
+		height: 140px;
+		position: relative;
+	}
+
+	.session-download {
+		cursor: pointer;
+		float: left;
+		margin: 5px;
+		min-height: 180px;
+		width: 188px;
+	}
+
+	.session-content {
+		position: relative;
+		text-align: center;
+		min-height: 90px;
+	}
+
+	.session-content span {
+		display: block;
+		font-weight: bold;
+		margin-bottom: 5px;
+	}
+
+	.signed-in.controls-visible .edit-only {
+		display: block;
+	}
+
+	#popup {
+		background: white;
+		max-width: 100%;
+		position: absolute;
+		width: 680px;
+		z-index: 1000;
+	}
+
+	#popup .content-column-content {
+		padding: 10px;
+	}
+
+	@media all and (max-width: 800px) {
+		.media-wrapper {
+			padding: 0;
+		}
+
+		.media-wrapper .download-label {
+			padding-left: 1em;
+		}
+
+		.session-download.pop-up {
+			float: none;
+			margin: 0 auto;
+		}
+	}
+
+	.speaker-wrapper {
+		margin: 8px auto 40px;
+		max-width: 920px;
+		text-align: center;
+	}
+
+	#speakers .separator, #speakers form .aui-button {
+		display: none;
+	}
+
+	.speaker-wrapper .profile-content {
+		background: #333;
+		color: #FFF;
+		height: 210px;
+		margin: auto;
+		padding: 10px;
+		text-align: left;
+	}
+
+	.speaker-wrapper .profile-content .pop {
+		color: #2D4B69;
+	}
+
+	.speaker-wrapper .profile-image {
+		margin: 0 auto;
+		max-height: 192px;
+		max-width: 192px;
+	}
+
+	.ie7 .speaker-wrapper .profile-image, .ie8 .speaker-wrapper .profile-image {
+		height: 170px;
+		width: auto;
+	}
+
+	.speaker-wrapper .speaker-company {
+		font-style: italic;
+	}
+
+	.speaker-wrapper .speaker-item {
+		display: inline-block;
+		max-width: 192px;
+		margin-bottom: 24px;
+		padding: 0 10px;
+		vertical-align: top;
+	}
+
+	.speaker-wrapper .pop-up, .speaker-wrapper .pop-up {
+		cursor: pointer;
+	}
+
+	.speaker-wrapper .speaker-item .speaker-image {
+		height: 192px;
+		width: 192px;
+	}
+
+	.speaker-wrapper .speaker-name {
+		color: #FFF;
+		font-size: 1em;
+		font-weight: normal;
+		margin: 0 0 5px;
+		text-align: left;
+	}
+
+	.speaker-wrapper .pop h3.speaker-name {
+		color: #1F4060;
+	}
+
+	.speaker-wrapper .pop .speaker-bio p{
+		text-align: left;
+		line-height: 1.4em;
+	}
+
+	.speaker-wrapper .aui-overlay-content .yui3-widget-bd {
+		padding: 20px;
+	}
+
+	.speaker-wrapper .speaker-title {
+		line-height: 16px;
+		padding-bottom: 5px;
+	}
+
+	.speaker-wrapper .aui-overlaycontextpanel-content {
+		background: none repeat scroll 0 0 #FFF;
+		border-radius: 0;
+		box-shadow: none;
+		color: #1F4060;
+		width: 300px;
+	}
+
+	.speaker-wrapper .speaker-item .close {
+		display: none;
+	}
+
+	.speaker-wrapper .aui-overlaycontextpanel-pointer {
+		background: #FFF;
+		position: absolute;
+	}
+
+	.ie7 .speaker-wrapper .aui-overlaycontextpanel-pointer, .ie8 .speaker-wrapper .aui-overlaycontextpanel-pointer {
+		display: none;
+	}
+
+	.speaker-wrapper .aui-overlaycontextpanel-pointer:after {
+		border-color: rgba(255, 255, 255, 0) rgba(255, 255, 255, 0) #FFF;
+		border-image: none;
+		border-style: solid;
+		border-width: 28px;
+		bottom: 100%;
+		content: &quot; &quot;;
+		height: 0;
+		left: 50%;
+		margin-left: -28px;
+		pointer-events: none;
+		position: absolute;
+		top: -41px;
+		width: 0;
+	}
+
+	.ie7 .speaker-wrapper .aui-overlaycontextpanel-pointer:after, .ie8 .speaker-wrapper .aui-overlaycontextpanel-pointer:after {
+		display: none;
+	}
+
+	.speaker-wrapper {
+		margin-top: 8px;
+	}
+
+	.speaker-wrapper .taglib-header {
+		display: none;
+	}
+
+	@media all and (max-width: 940px) {
+		.pop.aui-component {
+			left: 3% !important;
+		}
+
+		.speaker-wrapper {
+			padding: 0 15px;
+		}
+
+		.speaker-wrapper .pop .aui-overlay-content {
+			margin: auto;
+			right: 2%;
+			width: 75%;
+		}
+
+		.speaker-wrapper .aui-overlaycontextpanel-pointer {
+			display: none;
+		}
+
+		.speaker-wrapper .speaker-item .close {
+			display: block;
+			position: absolute;
+			right: 0;
+			top: 0;
+			width: 35px;
+		}
+	}
+
+	@media all and (max-width: 720px) {
+		#popup {
+			width: 480px;
+		}
+		
+		.page-pop-up .pop-up-content {
+			padding: 10px;
+		}
+
+		.pop.aui-component {
+			left: 3% !important;
+		}
+
+		.speaker-wrapper .speaker-item {
+			cursor: pointer;
+			display: inline-block;
+			vertical-align: top;
+		}
+
+		.speaker-wrapper {
+			padding: 0 15px;
+		}
+
+		#speakers .light img {
+			margin-top: 44px;
+		}
+
+		.speaker-wrapper .pop .aui-overlay-content {
+			width: 93%;
+		}
+
+		.speaker-wrapper .aui-overlaycontextpanel-pointer {
+			display: none;
+		}
+
+		.speaker-wrapper .speaker-item .close {
+			display: block;
+			position: absolute;
+			right: 0;
+			top: 0;
+			width: 35px;
+		}
+	}
+
+	@media all and (max-width: 480px) {
+		#popup {
+			width: 270px;
+		}
+
+		.page-pop-up .pop-up-content .content-wrapper {
+			padding: 1em 0;
+		}
+
+		.pop-up-speaker {
+			font-size: 12px;
+		}
+
+		.pop-up-title {
+			font-size: 16px;
+		}
+
+		.share-link {
+			display: none;
+		}
+
+		.speaker-wrapper {
+			padding: 0 !important;
+		}
+
+		.speaker-wrapper .speaker-item {
+			margin-bottom: 20px;
+			max-width: 132px;
+			padding: 0 5px;
+		}
+
+		.speaker-wrapper .speaker-item .speaker-image {
+			background-size: 100%;
+			height: 132px;
+			width: 132px;
+		}
+	}
+&lt;/style&gt;
+
+#macro (clean_up $string)
+	#set ($string = $stringUtil.replace($string, &quot;[&quot;, &quot;&quot;))
+	#set ($string = $stringUtil.replace($string, &quot;]&quot;, &quot;&quot;))
+	#set ($string = $stringUtil.replace($string, &apos;&quot;&apos;, &apos;&apos;))
+#end
+
+#macro (get_tactic_info21 $tactic_id $hs_tactic_map)
+	#set ($tactic_map = $portal.getClass().forName(&quot;java.util.TreeMap&quot;).newInstance())
+
+	#set ($tactic_record = $ddlRecordLocalService.fetchDDLRecord($getterUtil.getLong($tactic_id)))
+
+	#if ($tactic_record)
+		#foreach ($field in $hs_field_values)
+			#set ($field_name = &quot;&quot;)
+
+			#if ($tactic_record.getField($field))
+				#set ($field_name = $tactic_record.getFieldValue($field))
+			#end
+
+			#clean_up($field_name)
+
+			#if ($field_name != &quot;&quot;)
+				#set ($VOID = $tactic_map.put($field, $field_name))
+			#end
+		#end
+
+		#set ($asset_record = &quot;&quot;)
+
+		#if ($tactic_record.getField(&quot;asset&quot;))
+			#set ($asset_record = $tactic_record.getFieldValue(&quot;asset&quot;))
+		#end
+
+		#set ($asset_type = &quot;&quot;)
+
+		#if ($tactic_record.getField(&quot;asset_type&quot;))
+			#set ($asset_type = $tactic_record.getFieldValue(&quot;asset_type&quot;))
+		#end
+
+		#clean_up($asset_type)
+
+		#set ($asset_id = &quot;&quot;)
+
+		#if ($tactic_record.getField(&quot;asset_id&quot;))
+			#set ($asset_id = $tactic_record.getFieldValue(&quot;asset_id&quot;))
+		#end
+		
+		#set ($asset_name = &quot;&quot;)
+
+		#if ($tactic_record.getField(&quot;asset_name&quot;))
+			#set ($asset_name = $tactic_record.getFieldValue(&quot;asset_name&quot;))
+		#end
+		
+		#set ($asset_url = &quot;&quot;)
+
+		#if ($tactic_record.getField(&quot;asset_url&quot;))
+			#set ($asset_url = $tactic_record.getFieldValue(&quot;asset_url&quot;))
+		#end
+
+		#set ($asset_json_object = $jsonFactoryUtil.getNullJSON())
+		
+		#if ($stringUtil.startsWith($asset_record, &quot;{&quot;) &amp;&amp; $stringUtil.endsWith($asset_record, &quot;}&quot;))
+			#set ($asset_json_object = $jsonFactoryUtil.createJSONObject($asset_record))
+		#end
+		
+		#set ($asset = false)
+
+		#if ($asset_json_object.getString(&apos;uuid&apos;))
+			#set ($asset_url = &quot;${request.get(&apos;scheme&apos;)}://${request.get(&apos;theme-display&apos;).get(&apos;portal-url&apos;)}/documents/14/${asset_json_object.getString(&apos;uuid&apos;)}&quot;)
+
+			#set ($asset = $dlFileEntryLocalService.getFileEntryByUuidAndGroupId($asset_json_object.getString(&apos;uuid&apos;), 14))
+
+			#if ($asset)
+				#set ($asset_id = $asset.getUuid())
+				#set ($asset_name = $asset.getTitle())
+			#end
+		#end
+
+		#if ($asset_name != &quot;&quot;)
+			#set ($VOID = $tactic_map.put(&quot;asset_name&quot;, $asset_name))
+		#end
+
+		#if ($asset_id != &quot;&quot;)
+			#set ($VOID = $tactic_map.put(&quot;asset_id&quot;, $asset_id))
+		#end
+
+		#if ($asset_url != &quot;&quot;)
+			#set ($VOID = $tactic_map.put(&quot;asset_url&quot;, $asset_url))
+		#end
+
+		#set ($VOID = $tactic_map.put(&quot;tactic_id&quot;, $tactic_record.getRecordId()))
+
+		#set ($hs_tactic_map = &quot;{&quot;)
+
+		#foreach ($key in $tactic_map.keySet())
+			#if ($velocityCount != 1)
+				#set ($hs_tactic_map = &quot;${hs_tactic_map},&quot;)
+			#end
+
+			#set ($hs_tactic_map = &quot;${hs_tactic_map}&amp;#34;${key}&amp;#34;:&amp;#34;${tactic_map.get($key)}&amp;#34;&quot;)
+		#end
+
+		#set ($hs_tactic_map = &quot;${hs_tactic_map}}&quot;)
+	#end
+#end
+
+#set ($hs_field_values = [&quot;asset_type&quot;,&quot;campaign&quot;,&quot;leadsource&quot;,&quot;lead_source_type&quot;,&quot;product_interest&quot;,&quot;program&quot;,&quot;tactic_name&quot;,&quot;video_type&quot;])
+
+#set ($hsutk = &quot;$request.attributes.OSB_HUBSPOT_UTK&quot;)
+#set ($hsContact = $hsContactLocalService.fetchHSContactByUserToken($hsutk))
+#set ($hsContactObject = $hsContact.getHSContactJSONObject())
+
+#set ($hsEntryName = $hsContact.getFirstName())
+#set ($hsEntryCountry = $hsContact.getSFLeadCountry())
+#set ($hsEntryEmail = $hsContact.getEmailAddress())
+#set ($passHubspotCheck = true)
+
+#if (!$hsContact || ($hsEntryName == &quot;&quot;) || ($hsEntryCountry == &quot;&quot;) || ($hsEntryEmail == &quot;&quot;))
+	#set ($passHubspotCheck = false)
+#end
+
+#macro (display_records73 $array)
+	#foreach($record in $array)
+		#set ($download_label = $record.get(&quot;download_label&quot;))
+		#set ($download_url = $record.get(&quot;download_url&quot;))
+		#set ($record_uuid = $record.get(&quot;record_uuid&quot;))
+		#set ($popUrl = &quot;https://www.liferay.com/web/northamerica2014/recap?pt=$record_uuid&quot;)
+		#set ($speakers_map = $record.get(&quot;speakers_map&quot;))
+		#set ($speakers_uuid = $record.get(&quot;speakers_uuid&quot;))
+		#set ($slides_tactic_info = $record.get(&quot;hs_slides_map&quot;))
+		#set ($title = $record.get(&quot;title&quot;))
+		#set ($video_tactic_info = $record.get(&quot;hs_video_map&quot;))
+		#set ($video_url = $record.get(&quot;video_url&quot;))
+
+		#set ($speaker_item_css_class = &quot;pop-up speaker-item speaker-$velocityCount&quot;)
+
+		#if ($download_url != &quot;&quot;)
+			&lt;div class=&quot;$speaker_item_css_class&quot; data-slides=&quot;$download_url&quot; data-slides-tactic-info=&quot;$slides_tactic_info&quot; data-video=&quot;$video_url&quot; data-video-tactic-info=&quot;$video_tactic_info&quot; id=&quot;$record_uuid&quot; onclick=&quot;ga(&apos;send&apos;, &apos;event&apos;, &apos;Conferences - North America 2014&apos;, &apos;Recap Clicks&apos;, &apos;$title&apos;);&quot;&gt;
+				#if ($speakers_map.size() &gt;= 2)
+					#set ($image_src = &quot;/documents/35935946/36204265/Default-Headshot.jpg&quot;)
+				#else
+					#foreach ($speaker in $speakers_map)
+						#set ($speaker_image_group_id = $speaker.get(&quot;speaker_image_group_id&quot;))
+						#set ($speaker_image = $speaker.get(&quot;speaker_image&quot;))
+						#set ($speaker_image_uuid = $speaker.get(&quot;speaker_image_uuid&quot;))
+
+						#if ($speaker_image != &quot;&quot;)
+							#set ($image_src = &quot;/documents/$speaker_image_group_id/$speaker_image_uuid&quot;)
+						#else
+							#set ($image_src = &quot;/documents/35935946/36204265/Default-Headshot.jpg&quot;)
+						#end
+					#end
+				#end
+
+				&lt;div class=&quot;profile-image&quot;&gt;
+					&lt;div class=&quot;speaker-image speaker-image-$velocityCount&quot; style=&quot;background-image: url($image_src);&quot;&gt;
+					&lt;/div&gt;
+				&lt;/div&gt;
+
+				&lt;div class=&quot;profile-content&quot;&gt;
+					#if ($title != &quot;&quot;)
+						&lt;div class=&quot;presentation-title&quot;&gt;
+							$title
+						&lt;/div&gt;
+					#end
+
+					#foreach ($speaker in $speakers_map)
+						#set ($speaker_name = $speaker.get(&quot;speaker_name&quot;))
+						#set ($speaker_company = $speaker.get(&quot;speaker_company&quot;))
+						#set ($speaker_title = $speaker.get(&quot;speaker_title&quot;))
+
+						#if ($speaker_name != &quot;&quot;)
+							&lt;h2 class=&quot;speaker-name&quot;&gt;$speaker_name&lt;/h2&gt;
+						#end
+
+						#if ($speaker_title != &quot;&quot;)
+							&lt;div class=&quot;speaker-title&quot;&gt;
+								$speaker_title,
+								
+								#if ($speaker_company != &quot;&quot;)
+									&lt;span class=&quot;speaker-company&quot;&gt; $speaker_company&lt;/span&gt;
+								#end
+							&lt;/div&gt;
+						#end
+					#end
+				&lt;/div&gt;
+
+				&lt;div class=&quot;aui-helper-hidden pop-up-info&quot;&gt;
+					&lt;div class=&quot;content-wrapper&quot;&gt;
+						#if ($title != &quot;&quot;)
+							&lt;span class=&quot;pop-up-title&quot;&gt;$title&lt;/span&gt;
+						#end
+
+						#foreach($speaker in $speakers_map)
+							#set ($speaker_name = $speaker.get(&quot;speaker_name&quot;))
+							#set ($speaker_company = $speaker.get(&quot;speaker_company&quot;))
+							#set ($speaker_title = $speaker.get(&quot;speaker_title&quot;))
+
+							&lt;div class=&quot;pop-up-speaker&quot;&gt;
+								#if ($speaker_name != &quot;&quot;)
+									$speaker_name
+								#end
+
+								#if ($speaker_company != &quot;&quot;)
+									| $speaker_company
+								#end
+							&lt;/div&gt;
+						#end
+
+						&lt;div class=&quot;share-link&quot;&gt;
+							&lt;span class=&quot;share-text&quot;&gt;Share This Presentation:&lt;/span&gt;
+
+							&lt;input type=&quot;text&quot; value=&quot;$popUrl&quot; onclick=&quot;this.select()&quot; readonly /&gt;
+						&lt;/div&gt;
+					&lt;/div&gt;
+				&lt;/div&gt;
+			&lt;/div&gt;
+		#end
+	#end
+#end
+
+## Set Up Permission Checker
+
+#set ($layout_id = $request.get(&quot;theme-display&quot;).get(&quot;plid&quot;))
+
+#set ($layout_long = $getterUtil.getLong($layout_id))
+#set ($layout = $layoutLocalService.getLayout($layout_long))
+
+#set ($user_has_permissions = $layoutPermission.contains($permissionChecker, $layout, &quot;UPDATE&quot;))
+
+## Get DDL Records
+
+#set ($record_set_id = $getterUtil.getLong($reserved_record_set_id.data))
+
+#set ($records = $ddlRecordLocalService.getRecords($record_set_id))
+
+## Empty arrays for each respective categories
+#* Using Treemap rather than arrays in order to have them automatically sorted *#
+
+#set ($download_items = $portal.getClass().forName(&quot;java.util.TreeMap&quot;).newInstance())
+
+## Looping through the DDL
+
+#foreach ($record in $records)
+	#set ($map_item_name = &quot;&quot;)
+
+	#set ($record = $record.record)
+	#set ($record_uuid = $record.getUuid())
+	
+	#set ($title = &quot;&quot;)
+
+	#if ($record.getField(&quot;title&quot;))
+		#set ($title = $record.getFieldValue(&quot;title&quot;))
+	#end
+	
+	#set ($download_url = &quot;&quot;)
+
+	#if ($record.getField(&quot;download_url&quot;))
+		#set ($download_url = $record.getFieldValue(&quot;download_url&quot;))
+	#end
+	
+	#set ($download_label = &quot;&quot;)
+	
+	#if ($record.getField(&quot;download_label&quot;))
+		#set ($download_label = $record.getFieldValue(&quot;download_label&quot;))
+	#end
+	
+	#set ($slides_tactic_id = &quot;&quot;)
+	
+	#if ($record.getField(&quot;slides_tactic_id&quot;))
+		#set ($slides_tactic_id = $record.getFieldValue(&quot;slides_tactic_id&quot;))
+	#end
+	
+	#set ($speakers_uuid = &quot;&quot;)
+
+	#if ($record.getField(&quot;speakers_uuid&quot;))
+		#set ($speakers_uuid = $record.getFieldValue(&quot;speakers_uuid&quot;))
+	#end
+	
+	#set ($video_url = &quot;&quot;)
+
+	#if ($record.getField(&quot;video_url&quot;))
+		#set ($video_url = $record.getFieldValue(&quot;video_url&quot;))
+	#end
+	
+	#set ($video_tactic_id = &quot;&quot;)
+	
+	#if ($record.getField(&quot;video_tactic_id&quot;))
+		#set ($video_tactic_id = $record.getFieldValue(&quot;video_tactic_id&quot;))
+	#end
+
+	#set ($speaker_array_uuid = $stringUtil.split($speakers_uuid))
+
+	#set ($speakers_map = $portal.getClass().forName(&quot;java.util.TreeMap&quot;).newInstance())
+
+	#foreach ($speakers_uuid in $speaker_array_uuid)
+		#set ($speaker_info = $portal.getClass().forName(&quot;java.util.TreeMap&quot;).newInstance())
+
+		#set ($speakers_uuid = $stringUtil.trim($speakers_uuid))
+		#set ($speaker_record = false)
+
+		#if (&quot;$speakers_uuid&quot; != &quot;&quot;)
+			#set ($speaker_record_info = $ddlRecordLocalService.getDDLRecordByUuidAndGroupId($speakers_uuid, $groupId))
+			#set ($speaker_record = $ddlRecordLocalService.fetchDDLRecord($getterUtil.getLong($speaker_record_info.recordId)))
+		#end
+
+		#if ($speaker_record)
+			#set ($speaker_image_group_id = $record.getGroupId())
+
+			#set ($speaker_image = &quot;&quot;)
+
+			#if ($speaker_record.getField(&quot;speaker_image&quot;))
+				#set ($speaker_image = $speaker_record.getFieldValue(&quot;speaker_image&quot;))
+			#end
+			
+			#set ($speaker_json_object = $jsonFactoryUtil.createJSONObject($speaker_image))
+			#set ($speaker_image_uuid = $speaker_json_object.getString(&quot;uuid&quot;))
+
+			#set ($speaker_company = &quot;&quot;)
+
+			#if ($speaker_record.getField(&quot;speaker_company&quot;))
+				#set ($speaker_company = $speaker_record.getFieldValue(&quot;speaker_company&quot;))
+			#end
+
+			#set ($speaker_name = &quot;&quot;)
+
+			#if ($speaker_record.getField(&quot;speaker_name&quot;))
+				#set ($speaker_name = $speaker_record.getFieldValue(&quot;speaker_name&quot;))
+			#end
+
+			#set ($speaker_title = &quot;&quot;)
+
+			#if ($speaker_record.getField(&quot;speaker_title&quot;))
+				#set ($speaker_title = $speaker_record.getFieldValue(&quot;speaker_title&quot;))
+			#end
+		#else
+			#set ($speaker_company = &quot;&quot;)
+			#set ($speaker_image_group_id = &quot;&quot;)
+			#set ($speaker_image = &quot;&quot;)
+			#set ($speaker_image_uuid = &quot;&quot;)
+			#set ($speaker_json_object = &quot;&quot;)
+			#set ($speaker_name = &quot;&quot;)
+			#set ($speaker_title = &quot;&quot;)
+		#end
+
+		#set ($void = $speaker_info.put(&quot;speaker_image_group_id&quot;, $speaker_image_group_id))
+		#set ($void = $speaker_info.put(&quot;speaker_image&quot;, $speaker_image))
+		#set ($void = $speaker_info.put(&quot;speaker_image_uuid&quot;, $speaker_image_uuid))
+		#set ($void = $speaker_info.put(&quot;speaker_company&quot;, $speaker_company))
+		#set ($void = $speaker_info.put(&quot;speaker_image_group_id&quot;, $speaker_image_group_id))
+		#set ($void = $speaker_info.put(&quot;speaker_name&quot;, $speaker_name))
+		#set ($void = $speaker_info.put(&quot;speaker_title&quot;, $speaker_title))
+		#set ($void = $speakers_map.put(&quot;speaker_info_$velocityCount&quot;, $speaker_info))
+
+		#if ($velocityCount == 1)
+			#set ($map_item_name = $speaker_name)
+		#end
+	#end
+
+	#set ($hs_slides_map = &quot;&quot;)
+
+	#if ($slides_tactic_id != &quot;&quot;)
+		#get_tactic_info21($slides_tactic_id, $hs_slides_map)
+	#end
+
+	#set ($hs_video_map = &quot;&quot;)
+
+	#if ($video_tactic_id != &quot;&quot;)
+		#get_tactic_info21($video_tactic_id, $hs_video_map)
+	#end
+
+	#set($download_item = $portal.getClass().forName(&quot;java.util.TreeMap&quot;).newInstance())
+
+	#set ($void = $download_item.put(&quot;record&quot;, $record))
+	#set ($void = $download_item.put(&quot;title&quot;, $title))
+	#set ($void = $download_item.put(&quot;download_url&quot;, $download_url))
+	#set ($void = $download_item.put(&quot;download_label&quot;, $download_label))
+	#set ($void = $download_item.put(&quot;hs_slides_map&quot;, $hs_slides_map))
+	#set ($void = $download_item.put(&quot;hs_video_map&quot;, $hs_video_map))
+	#set ($void = $download_item.put(&quot;record_uuid&quot;, $record_uuid))
+	#set ($void = $download_item.put(&quot;speakers_uuid&quot;, $speakers_uuid))
+	#set ($void = $download_item.put(&quot;video_url&quot;, $video_url))
+
+	#set ($void = $download_item.put(&quot;speakers_map&quot;, $speakers_map))
+
+	#if ($map_item_name == &quot;&quot;)
+		#set ($map_item_name = $velocityCount)
+	#else
+		#set ($map_item_name = &quot;$map_item_name $velocityCount&quot;)
+	#end
+
+	#if ($record.getStatus() == &quot;0&quot;)
+		#set ($void = $download_items.put(&quot;$map_item_name&quot;, $download_item))
+	#end
+#end
+
+&lt;h2 style=&quot;margin-bottom: 20px;&quot;&gt;
+	Speakers Presentations
+&lt;/h2&gt;
+
+&lt;div class=&quot;speaker-wrapper default-max-width&quot;&gt;
+	#display_records73($download_items)
+&lt;/div&gt;</__script>
+  <__columnBitmask>0</__columnBitmask>
+</com.liferay.portlet.dynamicdatamapping.model.impl.DDMTemplateImpl>
