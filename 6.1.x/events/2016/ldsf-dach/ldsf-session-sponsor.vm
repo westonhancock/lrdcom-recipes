@@ -1,0 +1,130 @@
+<div class="sponsor-session-section-border">
+    <div class="sponsor-session-section-container">
+        #foreach ($item in $sponsor_session_color.siblings)
+            #if ($item.gray.data != '')
+                <div class="sponsor-session-container sponsor-session-container-$velocityCount">
+                    <a href="#agenda" class="animate-scroll class-toggle" data-target-node="#agendaPop">
+                        <div class="sponsor-${velocityCount} sponsor" style="background-image:url('$item.gray.data');">&nbsp;
+                    	</div>
+                    </a>
+                </div>
+            #end
+        #end
+    </div>
+</div>
+<style type="text/css">
+.sponsor-session-section-border {
+    border-bottom: 1px solid #e3e6e8;
+    border-top: 1px solid #e3e6e8;
+    margin: 60px 0 20px;
+}
+
+.sponsor-session-section-container {
+    margin: 0 auto;
+    max-width: 1280px;
+    padding-bottom: 20px;
+    text-align: center;
+}
+
+.sponsor-session-section-container a {
+    display: block;
+    position: relative;
+    text-decoration: initial;
+}
+
+.sponsor-session-container {
+    margin: 40px 0px;
+}
+
+.sponsor-session-container h3 {
+    line-height: .85em;
+    margin-bottom: 0;
+    position: relative;
+    top: -10px;
+}
+
+.sponsor-session-container:hover h3 {
+    color: #009AD6;
+}
+
+.sponsor-session-container .btn-container .btn {
+    padding: 3px 15px;
+}
+
+.sponsor-session-container .sponsor {
+    width: 100%;
+    background-repeat: no-repeat;
+    background-position: center center;
+    height: 90px;
+}
+
+#foreach ($image in $sponsor_session_color.siblings)
+
+	.sponsor-session-container .sponsor.sponsor-${velocityCount}:hover {
+		background-image: url('$image.data') !important;
+	}
+#end
+
+@media(min-width: 620px) {
+    .sponsor-session-container {
+        display: inline-block;
+        margin: 0;
+        padding: 20px 0;
+        vertical-align: top;
+        width: 32%;
+    }
+
+    .sponsor-session-section-container {
+        padding: 20px 0 40px;
+    }
+}
+
+@media(min-width: 780px) {
+    .sponsor-session-container {
+        margin: 0 2.5%;
+        width: 25%;
+    }
+
+    .sponsor-session-container h3 {
+        color: #e3e6e8;
+        margin-bottom: 0;
+        position: relative;
+        transition: top .5s;
+        -moz-transition: top .5s;
+        -ms-transition: top .5s;
+        -webkit-transition: top .5s;
+    }
+
+    .sponsor-session-container:hover h3 {
+        top: -30px;
+    }
+
+    .sponsor-session-container .btn-container {
+        position: absolute;
+        left: 50%;
+        opacity: 0;
+        top: 110%;
+        width: 100%;
+        z-index: -1;
+        transition: opacity .5s, top .5s;
+        -moz-transition: opacity .5s, top .5s;
+        -ms-transition: opacity .5s, top .5s;
+        -webkit-transition: opacity .5s, top .5s;
+    }
+
+    .sponsor-session-container:hover .btn-container {
+        opacity: 1;
+        padding: 0;
+        top: 85%;
+        z-index: 1;
+    }
+
+
+    .sponsor-session-container .btn-container .btn {
+        left: -50%;
+        position: relative;
+    }
+}
+
+$custom_css.data
+</style>
