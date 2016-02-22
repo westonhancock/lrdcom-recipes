@@ -47,14 +47,18 @@
         -ms-transform-style: preserve-3d;
         -o-transform-style: preserve-3d;
         -webkit-transform-style: preserve-3d;
+        transition: .6s;
+        -webkit-transition: .6s;
+        -moz-transition: .6s;
+        -o-transition: .6s;
     }
 
     .flip-item.class-toggle-off-click-active {
-        -moz-transform: rotateY(-180deg);
-        -ms-transform: rotateY(-180deg);
-        -o-transform: rotateY(-180deg);
-        -webkit-transform: rotateY(-180deg);
-        transform: rotateY(-180deg);
+        -moz-transform: rotateY(180deg);
+        -ms-transform: rotateY(180deg);
+        -o-transform: rotateY(180deg);
+        -webkit-transform: rotateY(180deg);
+        transform: rotateY(180deg);
     }
 
     .speaker-item {
@@ -75,7 +79,6 @@
     .flip-item .flip-side, .speaker-item .speaker-info {
         -moz-backface-visibility: hidden;
         -moz-transform: translate3d(0, 0, 0);
-        
         -ms-transform: translate3d(0, 0, 0);
         -o-backface-visibility: hidden;
         -o-transform: translate3d(0, 0, 0);
@@ -103,11 +106,11 @@
     }
 
     .flip-item:hover, .speaker-item .speaker-info {
-        -moz-transition: all 0.8s ease-in-out;
-        -ms-transition: all 0.8s ease-in-out;
-        -o-transition: all 0.8s ease-in-out;
-        -webkit-transition: all 0.8s ease-in-out;
-        transition: all 0.8s ease-in-out;
+        -moz-transition: all 0.4s ease-in-out;
+        -ms-transition: all 0.4s ease-in-out;
+        -o-transition: all 0.4s ease-in-out;
+        -webkit-transition: all 0.4s ease-in-out;
+        transition: all 0.4s ease-in-out;
     }
 
     .speaker-item .speaker-info, .speaker-item .speaker-bio {
