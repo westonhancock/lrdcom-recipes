@@ -207,7 +207,8 @@
 		}
 
 		#navtoggle {
-			background-image: url(/documents/14/48124953/hamburger.png);
+		
+			background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABUAAAASCAYAAAC0EpUuAAAABmJLR0QAAABnAKqC2CwsAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAB3RJTUUH4AIXDRE4Hp2FuQAAAHJJREFUOMvl01ENwjAYReGvTQ3UAkjYJGBhGmoBCzhAQzVMAliYBCqhmPh5WDgCTnKTc5PWK25iGPO57UnrH1Rx3HOwEGrGCJaOghVLoHRPc07RZD8gaf0SPb/g9d9JXcNveqqktuCkHgX9FPMz3sHO4ws0cB61kJQm4wAAAABJRU5ErkJggg==);
 	        cursor: pointer;
 	        display: inline-block;
 	        height: 18px;
@@ -292,6 +293,7 @@
 		background-position: 0 50%;
 		background-size: cover;
 		background-repeat: no-repeat;
+		background-color: #F3F3F3;
 		overflow: hidden;
 		position: relative;
 	}
@@ -331,32 +333,38 @@
 		width: 25%;
 	}
 
-	## fit event logo images from 320px - 600px screens by reducing everything in half...
-
-	@media screen and (max-width: ${mobile_breakpoint}px) {
-		
-		.fade {
-			opacity: 1;
-		}
+	## phone and tablet
+	@media screen and (max-width: ${mobile_breakpoint}px)  {
 		#intro {
 			background: url($background_image.background_image_mobile.data);
 			background-position: 0; 
 			background-size: 100%;
 			background-repeat: no-repeat;
+			background-color: #F3F3F3;
 			margin-top: 44px;
 			overflow: hidden;
 			position: relative;	
-		}
-
-		#intro .register-button{
-			display: none;
 		}
 		
 		#intro .content, #intro .content.slided {
 			left: 5%;
 			top: 5%;
 		}
+		
+	}
+	## phone
+	@media screen and (max-width: 500px) {
+		
+		.fade {
+			opacity: 1;
+		}
+		
 
+		#intro .register-button{
+			display: none;
+		}
+		
+	
 		#introCover.start, #introCover.slided {
 			width: 25%;
 		}
@@ -366,7 +374,7 @@
 		}
 
 		.content .span-right {
-			max-width: 150px;
+			max-width: 180px;
 		}
 
 		.content .event-logo-text {
@@ -379,7 +387,7 @@
 
 		#introCover {
 			border-width: 0;
-			height: 400px;
+			margin-top: 165%;
 		}
 			
 		.content .event-subtitle {
@@ -392,11 +400,11 @@
 		}
 	}
 
-		
-	@media screen and (max-width: ${mobile_breakpoint}px) and (min-width: 400px) {
+	## tablet	
+	@media screen and (max-width: ${mobile_breakpoint}px) and (min-width: 500px) {
 		#introCover {
 			border-width: 0;
-			height: 600px;
+			margin-top: 100%;
 		}
 	}
 </style>
