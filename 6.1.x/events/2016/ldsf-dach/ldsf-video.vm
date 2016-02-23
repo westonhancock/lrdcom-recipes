@@ -74,7 +74,7 @@
     @media screen and (max-width: 768px) {
 		#article-${reserved-article-id.data} {
         	background: url($background_image_mobile.data);
-        	background-attachment: fixed;
+        	background-attachment: scroll;
         	background-position: right bottom;
         	background-repeat: no-repeat;
         	background-size: cover;	

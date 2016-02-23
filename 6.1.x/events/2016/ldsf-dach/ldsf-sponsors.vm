@@ -146,7 +146,7 @@
 #set ($user_has_permissions = $layoutPermission.contains($permissionChecker, $layout, "UPDATE"))
 
 #set ($ddl_records_local_service = $serviceLocator.findService("com.liferay.portlet.dynamicdatalists.service.DDLRecordLocalService"))
-#set ($record_set_id = $getterUtil.getLong($reserved_record_set_id.data))
+#set ($record_set_id = $getterUtil.getLong($record_set_id.data))
 #set ($records = $ddl_records_local_service.getRecords($record_set_id))
 
 ## Empty arrays for each respective categories
@@ -194,14 +194,14 @@
 
 <div class="sponsors-wrapper">
 	#if ($main_sorted.size() > 0)
-		#content_template12("Hauptsponsor", $main_sorted)
+		#content_template12($main_sponsor_text.data, $main_sorted)
 	#end
 
 	#if ($diamond_sorted.size() > 0)
-		#content_template12("Diamantsponsor", $diamond_sorted)
+		#content_template12($diamond_sponsor_text.data, $diamond_sorted)
 	#end
 
 	#if ($platinum_sorted.size() > 0)
-		#content_template12("Platinsponsor", $platinum_sorted)
+		#content_template12($platinum_sponsor_text.data, $platinum_sorted)
 	#end
 </div>
