@@ -585,7 +585,7 @@
 				} else  {
 					// if we are at the top already then skip the fading
 					var atTop = currentScrollPos <= topNavPosition;
-
+		
 					fixedNav.hide(!atTop);
 					registerButton.hide(!atTop);
 				}
