@@ -1,0 +1,34 @@
+## Get DDL Records
+#set ($ddm_local_service = $serviceLocator.findService("com.liferay.portlet.dynamicdatamapping.service.DDMStructureLocalService"))
+#set ($count_ddm_structures = $ddm_local_service.getDDMStructuresCount() )
+
+<p> We have found $count_ddm_structures ddm structures </p>
+
+#set ($ddm_list = $ddm_local_service.getDDMStructures(0, $count_ddm_structures) )
+
+<table>
+<tr>
+<Th> id</th>
+<th>Name</th>
+<th>Group</th>
+</tr>
+#foreach ($ddmstruct in $ddm_list)
+#set ($ddm_name = $ddmstruct.getName() )
+#set ($ddm_group = $ddmstruct.getGroupId() )
+#set ($ddm_id = $ddmstruct.getPrimaryKey() )
+
+<tr>
+<td>$ddm_id</td>
+<td>$ddm_name</td>
+<td>$ddm_group</td>
+</tr>
+
+	
+#end
+</table>
+
+#set ($ddlrecord_local_service = $serviceLocator.findService("com.liferay.portlet.dynamicdatalists.service.DDLRecordSetLocalService"))
+#set ($group_id = 67510365) 
+#set ($count_ddl_recordsets = $ddlrecord_local_service.getRecordSetsCount($group_id) )
+<p> $count_ddl_recordsets recordsets found for group id $group_id</p>
+
