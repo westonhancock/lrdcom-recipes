@@ -1,5 +1,5 @@
 #set ($ddl_records_local_service = $serviceLocator.findService("com.liferay.portlet.dynamicdatalists.service.DDLRecordLocalService"))
-#set ($link_records = $ddl_records_local_service.getRecords(69701505))
+#set ($link_records = $ddl_records_local_service.getRecords( $getterUtil.getLong($record_set_id.data)))
 #set ($link_tree = $portal.getClass().forName("java.util.TreeMap").newInstance())
 
 ## fetch link records and sort in tree map... would be better to do in ddl query but does not seem to work with velocity
