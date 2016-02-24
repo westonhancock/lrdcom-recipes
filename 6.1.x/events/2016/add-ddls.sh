@@ -69,17 +69,3 @@ curl https://www.liferay.com/api/secure/jsonws/ddlrecordset/add-record-set \
 done
 
 
-#curl https://www.liferay.com/api/secure/jsonws/ddlrecordset/add-record-set \
-#  -u allen.ziegenfus@liferay.com:lraz123Pass \
-#  -d groupId=67510365 \
-#  -d ddmStructureId=69756099 \
-#  -d recordSetKey= \
-#  -d nameMap="{\"en_US\": \"LPSF-UK | Photo Galleries\"}" \
-# -d descriptionMap="{\"en_US\": \"LPSF-UK | Photo Galleries\"}" \
-#  -d minDisplayRows=20 \
-#  -d scope=0
-#
-#
-#
-#  -d nameMap="LPSF-UK | Photo Galleries" \
-#  -d descriptionMap="LPSF-UK | Photo Galleries" \
