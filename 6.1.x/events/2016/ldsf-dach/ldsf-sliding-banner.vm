@@ -253,6 +253,13 @@
 		background-color: #153F6D;
 		color: #FFF;
 	}
+	 #fixedRegisterBtn .btn{
+	 	background-color: #153F6D;
+	 }
+	 #fixedRegisterBtn .btn:hover {
+	 	background-color: $button_color;
+	 }
+	 
 
 	.content .span-left {
 		background: url($logo_image.data);
