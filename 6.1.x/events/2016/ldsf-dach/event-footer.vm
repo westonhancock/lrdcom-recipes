@@ -362,6 +362,7 @@ a.android {
             #end
         </ul>
 	</div>
+	#if ($hide_events_app.data.equalsIgnoreCase("false") ) 
 	<div class="aui-w15 content-column app-download">
 		<h3 class="get-app lighter-font">
 			#if ($events_app_text.data != "" && $events_app_text.data)
@@ -371,6 +372,7 @@ a.android {
 			#end
 		</h3>
 		<a class="ios" href="https://itunes.apple.com/us/app/liferay-events/id650199231?mt=8">&nbsp;</a> <a class="android" href="https://play.google.com/store/apps/details?id=com.liferay.events.global.mobile&amp;hl=en">&nbsp;</a></div>
+	#end
 	<div class="social content-column">
 		<ul class="content-column lighter-font">
 			<li class="social-item facebook">

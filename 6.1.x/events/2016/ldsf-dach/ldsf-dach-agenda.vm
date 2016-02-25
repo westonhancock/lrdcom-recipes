@@ -31,15 +31,15 @@
 
 ## get Locale objects for converting dates
 #set ($localeEn = $localeUtil.fromLanguageId("en_US"))
-#set ($localePage = $localeUtil.fromLanguageId("de_DE"))
-#set ($timeFormat = "h:mma")
-#set ($timeFormat = "H:mm")
-#set ($agendaDateFormat = "EEEE, dd. MMMM yyyy")
-#set ($ga_conference_name = "Conferences - DACH 2016")
-#set ($admineditlink = "/web/events2016/ldsf-dach/admin?p_p_id=169_INSTANCE_FXPzw37UEPkQ&p_p_lifecycle=0&p_p_state=maximized&p_p_mode=view&p_p_col_id=column-1&p_p_col_pos=4&p_p_col_count=8&_169_INSTANCE_FXPzw37UEPkQ_struts_action=%2Fdynamic_data_list_display%2Fedit_record&_169_INSTANCE_FXPzw37UEPkQ_cmd=update&_169_INSTANCE_FXPzw37UEPkQ_redirect=https%3A%2F%2Fwww.liferay.com%2Fweb%2Fevents2016%2Fldsf-dach%2Fadmin%3Fp_p_id%3D169_INSTANCE_FXPzw37UEPkQ%26p_p_lifecycle%3D0%26p_p_state%3Dnormal%26p_p_mode%3Dview%26p_p_col_id%3Dcolumn-1%26p_p_col_pos%3D4%26p_p_col_count%3D8&_169_INSTANCE_FXPzw37UEPkQ_")
+
+#set ($localePage = $localeUtil.fromLanguageId($agenda_locale.data))
+#set ($timeFormat = $agenda_time_format.data)
+#set ($agendaDateFormat = $agenda_date_format.data)
+#set ($ga_conference_name = $agenda_click_analytics_category.data)
+#set ($admineditlink = $agenda_edit_link.data)
 ## if not "none" then defaults to uppercase...
 #set ($texttransform = "none")
-#set ($agendabutton = true)
+#set ($agendabutton = $enable_agenda_button.data.equalsIgnoreCase("true"))
 #set ($selector_color = "#0067aa")
 
 #set($void = $portalUtil.setPageSubtitle("", $request))
@@ -206,7 +206,7 @@
 
 #set( $tabWidth = 100 / $agenda.keySet().size() )
 
-#if ($agendabutton)
+
 
 <style type="text/css">
     #feedbackContainer {
@@ -821,13 +821,16 @@
 </style>
 
  <div id="agenda">
+ #if ($agendabutton)
  <div class="lego-article" id="article-54196071">
  	 <div class="lego-article-content max-960">
  	 	<div class="agenda-section aui-helper-clearfix lego-section section-1"> 
  	 		<div class="aui-w100 block-1 centered content-column lego-block"> 
  	 			<div class="content-column-content only-column"> 
- 	 				<div class="class-toggle lego-element btn" data-target-node="#agendaPop"> zur Agenda </div>
- 	 				<div class="agenda-aenderungen">(Änderungen vorbehalten)</div>
+ 	 				<div class="class-toggle lego-element btn" data-target-node="#agendaPop"> $agenda_button_text.data </div>
+ 	 				#if ($agenda_button_subtext.data != "")
+ 	 				<div class="agenda-aenderungen">$agenda_button_subtext.data</div>
+ 	 				#end
  	 			 </div> 
  	 		</div> 
  	 	</div> 

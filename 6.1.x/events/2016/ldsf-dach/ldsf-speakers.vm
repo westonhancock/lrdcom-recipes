@@ -1,4 +1,3 @@
-#set ($speakersectionid = "referenten")
 #set ($backgroundcolor = "#ebebeb")
 #set ($textcolor = "#4d4d4f")
 
@@ -263,7 +262,7 @@
     #end
 #end
 
-<div class="default-max-width speaker-wrapper" id="$speakersectionid">
+<div class="default-max-width speaker-wrapper" id="$sectionid.data">
     #foreach($speaker in $speaker_records)
         #set ($speaker_bio = $speaker.get("speaker_bio"))
         #set ($speaker_company = $speaker.get("speaker_company"))
@@ -289,7 +288,7 @@
             #else
                 #set ($image_src = "/documents/24222655/33896529/2014-LPSF-Benelux-Default.png/94ff4361-cf48-4c1d-b528-bd4807b8d9c2")
             #end
-            <div class="$speaker_item_css_class" onclick="ga('send', 'event', 'LPSF - UK', 'Speaker Profile Clicks', '$htmlUtil.escape($speaker_name)');" style="background-image: url($image_src);">
+            <div class="$speaker_item_css_class" onclick="ga('send', 'event', '$speakerClickEventCategory.data', 'Speaker Profile Clicks', '$htmlUtil.escape($speaker_name)');" style="background-image: url($image_src);">
 
                 <div class="flip-side front-side" style="background-image: url($image_src);">
                     <div class="speaker-info">

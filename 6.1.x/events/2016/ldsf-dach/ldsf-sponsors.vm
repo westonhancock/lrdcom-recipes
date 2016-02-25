@@ -108,15 +108,14 @@
 
 <div class="sponsor-title" id="sponsors">
 	<h2 class="lighter-font">
-		Sponsoren
+		$sponsor_header_text.data
 	</h2>
 </div>
 
 ## Content Template
 #macro (content_template12 $heading $array)
-	#set ($className = $stringUtil.replace($heading, " ", "_").toLowerCase())
 
-	<div class="$className sponsor-type">
+	<div class="sponsor-type">
 		<div class="heading-container">
 			<h2 class="sponsor-heading">
 				$heading
@@ -124,8 +123,9 @@
 		</div>
 		<div class="items-container">
 
-			#foreach ($record in $array)
+			#foreach ($record in $array)		
 				<div class="sponsor-image-container">
+					
 					#set ($name = $record.get("name"))
 					#set ($image_url = $record.get("image_url"))
 					#set ($link = $record.get("link"))
@@ -150,22 +150,30 @@
 #set ($records = $ddl_records_local_service.getRecords($record_set_id))
 
 ## Empty arrays for each respective categories
-#set($main_sorted = $portal.getClass().forName("java.util.TreeMap").newInstance())
-#set($diamond_sorted = $portal.getClass().forName("java.util.TreeMap").newInstance())
-#set($platinum_sorted = $portal.getClass().forName("java.util.TreeMap").newInstance())
+
+#set($all_sponsors = $portal.getClass().forName("java.util.TreeMap").newInstance())
+
+#set($sponsor_rank =  $portal.getClass().forName("java.util.TreeMap").newInstance())
+#set($rank_to_sponsor =  $portal.getClass().forName("java.util.TreeMap").newInstance())
+#set ($void = $sponsor_rank.put("main", 1) )
+#set ($void = $sponsor_rank.put("diamond", 2) )
+#set ($void = $sponsor_rank.put("platinum", 3) )
+#set ($void = $sponsor_rank.put("gold", 4) )
+#set ($void = $sponsor_rank.put("silver", 5) )
+#set ($void = $sponsor_rank.put("exhibitor", 6) )
+
+#foreach ($rank in $sponsor_rank.keySet())
+	#set ($void = $rank_to_sponsor.put( $sponsor_rank.get($rank), $rank))
+#end
+
 
 ## Looping through the DDL
 #foreach ($record in $records)
-	## Differenate rank
-	#set ($main = '["main"]')
-	#set ($diamond = '["diamond"]')
-	#set ($platinum = '["platinum"]')
-
 	## Prepare each of the field values
 	#set ($record = $record.record)
 	#set ($docmedia = $record.getFieldValue("docmedia"))
 	#set ($link = $record.getFieldValue("link"))
-	#set ($name = $record.getFieldValue("name"))
+	#set ($name = $record.getFieldValue("name").toUpperCase())
 	#set ($rank = $record.getFieldValue("rank"))
 
 	## Prepares Image Link
@@ -178,30 +186,47 @@
 	## Lets prepare the data in its own box
 	#set($company = $portal.getClass().forName("java.util.TreeMap").newInstance())
 
+	#set ($void = $company.put("name", $name))
 	#set ($void = $company.put("image_url", $image_url))
 	#set ($void = $company.put("link", $link))
-	#set ($void = $company.put("name", $name))
 
-	## ...and ship em out!
-	#if ($rank == $main)
-		#set ($void = $main_sorted.put($name, $company))
-	#elseif ($rank == $diamond)
-		#set ($void = $diamond_sorted.put($name, $company))
-	#elseif ($rank == $platinum)
-		#set ($void = $platinum_sorted.put($name, $company))
-	#end
+
+	#set ($stripped_rank = $stringUtil.replace($rank, "[", ""))
+    #set ($stripped_rank = $stringUtil.replace($stripped_rank, "]", ""))
+    #set ($stripped_rank = $stringUtil.replace($stripped_rank, '"', ''))
+    #set ($stripped_rank=  $stringUtil.replace($stripped_rank, ',', ' '))
+	#set ($sponsor_order = $sponsor_rank.get($stripped_rank))
+
+   #if (!$all_sponsors.get($sponsor_order))
+    #set ($void = $all_sponsors.put($sponsor_order, $portal.getClass().forName("java.util.TreeMap").newInstance()))
+   #end
+   
+   
+   #set ($void = $all_sponsors.get($sponsor_order).put($name, $company))
 #end
 
+## gather labels
+#set($sponsor_labels = $portal.getClass().forName("java.util.TreeMap").newInstance())
+
+#foreach ($ranktextsection in $sponsor_text_setting.siblings)
+	#set ($void = $sponsor_labels.put($ranktextsection.sponsor_type.data, $ranktextsection.sponsor_text.data ))
+	##<p> $ranktextsection.sponsor_type.data: $ranktextsection.sponsor_text.data</p>
+#end
+
+
 <div class="sponsors-wrapper">
-	#if ($main_sorted.size() > 0)
-		#content_template12($main_sponsor_text.data, $main_sorted)
+   #foreach ($rank in $all_sponsors.keySet())
+   	#set ($rank_tree = $all_sponsors.get($rank) )
+	#if ($rank_tree.size() > 0)
+    	
+    	##<p> $rank: $stripped_rank </p>
+		#set ($sponsor_rank = $rank_to_sponsor.get($rank) ) 
+		#set ($rank_label = $sponsor_labels.get($sponsor_rank))
+		#if (!$sponsor_labels.containsKey($sponsor_rank) ) 
+		    #set ($rank_label = $sponsor_rank)
+		#end
+		#content_template12( $rank_label, $rank_tree)
 	#end
-
-	#if ($diamond_sorted.size() > 0)
-		#content_template12($diamond_sponsor_text.data, $diamond_sorted)
-	#end
-
-	#if ($platinum_sorted.size() > 0)
-		#content_template12($platinum_sponsor_text.data, $platinum_sorted)
-	#end
+  #end
+	
 </div>
