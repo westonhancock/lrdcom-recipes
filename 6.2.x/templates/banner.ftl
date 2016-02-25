@@ -1,3 +1,6 @@
+<#assign service_context = objectUtil("com.liferay.portal.service.ServiceContextThreadLocal").getServiceContext() />
+<#assign http_servlet_request = service_context.getRequest() />
+
 <#assign min_height = "768px" />
 
 <#if height.data?has_content>
@@ -20,7 +23,7 @@
 <#assign banner_css = "align-center block-container justify-center main-banner no-padding" />
 <#assign banner_style = "" />
 
-<#if video_info?has_content>
+<#if video_info?has_content && !browserSniffer.isMobile(http_servlet_request)>
 	<#assign banner_css = banner_css + " video-banner" />
 	<#assign banner_style = "min-height: ${min_height}" />
 <#else>
@@ -28,7 +31,7 @@
 </#if>
 
 <div class="${banner_css}" id="article-${.vars['reserved-article-id'].data}" style="${banner_style}" >
-	<#if video_info?has_content>
+	<#if video_info?has_content && !browserSniffer.isMobile(http_servlet_request)>
 		<video autoplay loop muted style="height: 100%; min-height: ${min_height};" width="100%" >
 			${video_info}
 			${video_image_info}
