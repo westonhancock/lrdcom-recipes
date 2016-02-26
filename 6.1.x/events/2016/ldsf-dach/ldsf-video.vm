@@ -2,7 +2,18 @@
     .aui-overlaymask-content {
         opacity: 0.85 !important;
     }
-
+    
+    .video-swap {
+    	text-align: center;
+    	cursor: pointer;
+    	width: 55%;
+    }
+    
+    .engage-container > div {
+		display: inline-block;
+  		vertical-align: middle;
+	}
+    
     .engage-section {
         margin: auto;
         padding: 1em 0; 
@@ -13,19 +24,14 @@
         font-weight: normal;
         text-align: center;
         line-height: 1.5em;
-        margin: 10px 0;
+        margin: 10px;
+       
     }
-
-    .engage-section > div {
-        display: table;
+     .engage-text {
+    	text-shadow: 0 0 30px rgba(12, 0, 5, 0.8);
+     	width: 40%;
     }
-
-    .engage-video, .engage-text {
-        display: table-cell;
-        float: left;
-        text-shadow: 0 0 30px rgba(12, 0, 5, 0.8);
-        vertical-align: middle;
-    }
+   
 
     .engage-text h3.subtitle {
         font-size: 1.25em;
@@ -55,13 +61,6 @@
         max-width: 960px;
     }
 
-    .video-swap {
-        background: url(/documents/67510365/68001944/video-frame.svg/e2dddefc-ba3b-40a3-8c28-30d197d23d39) no-repeat;
-        cursor: pointer;
-        height: 234px;
-        margin: auto;
-        width: 393px;
-    }
 
     #${sectionid.data} {
         background: url($background_image.data);
@@ -222,9 +221,8 @@
     }
 
     @media(max-width: 820px) {
-        .engage-section > div {
+       .engage-container > div  {
             display: block;
-            float: none;
             margin: auto;
         }
         .engage-section .engage-text {
@@ -233,29 +231,36 @@
         }
     }
 
-    @media(max-width: 500px) {
-        .video-swap {
-            background-size: 100% 100%;
-            cursor: pointer;
-            height: 117px;
-            max-width: 280px;
-        }
-    }
+	#${sectionid.data} svg {
+		width: 100%;
+	}
+	
+	#${sectionid.data} svg:hover g{
+		stroke-width: 4;  
+	}
+	
+	
 </style>
 
 <div id="$sectionid.data">
-   <div class="lego-article-content max-960" id="aboutStartNav">
-        <div class="aui-helper-clearfix engage-section lego-section section-1">
-        	<h2 class="lego-element title light"> $header.data</h2>
-            <div class="aui-w60 block-1 content-column lego-block engage-video">
-                <div class="content-column-content left-column">
-                    <div class="lego-element video-swap video-wrapper" data-embed="$video_id.data">
-                    </div>
+   <div class="max-960" id="aboutStartNav">
+        <div class="engage-section">
+        	<h2 class="title light">$header.data</h2>
+            <div class="engage-container">
+                <div class="video-swap ">
+                    <svg title="Play Video" class="video-wrapper" data-embed="$video_id.data" version="1.1" id="Layer_1" 
+                    	 xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" 
+                  		 x="0px" y="0px" width="393px" height="234px" viewBox="0 0 393 234" enable-background="new 0 0 393 234"
+          				 xml:space="preserve">
+						<g stroke="white" fill="transparent" stroke-width="2">
+       						 <rect x=1 y=1 width=391 height=232 />
+       						 <circle cx="197" cy="117" r="46" />
+						     <polygon points="180,90 223,116 180,140"/>
+						</g>
+					</svg>
                 </div>
-            </div>
-            <div class="aui-w40 block-2 content-column lego-block engage-text">
-                <div class="content-column-content right-column" >
-                    <h3 class="lego-element subtitle light">$paragraph.data</h3>
+            	<div class="engage-text" >
+                    <h3 class="subtitle light">$paragraph.data</h3>
                 </div>
             </div>
         </div>
