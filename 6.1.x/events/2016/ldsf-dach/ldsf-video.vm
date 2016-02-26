@@ -5,13 +5,13 @@
 
     .engage-section {
         margin: auto;
-        padding-bottom: 6em;
-        padding-top: 5em;
+        padding: 1em 0; 
     }
 
     .engage-section h2.title {
         font-size: 28px;
         font-weight: normal;
+        text-align: center;
         line-height: 1.5em;
         margin: 10px 0;
     }
@@ -32,6 +32,7 @@
         font-weight: normal;
         line-height: 1.5em;
         margin: 15px 0;
+        padding: 0 20px;
         text-shadow: 0 0 30px rgba(12, 0, 5, 0.8);
     }
 
@@ -62,7 +63,7 @@
         width: 393px;
     }
 
-    #article-${reserved-article-id.data} {
+    #${sectionid.data} {
         background: url($background_image.data);
         background-attachment: fixed;
         background-position: top center;
@@ -72,7 +73,7 @@
     }
     
     @media screen and (max-width: 768px) {
-		#article-${reserved-article-id.data} {
+		#${sectionid.data} {
         	background: url($background_image_mobile.data);
         	background-attachment: scroll;
         	background-position: right bottom;
@@ -82,7 +83,7 @@
 	}
 
     #closePopUp {
-        background: url(/documents/14/43237314/x-close.png/fb100dfc-157b-43df-8ce1-5a8c8a873c3d) no-repeat;
+    	background: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAcZJREFUeNqslksoRFEcxmeMR5FIyIIkSSgSkbcikrKQlI2SUrKysLBQysZCWVoNRUmTKGKpJKWQZKkkpEgiydv1/fluTtOd+5i5t35155z/+X3dO+dxPZqmeUA7GOS9G4hvFcTKj2zwCr7BgAvyNvCm/V1DeuMwGySkPwJ5K3ihyw+8aucIO75AXxjyZvBMxxzwSXtw0SgLPkGvA3mjIl/Q5UYBwpgS0mNDXq/Il1R5qABhXAnpNpHXgifWBoLlZgHCBAd+gC6D/mrwyJplEGPksXr8SQpk2nUq7ZXggX2/8z2Uw84fOKWEdIByRb5uJrcbIExT+K68800ruZMAL1jU/q8DEGdnrN2AYnCrBMhqbXEroEiRb4FZ3svcb4o0oADcULgN4vm6/EpIQ7gB+eCaoh2QoPRFcb/RQ+qcBuSBKwp2QaJBjazaedbIzKqxG5ALLjlwDySZPKVPmV2yqqusAnLABQfsW8jVkADHyAKsCBUgJ9s5Cw9BsoPtOpr7kR5SFhyQBc5YcARSwjhwZFWv0HEPSvWATHDKjmOQGsGRKSFrdN2BEg+noFwnIM2FQ19CNvS1Iw2FXETpLn62yD41AzJ+BBgAUxU01oimE8UAAAAASUVORK5CYII=") no-repeat;
         cursor: pointer;
         float: right;
         height: 24px;
@@ -226,6 +227,10 @@
             float: none;
             margin: auto;
         }
+        .engage-section .engage-text {
+        	width: 100%;
+        	margin: 0;
+        }
     }
 
     @media(max-width: 500px) {
@@ -239,24 +244,22 @@
 </style>
 
 <div id="$sectionid.data">
-    <div id="article-${reserved-article-id.data}">
-        <div class="lego-article-content max-960" id="aboutStartNav">
-            <div class="aui-helper-clearfix engage-section lego-section section-1">
-                <div class="aui-w60 block-1 content-column lego-block engage-video">
-                    <div class="content-column-content left-column">
-                        <div class="lego-element video-swap video-wrapper" data-embed="$video_id.data">
-                        </div>
-                    </div>
-                </div>
-                <div class="aui-w40 block-2 content-column lego-block engage-text">
-                    <div class="content-column-content right-column" >
-                        <h2 class="lego-element title light"> $header.data</h2>
-                        <h3 class="lego-element subtitle light"> $paragraph.data</h3>
+   <div class="lego-article-content max-960" id="aboutStartNav">
+        <div class="aui-helper-clearfix engage-section lego-section section-1">
+        	<h2 class="lego-element title light"> $header.data</h2>
+            <div class="aui-w60 block-1 content-column lego-block engage-video">
+                <div class="content-column-content left-column">
+                    <div class="lego-element video-swap video-wrapper" data-embed="$video_id.data">
                     </div>
                 </div>
             </div>
+            <div class="aui-w40 block-2 content-column lego-block engage-text">
+                <div class="content-column-content right-column" >
+                    <h3 class="lego-element subtitle light">$paragraph.data</h3>
+                </div>
+            </div>
         </div>
-    </div>
+   </div>
 </div>
 
 <script>
