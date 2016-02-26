@@ -106,6 +106,9 @@ h3.justify-title {
 
 <div class="aui-helper-clearfix centered justify-container">
 	<h2 class="light lighter-font">$heading.data</h2>
+	#if ($subheading.data != "")
+	<h3 class="light lighter-font">$subheading.data</h3>
+	#end
 	<div class="max-full">
 		#foreach ($item in $title.siblings)
 			<div class="aui-w33 content-column flip-wrapper responsive-w50">

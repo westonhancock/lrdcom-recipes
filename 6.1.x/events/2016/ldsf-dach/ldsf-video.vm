@@ -56,9 +56,9 @@
         width: 393px;
     }
 
-    .max-960 {
+    #aboutStartNav {
         margin: 0 auto;
-        max-width: 960px;
+        max-width: 1200px;
     }
 
 
@@ -243,7 +243,7 @@
 </style>
 
 <div id="$sectionid.data">
-   <div class="max-960" id="aboutStartNav">
+   <div id="aboutStartNav">
         <div class="engage-section">
         	<h2 class="title light">$header.data</h2>
             <div class="engage-container">
