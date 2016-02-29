@@ -81,10 +81,13 @@
 
 	.nav-icon path, .nav-icon polygon {
 		fill: $text_color;
+		stroke: $text_color;
+		stroke-width: 3;
 	}
 
 	.events-nav a:hover path, .events-nav a:hover polygon {
 		fill: #FFF;
+		stroke: #FFF;
 	}
 
 	.events-nav {
@@ -688,10 +691,23 @@
 		}
 	);
 
-	AUI().ready(
-		'aui-base',
-		function(A) {
+	
+	window.addEventListener("load", function(event) {
+		if (ga && window.performance) {
+			 setTimeout(function(){
+				    var t = performance.timing;
+				    var timeSincePageLoad = Math.round(t.loadEventEnd - t.fetchStart);
+				    var pageRequest = Math.round(t.responseEnd - t.fetchStart);
+				    console.log("html load took: " + pageRequest + " total page load took: " + timeSincePageLoad);
+				    ga('send', 'timing', 'HTML Request', 'load', pageRequest);
+				    ga('send', 'timing', 'Page Load', 'load', timeSincePageLoad);
+				  }, 0);
 
+			}
+		
+	});
+	
+	window.addEventListener("load", function(event) {	
 			## fade in banner content
 			var bannerContent = document.getElementById("bannerContent");
 
@@ -714,9 +730,7 @@
 			}
 
 			## slide in banner cover shortly after load
-			A.on('load', function() {
-					window.setTimeout(addLoadCSSClasses, 1500 );
-			});
-		}
-	);
+			window.setTimeout(addLoadCSSClasses, 1500 );	
+	});
+
 </script>

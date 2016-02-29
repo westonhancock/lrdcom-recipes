@@ -1,4 +1,10 @@
 <style type="text/css">
+
+.justify-container .flip-item .flip-side {
+    max-height: 270px;
+    max-width: 270px;
+}
+
 .justify-container {
     background-color: #0067AA;
     padding: 3em;
@@ -74,6 +80,8 @@ h3.justify-title {
 	color: #000;
 }
 
+
+
 @media (max-width: 820px) {
 	.justify-item {
 			min-height: 400px;
@@ -100,11 +108,16 @@ h3.justify-title {
 	.justify-container h2 {
 		font-size: 2em;
 	}
+	
+	
+	.justify-container {
+   		 padding: 0;
+	}
 }
 
 </style>
 
-<div class="aui-helper-clearfix centered justify-container">
+<div id="whatsinit" class="aui-helper-clearfix centered justify-container">
 	<h2 class="light lighter-font">$heading.data</h2>
 	#if ($subheading.data != "")
 	<h3 class="light lighter-font">$subheading.data</h3>
@@ -114,7 +127,7 @@ h3.justify-title {
 			<div class="aui-w33 content-column flip-wrapper responsive-w50">
 				<div class="class-toggle-off-click flip-item justify-item">
 					<div class="flip-side front-side justify-front-content">
-						<img class="justify-img lazy-load" datasrc="$item.icon.data" />
+						<img class="justify-img " src="$item.icon.data" />
 
 						<h3 class="justify-title">$item.data</h3>
 					</div>

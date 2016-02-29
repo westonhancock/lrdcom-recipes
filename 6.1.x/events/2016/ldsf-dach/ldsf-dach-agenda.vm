@@ -807,10 +807,14 @@
 
     .agenda-arrow svg {
         margin-left: 7px;
+        -webkit-transform: rotate(-90deg);
+        -ms-transform: rotate(-90deg);
         transform: rotate(-90deg);
     }
 
     .agenda-arrow.active svg {
+    	-webkit-transform: rotate(90deg);
+        -ms-transform: rotate(90deg);
         transform: rotate(90deg);
     }
     
