@@ -1,28 +1,24 @@
 <#include "${templatesPath}/1561886" />
 
-<div class="office">
+<div class="office" typeof="Organization" vocab="http://schema.org/">
 	${flag.data}
 
-	<h2>${office_title.data}</h2>
-	<div>${company_title.data}</div>
+	<h2 property="addressLocality">${office_title.data}</h2>
+	<div property="name">${company_title.data}</div>
 
-	<address class="vcard">
-		<div class="adr" itemprop="address">
-			<div>${address.data}</div>
+	<address property="address" typeof="PostalAddress">
+		<div>${address.data}</div>
 
-			<#list address.additional_line.siblings as line>
-				<div>${line.data}</div>
-			</#list>
-		</div>
+		<#list address.additional_line.siblings as line>
+			<div>${line.data}</div>
+		</#list>
 
 		<#list phone.getSiblings() as cur_phone>
-			<div class="tel">
-				<#if getterUtil.getBoolean(cur_phone.fax.data)>
-					<span class="fax" itemprop="faxNumber">${localize("fax", "Fax")}: ${cur_phone.data}</span>
-				<#else>
-					<span itemprop="telephone">${localize("tel", "Tel")}: ${cur_phone.data}</span>
-				</#if>
-			</div>
+			<#if getterUtil.getBoolean(cur_phone.fax.data)>
+				<div property="faxNumber">${localize("fax", "Fax")}: ${cur_phone.data}</div>
+			<#else>
+				<div property="telephone">${localize("tel", "Tel")}: ${cur_phone.data}</div>
+			</#if>
 		</#list>
 	</address>
 
