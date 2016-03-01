@@ -46,6 +46,49 @@
 		visibility: visible;
 	}
 
+	.case-study-heading {
+		border-bottom: 1px solid #909295;
+		margin-bottom: 1em;
+	}
+
+	.case-study-heading .case-study-video {
+		border: 1px solid #909295;
+		border-bottom-width: 0;
+		-ms-border-radius: 2em 2em 0 0;
+		-moz-border-radius: 2em 2em 0 0;
+		-webkit-border-radius: 2em 2em 0 0;
+		border-radius: 2em 2em 0 0;
+		padding: 2em 2em 0 2em;
+	}
+
+	.case-study-video {
+		cursor: pointer;
+		display: inline-block;
+		-webkit-transition: opacity .3s ease;
+		-moz-transition: opacity .3s ease;
+		-ms-transition: opacity .3s ease;
+		opacity: 0.6;
+		position: relative;
+		transition: opacity .3s ease;
+	}
+
+	.case-study-video:after {
+		background: url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA1MSA1MSI+PHBhdGggZmlsbD0ibm9uZSIgc3Ryb2tlPSIjRkZGIiBzdHJva2Utd2lkdGg9IjEuNSIgZD0iTTQ5LjggMjUuNGMwIDEzLjMtMTAuOCAyNC4xLTI0LjEgMjQuMVMxLjUgMzguNyAxLjUgMjUuNCAxMi4zIDEuMiAyNS42IDEuMiA0OS44IDEyIDQ5LjggMjUuNHoiLz48cGF0aCBmaWxsPSJub25lIiBzdHJva2U9IiNGRkYiIHN0cm9rZS13aWR0aD0iMS41IiBkPSJNMTkuMSAxNGwxOS43IDExLjQtMTkuNyAxMS40VjE0eiIvPjwvc3ZnPgo=") no-repeat center center;
+		bottom: 0;
+		content: "";
+		height: 51px;
+		left: 0;
+		margin: auto;
+		position: absolute;
+		right: 0;
+		top: 0;
+		width: 51px;
+	}
+
+	.case-study-video:hover {
+		opacity: 1;
+	}
+
 	.fact-panel .carousel-content a {
 		background: none;
 		border: 1px solid #1C75B9;
@@ -100,58 +143,15 @@
 		border-bottom: 1px solid #1C75B9;
 		font-size: 2.5em;
 	}
-
-	.story-heading {
-		border-bottom: 1px solid #909295;
-		margin-bottom: 1em;
-	}
-
-	.story-heading .user-story-video {
-		border: 1px solid #909295;
-		border-bottom-width: 0;
-		-ms-border-radius: 2em 2em 0 0;
-		-moz-border-radius: 2em 2em 0 0;
-		-webkit-border-radius: 2em 2em 0 0;
-		border-radius: 2em 2em 0 0;
-		padding: 2em 2em 0 2em;
-	}
-
-	.user-story-video {
-		cursor: pointer;
-		display: inline-block;
-		-webkit-transition: opacity .3s ease;
-		-moz-transition: opacity .3s ease;
-		-ms-transition: opacity .3s ease;
-		opacity: 0.6;
-		position: relative;
-		transition: opacity .3s ease;
-	}
-
-	.user-story-video:after {
-		background: url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA1MSA1MSI+PHBhdGggZmlsbD0ibm9uZSIgc3Ryb2tlPSIjRkZGIiBzdHJva2Utd2lkdGg9IjEuNSIgZD0iTTQ5LjggMjUuNGMwIDEzLjMtMTAuOCAyNC4xLTI0LjEgMjQuMVMxLjUgMzguNyAxLjUgMjUuNCAxMi4zIDEuMiAyNS42IDEuMiA0OS44IDEyIDQ5LjggMjUuNHoiLz48cGF0aCBmaWxsPSJub25lIiBzdHJva2U9IiNGRkYiIHN0cm9rZS13aWR0aD0iMS41IiBkPSJNMTkuMSAxNGwxOS43IDExLjQtMTkuNyAxMS40VjE0eiIvPjwvc3ZnPgo=") no-repeat center center;
-		bottom: 0;
-		content: "";
-		height: 51px;
-		left: 0;
-		margin: auto;
-		position: absolute;
-		right: 0;
-		top: 0;
-		width: 51px;
-	}
-
-	.user-story-video:hover {
-		opacity: 1;
-	}
 </style>
 
-<div class="max-full user-story">
+<div class="case-study max-full">
 	<#if video_id.data?has_content || company_name.logo.data?has_content || additional_img.data?has_content>
-		<div class="story-heading text-center w100">
+		<div class="case-study-heading text-center w100">
 			<#if video_id.data?has_content>
 				<div class="pop-up">
-					<div class="pop-up-trigger user-story-video">
-						<img alt="User Story Video" src="//img.youtube.com/vi/${video_id.data}/0.jpg" />
+					<div class="pop-up-trigger case-study-video">
+						<img alt="Case Study Video" src="//img.youtube.com/vi/${video_id.data}/0.jpg" />
 					</div>
 
 					<div class="pop-up-content"></div>
@@ -159,7 +159,7 @@
 			<#elseif additional_img.data?has_content>
 				<div class="carousel-banner" id="carouselBanner">
 					<#list additional_img.siblings as image>
-						<img alt="User Story Image" src="${image.data}" />
+						<img alt="Case Study Image" src="${image.data}" />
 					</#list>
 				</div>
 			<#elseif company_name.logo.data?has_content>
@@ -168,7 +168,7 @@
 		</div>
 	</#if>
 
-	<div class="block-container story-body">
+	<div class="block-container case-study-body">
 		<#if !quick_fact.data?has_content && !quote.data?has_content>
 			<#assign body_css_class = "w100">
 		<#elseif !quick_fact.data?has_content>
@@ -272,11 +272,11 @@
 		};
 
 		var deactivateCallback = function(classToggleInstance, node, targetNodes, targetClass) {
-				var targetNodesContent = targetNodes.one('.' + classToggleInstance.get('baseClassName') + '-content');
+			var targetNodesContent = targetNodes.one('.' + classToggleInstance.get('baseClassName') + '-content');
 
-				if (targetNodesContent) {
-					targetNodesContent.empty();
-				}
+			if (targetNodesContent) {
+				targetNodesContent.empty();
+			}
 		}
 
 		new A.PopUp(

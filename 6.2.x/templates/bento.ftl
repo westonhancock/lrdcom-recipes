@@ -1,6 +1,10 @@
 <#assign journal_article_local_service = serviceLocator.findService("com.liferay.portlet.journal.service.JournalArticleLocalService") />
 <#assign journal_content_util = staticUtil["com.liferay.portlet.journalcontent.util.JournalContentUtil"] />
 
+
+<#assign service_context = staticUtil["com.liferay.portal.service.ServiceContextThreadLocal"].getServiceContext() />
+<#assign http_servlet_request = service_context.getRequest() />
+
 <#assign theme_display = request["theme-display"] />
 <#assign plid = theme_display["plid"]?number />
 <#assign layout_service = serviceLocator.findService("com.liferay.portal.service.LayoutLocalService") />
@@ -23,9 +27,6 @@
 
 		<#assign bento_section_css = "bento-section bento-section-${block_index + 1} block ${block.background_color.data} ${block.width.data} ${block.block_class.data}" />
 		<#assign bento_section_style = "" />
-
-		<#assign service_context = staticUtil["com.liferay.portal.service.ServiceContextThreadLocal"].getServiceContext() />
-		<#assign http_servlet_request = service_context.getRequest() />
 
 		<#if video_info?has_content && !browserSniffer.isMobile(http_servlet_request) && !browserSniffer.isIe(http_servlet_request)>
 			<#assign bento_section_css = bento_section_css + " video-banner" />
