@@ -17,7 +17,9 @@
 
 <#assign hubspot_form_article_id = "691288" />
 
-<a href="/resources">< Back</a>
+<#include "${templatesPath}/1561886" />
+
+<a href="/resources">< ${localize("back", "Back")}</a>
 
 <div class="resource-display">
 	<#if dl_file_entry_local_service_util.fetchFileEntry(groupId, folder_id, title)??>

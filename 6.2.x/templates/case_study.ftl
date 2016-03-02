@@ -1,4 +1,4 @@
-<#include "${templatesPath}/43374" />
+<#include "${templatesPath}/1561886" />
 
 <style>
 	figcaption {
@@ -222,7 +222,7 @@
 			<div class="btn-wrapper">
 				<#list asset.siblings as asset_url>
 					<#if asset_url?has_content>
-						<a class="btn" href="${asset_url.data}" target="_blank">${localize("case-study")}</a>
+						<a class="btn" href="${asset_url.data}" target="_blank">${localize("case-study", "Case Study")}</a>
 					</#if>
 				</#list>
 			</div>

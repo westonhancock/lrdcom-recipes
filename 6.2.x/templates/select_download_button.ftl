@@ -1,18 +1,19 @@
-<#include "${templatesPath}/43374" />
+<#include "${templatesPath}/1561886" />
 
 <#assign reserved_article_id = .vars["reserved-article-id"].data />
 
 <div id="select-${reserved_article_id}" class="block-container no-padding ${form_class.data}">
 	<select
-			onchange="AUI().one('#select-${reserved_article_id} a').set('href', this.value);"
-			onkeypress="if (event.keyCode == 13) window.location = this.value;">
-	<#list link_url.getSiblings() as cur_link>
-		<option value="${cur_link.data}">${cur_link.link_description.data}</option>
-	</#list>
-	</select>
-	<a href="${link_url.data}" class="${form_class.data}" target="_blank" type="">${localize("download")}</a>
-</div>
+		onchange="AUI().one('#select-${reserved_article_id} a').set('href', this.value);"
+		onkeypress="if (event.keyCode == 13) window.location = this.value;">
 
+		<#list link_url.getSiblings() as cur_link>
+			<option value="${cur_link.data}">${cur_link.link_description.data}</option>
+		</#list>
+	</select>
+
+	<a href="${link_url.data}" class="${form_class.data}" target="_blank" type="">${localize("download", "Download")}</a>
+</div>
 
 <style>
 	#select-${reserved_article_id} {
