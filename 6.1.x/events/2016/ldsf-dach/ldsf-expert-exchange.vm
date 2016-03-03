@@ -42,7 +42,7 @@
         display: inline-block;
         margin: 20px 10px;
         vertical-align: top;
-        width: 150px;
+        max-width: 150px;
     }
 
     .expert-info {
@@ -113,6 +113,9 @@
             margin: 0 10px;
             width: 100%;
         }
+        .expert-exchange-content {
+        	padding: 0 10px;
+        }
     }
 
     @media(max-width: 759px) {
@@ -123,6 +126,9 @@
 
     @media (max-width: 720px) {
     
+    	.expert-exchange-content {
+        	padding: 0;
+        }
 		#expert-exchange-section > div {
 			display:block;
 			width: 100%;
@@ -278,32 +284,36 @@ AUI().ready(
 
         var removeRows = function(nodes) {
             var lastNode = nodes.item(nodes.size() - 1);
-            var className = lastNode.get('className');
-            var numRows = className.substring(className.length - 1);
+            if (lastNode != null) {
+        	    var className = lastNode.get('className');
+            	var numRows = className.substring(className.length - 1);
 
-            for (var i = 1; i <= numRows; i++) {
-                var nodesInRow = A.all('.row-' + i);
+            	for (var i = 1; i <= numRows; i++) {
+                	var nodesInRow = A.all('.row-' + i);
 
-                nodesInRow.each(
-                    function(node) {
-                        node.removeClass('row-' + i);
-                    }
-                );
+                	nodesInRow.each(
+                   	 function(node) {
+                   	     node.removeClass('row-' + i);
+                   	 }
+                	);
+            	}
             }
         };
 
         var addDisplayBoxes = function(nodes) {
             var lastNode = nodes.item(nodes.size()-1);
-            var className = lastNode.get('className');
-            var numRows = className.substring(className.length - 1);
-
-            for(var i = 1; i <= numRows; i++) {
-                var nodesInRow = A.all('.row-' + i);
-                var display = A.Node.create('<div class="info-display collapse row-' + i + '"></div>');
-
-                lastNodeInList = nodesInRow.item(nodesInRow.size() - 1);
-                insertAfter(display, lastNodeInList);
-            }
+            if (lastNode != null) {
+	            var className = lastNode.get('className');
+	            var numRows = className.substring(className.length - 1);
+	
+	            for(var i = 1; i <= numRows; i++) {
+	                var nodesInRow = A.all('.row-' + i);
+	                var display = A.Node.create('<div class="info-display collapse row-' + i + '"></div>');
+	
+	                lastNodeInList = nodesInRow.item(nodesInRow.size() - 1);
+	                insertAfter(display, lastNodeInList);
+	            }
+	        }
         };
 
         var destroyDisplayBoxes = function() {

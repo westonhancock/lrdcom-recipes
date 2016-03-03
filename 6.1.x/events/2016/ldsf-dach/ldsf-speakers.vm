@@ -2,6 +2,14 @@
 #set ($textcolor = "#4d4d4f")
 #set ($speakertoggle = $enable_speaker_toggle.data.equalsIgnoreCase("true"))
 
+## careful editing things here, the css classes are also used in the what's in it for me section (justify template)
+
+#if($speakersizevalue.data && $speakersizevalue.data != "")
+	#set ($speakersize = $speakersizevalue.data)
+#else 
+	#set ($speakersize = "270px")
+#end
+
 <script>
     (function() {
         if (navigator.userAgent.indexOf('Trident/7.0') > -1) {
@@ -26,7 +34,7 @@
     }
 
     #speakerToggle.class-toggle-active {
-        max-height: initial;
+        max-height: none;
     }
 
     #speakerToggle .blur-container {
@@ -44,25 +52,29 @@
     
     .speaker-arrow svg {
     	margin-left: 7px;
-    	transform: rotate(-90deg)
+    	transform: rotate(-90deg);
+    	-ms-transform: rotate(-90deg);
+    	-webkit-transform: rotate(-90deg);
 	}
 
 	.speaker-arrow.active svg {
-   	 	transform: rotate(90deg)
+   	 	transform: rotate(90deg);
+   	 	-ms-transform: rotate(90deg);
+   	 	-webkit-transform: rotate(90deg);
 	}
 #end
 
-    .speaker-wrapper {
+   .speaker-wrapper {
         padding: 40px 0 10px;
         text-align: center;
     }
 
-    .speaker-item-wrapper {
+   .speaker-item-wrapper {
         display: inline-block;
-        height: 270px;
+        height: $speakersize;
         margin: 0 15px 15px 0;
         overflow: hidden;
-        width: 270px;
+        width: $speakersize;
     }
 
     .flip-wrapper {
@@ -74,7 +86,7 @@
         position: relative;
     }
 
-    .flip-item {
+     .flip-item {
         -moz-transform-style: preserve-3d;
         -ms-transform-style: preserve-3d;
         -o-transform-style: preserve-3d;
@@ -85,7 +97,7 @@
         -o-transition: .6s;
     }
 
-    .flip-item.class-toggle-off-click-active {
+     .flip-item.class-toggle-off-click-active {
         -moz-transform: rotateY(180deg);
         -ms-transform: rotateY(180deg);
         -o-transform: rotateY(180deg);
@@ -99,16 +111,18 @@
         width: 100%;
     }
 
-    .speaker-item.class-toggle-off-click {
+   .speaker-item.class-toggle-off-click {
         cursor: pointer;
     }
-
-    .speaker-item .front-side {
-        background-position: center;
-        background-size: cover;
+    
+    .speaker-item, .speaker-item .front-side {
+        background-position: 0;
+        background-size: 100%;
+        background-repeat: no-repeat;
     }
 
-    .flip-item .flip-side, .speaker-item .speaker-info {
+
+     .flip-item .flip-side,  .speaker-item .speaker-info {
         -moz-backface-visibility: hidden;
         -moz-transform: translate3d(0, 0, 0);
         -ms-transform: translate3d(0, 0, 0);
@@ -120,8 +134,8 @@
         -ms-backface-visibility: visible;
         bottom: 0;
         left: 0;
-        max-height: 270px;
-        max-width: 270px;
+        max-height: $speakersize;
+        max-width: $speakersize;
         overflow: hidden;
         position: absolute;
         right: 0;
@@ -129,7 +143,7 @@
         transform: translate3d(0, 0, 0);
     }
 
-    .flip-item .back-side {
+     .flip-item .back-side {
         -moz-transform: rotateY(-180deg);
         -ms-transform: rotateY(-180deg);
         -o-transform: rotateY(-180deg);
@@ -137,7 +151,7 @@
         transform: rotateY(-180deg);
     }
 
-    .flip-item:hover, .speaker-item .speaker-info {
+     .flip-item:hover, .speaker-item .speaker-info {
         -moz-transition: all 0.4s ease-in-out;
         -ms-transition: all 0.4s ease-in-out;
         -o-transition: all 0.4s ease-in-out;
@@ -172,7 +186,7 @@
         font-weight: 100;
     }
 
-    .speaker-info:before {
+     .speaker-info:before {
         -moz-transform: rotate(45deg);
         -ms-transform: rotate(45deg);
         -o-transform: rotate(45deg);
@@ -189,18 +203,18 @@
         z-index: -1;
     }
 
-    .speaker-info .sponsor-logo {
+   .speaker-info .sponsor-logo {
         height: auto;
         margin: auto;
         padding-top: 10px;
         width: 200px;
     }
 
-    .speaker-bio {
+   .speaker-bio {
         padding: 20px;
     }
 
-    .speaker-company, .speaker-name, .speaker-title, .sponsor-logo {
+   .speaker-company, .speaker-name, .speaker-title, .sponsor-logo {
         color: $textcolor;
         display: block;
         font-size: 1em;
@@ -210,7 +224,7 @@
 /* ---------- Browser Specific ---------- */
 
     .ie .speaker-item .front-side {
-        height: 270px;
+        height: $speakersize;
         position: relative;
     }
 
