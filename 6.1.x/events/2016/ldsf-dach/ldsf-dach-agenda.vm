@@ -471,6 +471,7 @@
     #wrapper #agendaWrapper,
     #wrapper #agendaWrapper .select-day-1,
     #wrapper.class-toggle-carousel-day-1 #agendaWrapper .select-day-1,
+    #wrapper.class-toggle-carousel-day-2 #agendaWrapper .select-day-2,
     #wrapper.class-toggle-carousel-day-3 #agendaWrapper .select-day-3 {
       font-weight: normal;
     }
@@ -867,7 +868,7 @@
 <div class="" id="agendaWrapper">
   <div id="agendaTabs" class="togglers sticky-watch" data-offset='{"top": "-88"}'>
     #foreach ($day_to_print in $agenda.keySet())
-      <span class="select-day select-day-$velocityCount class-toggle-carousel" data-target-class="day-$velocityCount" data-target-node="#wrapper" data-value="date-$velocityCount">
+      <span class="select-day select-day-$velocityCount class-toggle-carousel" data-date="$day_to_print.substring(4)"  data-target-class="day-$velocityCount" data-target-node="#wrapper" data-value="date-$velocityCount">
         ## snip off "day-" from date, parse and reformat
         #set ($agendaDate = $dateTool.toDate("yyyy-MM-dd" , $day_to_print.substring(4), $localeEn))
         #set ($agendaDateFormatted = $dateTool.format($agendaDateFormat,$agendaDate,$localePage))
@@ -998,7 +999,8 @@
  			   #set ($pop_up_css_class = "$pop_up_css_class break-row-td")
  			#end
             ## Print td
-            <td class="$pop_up_css_class" $colspan $rowspan onclick="ga('send', 'event', '$ga_conference_name', 'Agenda Session Clicks', '$title - $speaker_name');">
+            #set ($session-title = "$title - $speaker_name")
+            <td class="$pop_up_css_class" $colspan data-session-title='$htmlUtil.escape($session-title)' $rowspan>
              ##if ($session_type != "blank" && $session_type != "")
              ##   <span>$session_type:</span>
              ## #end
@@ -1131,6 +1133,19 @@
 AUI().use(
   'node',
   function(A) {
+  
+    A.all('span.select-day').on("click", function(event) {
+      if (window.ga && event && event.currentTarget) {
+      	ga('send', 'event', '$ga_conference_name', 'Agenda Day Clicks', event.currentTarget.attr('data-date'));
+      }
+    });
+     A.all('#agendaPop td.pop-up').on("click", function(event) {
+      if (window.ga && event && event.currentTarget) {
+      	ga('send', 'event', '$ga_conference_name', 'Agenda Session Clicks', event.currentTarget.attr('data-session-title'));
+      }
+    });
+      
+  
     var category = A.all('.category');
 
     var displayClass = function(event) {

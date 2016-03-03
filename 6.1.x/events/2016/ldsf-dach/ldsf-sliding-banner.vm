@@ -450,6 +450,7 @@
 
 			##<div> $link_name: $link_href: $link_id: $link_order</div>
 
+	
 		<li class="nav-item">
 			<a class="animate-scroll"  href="$link_href" 
 			onClick="ga('send', 'event', 'Navigation Clicks', 'Universal Theme - Scroll Navigation', '$link_name');">
@@ -460,7 +461,7 @@
 	</ul>
 </nav>
 
-<nav class="events-nav fade desktop-only scroll-navigation" id="fixednavigation">
+<nav class="aui-helper-hidden events-nav fade desktop-only scroll-navigation" id="fixednavigation">
 	<ul>
 	#foreach ($link_order in $link_tree.keySet())
 	#set ($link_name = $link_tree.get($link_order).get("link_name"))
@@ -472,7 +473,7 @@
 			<a class="animate-scroll" id="$link_id" href="$link_href" 
 				onClick="ga('send', 'event', 'Navigation Clicks', 'Universal Theme - Scroll Navigation', '$link_name');">
 			#if ($link_href == "#wrapper")
-			<svg class="nav-icon" version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+			<svg class="nav-icon" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
 				width="612.5px" height="203.203px" viewBox="0 32.5 612.5 203.203" enable-background="new 0 32.5 612.5 203.203"
 				 xml:space="preserve">
 			<g>
@@ -691,9 +692,18 @@
 		}
 	);
 
-	
-	window.addEventListener("load", function(event) {
-		if (ga && window.performance) {
+	var addEventFunc = window.addEventListener ?  window.addEventListener : window.attachEvent;
+	addEventFunc("error", function(exception) {
+		console.log("error handler: " + exception);
+		if (window.ga) {
+		 ga('send', 'exception', {
+    		'exDescription': exception.message,
+    		'exFatal': false
+ 		 });
+		}
+	});
+	addEventFunc("load", function(event) {
+		if (window.ga && window.performance) {
 			 setTimeout(function(){
 				    var t = performance.timing;
 				    var timeSincePageLoad = Math.round(t.loadEventEnd - t.fetchStart);
@@ -707,7 +717,7 @@
 		
 	});
 	
-	window.addEventListener("load", function(event) {	
+	addEventFunc("load", function(event) {	
 			## fade in banner content
 			var bannerContent = document.getElementById("bannerContent");
 
