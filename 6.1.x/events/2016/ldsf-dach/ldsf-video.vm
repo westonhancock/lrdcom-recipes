@@ -248,7 +248,7 @@
         	<h2 class="title light">$header.data</h2>
             <div class="engage-container">
                 <div class="video-swap ">
-                    <svg title="Play Video" class="video-wrapper" data-embed="$video_id.data" version="1.1" id="Layer_1" 
+                    <svg title="Play Video" class="video-wrapper" data-embed="$video_id.data" version="1.1"  
                     	 xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" 
                   		 x="0px" y="0px" width="393px" height="234px" viewBox="0 0 393 234" enable-background="new 0 0 393 234"
           				 xml:space="preserve">

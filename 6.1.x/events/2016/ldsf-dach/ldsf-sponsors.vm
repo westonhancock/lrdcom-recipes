@@ -131,7 +131,7 @@
 					#set ($link = $record.get("link"))
 
 					<a class="link-sponsor-symp" href="$link" target="blank">
-						<img alt="$name" class="sponsor-image" src="$image_url">
+						<img alt="$name" class="sponsor-image" src="$image_url" />
 					</a>
 				</div>
 			#end
