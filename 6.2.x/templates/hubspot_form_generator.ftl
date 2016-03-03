@@ -17,11 +17,7 @@
 <#assign hs_form_local_service = portlet_bean_locator.locate("hubspot-portlet", "com.liferay.hubspot.service.HSFormLocalService") />
 
 <#if request.lifecycle == 'RENDER_PHASE'>
-	<#attempt>
-		<#include "${templatesPath}/43374" />
-	<#recover>
-		<script type="text/javascript">console.log("Error in Localization Template")</script>
-	</#attempt>
+	<#include "${templatesPath}/1561886" />
 
 	<#include "${templatesPath}/898140" />
 
@@ -181,7 +177,7 @@
 					</#list>
 
 					<#if submit_text.data?has_content>
-						<#assign btn_text = localize(submit_text.data) />
+						<#assign btn_text = localize(submit_text.data, "Submit") />
 					</#if>
 
 					<#if !btn_text?has_content>
@@ -189,7 +185,7 @@
 					</#if>
 
 					<#if !btn_text?has_content>
-						<#assign btn_text = localize("submit") />
+						<#assign btn_text = localize("submit", "Submit") />
 					</#if>
 
 					<div class="btn-wrapper">
@@ -210,9 +206,9 @@
 		<#assign salesforce_campaign_id = hs_form.getLeadNurturingCampaignId()! />
 
 		<#if thank_you_text.data?has_content>
-			<#assign thank_you_message = localize(thank_you_text.data) />
+			<#assign thank_you_message = localize(thank_you_text.data, "Thank You") />
 		<#else>
-			<#assign thank_you_message = hs_form.getHSFormJSONObject().getString("inlineMessage")!localize("thank-you") />
+			<#assign thank_you_message = hs_form.getHSFormJSONObject().getString("inlineMessage")!localize("thank-you", "Thank You") />
 		</#if>
 
 		<script type="text/javascript">
@@ -414,7 +410,7 @@
 										</#if>
 									},
 									failure: function(event, id, obj) {
-										msg.setContent('<div class="portlet-msg-error">${localize("your_request_failed_to_complete")}</div>');
+										msg.setContent('<div class="portlet-msg-error">${localize("your_request_failed_to_complete", "Your Request Failed to Complete")}</div>');
 									}
 								}
 							}
@@ -538,7 +534,7 @@
 	<#assign field_name = item.getString("name") />
 	<#assign hidden = getterUtil.getBoolean(item.getString("hidden")) />
 	<#assign hs_smart_field = getterUtil.getBoolean(item.getString("isSmartField")) />
-	<#assign label_text = localize(item.getString("label")) />
+	<#assign label_text = localize(item.getString("name"), item.getString("label")) />
 	<#assign required = getterUtil.getBoolean(item.getString("required")) />
 
 	<#assign value = item.getString("defaultValue")! />
@@ -569,7 +565,7 @@
 
 	<#if required>
 		<#assign field_string = jsonFactoryUtil.createJSONObject() />
-		<#assign void = field_string.put("required", localize("x-is-required", label_text)) />
+		<#assign void = field_string.put("required", localize("x-is-required", "{0} is required", label_text)) />
 		<#assign void = field_strings_json.put(field_name, field_string) />
 
 		<#assign form_rule = jsonFactoryUtil.createJSONObject() />
@@ -702,7 +698,7 @@
 			</#if>
 
 			<#if item.getString("description")?? && item.getString("description")?has_content>
-				<div class="field-desc">${localize(item.getString("description"))}</div>
+				<div class="field-desc">${localize(item.getString("description"), "")}</div>
 			</#if>
 		</div>
 

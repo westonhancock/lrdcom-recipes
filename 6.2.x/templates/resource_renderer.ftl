@@ -6,13 +6,20 @@
 <#assign service_context = objectUtil("com.liferay.portal.service.ServiceContextThreadLocal").getServiceContext() />
 <#assign http_servlet_request = service_context.getRequest() />
 
+<#assign theme_display = request["theme-display"] />
+<#assign plid = theme_display["plid"]?number />
+<#assign layout_service = serviceLocator.findService("com.liferay.portal.service.LayoutLocalService") />
+<#assign layout = layout_service.getLayout(plid)! />
+
 <#assign folder_id = paramUtil.getLong(http_servlet_request, "folderId") />
 <#assign resource_id = paramUtil.getLong(http_servlet_request, "resourceId") />
 <#assign title = paramUtil.getString(http_servlet_request, "title") />
 
 <#assign hubspot_form_article_id = "691288" />
 
-<a href="/resources">< Back</a>
+<#include "${templatesPath}/1561886" />
+
+<a href="/resources">< ${localize("back", "Back")}</a>
 
 <div class="resource-display">
 	<#if dl_file_entry_local_service_util.fetchFileEntry(groupId, folder_id, title)??>
@@ -29,7 +36,26 @@
 
 	<#if article??>
 		<div class="block-container">
-		${journal_content_util.getContent(groupId, article.getArticleId()?string, "", locale, xmlRequest)}
+			${journal_content_util.getContent(groupId, article.getArticleId()?string, "", locale, xmlRequest)}
+
+			<#if layoutPermission.contains(permissionChecker, layout, "UPDATE")>
+				<#assign current_url = request.attributes.CURRENT_COMPLETE_URL! />
+
+				<#assign edit_url = portletURLFactory.create(http_servlet_request, "15", plid, "0") />
+				<#assign VOID = edit_url.setParameter("p_p_state", "maximized") />
+				<#assign VOID = edit_url.setParameter("p_p_lifecycle", "0") />
+				<#assign VOID = edit_url.setParameter("groupId", "${groupId}") />
+				<#assign VOID = edit_url.setParameter("struts_action", "/journal/edit_article") />
+				<#assign VOID = edit_url.setParameter("redirect", "${current_url}") />
+				<#assign VOID = edit_url.setParameter("articleId", "${article.getArticleId()?string}") />
+
+				<span class="lfr-icon-action lfr-icon-action-edit lfr-meta-actions pull-right">
+					<a href="${edit_url}" class="taglib-icon">
+						<img src="/osb-community-theme/images/spacer.png" alt="Edit" style="background-image: url('/osb-community-theme/sprite/images/common/_sprite.png'); background-position: 50% -608px; background-repeat: no-repeat; height: 16px; width: 16px;">
+						<span class="taglib-text ">Edit</span>
+					</a>
+				</span>
+			</#if>
 		</div>
 	<#elseif dl_file_entry??>
 	<#-- <#assign dl_file_entry_url = dl_file_util.getImagePreviewURL(dl_file_entry, http_servlet_request.getAttribute("LIFERAY_SHARED_THEME_DISPLAY")) /> -->

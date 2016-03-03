@@ -1,5 +1,9 @@
 <#assign localization_json_object = jsonFactoryUtil.createJSONObject("
 	{
+		back: {
+			en_US: 'Back'
+		},
+
 		company: {
 			de_DE: 'Unternehmen',
 			en_US: 'Company',
@@ -144,13 +148,15 @@
 	}
 ") />
 
-<#function localize key vars...>
+<#function localize key default_value vars...>
 	<#assign localized_key = key />
 
 	<#if localization_json_object.getJSONObject(key)?? && localization_json_object.getJSONObject(key).getString(locale)?has_content>
 		<#assign localized_key = localization_json_object.getJSONObject(key).getString(locale) />
 	<#elseif localization_json_object.getJSONObject(key)?? && localization_json_object.getJSONObject(key).getString("en_US")?has_content>
 		<#assign localized_key = localization_json_object.getJSONObject(key).getString("en_US") />
+	<#elseif default_value?has_content>
+		<#assign localized_key = default_value />
 	</#if>
 
 	<#list vars as var>
