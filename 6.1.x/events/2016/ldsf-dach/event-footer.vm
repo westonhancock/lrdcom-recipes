@@ -432,16 +432,13 @@ AUI().ready(
                 var seconds = Math.floor((distance % _minute) / _second);
 
                 var units = [days, hours, minutes, seconds];
-                var count = 0;
-
-                units.forEach(function(unit) {
-                    if (unit < 10) {
-                        unit = '0' + unit;
-                        units[count] = unit;
-                    }
-
-                    count++;
-                });
+                
+                ## format times
+				for (var count = 0; count < units.length; count++) {
+					if (units[count] < 10) {
+					    units[count] = '0' + units[count];
+					}
+				}
 
                 A.one(selector).set('innerHTML', units[0] + ':' + units[1] + ':' + units[2] + ':' + units[3]);
             }
