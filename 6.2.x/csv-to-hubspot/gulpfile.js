@@ -16,6 +16,7 @@ gulp.task('scripts', function() {
             // core files
             'src/config.js',
             'src/data.js',
+            'src/ui.js',
             'src/core.js',
 
             // module 1

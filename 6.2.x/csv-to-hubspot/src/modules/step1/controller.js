@@ -5,10 +5,11 @@ var step1 = (function() {
 
 	// render HTML first
 	var init = (function() {
-		core.util.templateRender(core.config.stepsContainerClass, view);
+		core.templateRender(core.config.stepsContainerClass, view);
 	})();
 
 	var util = (function() {
+
 		var csvToJSON = function(csv) {
 			var lines = csv.split("\n");
 			var result = [];
@@ -33,7 +34,6 @@ var step1 = (function() {
 		}
 
 		var readFile = function(file) {
-			console.log(file);
 			 var textType = "text/csv";
 
 	        if (file.type === textType) {
@@ -58,60 +58,6 @@ var step1 = (function() {
 	})();
 
 	var UI = (function() {
-		// controls navigation UI
-	    var Navigate = (function() {
-	        var pages = document.querySelectorAll('.page');
-	        var noOfPages = pages.length;
-	        var prevBtn = document.querySelector('.steps-navigation .prev');
-	        var nextBtn = document.querySelector('.steps-navigation .next');
-	        var currentPage = 0;
-	        var isAnimating = false;
-	        var animationDuration = 700;
-
-			function movePage(direction) {
-
-	        	// don't move if page is currently animating and if reached end/beginning
-	        	if (isAnimating || ((direction === 'back') && currentPage === 0) || ((direction === 'forward') && currentPage + 1 === noOfPages )) {
-	        		return false;
-	        	}
-
-	        	isAnimating = true;
-
-	        	var thisPage = pages[currentPage];
-	        	var nextPage = pages[currentPage + 1];
-	        	var exitAnimation = 'pt-page-moveToLeftFade';
-	        	var enterAnimationClass = 'pt-page-movefromRightFade';
-
-	        	if (direction === 'back') {
-	        		nextPage = pages[currentPage - 1];
-	        		exitAnimation = 'pt-page-moveToRightFade';
-	        		enterAnimationClass = 'pt-page-moveFromLeftFade';
-	        	}
-
-	        	thisPage.classList.add(exitAnimation);
-	    		nextPage.classList.add(enterAnimationClass);
-	    		nextPage.classList.add('page-current');
-
-	        		thisPage.classList.remove('page-current');
-	    		setTimeout(function() {
-	        		nextPage.classList.remove(enterAnimationClass);
-	        		thisPage.classList.remove(exitAnimation);
-	        		isAnimating = false;
-	        	}, animationDuration)
-
-	    		if (direction === 'back') {
-	    			currentPage--
-	    		} else { currentPage++}
-	        }
-
-	        prevBtn.addEventListener('click', function() {
-	        	movePage('back');
-	        });
-	        nextBtn.addEventListener('click', function() {
-	        	movePage('forward');
-	        });
-	       
-	    })();
 
 	    // controls drag and upload UI
 	    var fileDrop = (function() {
@@ -143,8 +89,6 @@ var step1 = (function() {
 	        }, false);
 
 	    })();
-
-
 
 	})(util);
 

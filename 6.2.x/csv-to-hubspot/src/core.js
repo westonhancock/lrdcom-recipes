@@ -1,22 +1,21 @@
 var core = (function() {
 
-	var util = (function() {
-		var templateRender = function(parentClass, view) {
-			var container = document.querySelector('.' + parentClass);
-			container.insertAdjacentHTML('beforeend', view)
-		}
-		
-	    return {
-	    	templateRender: templateRender
-	    }
-	})();
-
-	return {
-		config: config,
-		data: data,
-		util: util
+	// renders HTML onto a template
+	var templateRender = function(parentClass, view) {
+		var container = document.querySelector('.' + parentClass);
+		container.insertAdjacentHTML('beforeend', view)
 	}
 
-})(data, config);
+	return {
+		// other modules
+		config: config,
+		data: data,
+		ui: ui,
+		
+		// utility functions
+		templateRender: templateRender
+	}
+
+})(data, config, ui);
 
 

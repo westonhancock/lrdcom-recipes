@@ -4,7 +4,7 @@ var step2 = (function() {
 	
 	// render HTML first
 	var init = (function() {
-		core.util.templateRender(core.config.stepsContainerClass, view);
+		core.templateRender(core.config.stepsContainerClass, view);
 	})();
 
 })(core);
