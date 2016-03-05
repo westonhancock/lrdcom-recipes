@@ -19,14 +19,15 @@ gulp.task('scripts', function() {
             'src/ui.js',
             'src/core.js',
 
-            // module 1
-            'src/modules/step1/controller.js',
-            // module 2
-            'src/modules/step2/controller.js',
-            // module 3
-            'src/modules/step3/controller.js',
+            // steps modules and its children
+            'src/modules/steps/data.js',
+            'src/modules/steps/controller.js',
+            'src/modules/steps/step1/data.js',
+            'src/modules/steps/step1/controller.js',
+            'src/modules/steps/step2/controller.js',
+            'src/modules/steps/step3/controller.js',
 
-            'src/app.js'
+            'src/init.js',
         ])
         .pipe(concat('app.js'))
         .pipe(gulp.dest('js'));
@@ -34,24 +35,24 @@ gulp.task('scripts', function() {
 
 // turn HTML files into JS
 gulp.task('step1:view', function() {
-    return gulp.src('src/modules/step1/*.html')
+    return gulp.src('src/modules/steps/step1/*.html')
         .pipe(htmlToJs({ concat: 'view.js' }))
-        .pipe(gulp.dest('src/modules/step1'));
+        .pipe(gulp.dest('src/modules/steps/step1'));
 });
 
 
 // turn HTML files into JS
 gulp.task('step2:view', function() {
-    return gulp.src('src/modules/step2/*.html')
+    return gulp.src('src/modules/steps/step2/*.html')
         .pipe(htmlToJs({ concat: 'view.js' }))
-        .pipe(gulp.dest('src/modules/step2'));
+        .pipe(gulp.dest('src/modules/steps/step2'));
 });
 
 // turn HTML files into JS
 gulp.task('step3:view', function() {
-    return gulp.src('src/modules/step3/*.html')
+    return gulp.src('src/modules/steps/step3/*.html')
         .pipe(htmlToJs({ concat: 'view.js' }))
-        .pipe(gulp.dest('src/modules/step3'));
+        .pipe(gulp.dest('src/modules/steps/step3'));
 });
 
 gulp.task('compile:views', [
@@ -63,13 +64,15 @@ gulp.task('compile:views', [
 // Watch for changes
 gulp.task('watch', function() {
     // Watch .js files
-    gulp.watch('src/modules/step1/controller.js', ['scripts']);
-    gulp.watch('src/modules/step2/controller.js', ['scripts']);
-    gulp.watch('src/modules/step3/controller.js', ['scripts']);
     gulp.watch('src/*.js', ['scripts']);
-    gulp.watch('src/modules/step1/view.html', ['compile:views']);
-    gulp.watch('src/modules/step2/view.html', ['compile:views']);
-    gulp.watch('src/modules/step3/view.html', ['compile:views']);
+    gulp.watch('src/modules/steps/step1/data.js', ['scripts']);
+    gulp.watch('src/modules/steps/step1/controller.js', ['scripts']);
+    gulp.watch('src/modules/steps/step2/controller.js', ['scripts']);
+    gulp.watch('src/modules/steps/step3/controller.js', ['scripts']);
+    gulp.watch('src/modules/steps/*.js', ['scripts']);
+    gulp.watch('src/modules/steps/step1/view.html', ['compile:views']);
+    gulp.watch('src/modules/steps/step2/view.html', ['compile:views']);
+    gulp.watch('src/modules/steps/step3/view.html', ['compile:views']);
     // Watch .scss files
     gulp.watch('src/scss/*.scss', ['sass']);
 });

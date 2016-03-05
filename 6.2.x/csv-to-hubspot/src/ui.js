@@ -1,14 +1,15 @@
 var ui = (function() {
-	// controls navigation
-	var Navigate = (function() {
 
-		var prevBtn = document.querySelector('.steps-navigation .prev');
-		var nextBtn = document.querySelector('.steps-navigation .next');
+	var prevBtn = document.querySelector('.steps-navigation .prev');
+	var nextBtn = document.querySelector('.steps-navigation .next');
+	
+	// controls navigation controls
+	var navigate = (function() {	
+		var currentPage = 0;
 
-		function movePage(direction) {
+		var movePage = function(direction) {
 			var pages = document.querySelectorAll('.page');
 		    var noOfPages = pages.length;
-		    var currentPage = 0;
 		    var isAnimating = false;
 		    var animationDuration = 700;
 
@@ -52,7 +53,36 @@ var ui = (function() {
 	    nextBtn.addEventListener('click', function() {
 	    	movePage('forward');
 	    });
-	   
+
 	})();
+
+	var changeNavigationState = function(state) {
+		if (state === "begin") {
+			prevBtn.style.display = 'none';
+			nextBtn.style.display = 'block';
+		}
+
+		else if (state === "block") {
+			prevBtn.style.display = 'none';
+			nextBtn.style.display = 'none';
+		}
+
+		else if (state === "proceed") {
+			prevBtn.style.display = 'block';
+			nextBtn.style.display = 'block';
+		}
+
+		else {
+			prevBtn.style.display = 'block';
+			nextBtn.style.display = 'none';
+		}
+	}
+
+	return {
+		changeNavigationState: changeNavigationState
+	}
+
+
+
 })();
 

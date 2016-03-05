@@ -2,7 +2,7 @@ var config = (function() {
 	return {
 		// ui options
 		stepsContainerClass: 'steps-container',
-		uploadID : 'upload-file',
+		uploadContainerClass : 'file-drag',
 		cycle_duration : 1500,
 
 		// hubspot options

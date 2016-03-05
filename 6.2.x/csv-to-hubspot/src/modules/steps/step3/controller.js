@@ -1,11 +1,8 @@
 var step3 = (function() {
 
-	var view = '<div class="page" data-step="3">\n	<p>Submitting</p>\n</div>'
-	
-	// render HTML first
-	var init = (function() {
-		core.templateRender(core.config.stepsContainerClass, view);
-	})();
+	steps.initStep({
+		html: '<div class="page" data-step="3">\n	<p>Submitting</p>\n</div>'
+	})
 
 	var util = (function() {
 		var sendToHubspot = function() {
@@ -19,4 +16,4 @@ var step3 = (function() {
 		}
 	})();
 
-})(core);
+})(steps);
