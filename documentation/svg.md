@@ -51,7 +51,7 @@ meaning:
 Useful Tags:
 -----
 #### `<use>...</use>`
-for reusing elements by translating them to the new coordinates relative to the original element (_shadow host, where the content of which is hosted in a shadow document fragment_)
+for reusing elements by translating them to the new coordinates relative to the original element
 
 `<use x="100" y="100" xlink:href="#groupId" />`
 or

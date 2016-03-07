@@ -1,6 +1,6 @@
 <#include "${templatesPath}/1561886" />
 
-<div class="office" typeof="Organization" vocab="http://schema.org/">
+<div class="office standard-padding" typeof="Organization" vocab="http://schema.org/">
 	${flag.data}
 
 	<h2 property="addressLocality">${office_title.data}</h2>
