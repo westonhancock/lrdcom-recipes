@@ -329,7 +329,7 @@ a.android {
 			<div class="countdown-units">
 				$register_button_text.minute.data</div>
 			<div class="countdown-units">
-				$register_button_text.day.data</div>
+				$register_button_text.second.data</div>
 			#else
 				<div class="countdown-units">
 					D</div>
