@@ -82,7 +82,4 @@ var ui = (function() {
 		changeNavigationState: changeNavigationState
 	}
 
-
-
 })();
-

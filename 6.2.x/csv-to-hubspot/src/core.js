@@ -44,12 +44,13 @@ var core = (function() {
 	    }
 	};
 
+	// use this to change state of application
 	var changeState = function(stateName, state) {
 		data['state'][stateName] = state;
 		publisher.fire('stateChange', state)
 	}
-	
-	// manage navigation state
+
+	// internally registering handling of 
 	publisher.on('stateChange', ui.changeNavigationState);
 
 	return {
@@ -65,5 +66,3 @@ var core = (function() {
 	}
 
 })(data, config, ui);
-
-
