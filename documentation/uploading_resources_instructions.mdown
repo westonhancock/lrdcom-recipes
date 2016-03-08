@@ -5,40 +5,56 @@
   * Username: your.name@liferay.com.broken
   * Password: test
   * If you do not see the toolbars or edit controls let [Ryan Schuhler](mailto:ryan.schuhler@liferay.com) know and he can check your permissions.
-3. Uploading Resources _(excluding case studies)_
-  1. Go to `Admin` > `Content` > `Documents and Media` > `RESOURCES`
+3. Go to Control Panel by either:
+  * Clicking `Admin` > `Content`
+  * Or going to [https://webteam.liferay.com/group/control_panel](https://webteam.liferay.com/group/control_panel)
+4. Uploading Resources _(excluding case studies)_
+  1. In Control Panel, go to `Documents and Media` > `RESOURCES`
   2. Go into folder for your Resource Type
     * Add folder if it does not exist. Make sure it is in ALL CAPS _(ie. WHITEPAPERS)_
   3. Create new resource by clicking `Add` > **_Resource Type_** _(ie. Whitepaper)_
     1. Title article.
-      * Note that the title will be used to create url _(ie “What is a Portal” url will be “/resources/whitepapers/what-is-a-portal”)_
+      * Note that the title will be used to create the url _(ie “What is a Portal” url will be “/resources/whitepapers/what-is-a-portal”)_
+      * The `Display Title` field is the title that will be shown on the page
     2. Fill in all applicable fields
     3. Under `Categorization` fill in the following
       * Filtering Categories = `Resources`
       * Industry Sector
       * Resource Type
     4. Click `Publish`
-4. Uploading Case Studies
-  1. Go to `Admin` > `Content` > `Web Content` > `RESOURCES` > `CASE STUDIES`
+5. Uploading Case Studies
+  1. In Control Panel, go to > `Web Content` > `RESOURCES` > `CASE STUDIES`
   2. Create new case study article by clicking `Add` > `Case Study`
     1. Title article as **_Company Name_**.
-      * Note that the title will be used to create url _(ie “Autozone” url will be “/resources/case-studies/autozone”)_
+      * Note that the title will be used to create the url _(ie “Autozone” url will be “/resources/case-studies/autozone”)_
     2. Fill in all applicable fields _(copying content from current case studies https://www.liferay.com/products/liferay-portal/stories)_
     3. Use the repeatable fields of `Subheading` and `Summary Paragraph` to add all content from case study to page
     4. Upload PDF of case study by going to the `Asset` Field and clicking `Select`
       1. Click on `RESOURCES` > `CASE STUDIES`
-      2. Click `Add` > `Subfolder`
-      3. Name the subfolder **_Company Name_** in ALL CAPS _(ie. AUTOZONE)_ and `Save`
-      4. Click on folder you just created
-      5. Click `Add` > `Case Study`
+      2. If a folder for your current case study does not exist _(ie. AUTOZONE)_, create it,
+        1. Click `Add` > `Subfolder`
+        2. Name the subfolder **_Company Name_** in ALL CAPS _(ie. AUTOZONE)_ and `Save`
+      3. Click on folder for your current case study _(ie. AUTOZONE)_
+      4. Click `Add` > `Case Study`
         1. Title resource as **_Company Name_**.
         2. Fill in all applicable fields
         3. Do not add any categories _(this will be done back on the article level...see step “v”)_
         4. Click `Publish`
-    5. Back on the article edit screen, click `Categorization` _(in the right navigation)_ and categorize as follows:
+    5. Upload any assets available for the case study _(ie. company logo, videos, screenshots)_
+      1. Click on the `Select` button on the field you want to add the asset to
+      2. Click on `RESOURCES` > `CASE STUDIES`
+      3. If a folder for your current case study does not exist _(ie. AUTOZONE)_, create it,
+        1. Click `Add` > `Subfolder`
+        2. Name the subfolder **_Company Name_** in ALL CAPS _(ie. AUTOZONE)_ and `Save`
+      3. Click on folder for your current case study _(ie. AUTOZONE)_
+      4. Click `Add` > `Basic Document`
+        1. Title resource to include **_Company Name_** _(ie. Autozone Logo)_.
+        2. Do not add any categories
+        3. Click `Publish`
+    6. Back on the article edit screen, click `Categorization` _(in the right navigation)_ and categorize as follows:
       * Case Type
       * Filtering Categories = `Resources`
       * Industry Sector
       * Region
       * Resource Type = `Case Studies`
-    6. Click `Publish`
+    7. Click `Publish`
