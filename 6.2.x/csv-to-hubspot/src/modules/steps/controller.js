@@ -5,8 +5,13 @@ var steps = (function() {
 		// renderHTML();
 	};
 
+	var completeStep = function(step) {
+		stepsData.completeStep(step);
+	}
+
 	return {
-		initStep : initStep
+		initStep: initStep,
+		completeStep: completeStep
 	}
 
 })(core, stepsData);

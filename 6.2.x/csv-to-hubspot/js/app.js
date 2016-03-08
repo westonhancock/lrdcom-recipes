@@ -9,11 +9,12 @@ var config = (function() {
 		hubspotPortal : '299703',
 		hubspotForm  : '5109c074-942c-49a6-929b-91b3441a9c3d'
 	}
-})();
-
+})();	
 var data = {
-	submissionData: {
-		fieldData: {},
+	step1: {
+		json: undefined
+	},
+	step2: {
 		interactionType: undefined,
 		campaign: undefined
 	},
@@ -106,11 +107,7 @@ var ui = (function() {
 		changeNavigationState: changeNavigationState
 	}
 
-
-
 })();
-
-
 var core = (function() {
 
 	// renders HTML onto a template
@@ -157,12 +154,13 @@ var core = (function() {
 	    }
 	};
 
+	// use this to change state of application
 	var changeState = function(stateName, state) {
 		data['state'][stateName] = state;
 		publisher.fire('stateChange', state)
 	}
-	
-	// manage navigation state
+
+	// internally registering handling of 
 	publisher.on('stateChange', ui.changeNavigationState);
 
 	return {
@@ -178,19 +176,15 @@ var core = (function() {
 	}
 
 })(data, config, ui);
-
-
-
 // creates and holds our steps
 var stepsData = (function() {
 
 	// our step prototype
 	var stepObject = {
 		// individual data received from each step
-		data : {},
 		step : 0,
 		// determines whether user has completed the requirements of step
-		complete : false,
+		completed : false,
 		// functions to run when user completes
 		onComplete : undefined
 	};
@@ -207,24 +201,29 @@ var stepsData = (function() {
 			this.numberOfSteps++
 
 			// create our step object
-			currentStep.data = config.data || currentStep.data;
 			currentStep.step = this.numberOfSteps;
 			currentStep.html = config.html || currentStep.html;
-			currentStep.complete = config.complete || currentStep.complete;
+			currentStep.completed = config.completed || currentStep.completed;
 			currentStep.onComplete = config.onComplete || currentStep.onComplete;
 
 			// push it to master object
 			this.allSteps.push(currentStep);
 			// render HTML
 			this.renderStep(this.numberOfSteps);
+
+			return currentStep;
 			
 		},
 		renderStep: function(step) {
 			core.templateRender(core.config.stepsContainerClass, this.allSteps[step - 1].html);
 		},
-		testStep: function(step) {},
-		testAll: function() {},
-		updateData: function() {}
+		completeStep: function(step) {
+			var step = this.allSteps[step - 1];
+			step.completed = true;
+			if (step.onComplete) {
+				step.onComplete();	
+			}
+		}
 	}
 
 })();
@@ -236,23 +235,29 @@ var steps = (function() {
 		// renderHTML();
 	};
 
+	var completeStep = function(step) {
+		stepsData.completeStep(step);
+	}
+
 	return {
-		initStep : initStep
+		initStep: initStep,
+		completeStep: completeStep
 	}
 
 })(core, stepsData);
 var step1Data = {
 	csv: {},
-	json : {},
 	ui: {
 		defaultDropText: "Drop Files Here"
 	}
-
 }
 var step1 = (function() {
 
 	steps.initStep({
-		html: '<div class="page page-current" data-step="1">\n	<h1>Interactions Import Tool</h1>\n	<h3>Step 1</h3>\n	<p>Format your data with the following header</p>\n	<ul>\n		<li>Email</li>\n		<li>Interaction</li>\n		<li>Interaction Detail</li>\n		<li>Interaction Date</li>\n	</ul>\n	\n	<p>Save as a CSV (comma delimited) and upload here:</p>\n	\n	CSV File:\n	<div class="file-drag">Drop Files Here</div>\n\n	<div class="file-info"></div>\n	\n</div>'
+		html: '<div class="page page-current" data-step="1">\n	<h1>Interactions Import Tool</h1>\n	<h3>Step 1</h3>\n	<p>Format your data with the following header</p>\n	<ul>\n		<li>Email</li>\n		<li>Interaction</li>\n		<li>Interaction Detail</li>\n		<li>Interaction Date</li>\n	</ul>\n	\n	<p>Save as a CSV (comma delimited) and upload here:</p>\n	\n	CSV File:\n	<div class="file-drag">Drop Files Here</div>\n\n	<div class="file-info"></div>\n	\n</div>',
+		onComplete: function() {
+			core.changeState('navigation', 'proceed');
+		}
 	})
 
 	var tests = (function() {
@@ -357,12 +362,14 @@ var step1 = (function() {
 
 			// listen for when csv is being done checked to turn into a JSON
 			core.publisher.on('csvChecked', function(csv) {
-				step1Data.json = csvToJSON(csv);
+				core.data.step1.json = csvToJSON(csv);
+				console.log(core.data);
 				UI.fileInform('Currently Testing');
 
-				// if we pass the JSON testing, we should change application state
-				if (tests.checkJSON(step1Data.json)) {
-					core.changeState('navigation', 'proceed')
+				// if we pass the JSON testing, we should complete the step
+				if (tests.checkJSON(core.data.step1.json)) {
+					UI.fileInform('File is good!');
+					steps.completeStep(1);
 				}
 				
 			});
@@ -436,8 +443,55 @@ var step1 = (function() {
 var step2 = (function() {
 
 	steps.initStep({
-		html: '<div class="page" data-step="2">\n	<h3>Step 2</h3>\n	<p>Classify the interaction you\'re tracking by filling out the following form</p>\n	<label>\n		Interaction Type\n		<select id="interaction-type">\n			<option value="interaction1">Interaction 1</option>\n			<option value="interaction2">Interaction 2</option>\n		</select>\n	</label>\n\n	<div>\n		<label>\n			Campaign\n			<input type="text" id="interaction-type" />\n		</label>\n	</div>\n\n</div>'
-	})
+		html: '<div class="page" data-step="2">\n	<h3>Step 2</h3>\n	<p>Classify the interaction you\'re tracking by filling out the following form</p>\n	<label>\n		Interaction Type\n		<select id="interaction-type">\n			<option disabled="disabled" selected="selected">Select an option.</option>\n			<option value="interaction1">Interaction 1</option>\n			<option value="interaction2">Interaction 2</option>\n		</select>\n	</label>\n\n	<div>\n		<label>\n			Campaign\n			<input type="text" id="campaign-id" />\n		</label>\n	</div>\n\n</div>',
+		onComplete: function() {
+			core.ui.changeNavigationState('proceed');
+		}
+	});
+
+	var tests = (function() {
+		var validateAll = function() {
+			var allAnswers = core.data.step2;
+			var errors = 0;
+
+			for (key in allAnswers) {
+				if (!allAnswers[key]) {
+					errors++;
+				}
+			}
+
+			if (errors === 0) {
+				steps.completeStep(2);
+				return true;
+			}
+		};
+
+		return {
+			validateAll: validateAll
+		}
+	})();
+
+	// UI for our step
+	var ui = (function() {
+
+		//controls when form changes
+		var form = (function() {
+			var interactionType = document.querySelector('#interaction-type');
+			var campaign = document.querySelector('#campaign-id');
+
+			interactionType.addEventListener('change', function(e) {
+				core.data.step2.interactionType = interactionType.options[interactionType.selectedIndex].value;
+				tests.validateAll();
+			}, false);
+
+			campaign.addEventListener('keyup', function() {
+				core.data.step2.campaign = campaign.value;
+				tests.validateAll();
+			}, false);
+
+		})();
+
+	})();
 	
 })(steps);
 var step3 = (function() {

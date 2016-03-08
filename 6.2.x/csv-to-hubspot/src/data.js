@@ -1,6 +1,8 @@
 var data = {
-	submissionData: {
-		fieldData: {},
+	step1: {
+		json: undefined
+	},
+	step2: {
 		interactionType: undefined,
 		campaign: undefined
 	},

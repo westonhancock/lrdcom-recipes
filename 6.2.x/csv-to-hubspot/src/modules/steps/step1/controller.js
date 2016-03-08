@@ -1,7 +1,10 @@
 var step1 = (function() {
 
 	steps.initStep({
-		html: '<div class="page page-current" data-step="1">\n	<h1>Interactions Import Tool</h1>\n	<h3>Step 1</h3>\n	<p>Format your data with the following header</p>\n	<ul>\n		<li>Email</li>\n		<li>Interaction</li>\n		<li>Interaction Detail</li>\n		<li>Interaction Date</li>\n	</ul>\n	\n	<p>Save as a CSV (comma delimited) and upload here:</p>\n	\n	CSV File:\n	<div class="file-drag">Drop Files Here</div>\n\n	<div class="file-info"></div>\n	\n</div>'
+		html: '<div class="page page-current" data-step="1">\n	<h1>Interactions Import Tool</h1>\n	<h3>Step 1</h3>\n	<p>Format your data with the following header</p>\n	<ul>\n		<li>Email</li>\n		<li>Interaction</li>\n		<li>Interaction Detail</li>\n		<li>Interaction Date</li>\n	</ul>\n	\n	<p>Save as a CSV (comma delimited) and upload here:</p>\n	\n	CSV File:\n	<div class="file-drag">Drop Files Here</div>\n\n	<div class="file-info"></div>\n	\n</div>',
+		onComplete: function() {
+			core.changeState('navigation', 'proceed');
+		}
 	})
 
 	var tests = (function() {
@@ -106,12 +109,14 @@ var step1 = (function() {
 
 			// listen for when csv is being done checked to turn into a JSON
 			core.publisher.on('csvChecked', function(csv) {
-				step1Data.json = csvToJSON(csv);
+				core.data.step1.json = csvToJSON(csv);
+				console.log(core.data);
 				UI.fileInform('Currently Testing');
 
-				// if we pass the JSON testing, we should change application state
-				if (tests.checkJSON(step1Data.json)) {
-					core.changeState('navigation', 'proceed')
+				// if we pass the JSON testing, we should complete the step
+				if (tests.checkJSON(core.data.step1.json)) {
+					UI.fileInform('File is good!');
+					steps.completeStep(1);
 				}
 				
 			});
