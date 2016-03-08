@@ -35,7 +35,8 @@ var ui = (function() {
 			nextPage.classList.add(enterAnimationClass);
 			nextPage.classList.add('page-current');
 
-	    		thisPage.classList.remove('page-current');
+	    	thisPage.classList.remove('page-current');
+			
 			setTimeout(function() {
 	    		nextPage.classList.remove(enterAnimationClass);
 	    		thisPage.classList.remove(exitAnimation);
@@ -45,6 +46,9 @@ var ui = (function() {
 			if (direction === 'back') {
 				currentPage--
 			} else { currentPage++}
+
+			// lastly tell application that page has been moved
+			core.publisher.fire("pageMoved", currentPage + 1);
 	    }
 
 	    prevBtn.addEventListener('click', function() {

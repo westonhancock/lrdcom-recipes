@@ -3,7 +3,7 @@ var step1 = (function() {
 	steps.initStep({
 		html: '<div class="page page-current" data-step="1">\n	<h1>Interactions Import Tool</h1>\n	<h3>Step 1</h3>\n	<p>Format your data with the following header</p>\n	<ul>\n		<li>Email</li>\n		<li>Interaction</li>\n		<li>Interaction Detail</li>\n		<li>Interaction Date</li>\n	</ul>\n	\n	<p>Save as a CSV (comma delimited) and upload here:</p>\n	\n	CSV File:\n	<div class="file-drag">Drop Files Here</div>\n\n	<div class="file-info"></div>\n	\n</div>',
 		onComplete: function() {
-			core.changeState('navigation', 'proceed');
+			core.changeState('navigation', 'begin');
 		}
 	})
 
@@ -51,17 +51,15 @@ var step1 = (function() {
 
 				result.push(obj);
 			}
+			// var json = JSON.stringify(result);
 
-			var json = JSON.stringify(result);
-
-			core.publisher.fire('JSONcreated', json);
-			return json;
+			core.publisher.fire('JSONcreated', result);
+			return result;
 		}
 
 		// read file in browser
 		var readFile = function(file) {
 			 var textType = "text/csv";
-			 var data;
 
 	        if (file.type === textType) {
 	            var reader = new FileReader();
@@ -75,7 +73,7 @@ var step1 = (function() {
 
 	        } else {
 	            // wrong file type
-	            console.error("Wrong file type");
+	            UI.fileInform('Wrong file type. Upload CSV File');
 	        }
 		}
 
@@ -110,7 +108,6 @@ var step1 = (function() {
 			// listen for when csv is being done checked to turn into a JSON
 			core.publisher.on('csvChecked', function(csv) {
 				core.data.step1.json = csvToJSON(csv);
-				console.log(core.data);
 				UI.fileInform('Currently Testing');
 
 				// if we pass the JSON testing, we should complete the step

@@ -4,11 +4,13 @@ var stepsData = (function() {
 	// our step prototype
 	var stepObject = {
 		// individual data received from each step
-		step : 0,
+		step: 0,
 		// determines whether user has completed the requirements of step
-		completed : false,
+		completed: false,
 		// functions to run when user completes
-		onComplete : undefined
+		onComplete: undefined,
+		// function to run when a step is in view
+		onLoad: undefined
 	};
 
 	return {
@@ -27,6 +29,7 @@ var stepsData = (function() {
 			currentStep.html = config.html || currentStep.html;
 			currentStep.completed = config.completed || currentStep.completed;
 			currentStep.onComplete = config.onComplete || currentStep.onComplete;
+			currentStep.onLoad = config.onLoad || currentStep.onLoad;
 
 			// push it to master object
 			this.allSteps.push(currentStep);
@@ -40,10 +43,16 @@ var stepsData = (function() {
 			core.templateRender(core.config.stepsContainerClass, this.allSteps[step - 1].html);
 		},
 		completeStep: function(step) {
-			var step = this.allSteps[step - 1];
-			step.completed = true;
-			if (step.onComplete) {
-				step.onComplete();	
+			var currentStep = this.allSteps[step - 1];
+			currentStep.completed = true;
+			if (currentStep.onComplete) {
+				currentStep.onComplete();	
+			}
+		},
+		loadStep: function(step) {
+			var currentStep = this.allSteps[step - 1];
+			if (currentStep.onLoad) {
+				currentStep.onLoad();
 			}
 		}
 	}

@@ -9,6 +9,9 @@ var steps = (function() {
 		stepsData.completeStep(step);
 	}
 
+	// listen for when the page moves
+	core.publisher.on("pageMoved", stepsData.loadStep, stepsData)
+
 	return {
 		initStep: initStep,
 		completeStep: completeStep

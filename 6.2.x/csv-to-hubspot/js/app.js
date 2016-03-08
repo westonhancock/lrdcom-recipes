@@ -60,7 +60,8 @@ var ui = (function() {
 			nextPage.classList.add(enterAnimationClass);
 			nextPage.classList.add('page-current');
 
-	    		thisPage.classList.remove('page-current');
+	    	thisPage.classList.remove('page-current');
+			
 			setTimeout(function() {
 	    		nextPage.classList.remove(enterAnimationClass);
 	    		thisPage.classList.remove(exitAnimation);
@@ -70,6 +71,9 @@ var ui = (function() {
 			if (direction === 'back') {
 				currentPage--
 			} else { currentPage++}
+
+			// lastly tell application that page has been moved
+			core.publisher.fire("pageMoved", currentPage + 1);
 	    }
 
 	    prevBtn.addEventListener('click', function() {
@@ -182,11 +186,13 @@ var stepsData = (function() {
 	// our step prototype
 	var stepObject = {
 		// individual data received from each step
-		step : 0,
+		step: 0,
 		// determines whether user has completed the requirements of step
-		completed : false,
+		completed: false,
 		// functions to run when user completes
-		onComplete : undefined
+		onComplete: undefined,
+		// function to run when a step is in view
+		onLoad: undefined
 	};
 
 	return {
@@ -205,6 +211,7 @@ var stepsData = (function() {
 			currentStep.html = config.html || currentStep.html;
 			currentStep.completed = config.completed || currentStep.completed;
 			currentStep.onComplete = config.onComplete || currentStep.onComplete;
+			currentStep.onLoad = config.onLoad || currentStep.onLoad;
 
 			// push it to master object
 			this.allSteps.push(currentStep);
@@ -218,10 +225,16 @@ var stepsData = (function() {
 			core.templateRender(core.config.stepsContainerClass, this.allSteps[step - 1].html);
 		},
 		completeStep: function(step) {
-			var step = this.allSteps[step - 1];
-			step.completed = true;
-			if (step.onComplete) {
-				step.onComplete();	
+			var currentStep = this.allSteps[step - 1];
+			currentStep.completed = true;
+			if (currentStep.onComplete) {
+				currentStep.onComplete();	
+			}
+		},
+		loadStep: function(step) {
+			var currentStep = this.allSteps[step - 1];
+			if (currentStep.onLoad) {
+				currentStep.onLoad();
 			}
 		}
 	}
@@ -238,6 +251,9 @@ var steps = (function() {
 	var completeStep = function(step) {
 		stepsData.completeStep(step);
 	}
+
+	// listen for when the page moves
+	core.publisher.on("pageMoved", stepsData.loadStep, stepsData)
 
 	return {
 		initStep: initStep,
@@ -256,7 +272,7 @@ var step1 = (function() {
 	steps.initStep({
 		html: '<div class="page page-current" data-step="1">\n	<h1>Interactions Import Tool</h1>\n	<h3>Step 1</h3>\n	<p>Format your data with the following header</p>\n	<ul>\n		<li>Email</li>\n		<li>Interaction</li>\n		<li>Interaction Detail</li>\n		<li>Interaction Date</li>\n	</ul>\n	\n	<p>Save as a CSV (comma delimited) and upload here:</p>\n	\n	CSV File:\n	<div class="file-drag">Drop Files Here</div>\n\n	<div class="file-info"></div>\n	\n</div>',
 		onComplete: function() {
-			core.changeState('navigation', 'proceed');
+			core.changeState('navigation', 'begin');
 		}
 	})
 
@@ -304,17 +320,15 @@ var step1 = (function() {
 
 				result.push(obj);
 			}
+			// var json = JSON.stringify(result);
 
-			var json = JSON.stringify(result);
-
-			core.publisher.fire('JSONcreated', json);
-			return json;
+			core.publisher.fire('JSONcreated', result);
+			return result;
 		}
 
 		// read file in browser
 		var readFile = function(file) {
 			 var textType = "text/csv";
-			 var data;
 
 	        if (file.type === textType) {
 	            var reader = new FileReader();
@@ -328,7 +342,7 @@ var step1 = (function() {
 
 	        } else {
 	            // wrong file type
-	            console.error("Wrong file type");
+	            UI.fileInform('Wrong file type. Upload CSV File');
 	        }
 		}
 
@@ -363,7 +377,6 @@ var step1 = (function() {
 			// listen for when csv is being done checked to turn into a JSON
 			core.publisher.on('csvChecked', function(csv) {
 				core.data.step1.json = csvToJSON(csv);
-				console.log(core.data);
 				UI.fileInform('Currently Testing');
 
 				// if we pass the JSON testing, we should complete the step
@@ -446,6 +459,9 @@ var step2 = (function() {
 		html: '<div class="page" data-step="2">\n	<h3>Step 2</h3>\n	<p>Classify the interaction you\'re tracking by filling out the following form</p>\n	<label>\n		Interaction Type\n		<select id="interaction-type">\n			<option disabled="disabled" selected="selected">Select an option.</option>\n			<option value="interaction1">Interaction 1</option>\n			<option value="interaction2">Interaction 2</option>\n		</select>\n	</label>\n\n	<div>\n		<label>\n			Campaign\n			<input type="text" id="campaign-id" />\n		</label>\n	</div>\n\n</div>',
 		onComplete: function() {
 			core.ui.changeNavigationState('proceed');
+		},
+		onLoad: function() {
+			core.ui.changeNavigationState();
 		}
 	});
 
@@ -497,8 +513,11 @@ var step2 = (function() {
 var step3 = (function() {
 
 	steps.initStep({
-		html: '<div class="page" data-step="3">\n	<p>Submitting</p>\n</div>'
-	})
+		html: '<div class="page" data-step="3">\n	<p>Submitting..</p>\n\n	<div class="progress-bar-container">\n		<div class="progress-bar"></div>\n	</div>\n</div>',
+		onLoad: function() {
+			util.startUpload();
+		}
+	});
 
 	var util = (function() {
 		var sendToHubspot = function() {
@@ -507,9 +526,33 @@ var step3 = (function() {
 			});	
 		}
 
-		return {
-			sendToHubspot: sendToHubspot
+		var startUpload = function() {
+			var i = 1;
+			var noOfEntries = core.data.step1.json.length;
+			function timer() {	
+			    setTimeout(function () {
+			 
+			    	// 1) upload to hubspot
+			    	// 2) update UI
+
+			        if (i < noOfEntries) {
+			        	timer();
+			        	i++	
+			        }
+			    }, config.cycle_duration);
+			}
+			timer();
 		}
+			
+		return {
+			startUpload: startUpload
+		}
+		
+	})();
+
+	var ui = (function() {
+
+
 	})();
 
 })(steps);
