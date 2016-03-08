@@ -17,500 +17,502 @@
 <#assign hs_form_local_service = portlet_bean_locator.locate("hubspot-portlet", "com.liferay.hubspot.service.HSFormLocalService") />
 
 <#if request.lifecycle == 'RENDER_PHASE'>
-	<#include "${templatesPath}/1561886" />
+	<div class="${article_class.data}">
+		<#include "${templatesPath}/1561886" />
 
-	<#include "${templatesPath}/898140" />
+		<#include "${templatesPath}/898140" />
 
-	<#--
-	Testing Hubspot Account
-	-->
-	<#assign hs_account_id = "299703" />
+		<#--
+		Testing Hubspot Account
+		-->
+		<#assign hs_account_id = "299703" />
 
-	<#--
-	Production Hubspot Account
-	<#assign hs_account_id = "252686" />
-	-->
+		<#--
+		Production Hubspot Account
+		<#assign hs_account_id = "252686" />
+		-->
 
-	<#--Double check if IP Geocoder is working -->
-	<#--<#assign ip_geocoder_util = portlet_bean_locator.locate("ip-geocoder-portlet", "com.liferay.ipgeocoder.util.IPGeocoderUtil") />-->
-	<#--<#assign ip_geocoder_util = objectUtil("com.liferay.ipgeocoder.util.IPGeocoderUtil")! />-->
-	<#assign ip_geocoder_util = serviceLocator.findService("com.liferay.ipgeocoder.util.IPGeocoderUtil")! />
+		<#--Double check if IP Geocoder is working -->
+		<#--<#assign ip_geocoder_util = portlet_bean_locator.locate("ip-geocoder-portlet", "com.liferay.ipgeocoder.util.IPGeocoderUtil") />-->
+		<#--<#assign ip_geocoder_util = objectUtil("com.liferay.ipgeocoder.util.IPGeocoderUtil")! />-->
+		<#assign ip_geocoder_util = serviceLocator.findService("com.liferay.ipgeocoder.util.IPGeocoderUtil")! />
 
-	<#if ip_geocoder_util?has_content>
-		<#assign ip_info = ip_geocoder_util.getIPInfo(request.attributes.OSB_WWW_REMOTE_ADDRESS)! />
-	</#if>
+		<#if ip_geocoder_util?has_content>
+			<#assign ip_info = ip_geocoder_util.getIPInfo(request.attributes.OSB_WWW_REMOTE_ADDRESS)! />
+		</#if>
 
-	<#if ip_info?has_content>
-		<#assign country_from_ip = ip_info.getCountryName()! />
-	</#if>
+		<#if ip_info?has_content>
+			<#assign country_from_ip = ip_info.getCountryName()! />
+		</#if>
 
-	<#assign number_of_fields_displayed = getterUtil.getInteger(number_of_fields.data) />
+		<#assign number_of_fields_displayed = getterUtil.getInteger(number_of_fields.data) />
 
-	<#--
-	<#list number_of_fields.override_key.siblings as key>
-		<#list key.override_value.siblings as value>
-			<#if hs_url_map.get(key.data) == value.data || hs_default_map.get(key.data) == value.data>
-				<#assign number_of_fields_displayed = getterUtil.getInteger(value.num_of_fields.data) />
-				<#assign fields_to_skip = value.fields_to_skip.data />
+		<#--
+		<#list number_of_fields.override_key.siblings as key>
+			<#list key.override_value.siblings as value>
+				<#if hs_url_map.get(key.data) == value.data || hs_default_map.get(key.data) == value.data>
+					<#assign number_of_fields_displayed = getterUtil.getInteger(value.num_of_fields.data) />
+					<#assign fields_to_skip = value.fields_to_skip.data />
 
-				<#assign break = true />
+					<#assign break = true />
+					#break
+				</#if>
+			</#list>
+
+			<#if break>
 				#break
 			</#if>
 		</#list>
+		 -->
 
-		<#if break>
-			#break
-		</#if>
-	</#list>
-	 -->
+		<#-- Create a state to country map -->
 
-	<#-- Create a state to country map -->
+		<#assign state_country_map = '{"Armed Forces Americas": "United States","Armed Forces Europe": "United States","Alaska": "United States","Alabama": "United States","Armed Forces Pacific": "United States","Arkansas": "United States","American Samoa": "United States","Arizona": "United States","California": "United States","Colorado": "United States","Connecticut": "United States","District of Columbia": "United States","Delaware": "United States","Florida": "United States","Federated Micronesia": "United States","Georgia": "United States","Guam": "United States","Hawaii": "United States","Iowa": "United States","Idaho": "United States","Illinois": "United States","Indiana": "United States","Kansas": "United States","Kentucky": "United States","Louisiana": "United States","Massachusetts": "United States","Maryland": "United States","Maine": "United States","Marshall Islands": "United States","Michigan": "United States","Minnesota": "United States","Missouri": "United States","Northern Mariana Islands": "United States","Mississippi": "United States","Montana": "United States","North Carolina": "United States","North Dakota": "United States","Nebraska": "United States","New Hampshire": "United States","New Jersey": "United States","New Mexico": "United States","Nevada": "United States","New York": "United States","Ohio": "United States","Oklahoma": "United States","Oregon": "United States","Pennsylvania": "United States","Puerto Rico": "United States","Palau": "United States","Rhode Island": "United States","South Carolina": "United States","South Dakota": "United States","Tennessee": "United States","Texas": "United States","United States Minor Outlying Islands": "United States","Utah": "United States","Virginia": "United States","US Virgin Islands": "United States","Vermont": "United States","Washington": "United States","Wisconsin": "United States","West Virginia": "United States","Wyoming": "United States","Australian Capital Territory": "Australia","New South Wales": "Australia","Northern Territory": "Australia","Queensland": "Australia","South Australia": "Australia","Tasmania": "Australia","Victoria": "Australia","Western Australia": "Australia","Acre": "Brazil","Alagoas": "Brazil","Amazonas": "Brazil","Amapá": "Brazil","Bahia": "Brazil","Ceará": "Brazil","Distrito Federal": "Brazil","Espírito Santo": "Brazil","Goiás": "Brazil","Maranhão": "Brazil","Minas Gerais": "Brazil","Mato Grosso do Sul": "Brazil","Mato Grosso": "Brazil","Pará": "Brazil","Paraíba": "Brazil","Pernambuco": "Brazil","Piauí": "Brazil","Paraná": "Brazil","Rio de Janeiro": "Brazil","Rio Grande do Norte": "Brazil","Rondônia": "Brazil","Roraima": "Brazil","Rio Grande do Sul": "Brazil","Santa Catarina": "Brazil","Sergipe": "Brazil","São Paulo": "Brazil","Tocantins": "Brazil","Alberta": "Canada","British Columbia": "Canada","Manitoba": "Canada","New Brunswick": "Canada","Newfoundland and Labrador": "Canada","Nova Scotia": "Canada","Northwest Territories": "Canada","Nunavut": "Canada","Ontario": "Canada","Prince Edward Island": "Canada","Quebec": "Canada","Saskatchewan": "Canada","Yukon Territories": "Canada","Beijing": "China","Tianjin": "China","Hebei": "China","Shanxi": "China","Nei Mongol": "China","Liaoning": "China","Jilin": "China","Heilongjiang": "China","Shanghai": "China","Jiangsu": "China","Zhejiang": "China","Anhui": "China","Fujian": "China","Jiangxi": "China","Shandong": "China","Henan": "China","Hubei": "China","Hunan": "China","Guangdong": "China","Guangxi": "China","Hainan": "China","Chongqing": "China","Sichuan": "China","Guizhou": "China","Yunnan": "China","Xizang": "China","Shaanxi": "China","Gansu": "China","Qinghai": "China","Ningxia": "China","Xinjiang": "China","Chinese Taipei": "China","Hong Kong": "China","Macao": "China","Clare": "Ireland","Cavan": "Ireland","Cork": "Ireland","Carlow": "Ireland","Dublin": "Ireland","Donegal": "Ireland","Galway": "Ireland","Kildare": "Ireland","Kilkenny": "Ireland","Kerry": "Ireland","Longford": "Ireland","Louth": "Ireland","Limerick": "Ireland","Leitrim": "Ireland","Laois": "Ireland","Meath": "Ireland","Monaghan": "Ireland","Mayo": "Ireland","Offaly": "Ireland","Roscommon": "Ireland","Sligo": "Ireland","Tipperary": "Ireland","Waterford": "Ireland","Westmeath": "Ireland","Wicklow": "Ireland","Wexford": "Ireland","Andaman and Nicobar Islands": "India","Andhra Pradesh": "India","Arunachal Pradesh": "India","Assam": "India","Bihar": "India","Chandigarh": "India","Chhattisgarh": "India","Daman and Diu": "India","Delhi": "India","Dadra and Nagar Haveli": "India","Goa": "India","Gujarat": "India","Himachal Pradesh": "India","Haryana": "India","Jharkhand": "India","Jammu and Kashmir": "India","Karnataka": "India","Kerala": "India","Lakshadweep": "India","Maharashtra": "India","Meghalaya": "India","Manipur": "India","Madhya Pradesh": "India","Mizoram": "India","Nagaland": "India","Odisha": "India","Punjab": "India","Puducherry": "India","Rajasthan": "India","Sikkim": "India","Tamil Nadu": "India","Tripura": "India","Uttar Pradesh": "India","Uttarakhand": "India","West Bengal": "India","Agrigento": "Italy","Alessandria": "Italy","Ancona": "Italy","Aosta": "Italy","Ascoli Piceno": "Italy","L&#039;Aquila": "Italy","Arezzo": "Italy","Asti": "Italy","Avellino": "Italy","Bari": "Italy","Bergamo": "Italy","Biella": "Italy","Belluno": "Italy","Benevento": "Italy","Bologna": "Italy","Brindisi": "Italy","Brescia": "Italy","Barletta-Andria-Trani": "Italy","Bolzano": "Italy","Cagliari": "Italy","Campobasso": "Italy","Caserta": "Italy","Chieti": "Italy","Carbonia-Iglesias": "Italy","Caltanissetta": "Italy","Cuneo": "Italy","Como": "Italy","Cremona": "Italy","Cosenza": "Italy","Catania": "Italy","Catanzaro": "Italy","Enna": "Italy","Forlì-Cesena": "Italy","Ferrara": "Italy","Foggia": "Italy","Florence": "Italy","Fermo": "Italy","Frosinone": "Italy","Genoa": "Italy","Gorizia": "Italy","Grosseto": "Italy","Imperia": "Italy","Isernia": "Italy","Crotone": "Italy","Lecco": "Italy","Lecce": "Italy","Livorno": "Italy","Lodi": "Italy","Latina": "Italy","Lucca": "Italy","Monza and Brianza": "Italy","Macerata": "Italy","Messina": "Italy","Milan": "Italy","Mantua": "Italy","Modena": "Italy","Massa and Carrara": "Italy","Matera": "Italy","Naples": "Italy","Novara": "Italy","Nuoro": "Italy","Ogliastra": "Italy","Oristano": "Italy","Olbia-Tempio": "Italy","Palermo": "Italy","Piacenza": "Italy","Padua": "Italy","Pescara": "Italy","Perugia": "Italy","Pisa": "Italy","Pordenone": "Italy","Prato": "Italy","Parma": "Italy","Pistoia": "Italy","Pesaro and Urbino": "Italy","Pavia": "Italy","Potenza": "Italy","Ravenna": "Italy","Reggio Calabria": "Italy","Reggio Emilia": "Italy","Ragusa": "Italy","Rieti": "Italy","Rome": "Italy","Rimini": "Italy","Rovigo": "Italy","Salerno": "Italy","Siena": "Italy","Sondrio": "Italy","La Spezia": "Italy","Syracuse": "Italy","Sassari": "Italy","Savona": "Italy","Taranto": "Italy","Teramo": "Italy","Trento": "Italy","Turin": "Italy","Trapani": "Italy","Terni": "Italy","Trieste": "Italy","Treviso": "Italy","Udine": "Italy","Varese": "Italy","Verbano-Cusio-Ossola": "Italy","Vercelli": "Italy","Venice": "Italy","Vicenza": "Italy","Verona": "Italy","Medio Campidano": "Italy","Viterbo": "Italy","Vibo Valentia": "Italy","Aguascalientes": "Mexico","Baja California": "Mexico","Baja California Sur": "Mexico","Chihuahua": "Mexico","Colima": "Mexico","Campeche": "Mexico","Coahuila": "Mexico","Chiapas": "Mexico","Federal District": "Mexico","Durango": "Mexico","Guerrero": "Mexico","Guanajuato": "Mexico","Hidalgo": "Mexico","Jalisco": "Mexico","Mexico State": "Mexico","Michoacán": "Mexico","Morelos": "Mexico","Nayarit": "Mexico","Nuevo León": "Mexico","Oaxaca": "Mexico","Puebla": "Mexico","Querétaro": "Mexico","Quintana Roo": "Mexico","Sinaloa": "Mexico","San Luis Potosí": "Mexico","Sonora": "Mexico","Tabasco": "Mexico","Tlaxcala": "Mexico","Tamaulipas": "Mexico","Veracruz": "Mexico","Yucatán": "Mexico","Zacatecas": "Mexico"}' />
+		<#assign state_country_map = jsonFactoryUtil.createJSONObject(state_country_map) />
 
-	<#assign state_country_map = '{"Armed Forces Americas": "United States","Armed Forces Europe": "United States","Alaska": "United States","Alabama": "United States","Armed Forces Pacific": "United States","Arkansas": "United States","American Samoa": "United States","Arizona": "United States","California": "United States","Colorado": "United States","Connecticut": "United States","District of Columbia": "United States","Delaware": "United States","Florida": "United States","Federated Micronesia": "United States","Georgia": "United States","Guam": "United States","Hawaii": "United States","Iowa": "United States","Idaho": "United States","Illinois": "United States","Indiana": "United States","Kansas": "United States","Kentucky": "United States","Louisiana": "United States","Massachusetts": "United States","Maryland": "United States","Maine": "United States","Marshall Islands": "United States","Michigan": "United States","Minnesota": "United States","Missouri": "United States","Northern Mariana Islands": "United States","Mississippi": "United States","Montana": "United States","North Carolina": "United States","North Dakota": "United States","Nebraska": "United States","New Hampshire": "United States","New Jersey": "United States","New Mexico": "United States","Nevada": "United States","New York": "United States","Ohio": "United States","Oklahoma": "United States","Oregon": "United States","Pennsylvania": "United States","Puerto Rico": "United States","Palau": "United States","Rhode Island": "United States","South Carolina": "United States","South Dakota": "United States","Tennessee": "United States","Texas": "United States","United States Minor Outlying Islands": "United States","Utah": "United States","Virginia": "United States","US Virgin Islands": "United States","Vermont": "United States","Washington": "United States","Wisconsin": "United States","West Virginia": "United States","Wyoming": "United States","Australian Capital Territory": "Australia","New South Wales": "Australia","Northern Territory": "Australia","Queensland": "Australia","South Australia": "Australia","Tasmania": "Australia","Victoria": "Australia","Western Australia": "Australia","Acre": "Brazil","Alagoas": "Brazil","Amazonas": "Brazil","Amapá": "Brazil","Bahia": "Brazil","Ceará": "Brazil","Distrito Federal": "Brazil","Espírito Santo": "Brazil","Goiás": "Brazil","Maranhão": "Brazil","Minas Gerais": "Brazil","Mato Grosso do Sul": "Brazil","Mato Grosso": "Brazil","Pará": "Brazil","Paraíba": "Brazil","Pernambuco": "Brazil","Piauí": "Brazil","Paraná": "Brazil","Rio de Janeiro": "Brazil","Rio Grande do Norte": "Brazil","Rondônia": "Brazil","Roraima": "Brazil","Rio Grande do Sul": "Brazil","Santa Catarina": "Brazil","Sergipe": "Brazil","São Paulo": "Brazil","Tocantins": "Brazil","Alberta": "Canada","British Columbia": "Canada","Manitoba": "Canada","New Brunswick": "Canada","Newfoundland and Labrador": "Canada","Nova Scotia": "Canada","Northwest Territories": "Canada","Nunavut": "Canada","Ontario": "Canada","Prince Edward Island": "Canada","Quebec": "Canada","Saskatchewan": "Canada","Yukon Territories": "Canada","Beijing": "China","Tianjin": "China","Hebei": "China","Shanxi": "China","Nei Mongol": "China","Liaoning": "China","Jilin": "China","Heilongjiang": "China","Shanghai": "China","Jiangsu": "China","Zhejiang": "China","Anhui": "China","Fujian": "China","Jiangxi": "China","Shandong": "China","Henan": "China","Hubei": "China","Hunan": "China","Guangdong": "China","Guangxi": "China","Hainan": "China","Chongqing": "China","Sichuan": "China","Guizhou": "China","Yunnan": "China","Xizang": "China","Shaanxi": "China","Gansu": "China","Qinghai": "China","Ningxia": "China","Xinjiang": "China","Chinese Taipei": "China","Hong Kong": "China","Macao": "China","Clare": "Ireland","Cavan": "Ireland","Cork": "Ireland","Carlow": "Ireland","Dublin": "Ireland","Donegal": "Ireland","Galway": "Ireland","Kildare": "Ireland","Kilkenny": "Ireland","Kerry": "Ireland","Longford": "Ireland","Louth": "Ireland","Limerick": "Ireland","Leitrim": "Ireland","Laois": "Ireland","Meath": "Ireland","Monaghan": "Ireland","Mayo": "Ireland","Offaly": "Ireland","Roscommon": "Ireland","Sligo": "Ireland","Tipperary": "Ireland","Waterford": "Ireland","Westmeath": "Ireland","Wicklow": "Ireland","Wexford": "Ireland","Andaman and Nicobar Islands": "India","Andhra Pradesh": "India","Arunachal Pradesh": "India","Assam": "India","Bihar": "India","Chandigarh": "India","Chhattisgarh": "India","Daman and Diu": "India","Delhi": "India","Dadra and Nagar Haveli": "India","Goa": "India","Gujarat": "India","Himachal Pradesh": "India","Haryana": "India","Jharkhand": "India","Jammu and Kashmir": "India","Karnataka": "India","Kerala": "India","Lakshadweep": "India","Maharashtra": "India","Meghalaya": "India","Manipur": "India","Madhya Pradesh": "India","Mizoram": "India","Nagaland": "India","Odisha": "India","Punjab": "India","Puducherry": "India","Rajasthan": "India","Sikkim": "India","Tamil Nadu": "India","Tripura": "India","Uttar Pradesh": "India","Uttarakhand": "India","West Bengal": "India","Agrigento": "Italy","Alessandria": "Italy","Ancona": "Italy","Aosta": "Italy","Ascoli Piceno": "Italy","L&#039;Aquila": "Italy","Arezzo": "Italy","Asti": "Italy","Avellino": "Italy","Bari": "Italy","Bergamo": "Italy","Biella": "Italy","Belluno": "Italy","Benevento": "Italy","Bologna": "Italy","Brindisi": "Italy","Brescia": "Italy","Barletta-Andria-Trani": "Italy","Bolzano": "Italy","Cagliari": "Italy","Campobasso": "Italy","Caserta": "Italy","Chieti": "Italy","Carbonia-Iglesias": "Italy","Caltanissetta": "Italy","Cuneo": "Italy","Como": "Italy","Cremona": "Italy","Cosenza": "Italy","Catania": "Italy","Catanzaro": "Italy","Enna": "Italy","Forlì-Cesena": "Italy","Ferrara": "Italy","Foggia": "Italy","Florence": "Italy","Fermo": "Italy","Frosinone": "Italy","Genoa": "Italy","Gorizia": "Italy","Grosseto": "Italy","Imperia": "Italy","Isernia": "Italy","Crotone": "Italy","Lecco": "Italy","Lecce": "Italy","Livorno": "Italy","Lodi": "Italy","Latina": "Italy","Lucca": "Italy","Monza and Brianza": "Italy","Macerata": "Italy","Messina": "Italy","Milan": "Italy","Mantua": "Italy","Modena": "Italy","Massa and Carrara": "Italy","Matera": "Italy","Naples": "Italy","Novara": "Italy","Nuoro": "Italy","Ogliastra": "Italy","Oristano": "Italy","Olbia-Tempio": "Italy","Palermo": "Italy","Piacenza": "Italy","Padua": "Italy","Pescara": "Italy","Perugia": "Italy","Pisa": "Italy","Pordenone": "Italy","Prato": "Italy","Parma": "Italy","Pistoia": "Italy","Pesaro and Urbino": "Italy","Pavia": "Italy","Potenza": "Italy","Ravenna": "Italy","Reggio Calabria": "Italy","Reggio Emilia": "Italy","Ragusa": "Italy","Rieti": "Italy","Rome": "Italy","Rimini": "Italy","Rovigo": "Italy","Salerno": "Italy","Siena": "Italy","Sondrio": "Italy","La Spezia": "Italy","Syracuse": "Italy","Sassari": "Italy","Savona": "Italy","Taranto": "Italy","Teramo": "Italy","Trento": "Italy","Turin": "Italy","Trapani": "Italy","Terni": "Italy","Trieste": "Italy","Treviso": "Italy","Udine": "Italy","Varese": "Italy","Verbano-Cusio-Ossola": "Italy","Vercelli": "Italy","Venice": "Italy","Vicenza": "Italy","Verona": "Italy","Medio Campidano": "Italy","Viterbo": "Italy","Vibo Valentia": "Italy","Aguascalientes": "Mexico","Baja California": "Mexico","Baja California Sur": "Mexico","Chihuahua": "Mexico","Colima": "Mexico","Campeche": "Mexico","Coahuila": "Mexico","Chiapas": "Mexico","Federal District": "Mexico","Durango": "Mexico","Guerrero": "Mexico","Guanajuato": "Mexico","Hidalgo": "Mexico","Jalisco": "Mexico","Mexico State": "Mexico","Michoacán": "Mexico","Morelos": "Mexico","Nayarit": "Mexico","Nuevo León": "Mexico","Oaxaca": "Mexico","Puebla": "Mexico","Querétaro": "Mexico","Quintana Roo": "Mexico","Sinaloa": "Mexico","San Luis Potosí": "Mexico","Sonora": "Mexico","Tabasco": "Mexico","Tlaxcala": "Mexico","Tamaulipas": "Mexico","Veracruz": "Mexico","Yucatán": "Mexico","Zacatecas": "Mexico"}' />
-	<#assign state_country_map = jsonFactoryUtil.createJSONObject(state_country_map) />
+		<#-- Generate Hubspot form -->
 
-	<#-- Generate Hubspot form -->
+		<#assign article_namespace = "article${.vars['reserved-article-id'].data}" />
 
-	<#assign article_namespace = "article${.vars['reserved-article-id'].data}" />
+		<#assign portlet_namespace = request["portlet-namespace"]>
 
-	<#assign portlet_namespace = request["portlet-namespace"]>
+		<#if request.attributes.OSB_WWW_HUBSPOT_UTK??>
+			<#assign hsutk = request.attributes.OSB_WWW_HUBSPOT_UTK />
 
-	<#if request.attributes.OSB_WWW_HUBSPOT_UTK??>
-		<#assign hsutk = request.attributes.OSB_WWW_HUBSPOT_UTK />
+			<#assign hs_contact_local_service = portlet_bean_locator.locate("hubspot-portlet", "com.liferay.hubspot.service.HSContactLocalService") />
 
-		<#assign hs_contact_local_service = portlet_bean_locator.locate("hubspot-portlet", "com.liferay.hubspot.service.HSContactLocalService") />
-
-		<#if hs_contact_local_service.fetchHSContactByUserToken(hsutk)??>
-			<#assign hs_contact = hs_contact_local_service.fetchHSContactByUserToken(hsutk) />
-			<#assign hs_contact_object = hs_contact.getHSContactJSONObject().getJSONObject("properties") />
-		</#if>
-	</#if>
-
-	<#--
-	Testing Localization Form
-	-->
-	<#assign localization_form_id = "72293d1f-6e98-4655-a0f5-e57ac01a7060" />
-
-	<#--
-	Production Localization Form
-	<#assign localization_form_id = "6e0954fa-8f47-44a7-996d-e47c6f298f05" />
-	-->
-
-	<#assign localization_map = jsonFactoryUtil.createJSONObject() />
-
-	<#if locale != "en_US" && hs_form_local_service.fetchHSFormByGUID(localization_form_id)??>
-		<#assign localization_form = hs_form_local_service.fetchHSFormByGUID(localization_form_id) />
-
-		<#assign localization_form_fields = localization_form.getHSFormJSONObject().getJSONArray("fields") />
-
-		<#assign localization_form_start = 0 />
-		<#assign localization_form_end = localization_form_fields.length() - 1 />
-		<#assign localization_form_range = localization_form_start..localization_form_end />
-
-		<#list localization_form_range as i>
-			<#assign localization_form_field = localization_form_fields.getJSONObject(i) />
-
-			<#assign field_map = jsonFactoryUtil.createJSONObject() />
-
-			<#assign VOID = field_map.put("label", localization_form_field.getString("label")) />
-			<#assign VOID = field_map.put("options", localization_form_field.getJSONArray("options")) />
-
-			<#assign VOID = localization_map.put(localization_form_field.getString("name"), field_map) />
-		</#list>
-	</#if>
-
-	<#assign hs_form = hs_form_local_service.fetchHSFormByGUID(form_id.data)! />
-
-	<#assign field_strings_json = jsonFactoryUtil.createJSONObject() />
-	<#assign form_rules_json = jsonFactoryUtil.createJSONObject() />
-	<#assign asset_info = jsonFactoryUtil.createJSONObject() />
-
-	<#assign asset_id = asset_id.data />
-
-	<#if !asset_id?has_content>
-		<#assign asset_id = request["asset-id"]! />
-	</#if>
-
-	<#if asset_id?has_content>
-		<#assign dl_file_entry_local_service_util = staticUtil["com.liferay.portlet.documentlibrary.service.DLFileEntryLocalServiceUtil"]>
-
-		<#if dl_file_entry_local_service_util.fetchDLFileEntry(getterUtil.getLong(asset_id))??>
-			<#assign dl_file_entry = dl_file_entry_local_service_util.fetchDLFileEntry(getterUtil.getLong(asset_id)) >
-
-			<#assign void = asset_info.put("asset_folder_id", dl_file_entry.getFolderId()) />
-			<#assign void = asset_info.put("asset_id", asset_id) />
-			<#assign void = asset_info.put("asset_title", dl_file_entry.getTitle()) />
-
-			<#assign dl_file_entry_type_local_service_util = staticUtil["com.liferay.portlet.documentlibrary.service.DLFileEntryTypeLocalServiceUtil"]>
-
-			<#if dl_file_entry_type_local_service_util.fetchDLFileEntryType(dl_file_entry.getFileEntryTypeId())??>
-				<#assign dl_file_entry_type = dl_file_entry_type_local_service_util.fetchDLFileEntryType(dl_file_entry.getFileEntryTypeId()) />
-
-				<#assign void = asset_info.put("asset_type", dl_file_entry_type.getName(locale)) />
+			<#if hs_contact_local_service.fetchHSContactByUserToken(hsutk)??>
+				<#assign hs_contact = hs_contact_local_service.fetchHSContactByUserToken(hsutk) />
+				<#assign hs_contact_object = hs_contact.getHSContactJSONObject().getJSONObject("properties") />
 			</#if>
 		</#if>
-	</#if>
 
-	<#if hs_form?has_content>
-		<#assign hs_form_fields = hs_form.getHSFormJSONObject().getJSONArray("fields") />
+		<#--
+		Testing Localization Form
+		-->
+		<#assign localization_form_id = "72293d1f-6e98-4655-a0f5-e57ac01a7060" />
 
-		<#assign form_css = "lrdcom-form"/>
+		<#--
+		Production Localization Form
+		<#assign localization_form_id = "6e0954fa-8f47-44a7-996d-e47c6f298f05" />
+		-->
 
-		<#if text_color?? && text_color.data?has_content>
-			<#assign form_css = form_css + " form-${text_color.data}"/>
+		<#assign localization_map = jsonFactoryUtil.createJSONObject() />
+
+		<#if locale != "en_US" && hs_form_local_service.fetchHSFormByGUID(localization_form_id)??>
+			<#assign localization_form = hs_form_local_service.fetchHSFormByGUID(localization_form_id) />
+
+			<#assign localization_form_fields = localization_form.getHSFormJSONObject().getJSONArray("fields") />
+
+			<#assign localization_form_start = 0 />
+			<#assign localization_form_end = localization_form_fields.length() - 1 />
+			<#assign localization_form_range = localization_form_start..localization_form_end />
+
+			<#list localization_form_range as i>
+				<#assign localization_form_field = localization_form_fields.getJSONObject(i) />
+
+				<#assign field_map = jsonFactoryUtil.createJSONObject() />
+
+				<#assign VOID = field_map.put("label", localization_form_field.getString("label")) />
+				<#assign VOID = field_map.put("options", localization_form_field.getJSONArray("options")) />
+
+				<#assign VOID = localization_map.put(localization_form_field.getString("name"), field_map) />
+			</#list>
 		</#if>
 
-		<div class="${form_css}">
-			<div id="${article_namespace}msg"></div>
+		<#assign hs_form = hs_form_local_service.fetchHSFormByGUID(form_id.data)! />
 
-			<form action="https://forms.hubspot.com/uploads/form/v2/${hs_account_id}/${form_id.data}" data-asset-info="${asset_info?html}" data-asset-new-tab="true" id="${article_namespace}fm" method="POST" onsubmit="submitHSForm${article_namespace}('#${article_namespace}fm', this.getAttribute('data-asset-info')); return false;">
-				<#assign field_count = 0 />
-				<#assign start = 0 />
-				<#assign end = hs_form_fields.length() - 1 />
-				<#assign range = start..end />
+		<#assign field_strings_json = jsonFactoryUtil.createJSONObject() />
+		<#assign form_rules_json = jsonFactoryUtil.createJSONObject() />
+		<#assign asset_info = jsonFactoryUtil.createJSONObject() />
 
-				<div class="form-col form-col-1">
-					<#list range as i>
-						<#assign item = hs_form_fields.getJSONObject(i) />
+		<#assign asset_id = asset_id.data />
 
-						<@print_item item=item />
-					</#list>
+		<#if !asset_id?has_content>
+			<#assign asset_id = request["asset-id"]! />
+		</#if>
 
-					<#if submit_text.data?has_content>
-						<#assign btn_text = localize(submit_text.data, "Submit") />
-					</#if>
+		<#if asset_id?has_content>
+			<#assign dl_file_entry_local_service_util = staticUtil["com.liferay.portlet.documentlibrary.service.DLFileEntryLocalServiceUtil"]>
 
-					<#if !btn_text?has_content>
-						<#assign btn_text = hs_form.getSubmitText() />
-					</#if>
+			<#if dl_file_entry_local_service_util.fetchDLFileEntry(getterUtil.getLong(asset_id))??>
+				<#assign dl_file_entry = dl_file_entry_local_service_util.fetchDLFileEntry(getterUtil.getLong(asset_id)) >
 
-					<#if !btn_text?has_content>
-						<#assign btn_text = localize("submit", "Submit") />
-					</#if>
+				<#assign void = asset_info.put("asset_folder_id", dl_file_entry.getFolderId()) />
+				<#assign void = asset_info.put("asset_id", asset_id) />
+				<#assign void = asset_info.put("asset_title", dl_file_entry.getTitle()) />
 
-					<div class="btn-wrapper">
-						<input class="btn ${button_color.data}" type="submit" value="${btn_text}" />
+				<#assign dl_file_entry_type_local_service_util = staticUtil["com.liferay.portlet.documentlibrary.service.DLFileEntryTypeLocalServiceUtil"]>
+
+				<#if dl_file_entry_type_local_service_util.fetchDLFileEntryType(dl_file_entry.getFileEntryTypeId())??>
+					<#assign dl_file_entry_type = dl_file_entry_type_local_service_util.fetchDLFileEntryType(dl_file_entry.getFileEntryTypeId()) />
+
+					<#assign void = asset_info.put("asset_type", dl_file_entry_type.getName(locale)) />
+				</#if>
+			</#if>
+		</#if>
+
+		<#if hs_form?has_content>
+			<#assign hs_form_fields = hs_form.getHSFormJSONObject().getJSONArray("fields") />
+
+			<#assign form_css = "lrdcom-form"/>
+
+			<#if text_color?? && text_color.data?has_content>
+				<#assign form_css = form_css + " form-${text_color.data}"/>
+			</#if>
+
+			<div class="${form_css}">
+				<div id="${article_namespace}msg"></div>
+
+				<form action="https://forms.hubspot.com/uploads/form/v2/${hs_account_id}/${form_id.data}" data-asset-info="${asset_info?html}" data-asset-new-tab="true" id="${article_namespace}fm" method="POST" onsubmit="submitHSForm${article_namespace}('#${article_namespace}fm', this.getAttribute('data-asset-info')); return false;">
+					<#assign field_count = 0 />
+					<#assign start = 0 />
+					<#assign end = hs_form_fields.length() - 1 />
+					<#assign range = start..end />
+
+					<div class="form-col form-col-1">
+						<#list range as i>
+							<#assign item = hs_form_fields.getJSONObject(i) />
+
+							<@print_item item=item />
+						</#list>
+
+						<#if submit_text.data?has_content>
+							<#assign btn_text = localize(submit_text.data, "Submit") />
+						</#if>
+
+						<#if !btn_text?has_content>
+							<#assign btn_text = hs_form.getSubmitText() />
+						</#if>
+
+						<#if !btn_text?has_content>
+							<#assign btn_text = localize("submit", "Submit") />
+						</#if>
+
+						<div class="btn-wrapper">
+							<input class="btn ${button_color.data}" type="submit" value="${btn_text}" />
+						</div>
 					</div>
-				</div>
-			</form>
-		</div>
+				</form>
+			</div>
 
-		<#assign ip_address = request.attributes.OSB_WWW_REMOTE_ADDRESS! />
+			<#assign ip_address = request.attributes.OSB_WWW_REMOTE_ADDRESS! />
 
-		<#assign page_url = "" />
+			<#assign page_url = "" />
 
-		<#assign page_url = request.attributes.FRIENDLY_URL! />
+			<#assign page_url = request.attributes.FRIENDLY_URL! />
 
-		<#assign redirect_url = hs_form.getRedirect()! />
+			<#assign redirect_url = hs_form.getRedirect()! />
 
-		<#assign salesforce_campaign_id = hs_form.getLeadNurturingCampaignId()! />
+			<#assign salesforce_campaign_id = hs_form.getLeadNurturingCampaignId()! />
 
-		<#if thank_you_text.data?has_content>
-			<#assign thank_you_message = localize(thank_you_text.data, "Thank You") />
-		<#else>
-			<#assign thank_you_message = hs_form.getHSFormJSONObject().getString("inlineMessage")!localize("thank-you", "Thank You") />
-		</#if>
+			<#if thank_you_text.data?has_content>
+				<#assign thank_you_message = localize(thank_you_text.data, "Thank You") />
+			<#else>
+				<#assign thank_you_message = hs_form.getHSFormJSONObject().getString("inlineMessage")!localize("thank-you", "Thank You") />
+			</#if>
 
-		<script type="text/javascript">
-			function submitHSForm${article_namespace}(formId, assetInfo) {
-				AUI().ready(
-					'aui-base',
-					'aui-io-request',
-					'cookie',
-					'json-parse',
-					function(A) {
-						var form = A.one(formId);
-						var msg = A.one('#${article_namespace}msg');
+			<script type="text/javascript">
+				function submitHSForm${article_namespace}(formId, assetInfo) {
+					AUI().ready(
+						'aui-base',
+						'aui-io-request',
+						'cookie',
+						'json-parse',
+						function(A) {
+							var form = A.one(formId);
+							var msg = A.one('#${article_namespace}msg');
 
-						if (!form) {
-							return;
-						}
-
-						var fields = {};
-
-						if (assetInfo && (assetInfo != "")) {
-							fields = A.JSON.parse(assetInfo);
-						}
-
-						var utmCookie = A.Cookie.get("__utmz");
-
-						if (utmCookie) {
-							var utmSource = utmCookie.match(new RegExp('utmcsr=(.*?)([|]|$)'));
-
-							if (utmSource && utmSource[1]) {
-								var utmSource = utmSource[1];
-							}
-
-							var utmCampaign = utmCookie.match(new RegExp('utmccn=(.*?)([|]|$)'));
-
-							if (utmCampaign && utmCampaign[1]) {
-								var utmCampaign = utmCampaign[1];
-							}
-
-							var utmMedium = utmCookie.match(new RegExp('utmcmd=(.*?)([|]|$)'));
-
-							if (utmMedium && utmMedium[1]) {
-								var utmMedium = utmMedium[1];
-							}
-
-							var utmTerm = utmCookie.match(new RegExp('utmctr=(.*?)([|]|$)'));
-
-							if (utmTerm && utmTerm[1]) {
-								var utmTerm = utmTerm[1];
-							}
-
-							var utmContent = utmCookie.match(new RegExp('utmcct=(.*?)([|]|$)'));
-
-							if (utmContent && utmContent[1]) {
-								var utmContent = utmContent[1];
-							}
-
-							if (utmSource && utmSource != '(not set)') {
-								fields['recent_conversion_source'] = utmSource;
-							}
-							if (utmCampaign && utmCampaign != '(not set)') {
-								fields['campaign'] = utmCampaign;
-							}
-							if (utmMedium && utmMedium != '(not set)') {
-								fields['recent_conversion_medium'] = utmMedium;
-							}
-							if (utmTerm && utmTerm != '(not set)') {
-								fields['recent_conversion_source_term'] = utmTerm;
-							}
-							if (utmContent && utmContent != '(not set)') {
-								fields['recent_conversion_source_content'] = utmContent;
-							}
-						}
-
-						var leave = false;
-
-						form.all('.field').each(
-							function(node) {
-								var value = node.get('value');
-
-								if (node.hasClass('field-booleancheckbox')) {
-									value = node.get('checked');
-								}
-
-								if ((node.hasClass('field-required') && value == '') || (node.hasClass('field-required') && !value)) {
-									leave = true;
-
-									return;
-								}
-
-								if (!node.hasClass('hidden-field') && (node.hasClass('field-checkbox') || node.hasClass('field-radio'))) {
-									if (node.get('checked') == true) {
-										if (fields[node.get('name')]) {
-											fields[node.get('name')] += ',' + value;
-										}
-										else {
-											fields[node.get('name')] = value;
-										}
-									}
-								}
-								else if ((value != '') || node.hasClass('field-booleancheckbox')) {
-									fields[node.get('name')] = value;
-								}
-							}
-						);
-
-						if (leave) {
-							return;
-						}
-
-						var fieldsString = "";
-
-						for(field in fields) {
-							fieldsString = fieldsString + field + ':;:' + fields[field] + ':;:';
-						}
-
-						var guid = '${form_id.data}';
-
-						var ipAddress = '${ip_address}';
-
-						var pageURL = '${page_url}';
-						var pageName = document.title;
-						var assetURL = '';
-
-						if (fields["asset_id"]) {
-							assetURL = 'documents/${groupId}/'+ fields["asset_folder_id"] + '/' + fields["asset_title"];
-						}
-
-						var redirectURL = '${redirect_url}';
-						var salesforceCampaignId = '${salesforce_campaign_id}';
-
-						if (fields["sfCampaign"]) {
-							salesforceCampaignId = fields["sfCampaign"];
-						}
-
-						var userToken = '${hsutk!}';
-
-						if ((assetURL != "") && (form.getAttribute('data-asset-new-tab') == "true")) {
-							window.open(assetURL, '_blank');
-						}
-
-						if (fields["asset_primary_buyers_stage"]) {
-							var assetPrimaryBuyersStage = fields["asset_primary_buyers_stage"];
-
-							if (assetPrimaryBuyersStage == "Awareness") {
-								var trackEventId = "000000245927";
-							}
-							else if (assetPrimaryBuyersStage == "Education") {
-								var trackEventId = "000000245928";
-							}
-							else if (assetPrimaryBuyersStage == "Evaluation") {
-								var trackEventId = "000000245929";
-							}
-							else if (assetPrimaryBuyersStage == "Justification") {
-								var trackEventId = "000000245931";
-							}
-
-							try {
-								_hsq.push(
-									[
-										"trackEvent", {
-											id: trackEventId,
-											value: null
-										}
-									]
-								);
-							}
-							catch (error) {
-								console.log('_hsq error caught');
-							}
-						}
-
-						A.io.request(
-							'${request["resource-url"]}',
-							{
-								data: {
-									${portlet_namespace}fields: fieldsString,
-									${portlet_namespace}guid: guid,
-									${portlet_namespace}ipAddress: ipAddress,
-									${portlet_namespace}pageURL: pageURL,
-									${portlet_namespace}pageName: pageName,
-									${portlet_namespace}redirectURL: redirectURL,
-									${portlet_namespace}salesforceCampaignId: salesforceCampaignId,
-									${portlet_namespace}userToken: userToken
-								},
-								dataType: 'json',
-								on: {
-									success: function(event, id, obj) {
-										<#if on_success_javascript?has_content && (on_success_javascript.data != "")>
-											${on_success_javascript.data}
-										<#else>
-											if (redirectURL != "") {
-												window.location.href = redirectURL;
-											}
-											else {
-												msg.setContent('<h3>${thank_you_message}</h3>');
-
-												form.hide();
-											}
-										</#if>
-									},
-									failure: function(event, id, obj) {
-										msg.setContent('<div class="portlet-msg-error">${localize("your_request_failed_to_complete", "Your Request Failed to Complete")}</div>');
-									}
-								}
-							}
-						);
-					}
-				);
-			};
-			AUI().ready(
-				'aui-base',
-				'json-parse',
-				'osb-form',
-				function(A) {
-					new A.OSBForm(
-						{
-							fieldStrings: ${field_strings_json},
-							formId: '#${article_namespace}fm',
-							rules: ${form_rules_json}
-						}
-					).render();
-
-					var form = A.one('#${article_namespace}fm');
-
-					var populateStateField = function(field, value) {
-						if (!stateJSON) {
-							return;
-						}
-
-						field.empty();
-
-						field.appendChild('<option value="_blank"></option>');
-
-						var stateOptions = stateJSON[value];
-
-						if (!field || !stateOptions) {
-							return;
-						}
-
-						var keyArray = stateOptions["key"];
-
-						for (var key in keyArray) {
-							var stateValue = keyArray[key];
-							var selected = "";
-
-							if (stateValue == stateJSON['selected_option']) {
-								selected = "selected";
-							}
-
-							field.appendChild('<option value="' + stateValue + '"' + selected + '>' + stateOptions[stateValue] + '</option>');
-						}
-					};
-
-					<#if states_options_json?has_content>
-						var stateJSON = A.JSON.parse('${states_options_json}');
-					</#if>
-
-					var toggleDependantField = function(node, targetValues, value) {
-						if (targetValues.indexOf(value) > -1) {
-							if (node.one("#${article_namespace}_state")) {
-								populateStateField(node.one('select'), value);
-							}
-
-							node.show()
-						}
-						else {
-							node.hide()
-						}
-					};
-
-					var countryFieldSelect = A.one("#${article_namespace}_country select");
-					var stateFieldSelect = A.one("#${article_namespace}_state select");
-
-					if(countryFieldSelect && stateFieldSelect) {
-						populateStateField(stateFieldSelect, countryFieldSelect.get('value'));
-					}
-
-					form.all('.dependant-field').each(
-						function(node) {
-							var targetFieldName = node.getAttribute('data-target-field');
-							var targetField = form.one('#${article_namespace}_' + targetFieldName + ' select')
-
-							if (!targetField) {
+							if (!form) {
 								return;
 							}
 
-							var targetValues = node.getAttribute('data-target-values');
+							var fields = {};
 
-							toggleDependantField(node, targetValues, targetField.get('value'));
+							if (assetInfo && (assetInfo != "")) {
+								fields = A.JSON.parse(assetInfo);
+							}
 
-							targetField.on(
-								'change',
-								function(event) {
-									toggleDependantField(node, targetValues, event.currentTarget.get('value'));
+							var utmCookie = A.Cookie.get("__utmz");
+
+							if (utmCookie) {
+								var utmSource = utmCookie.match(new RegExp('utmcsr=(.*?)([|]|$)'));
+
+								if (utmSource && utmSource[1]) {
+									var utmSource = utmSource[1];
+								}
+
+								var utmCampaign = utmCookie.match(new RegExp('utmccn=(.*?)([|]|$)'));
+
+								if (utmCampaign && utmCampaign[1]) {
+									var utmCampaign = utmCampaign[1];
+								}
+
+								var utmMedium = utmCookie.match(new RegExp('utmcmd=(.*?)([|]|$)'));
+
+								if (utmMedium && utmMedium[1]) {
+									var utmMedium = utmMedium[1];
+								}
+
+								var utmTerm = utmCookie.match(new RegExp('utmctr=(.*?)([|]|$)'));
+
+								if (utmTerm && utmTerm[1]) {
+									var utmTerm = utmTerm[1];
+								}
+
+								var utmContent = utmCookie.match(new RegExp('utmcct=(.*?)([|]|$)'));
+
+								if (utmContent && utmContent[1]) {
+									var utmContent = utmContent[1];
+								}
+
+								if (utmSource && utmSource != '(not set)') {
+									fields['recent_conversion_source'] = utmSource;
+								}
+								if (utmCampaign && utmCampaign != '(not set)') {
+									fields['campaign'] = utmCampaign;
+								}
+								if (utmMedium && utmMedium != '(not set)') {
+									fields['recent_conversion_medium'] = utmMedium;
+								}
+								if (utmTerm && utmTerm != '(not set)') {
+									fields['recent_conversion_source_term'] = utmTerm;
+								}
+								if (utmContent && utmContent != '(not set)') {
+									fields['recent_conversion_source_content'] = utmContent;
+								}
+							}
+
+							var leave = false;
+
+							form.all('.field').each(
+								function(node) {
+									var value = node.get('value');
+
+									if (node.hasClass('field-booleancheckbox')) {
+										value = node.get('checked');
+									}
+
+									if ((node.hasClass('field-required') && value == '') || (node.hasClass('field-required') && !value)) {
+										leave = true;
+
+										return;
+									}
+
+									if (!node.hasClass('hidden-field') && (node.hasClass('field-checkbox') || node.hasClass('field-radio'))) {
+										if (node.get('checked') == true) {
+											if (fields[node.get('name')]) {
+												fields[node.get('name')] += ',' + value;
+											}
+											else {
+												fields[node.get('name')] = value;
+											}
+										}
+									}
+									else if ((value != '') || node.hasClass('field-booleancheckbox')) {
+										fields[node.get('name')] = value;
+									}
+								}
+							);
+
+							if (leave) {
+								return;
+							}
+
+							var fieldsString = "";
+
+							for(field in fields) {
+								fieldsString = fieldsString + field + ':;:' + fields[field] + ':;:';
+							}
+
+							var guid = '${form_id.data}';
+
+							var ipAddress = '${ip_address}';
+
+							var pageURL = '${page_url}';
+							var pageName = document.title;
+							var assetURL = '';
+
+							if (fields["asset_id"]) {
+								assetURL = 'documents/${groupId}/'+ fields["asset_folder_id"] + '/' + fields["asset_title"];
+							}
+
+							var redirectURL = '${redirect_url}';
+							var salesforceCampaignId = '${salesforce_campaign_id}';
+
+							if (fields["sfCampaign"]) {
+								salesforceCampaignId = fields["sfCampaign"];
+							}
+
+							var userToken = '${hsutk!}';
+
+							if ((assetURL != "") && (form.getAttribute('data-asset-new-tab') == "true")) {
+								window.open(assetURL, '_blank');
+							}
+
+							if (fields["asset_primary_buyers_stage"]) {
+								var assetPrimaryBuyersStage = fields["asset_primary_buyers_stage"];
+
+								if (assetPrimaryBuyersStage == "Awareness") {
+									var trackEventId = "000000245927";
+								}
+								else if (assetPrimaryBuyersStage == "Education") {
+									var trackEventId = "000000245928";
+								}
+								else if (assetPrimaryBuyersStage == "Evaluation") {
+									var trackEventId = "000000245929";
+								}
+								else if (assetPrimaryBuyersStage == "Justification") {
+									var trackEventId = "000000245931";
+								}
+
+								try {
+									_hsq.push(
+										[
+											"trackEvent", {
+												id: trackEventId,
+												value: null
+											}
+										]
+									);
+								}
+								catch (error) {
+									console.log('_hsq error caught');
+								}
+							}
+
+							A.io.request(
+								'${request["resource-url"]}',
+								{
+									data: {
+										${portlet_namespace}fields: fieldsString,
+										${portlet_namespace}guid: guid,
+										${portlet_namespace}ipAddress: ipAddress,
+										${portlet_namespace}pageURL: pageURL,
+										${portlet_namespace}pageName: pageName,
+										${portlet_namespace}redirectURL: redirectURL,
+										${portlet_namespace}salesforceCampaignId: salesforceCampaignId,
+										${portlet_namespace}userToken: userToken
+									},
+									dataType: 'json',
+									on: {
+										success: function(event, id, obj) {
+											<#if on_success_javascript?has_content && (on_success_javascript.data != "")>
+												${on_success_javascript.data}
+											<#else>
+												if (redirectURL != "") {
+													window.location.href = redirectURL;
+												}
+												else {
+													msg.setContent('<h3>${thank_you_message}</h3>');
+
+													form.hide();
+												}
+											</#if>
+										},
+										failure: function(event, id, obj) {
+											msg.setContent('<div class="portlet-msg-error">${localize("your_request_failed_to_complete", "Your Request Failed to Complete")}</div>');
+										}
+									}
 								}
 							);
 						}
 					);
-				}
-			);
-		</script>
-	</#if>
+				};
+				AUI().ready(
+					'aui-base',
+					'json-parse',
+					'osb-form',
+					function(A) {
+						new A.OSBForm(
+							{
+								fieldStrings: ${field_strings_json},
+								formId: '#${article_namespace}fm',
+								rules: ${form_rules_json}
+							}
+						).render();
+
+						var form = A.one('#${article_namespace}fm');
+
+						var populateStateField = function(field, value) {
+							if (!stateJSON) {
+								return;
+							}
+
+							field.empty();
+
+							field.appendChild('<option value="_blank"></option>');
+
+							var stateOptions = stateJSON[value];
+
+							if (!field || !stateOptions) {
+								return;
+							}
+
+							var keyArray = stateOptions["key"];
+
+							for (var key in keyArray) {
+								var stateValue = keyArray[key];
+								var selected = "";
+
+								if (stateValue == stateJSON['selected_option']) {
+									selected = "selected";
+								}
+
+								field.appendChild('<option value="' + stateValue + '"' + selected + '>' + stateOptions[stateValue] + '</option>');
+							}
+						};
+
+						<#if states_options_json?has_content>
+							var stateJSON = A.JSON.parse('${states_options_json}');
+						</#if>
+
+						var toggleDependantField = function(node, targetValues, value) {
+							if (targetValues.indexOf(value) > -1) {
+								if (node.one("#${article_namespace}_state")) {
+									populateStateField(node.one('select'), value);
+								}
+
+								node.show()
+							}
+							else {
+								node.hide()
+							}
+						};
+
+						var countryFieldSelect = A.one("#${article_namespace}_country select");
+						var stateFieldSelect = A.one("#${article_namespace}_state select");
+
+						if(countryFieldSelect && stateFieldSelect) {
+							populateStateField(stateFieldSelect, countryFieldSelect.get('value'));
+						}
+
+						form.all('.dependant-field').each(
+							function(node) {
+								var targetFieldName = node.getAttribute('data-target-field');
+								var targetField = form.one('#${article_namespace}_' + targetFieldName + ' select')
+
+								if (!targetField) {
+									return;
+								}
+
+								var targetValues = node.getAttribute('data-target-values');
+
+								toggleDependantField(node, targetValues, targetField.get('value'));
+
+								targetField.on(
+									'change',
+									function(event) {
+										toggleDependantField(node, targetValues, event.currentTarget.get('value'));
+									}
+								);
+							}
+						);
+					}
+				);
+			</script>
+		</#if>
+	</div>
 <#elseif request.lifecycle == 'RESOURCE_PHASE'>
 	<#assign fields = stringUtil.split(request.parameters.fields, ":;:") />
 

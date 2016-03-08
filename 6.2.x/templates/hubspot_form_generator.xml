@@ -52,6 +52,19 @@
 			</entry>
 		</meta-data>
 	</dynamic-element>
+	<dynamic-element dataType="string" indexType="keyword" localizable="false" name="article_class" readOnly="false" repeatable="false" required="false" showLabel="true" type="text" width="large">
+		<meta-data locale="en_US">
+			<entry name="label">
+				<![CDATA[Article Class]]>
+			</entry>
+			<entry name="predefinedValue">
+				<![CDATA[]]>
+			</entry>
+			<entry name="tip">
+				<![CDATA[Insert custom css class names you want included on the article level.]]>
+			</entry>
+		</meta-data>
+	</dynamic-element>
 	<dynamic-element dataType="string" indexType="keyword" localizable="true" multiple="false" name="text_color" readOnly="false" repeatable="false" required="false" showLabel="true" type="select" width="">
 		<dynamic-element name="option7796" type="option" value="">
 			<meta-data locale="en_US">
