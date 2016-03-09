@@ -8,22 +8,23 @@ var step3 = (function() {
 	});
 
 	var util = (function() {
-		var sendToHubspot = function() {
-			$.post('http://forms.hubspot.com/uploads/form/v2/' + core.config.hubspotPortal + '/' + core.config.hubspotForm + '?firstname=Phil&lastname=Chan&email=phillipchan1@gmail.com&redirectUrl=www.google.com&pageUrl=liferay.com', function(data) {
-				console.log(data);
-			});	
+		var sendToHubspot = function(entry) {
+			var ajax = new XMLHttpRequest();
+			// ajax.open("POST", 'http://forms.hubspot.com/uploads/form/v2/' + core.config.hubspotPortal + '/' + core.config.hubspotForm + '?firstname=Phil&lastname=Chan&email=phillipchan1@gmail.com&redirectUrl=www.google.com&pageUrl=liferay.com')
 		}
 
 		var startUpload = function() {
-			var i = 1;
-			var noOfEntries = core.data.step1.json.length;
+			var i = 0;
+			var entries = core.data.step1.json;
+			var noOfEntries = entries.length;
 			function timer() {	
 			    setTimeout(function () {
+			    	sendToHubspot(entries[i]);
 			 
 			    	// 1) upload to hubspot
 			    	// 2) update UI
 
-			        if (i < noOfEntries) {
+			        if (i < noOfEntries - 1) {
 			        	timer();
 			        	i++	
 			        }
