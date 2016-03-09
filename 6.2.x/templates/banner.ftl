@@ -10,6 +10,7 @@
 <#assign image_info = "" />
 <#assign video_image_info = "" />
 <#assign video_info = "" />
+<#assign need_video_popup = false />
 
 <#list media.siblings?reverse as cur_media>
 	<#if cur_media.video_type.data?has_content>
@@ -47,7 +48,13 @@
 					<div class="${button_alignment.data}">
 						<#list button_text.siblings as button>
 							<#if button.data?has_content && button.button_link.data?has_content>
+							    <#-- check if youtube field defined, don't want to rock the boat for non youtube aware articles -->
+								<#if button.button_youtube_id?? && button.button_youtube_id.data?has_content>
+									<#assign need_video_popup = true />
+									<a class="btn btn-${button.button_color.data} pop-up-trigger" data-embed="${button.button_youtube_id.data}" href="javascript:;">${button.data}</a>
+								<#else>
 								<a class="btn btn-${button.button_color.data}" href="${button.button_link.data}">${button.data}</a>
+								</#if>
 							</#if>
 						</#list>
 					</div>
@@ -75,4 +82,44 @@
 			mainBanner.setStyle('max-height', winHeight);
 		}
 	);
+	
+	<#if need_video_popup>
+		<#-- pop it UP!-->
+	AUI().ready(
+	'pop-up',
+	function(A) {
+		var activateCallback = function(classToggleInstance, node, targetNodes, targetClass) {
+			if (node.attr('data-embed')) {
+				var videoId = node.attr('data-embed');
+
+				var nodeContent = '<iframe allowfullscreen="true" frameborder="0" height="450" src="//www.youtube.com/embed/' + videoId + '?wmode=transparent&autoplay=1&controls=0&showinfo=0&rel=0" width="100%"></iframe>';
+
+				var targetNodesContent = targetNodes.one('.' + classToggleInstance.get('baseClassName') + '-content');
+
+				if (targetNodesContent) {
+					targetNodesContent.setContent(nodeContent);
+				}
+			}
+		};
+
+		var deactivateCallback = function(classToggleInstance, node, targetNodes, targetClass) {
+				var targetNodesContent = targetNodes.one('.' + classToggleInstance.get('baseClassName') + '-content');
+
+				if (targetNodesContent) {
+					targetNodesContent.empty();
+				}
+		}
+
+		new A.PopUp(
+			{
+				activateCallback: activateCallback,
+				deactivateCallback: deactivateCallback,
+				defaultCallbacks: false,
+				overlayCssClass: ' video-overlay'
+			}
+		).render();
+	}
+);
+	
+	</#if>
 </script>
