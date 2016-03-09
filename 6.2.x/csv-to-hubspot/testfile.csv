@@ -1,3 +1,6 @@
-name,age
-phil,23
-benny,20
+name,age,email
+phil,23,phillipchan1@gmail.com
+benny,20,another@gmail.com
+benny,20,another!!@gmail.com
+benny,20,woohooo@gmail.com
+benny,20,whatchaup@gmail.com

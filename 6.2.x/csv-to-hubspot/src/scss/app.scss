@@ -30,6 +30,66 @@ html, body {
 		.pt-page-ontop {
 			z-index: 999;
 		}
+
+		.progress-bar-container {
+			margin: 40px 0;
+			border: 1px solid #eee;
+			height: 40px;
+			position: relative;
+			width: 90%;
+
+			.progress-bar {
+				background: blue;
+				height: 100%;
+				position: absolute;
+
+				.percentage {
+					position: absolute;
+					right: 5%;
+					top: 30%;
+				}
+			}
+
+			.progress-bar-description {
+				position: absolute;
+				display: block;
+				left: 5px;
+				top: -20px;
+			}
+
+		}
+
+		.progress-information-container {
+			margin: 20px 0;
+			display: flex;
+			width: 100%;
+			justify-content: space-between;
+			
+			.info {
+				text-align: center;
+				width: 45%;
+
+				span {
+					display: block;
+
+					&.desc {
+						text-transform: uppercase;
+						font-weight: bold;
+						font-size: 11px;
+						letter-spacing: 1px;
+					}
+
+					&.value {
+						font-size: 3em;
+						letter-spacing: -3px;
+					}
+				}
+			}
+
+		}
+
+		
+
     }
 
     .steps-navigation {
