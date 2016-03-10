@@ -55,6 +55,6 @@
       * Case Type
       * Filtering Categories = `Resources`
       * Industry Sector
-      * Region
+      * Location
       * Resource Type = `Case Studies`
     7. Click `Publish`
