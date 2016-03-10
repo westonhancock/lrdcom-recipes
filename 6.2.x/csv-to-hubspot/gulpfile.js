@@ -20,7 +20,6 @@ gulp.task('scripts', function() {
             'src/core.js',
 
             // steps modules and its children
-            'src/modules/steps/data.js',
             'src/modules/steps/controller.js',
             'src/modules/steps/step1/data.js',
             'src/modules/steps/step1/controller.js',

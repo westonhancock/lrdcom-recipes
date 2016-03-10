@@ -1,20 +1,30 @@
 <div class="page" data-step="2">
-	<h3>Step 2</h3>
-	<p>Classify the interaction you're tracking by filling out the following form</p>
-	<label>
-		Interaction Type
-		<select id="interaction-type">
-			<option disabled="disabled" selected="selected">Select an option.</option>
-			<option value="interaction1">Interaction 1</option>
-			<option value="interaction2">Interaction 2</option>
-		</select>
-	</label>
-
-	<div>
+	<div class="centered">
+		<h3>Step 2</h3>
+		<p>Classify the interaction you're tracking by filling out the following form</p>
 		<label>
-			Campaign
-			<input type="text" id="campaign-id" />
+			Recent Interaction Type
+			<select id="interaction-type">
+				<option disabled="disabled" selected="selected">Select an Interaction</option>
+				<option value="event-community">Event - Community</option>
+				<option value="event-industry">Event - Industry</option>
+				<option value="event-lr-conference">Event - LR Conference</option>
+				<option value="event-partner-event">Event - Partner Event</option>
+				<option value="event-roadshow">Event - Roadshow</option>
+				<option value="event-user-group">Event - User Group</option>
+				<option value="event-webinar">Event - Webinar</option>
+				<option value="marketplace">Marketplace</option>
+				<option value="personal-relationship">Personal Relationship</option>
+				<option value="purchased-list">Purchased List</option>
+				<option value="sdr">SDR</option>
+			</select>
 		</label>
-	</div>
 
+		<div>
+			<label>
+				Campaign
+				<input type="text" id="campaign-id" />
+			</label>
+		</div>
+	</div>
 </div>

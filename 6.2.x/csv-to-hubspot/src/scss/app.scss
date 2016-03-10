@@ -21,6 +21,18 @@ html, body {
 			overflow: hidden;
 			backface-visibility: hidden;
 			transform: translate3d(0, 0, 0);
+			display: flex;
+			align-items: center;
+			padding: 50px;
+			box-sizing: border-box;
+
+			.centered {
+				width: 100%
+			}
+        }
+
+        .step1 {
+        	
         }
 
         .page-current {
@@ -116,20 +128,60 @@ html, body {
 
     .file-drag {
 		font-weight: bold;
-		text-align: center;
-		padding: 1em 0;
+		align-items: center;
+		padding: 6em 0;
 		margin: 1em 0;
-		color: #555;
-		border: 2px dashed #555;
-		border-radius: 7px;
+		background: #F5F5F5;
 		cursor: default;
+		margin: auto;
+		transition: all .5s ease-in-out;
+
+		.icons-container {
+			display: block;
+			margin: auto;
+			position: relative;
+			height: 200px;
+			width: 150px;
+			
+			article {
+				position: absolute;
+				text-align: center;
+			}
+
+			.upload-icon-container {
+				transition: all .25s ease-in-out;
+			}
+
+			.upload-icon-container svg {
+				display: block;
+			    margin: auto;
+			    transform: scale(2);
+			    height: 200px;
+			    width: 124px;
+			}
+
+			.check-icon-container {
+				opacity: 0;
+				transition: all .25s ease-in-out;
+			}
+
+			.check-icon-container svg {
+				transform: scale(1.5);
+				height: 200px;
+			}
+		}
+
+		.file-drop-text {
+			margin: auto;
+			text-align: center;
+		}
 	}
 
 	.file-drag.hover {
-		color: #f00;
-		border-color: #f00;
-		border-style: solid;
+		background: #4C90EC;
 		box-shadow: inset 0 3px 4px #888;
+		transition: all .5s ease-in-out;
+		cursor: pointer;
 	}
 }
 

@@ -1,20 +1,20 @@
 var steps = (function() {
 
 	var initStep = function(config) {
-		stepsData.createStep(config);
+		data.createStep(config);
 		// renderHTML();
 	};
 
 	var completeStep = function(step) {
-		stepsData.completeStep(step);
+		data.completeStep(step);
 	}
 
 	// listen for when the page moves
-	core.publisher.on("pageMoved", stepsData.loadStep, stepsData)
+	core.publisher.on("pageMoved", data.loadStep, data)
 
 	return {
 		initStep: initStep,
 		completeStep: completeStep
 	}
 
-})(core, stepsData);
+})(core);

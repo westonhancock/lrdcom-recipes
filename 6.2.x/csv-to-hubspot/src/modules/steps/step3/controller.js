@@ -1,7 +1,7 @@
 var step3 = (function() {
 
 	steps.initStep({
-		html: '<div class="page" data-step="3">\n	<h1>Just a minute...</h1>\n	<p>We\'re uploading your data to Hubspot!</p>\n	\n\n	<div class="progress-bar-container">\n		<span class="progress-bar-description">Sample description</span>\n		<div class="progress-bar">\n			<span class="percentage">45%</span>\n		</div>\n	</div>\n\n	<div class="progress-information-container">\n		<div class="info entries-left">\n			<span class="desc">Entries Left</span>\n			<span class="value"></span>\n		</div>\n		<div class="info time-left">\n			<span class="desc">Estimated Time Left</span>\n			<span class="value"></span>\n		</div>\n	</div>\n</div>',
+		html: '<div class="page" data-step="3">\n	<div class="centered">\n			<h1>Just a minute...</h1>\n			<p>We\'re uploading your data to Hubspot!</p>\n			\n\n			<div class="progress-bar-container">\n				<span class="progress-bar-description">Sample description</span>\n				<div class="progress-bar">\n					<span class="percentage"></span>\n				</div>\n			</div>\n\n			<div class="progress-information-container">\n				<div class="info entries-left">\n					<span class="desc">Entries Left</span>\n					<span class="value"></span>\n				</div>\n				<div class="info time-left">\n					<span class="desc">Estimated Time Left</span>\n					<span class="value"></span>\n				</div>\n			</div>\n	</div>\n</div>',
 		onLoad: function() {
 			util.startUpload();
 		}
@@ -10,21 +10,33 @@ var step3 = (function() {
 	var util = (function() {
 		var sendToHubspot = function(entry) {
 			var ajax = new XMLHttpRequest();
-			// ajax.open("POST", 'http://forms.hubspot.com/uploads/form/v2/' + core.config.hubspotPortal + '/' + core.config.hubspotForm + '?firstname=Phil&lastname=Chan&email=phillipchan1@gmail.com&redirectUrl=www.google.com&pageUrl=liferay.com')
+
+			ajax.open(
+				"POST", 
+				'http://forms.hubspot.com/uploads/form/v2/' + 
+				core.config.hubspotPortal + '/' + core.config.hubspotForm + 
+				'?email=' + entry.email + 
+				'&recent_interaction=' + entry.recentInteraction +
+				'&recent_interaction_detail=' + entry.recentInteractionDetail +
+				'&recent_interaction_date=' + entry.recentInteractionDate +
+				'&recent_interaction_type=' + data.interactionType +
+				'&recent_interaction_campaign=' + data.campaign
+			);
+
+			ajax.send();
 		}
 
 		var startUpload = function() {
 			var i = 0;
-			var entries = core.data.step1.json;
+			var entries = data.json;
 			var noOfEntries = entries.length;
 
 			// our recursive timer for loop
 			function timer() {	
 			    setTimeout(function () {
-			    	sendToHubspot(entries[i]);
-			 
+			    	
 			    	// 1) upload to hubspot
-			    	// sendToHubspot(entries[i]);
+			    	sendToHubspot(entries[i]);
 
 			    	// 2) update UI
 			    	ui.updateProgress(entries[i], i, noOfEntries);
