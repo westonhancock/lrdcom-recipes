@@ -5,6 +5,7 @@ html, body {
 @import 'typography';
 
 #app {
+	height: 70vh;
 
     .steps-container {
         position: relative;
@@ -81,7 +82,7 @@ html, body {
 				position: absolute;
 				display: block;
 				left: 5px;
-				top: -20px;
+				top: -25px;
 			}
 
 		}
@@ -128,12 +129,12 @@ html, body {
     		position: absolute;
 
 			&.next {
-				bottom: 5%;
+				bottom: 15%;
 				right: 5%;
 			}
 
 			&.prev {
-				bottom: 5%;
+				bottom: 15%;
 				left: 5%;
 			}
 		}
@@ -143,7 +144,7 @@ html, body {
     .file-drag {
 		font-weight: bold;
 		align-items: center;
-		padding: 6em 0;
+		padding: 4.5em 0;
 		margin: 2em auto;
 		background: #F5F5F5;
 		cursor: default;
@@ -208,3 +209,8 @@ html, body {
 	}
 }
 
+.aui {
+	.block-container {
+		padding: 0;
+	}
+}
