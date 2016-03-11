@@ -149,7 +149,7 @@ var step3 = (function() {
 
 		var doneUploading = function() {
 			progressBarDescription.innerHTML = '';
-			pageTitle.innerHTML = "We're done skipper!";
+			pageTitle.innerHTML = "We're done, skipper!";
 			pageSubitle.innerHTML = 'Form data successfully uploaded to <a href="https://app.hubspot.com/forms/' + config.hubspotPortal + '/' + config.hubspotForm + '/submissions" target="_blank">Hubspot.</a>';
 		};
 
