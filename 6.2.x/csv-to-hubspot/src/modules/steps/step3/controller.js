@@ -1,9 +1,18 @@
 var step3 = (function() {
 
 	steps.initStep({
-		html: '<div class="page" data-step="3">\n	<div class="centered">\n			<h1>Just a minute...</h1>\n			<p>We\'re uploading your data to Hubspot!</p>\n			\n\n			<div class="progress-bar-container">\n				<span class="progress-bar-description">Sample description</span>\n				<div class="progress-bar">\n					<span class="percentage"></span>\n				</div>\n			</div>\n\n			<div class="progress-information-container">\n				<div class="info entries-left">\n					<span class="desc">Entries Left</span>\n					<span class="value"></span>\n				</div>\n				<div class="info time-left">\n					<span class="desc">Estimated Time Left</span>\n					<span class="value"></span>\n				</div>\n			</div>\n	</div>\n</div>',
+		html: '<div class="page step3" data-step="3">\n	<div class="centered">\n			<h1>Just a minute...</h1>\n			<p class="page-description">We\'re uploading your data to Hubspot!</p>\n			\n\n			<div class="progress-bar-container">\n				<span class="progress-bar-description">Sample description</span>\n				<div class="progress-bar">\n					<span class="percentage"></span>\n				</div>\n			</div>\n\n			<div class="progress-information-container">\n				<div class="info entries-left">\n					<span class="desc">Entries Left</span>\n					<span class="value"></span>\n				</div>\n				<div class="info time-left">\n					<span class="desc">Estimated Time Left</span>\n					<span class="value"></span>\n				</div>\n			</div>\n	</div>\n</div>',
 		onLoad: function() {
-			util.startUpload();
+			core.ui.changeNavigationState('block');
+			util.initUploader();
+			setTimeout(function() {
+				util.startUpload();	
+			}, 500);
+
+			
+		},
+		onComplete: function() {
+			ui.doneUploading();
 		}
 	});
 
@@ -11,19 +20,25 @@ var step3 = (function() {
 		var sendToHubspot = function(entry) {
 			var ajax = new XMLHttpRequest();
 
-			ajax.open(
-				"POST", 
-				'http://forms.hubspot.com/uploads/form/v2/' + 
-				core.config.hubspotPortal + '/' + core.config.hubspotForm + 
-				'?email=' + entry.email + 
-				'&recent_interaction=' + entry.recentInteraction +
-				'&recent_interaction_detail=' + entry.recentInteractionDetail +
-				'&recent_interaction_date=' + entry.recentInteractionDate +
-				'&recent_interaction_type=' + data.interactionType +
-				'&recent_interaction_campaign=' + data.campaign
-			);
+			// ajax.open(
+			// 	"POST", 
+			// 	'http://forms.hubspot.com/uploads/form/v2/' + 
+			// 	core.config.hubspotPortal + '/' + core.config.hubspotForm + 
+			// 	'?email=' + entry.email + 
+			// 	'&recent_interaction=' + entry.recentInteraction +
+			// 	'&recent_interaction_detail=' + entry.recentInteractionDetail +
+			// 	'&recent_interaction_date=' + entry.recentInteractionDate +
+			// 	'&recent_interaction_type=' + data.interactionType +
+			// 	'&recent_interaction_campaign=' + data.campaign
+			// );
 
-			ajax.send();
+			// ajax.send();
+		}
+
+		var initUploader = function() {
+			var entries = data.json;
+			var noOfEntries = entries.length;
+			ui.updateProgress(entries[0], -1, noOfEntries);
 		}
 
 		var startUpload = function() {
@@ -45,12 +60,17 @@ var step3 = (function() {
 			        	timer();
 			        	i++	
 			        }
+
+			        else if (i === noOfEntries - 1) {
+			        	steps.completeStep(3);
+			        }
 			    }, config.cycle_duration);
 			}
 			timer();
 		}
 			
 		return {
+			initUploader: initUploader,
 			startUpload: startUpload
 		}
 		
@@ -58,6 +78,8 @@ var step3 = (function() {
 
 	var ui = (function() {
 
+		var pageTitle = document.querySelector('.step3 h1');
+		var pageSubitle = document.querySelector('.step3 .page-description');
 		var progressBar = document.querySelector('.progress-bar');
 		var progressBarPercentage = document.querySelector('.progress-bar > .percentage');
 		var progressBarDescription = document.querySelector('.progress-bar-description');
@@ -85,26 +107,56 @@ var step3 = (function() {
 			}
 		}
 
-		var getTimeLeft = function(current, total) {
-			var timeLeftinSeconds = ((total * config.cycle_duration) - (current * config.cycle_duration)) / 1000;
-			var minutes = Math.round(parseInt(timeLeftinSeconds / 60 ) % 60);
-			var seconds = timeLeftinSeconds % 60;
+		function startTimer(duration, display) {
+		    var start = Date.now(),
+		        diff,
+		        minutes,
+		        seconds;
+		    function timer() {
+		        // get the number of seconds that have elapsed since 
+		        // startTimer() was called
+		        diff = duration - (((Date.now() - start) / 1000) | 0);
+		        console.log(diff);
 
-			return minutes + ":" + seconds;
+		        // does the same job as parseInt truncates the float
+		        minutes = (diff / 60) | 0;
+		        seconds = (diff % 60) | 0;
+
+		        minutes = minutes < 10 ? "0" + minutes : minutes;
+		        seconds = seconds < 10 ? "0" + seconds : seconds;
+
+		        display.textContent = minutes + ":" + seconds; 
+
+		        if (diff <= 0) {
+		            // add one second so that the count down starts at the full duration
+		            // example 05:00 not 04:59
+		            start = Date.now() + 1000;
+		        }
+		    };
+		    // we don't want to wait a full second before the timer starts
+		    timer();
+		 setInterval(timer, 1000);
 		}
 
 		var updateProgressInfo = function(entry, current, total) {
 			var entriesLeft = total - current;
 			var currentEntryEmail = entry.email;
-			var timeLeft = getTimeLeft(current, total);
+			var timeLeftinSeconds = ((total * config.cycle_duration) - (current * config.cycle_duration)) / 1000;
 
 			progressBarDescription.innerHTML = "Current Entry: " + currentEntryEmail;
 			entriesLeftDescription.innerHTML = entriesLeft;
-			timeleftDescription.innerHTML = timeLeft;
+			startTimer(timeLeftinSeconds, timeleftDescription)
+		}
+
+		var doneUploading = function() {
+			progressBarDescription.innerHTML = "";
+			pageTitle.innerHTML = "We're done skipper!";
+			pageSubitle.innerHTML = 'Form data successfully uploaded to <a href="https://app.hubspot.com/forms/' + config.hubspotPortal + '/' + config.hubspotForm + '/submissions" target="_blank">Hubspot.</a>';
 		}
 
 		return {
-			updateProgress: updateProgress
+			updateProgress: updateProgress,
+			doneUploading: doneUploading
 		}
 
 	})();

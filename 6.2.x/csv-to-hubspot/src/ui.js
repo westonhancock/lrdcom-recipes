@@ -60,6 +60,12 @@ var ui = (function() {
 
 	})();
 
+
+	var assessNavigation = function() {
+		var noOfPages = data.allSteps.length + 1;
+		// var currentPage = 
+	}
+
 	var changeNavigationState = function(state) {
 		if (state === "begin") {
 			prevBtn.style.display = 'none';

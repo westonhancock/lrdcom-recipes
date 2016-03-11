@@ -1,18 +1,3 @@
-// var data = {
-// 	step1: {
-// 		json: undefined
-// 	},
-// 	step2: {
-// 		interactionType: undefined,
-// 		campaign: undefined
-// 	},
-// 	state: {
-// 		// default navigation state 
-// 		navigation: 'block'
-// 	}
-// };
-
-
 var data = (function() {
 
 	// our step prototype
@@ -32,9 +17,9 @@ var data = (function() {
 		interactionType: undefined,
 		campaign: undefined,
 		state: {
-			// default navigation state 
-			navigation: 'block'
+			navigation: 'begin'
 		},
+		currentStep: 1,
 		updateData : function(key, value) {
 			this[key] = value;
 		},
@@ -60,7 +45,6 @@ var data = (function() {
 			this.renderStep(this.numberOfSteps);
 
 			return currentStep;
-			
 		},
 		renderStep: function(step) {
 			core.templateRender(core.config.stepsContainerClass, this.allSteps[step - 1].html);
@@ -72,10 +56,22 @@ var data = (function() {
 				currentStep.onComplete();	
 			}
 		},
+		incompleteStep: function(step) {
+			var currentStep = this.allSteps[step - 1];
+			currentStep.completed = false;
+		},
 		loadStep: function(step) {
 			var currentStep = this.allSteps[step - 1];
 			if (currentStep.onLoad) {
 				currentStep.onLoad();
+			}
+		},
+		changeStep: function(direction) {
+			if (direction == 'next') {
+				this.currentStep++	
+			}
+			else {
+				this.currentStep--
 			}
 		}
 	}

@@ -1,0 +1,28 @@
+.aui {
+
+	#app {
+		.btn:active, .field-input-button:active {
+			top: auto !important;
+		}
+
+		select {
+			height: 50px;
+		}
+
+		select {
+			min-width: 320px;
+		}
+
+		form {
+			.form-group {
+				margin: 10px 0;
+
+				.form-control {
+					padding: 24px 10px;
+					border-radius: 5px;
+					min-width: 320px;
+				}
+			}	
+		}
+	}
+}

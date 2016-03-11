@@ -1,30 +1,31 @@
-<div class="page" data-step="2">
+<div class="page step2" data-step="2">
 	<div class="centered">
-		<h3>Step 2</h3>
-		<p>Classify the interaction you're tracking by filling out the following form</p>
-		<label>
-			Recent Interaction Type
-			<select id="interaction-type">
-				<option disabled="disabled" selected="selected">Select an Interaction</option>
-				<option value="event-community">Event - Community</option>
-				<option value="event-industry">Event - Industry</option>
-				<option value="event-lr-conference">Event - LR Conference</option>
-				<option value="event-partner-event">Event - Partner Event</option>
-				<option value="event-roadshow">Event - Roadshow</option>
-				<option value="event-user-group">Event - User Group</option>
-				<option value="event-webinar">Event - Webinar</option>
-				<option value="marketplace">Marketplace</option>
-				<option value="personal-relationship">Personal Relationship</option>
-				<option value="purchased-list">Purchased List</option>
-				<option value="sdr">SDR</option>
-			</select>
-		</label>
-
-		<div>
-			<label>
-				Campaign
-				<input type="text" id="campaign-id" />
-			</label>
-		</div>
+		<h2>Step 2</h2>
+		<p>Tell me about the event and campaign.</p>
+		<form>
+			<div class="form-group">
+				<label>Recent Interaction Type</label>
+				
+				<select id="interaction-type">
+					<option disabled="disabled" selected="selected">Select an Interaction</option>
+					<option value="event-community">Event - Community</option>
+					<option value="event-industry">Event - Industry</option>
+					<option value="event-lr-conference">Event - LR Conference</option>
+					<option value="event-partner-event">Event - Partner Event</option>
+					<option value="event-roadshow">Event - Roadshow</option>
+					<option value="event-user-group">Event - User Group</option>
+					<option value="event-webinar">Event - Webinar</option>
+					<option value="marketplace">Marketplace</option>
+					<option value="personal-relationship">Personal Relationship</option>
+					<option value="purchased-list">Purchased List</option>
+					<option value="sdr">SDR</option>
+				</select>
+			</div>
+			<div class="form-group">
+				<label>Campaign</label>	
+				<input class="form-control" id="campaign-id" type="text"/>
+			</div>
+		</form>
+		
 	</div>
 </div>
