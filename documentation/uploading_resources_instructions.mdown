@@ -18,7 +18,7 @@
       * The `Display Title` field is the title that will be shown on the page
     2. Fill in all applicable fields
     3. Under `Categorization` fill in the following
-      * Filtering Categories = `Resources`
+      * Asset Entry List Type = `Resources`
       * Industry Sector
       * Resource Type
     4. Click `Publish`
