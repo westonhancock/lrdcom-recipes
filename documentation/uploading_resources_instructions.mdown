@@ -53,7 +53,7 @@
         3. Click `Publish`
     6. Back on the article edit screen, click `Categorization` _(in the right navigation)_ and categorize as follows:
       * Case Type
-      * Filtering Categories = `Resources`
+      * Asset Entry List Type = `Resources`
       * Industry Sector
       * Location
       * Resource Type = `Case Studies`
