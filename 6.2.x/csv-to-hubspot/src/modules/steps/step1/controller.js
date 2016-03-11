@@ -50,7 +50,6 @@ var step1 = (function() {
 
 				result.push(obj);
 			}
-			// var json = JSON.stringify(result);
 
 			core.publisher.fire('JSONcreated', result);
 			return result;
