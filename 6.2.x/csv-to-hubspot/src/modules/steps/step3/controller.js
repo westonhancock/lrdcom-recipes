@@ -6,10 +6,9 @@ var step3 = (function() {
 			core.ui.changeNavigationState('block');
 			util.initUploader();
 			setTimeout(function() {
-				util.startUpload();	
+				util.startUpload();
 			}, 500);
 
-			
 		},
 		onComplete: function() {
 			ui.doneUploading();
@@ -20,20 +19,20 @@ var step3 = (function() {
 		var sendToHubspot = function(entry) {
 			var ajax = new XMLHttpRequest();
 
-			// ajax.open(
-			// 	"POST", 
-			// 	'http://forms.hubspot.com/uploads/form/v2/' + 
-			// 	core.config.hubspotPortal + '/' + core.config.hubspotForm + 
-			// 	'?email=' + entry.email + 
-			// 	'&recent_interaction=' + entry.recentInteraction +
-			// 	'&recent_interaction_detail=' + entry.recentInteractionDetail +
-			// 	'&recent_interaction_date=' + entry.recentInteractionDate +
-			// 	'&recent_interaction_type=' + data.interactionType +
-			// 	'&recent_interaction_campaign=' + data.campaign
-			// );
+			ajax.open(
+				"POST",
+				'http://forms.hubspot.com/uploads/form/v2/' +
+				core.config.hubspotPortal + '/' + core.config.hubspotForm +
+				'?email=' + entry.email +
+				'&recent_interaction=' + entry.recentInteraction +
+				'&recent_interaction_detail=' + entry.recentInteractionDetail +
+				'&recent_interaction_date=' + entry.recentInteractionDate +
+				'&recent_interaction_type=' + data.interactionType +
+				'&recent_interaction_campaign=' + data.campaign
+			);
 
-			// ajax.send();
-		}
+			ajax.send();
+		};
 
 		var initUploader = function() {
 			var entries = data.json;
@@ -48,23 +47,23 @@ var step3 = (function() {
 
 			// our recursive timer for loop
 			function timer() {	
-			    setTimeout(function () {
-			    	
-			    	// 1) upload to hubspot
-			    	sendToHubspot(entries[i]);
+				setTimeout(function () {
 
-			    	// 2) update UI
-			    	ui.updateProgress(entries[i], i, noOfEntries);
+					// 1) upload to hubspot
+					sendToHubspot(entries[i]);
 
-			        if (i < noOfEntries - 1) {
-			        	timer();
-			        	i++	
-			        }
+					// 2) update UI
+					ui.updateProgress(entries[i], i, noOfEntries);
 
-			        else if (i === noOfEntries - 1) {
-			        	steps.completeStep(3);
-			        }
-			    }, config.cycle_duration);
+					if (i < noOfEntries - 1) {
+						timer();
+						i++	
+					}
+
+					else if (i === noOfEntries - 1) {
+						steps.completeStep(3);
+					}
+				}, config.cycle_duration);
 			}
 			timer();
 		}
@@ -108,34 +107,34 @@ var step3 = (function() {
 		}
 
 		function startTimer(duration, display) {
-		    var start = Date.now(),
-		        diff,
-		        minutes,
-		        seconds;
-		    function timer() {
-		        // get the number of seconds that have elapsed since 
-		        // startTimer() was called
-		        diff = duration - (((Date.now() - start) / 1000) | 0);
-		        console.log(diff);
+			var start = Date.now(),
+				diff,
+				minutes,
+				seconds;
 
-		        // does the same job as parseInt truncates the float
-		        minutes = (diff / 60) | 0;
-		        seconds = (diff % 60) | 0;
+			function timer() {
+				// get the number of seconds that have elapsed since 
+				// startTimer() was called
+				diff = duration - (((Date.now() - start) / 1000) | 0);
 
-		        minutes = minutes < 10 ? "0" + minutes : minutes;
-		        seconds = seconds < 10 ? "0" + seconds : seconds;
+				// does the same job as parseInt truncates the float
+				minutes = (diff / 60) | 0;
+				seconds = (diff % 60) | 0;
 
-		        display.textContent = minutes + ":" + seconds; 
+				minutes = minutes < 10 ? '0' + minutes : minutes;
+				seconds = seconds < 10 ? '0' + seconds : seconds;
 
-		        if (diff <= 0) {
-		            // add one second so that the count down starts at the full duration
-		            // example 05:00 not 04:59
-		            start = Date.now() + 1000;
-		        }
-		    };
-		    // we don't want to wait a full second before the timer starts
-		    timer();
-		 setInterval(timer, 1000);
+				display.textContent = minutes + ':' + seconds; 
+
+				if (diff <= 0) {
+					// add one second so that the count down starts at the full duration
+					// example 05:00 not 04:59
+					start = Date.now() + 1000;
+				}
+			};
+			// we don't want to wait a full second before the timer starts
+			timer();
+			setInterval(timer, 1000);
 		}
 
 		var updateProgressInfo = function(entry, current, total) {
@@ -143,22 +142,20 @@ var step3 = (function() {
 			var currentEntryEmail = entry.email;
 			var timeLeftinSeconds = ((total * config.cycle_duration) - (current * config.cycle_duration)) / 1000;
 
-			progressBarDescription.innerHTML = "Current Entry: " + currentEntryEmail;
+			progressBarDescription.innerHTML = 'Current Entry: ' + currentEntryEmail;
 			entriesLeftDescription.innerHTML = entriesLeft;
 			startTimer(timeLeftinSeconds, timeleftDescription)
-		}
+		};
 
 		var doneUploading = function() {
-			progressBarDescription.innerHTML = "";
+			progressBarDescription.innerHTML = '';
 			pageTitle.innerHTML = "We're done skipper!";
 			pageSubitle.innerHTML = 'Form data successfully uploaded to <a href="https://app.hubspot.com/forms/' + config.hubspotPortal + '/' + config.hubspotForm + '/submissions" target="_blank">Hubspot.</a>';
-		}
+		};
 
 		return {
-			updateProgress: updateProgress,
-			doneUploading: doneUploading
-		}
-
+			doneUploading: doneUploading,
+			updateProgress: updateProgress
+		};
 	})();
-
 })(steps);

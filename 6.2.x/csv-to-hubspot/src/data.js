@@ -13,24 +13,23 @@ var data = (function() {
 	};
 
 	return {
-		json: undefined,
-		interactionType: undefined,
-		campaign: undefined,
-		state: {
-			navigation: 'begin'
-		},
-		currentStep: 1,
-		updateData : function(key, value) {
-			this[key] = value;
-		},
-		// holds master data
 		allSteps: [],
+		campaign: undefined,
 		// default number of steps
-		numberOfSteps : 0,
+		numberOfSteps: 0,
 		// creates new step object
+		completeStep: function(step) {
+			var currentStep = this.allSteps[step - 1];
+
+			currentStep.completed = true;
+			if (currentStep.onComplete) {
+				currentStep.onComplete();
+			}
+		},
 		createStep: function(config) {
 			var currentStep = Object.create(stepObject);
-			this.numberOfSteps++
+
+			this.numberOfSteps++;
 
 			// create our step object
 			currentStep.step = this.numberOfSteps;
@@ -46,35 +45,28 @@ var data = (function() {
 
 			return currentStep;
 		},
-		renderStep: function(step) {
-			core.templateRender(core.config.stepsContainerClass, this.allSteps[step - 1].html);
-		},
-		completeStep: function(step) {
-			var currentStep = this.allSteps[step - 1];
-			currentStep.completed = true;
-			if (currentStep.onComplete) {
-				currentStep.onComplete();	
-			}
-		},
 		incompleteStep: function(step) {
 			var currentStep = this.allSteps[step - 1];
+
 			currentStep.completed = false;
 		},
+		interactionType: undefined,
+		json: undefined,
 		loadStep: function(step) {
 			var currentStep = this.allSteps[step - 1];
+
 			if (currentStep.onLoad) {
 				currentStep.onLoad();
 			}
 		},
-		changeStep: function(direction) {
-			if (direction == 'next') {
-				this.currentStep++	
-			}
-			else {
-				this.currentStep--
-			}
+		renderStep: function(step) {
+			core.templateRender(core.config.stepsContainerClass, this.allSteps[step - 1].html);
+		},
+		state: {
+			navigation: 'begin'
+		},
+		updateData: function(key, value) {
+			this[key] = value;
 		}
-	}
-
-
+	};
 })();

@@ -5,7 +5,7 @@ var step1 = (function() {
 		onComplete: function() {
 			core.changeState('navigation', 'begin');
 		}
-	})
+	});
 
 	var tests = (function() {
 		// run tests for csv file
@@ -24,26 +24,25 @@ var step1 = (function() {
 			if (json) {
 				return true;
 			}
-		}
+		};
 
 		return {
 			checkCSV: checkCSV,
 			checkJSON: checkJSON
-		}
+		};
 	})();
-
 
 	var util = (function() {
 
 		// convert csv to JSON object
 		var csvToJSON = function(csv) {
-			var lines = csv.split("\n");
+			var lines = csv.split('\n');
 			var result = [];
-			var headers = lines[0].split(",");
+			var headers = lines[0].split(',');
 
 			for (var i = 1; i < lines.length; i++) {
 				var obj = {};
-				var currentline = lines[i].split(",");
+				var currentline = lines[i].split(',');
 
 				for (var j = 0; j < headers.length; j++) {
 					obj[headers[j]] = currentline[j];
@@ -55,28 +54,29 @@ var step1 = (function() {
 
 			core.publisher.fire('JSONcreated', result);
 			return result;
-		}
+		};
 
 		// read file in browser
 		var readFile = function(file) {
-			 var textType = "text/csv";
+			var textType = 'text/csv';
 
-	        if (file.type === textType) {
-	            var reader = new FileReader();
-	            var content = reader.readAsText(file);
-	            step1Data.csvDone = false;
+			if (file.type === textType) {
+				var reader = new FileReader();
+				var content = reader.readAsText(file);
 
-	            reader.onload = function(e) {
-	            	core.publisher.fire('fileRead', reader.result);
-	            	return reader.result;
-	            }
+				step1Data.csvDone = false;
 
-	        } else {
-	            // wrong file type
-	            UI.fileGrade('fail', 'Wrong file type. Upload CSV File');
-	            data.incompleteStep(1);
-	        }
-		}
+				reader.onload = function(e) {
+					core.publisher.fire('fileRead', reader.result);
+					return reader.result;
+				};
+			}
+			else {
+				// wrong file type
+				UI.fileGrade('fail', 'Wrong file type. Upload CSV File');
+				data.incompleteStep(1);
+			}
+		};
 
 		// get information file
 		var GetFileInformation = function(JSON) {
@@ -84,110 +84,124 @@ var step1 = (function() {
 			var information = {
 				entries: 0
 			};
-	
-			for(key in JSON) {
+
+			for (key in JSON) {
 				if (JSON.hasOwnProperty(key)) {
 					information.entries++;
 				}
 			}
 
 			return information;
-		}
+		};
 
 		// higher order function to manage the processing
 		var processFile = function(file) {
 			readFile(file);
 
 			// listen for when file is done being read
-			core.publisher.on('fileRead', function(csv) {
-				step1Data.csv = csv;
-				if (tests.checkCSV(csv)) {
-					core.publisher.fire('csvChecked', step1Data.csv);
+			core.publisher.on(
+				'fileRead',
+				function(csv) {
+					step1Data.csv = csv;
+					if (tests.checkCSV(csv)) {
+						core.publisher.fire('csvChecked', step1Data.csv);
+					}
 				}
-			});
+			);
 
 			// listen for when csv is being done checked to turn into a JSON
-			core.publisher.on('csvChecked', function(csv) {
-				data.updateData("json",csvToJSON(csv) )
+			core.publisher.on(
+				'csvChecked',
+				function(csv) {
+					data.updateData('json', csvToJSON(csv));
 
-				// if we pass the JSON testing, we should complete the step
-				if (tests.checkJSON(data.json)) {
-					UI.fileGrade('pass')
-					steps.completeStep(1);
+					// if we pass the JSON testing, we should complete the step
+					if (tests.checkJSON(data.json)) {
+						UI.fileGrade('pass');
+						steps.completeStep(1);
+					}
 				}
-				
-			});
-		}
+			);
+		};
 
 		return {
 			processFile: processFile
-		}
-
+		};
 	})();
 
 	var UI = (function() {
-	  	var dropContainerText = document.querySelector('.file-drop-text');
-    	var uploadSVGContainer = document.querySelector('.upload-icon-container');
-    	var checkSVGContainer = document.querySelector('.check-icon-container');
-    	var errorSVGContainer = document.querySelector('.error-icon-container');
-    	var fileInfoContainer = document.querySelector('.file-info');
+		var dropContainerText = document.querySelector('.file-drop-text');
+		var uploadSVGContainer = document.querySelector('.upload-icon-container');
+		var checkSVGContainer = document.querySelector('.check-icon-container');
+		var errorSVGContainer = document.querySelector('.error-icon-container');
+		var fileInfoContainer = document.querySelector('.file-info');
 
-	    // controls drag and upload UI
-	    var fileDrop = (function() {
-	    	var filedrag = document.querySelector(".file-drag");
+		// controls drag and upload UI
+		var fileDrop = (function() {
+			var filedrag = document.querySelector('.file-drag');
 
-	    	function fileDragHover(e) {
-	    		e.stopPropagation();
+			function fileDragHover(e) {
+				e.stopPropagation();
 				e.preventDefault();
-	    		filedrag.className = (e.type == 'dragover') ? 'file-drag hover' : 'file-drag';
-	    	}
+				filedrag.className = (e.type == 'dragover') ? 'file-drag hover' : 'file-drag';
+			}
 
-	    	function fileSelectHandler(e) {
-	    		fileDragHover(e);
-	    		var files = e.dataTransfer.files;
-	    		util.processFile(files[0]);
-	    		fileChanged(files[0].name)
-	    	}
+			function fileSelectHandler(e) {
+				fileDragHover(e);
+				var files = e.dataTransfer.files;
 
-	        filedrag.addEventListener("dragover", function(e) {
-	            fileDragHover(e);
-	        }, false);
+				util.processFile(files[0]);
+				fileChanged(files[0].name);
+			}
 
-	        filedrag.addEventListener("dragleave", function(e) {
-	            fileDragHover(e);
-	        }, false);
+			filedrag.addEventListener(
+				'dragover',
+				function(e) {
+					fileDragHover(e);
+				},
+				false
+			);
 
-	        filedrag.addEventListener("drop", function(e) {
-	            fileSelectHandler(e);
-	        }, false);
+			filedrag.addEventListener(
+				'dragleave',
+				function(e) {
+					fileDragHover(e);
+				},
+				false
+			);
 
-	    })();
+			filedrag.addEventListener(
+				'drop',
+				function(e) {
+					fileSelectHandler(e);
+				},
+				false
+			);
 
-	    var fileChanged = function(text) {
-			dropContainerText.innerHTML = text;	
-	    }
+		})();
 
-	    var fileGrade = function(result, message) {
-	    	if (result === "fail") {
-    			uploadSVGContainer.style.opacity = 0;
-    			checkSVGContainer.style.opacity = 0;
-    			errorSVGContainer.style.opacity = 1;
-    			fileInfoContainer.innerHTML = message;
-	    	}	
+		var fileChanged = function(text) {
+			dropContainerText.innerHTML = text;
+		};
 
-	    	else {
-	    		uploadSVGContainer.style.opacity = 0;
-    			checkSVGContainer.style.opacity = 1;
-    			errorSVGContainer.style.opacity = 0;
-    			fileInfoContainer.innerHTML = "";
-	    	}
-	    }
+		var fileGrade = function(result, message) {
+			if (result === 'fail') {
+				uploadSVGContainer.style.opacity = 0;
+				checkSVGContainer.style.opacity = 0;
+				errorSVGContainer.style.opacity = 1;
+				fileInfoContainer.innerHTML = message;
+			}
+			else {
+				uploadSVGContainer.style.opacity = 0;
+				checkSVGContainer.style.opacity = 1;
+				errorSVGContainer.style.opacity = 0;
+				fileInfoContainer.innerHTML = '';
+			}
+		};
 
-	    return {
-	    	fileChanged: fileChanged,
-	    	fileGrade: fileGrade
-	    }
-
+		return {
+			fileChanged: fileChanged,
+			fileGrade: fileGrade
+		};
 	})(util);
-
-})(steps, step1Data)
+})(steps, step1Data);
