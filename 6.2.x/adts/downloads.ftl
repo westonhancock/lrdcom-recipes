@@ -1,12 +1,12 @@
 <#assign asset_category_local_service_util = objectUtil("com.liferay.portlet.asset.service.AssetCategoryLocalServiceUtil") />
 
 <#if entries?has_content>
-	<div class="block-container">
+	<div class="block-container justify-center">
 		<#list entries as curEntry>
 			<#assign entry = curEntry />
 			<#assign asset_renderer = entry.getAssetRenderer() />
 
-			<a class="w20 font-color asset-entry standard-padding download-item-container link-wrapper" href="#">
+			<a class="font-color asset-entry standard-padding download-item-container link-wrapper" href="#">
 				<#list entry.getCategoryIds() as category_id >
 					<#assign category = asset_category_local_service_util.fetchAssetCategory(category_id) />
 		
@@ -25,9 +25,16 @@
 		text-decoration: none;
 	}
 
-	.download-item-container{
+	.download-item-container {
 		box-sizing: border-box;
 		color: #4C4C4E;
+		flex-basis: 200px;
+		flex-grow: 1;
+	}
+
+	.download-item-container .asset-entry-category {
+		color: #909295;
+		font-size: 12px;
 	}
 
 	.download-item-container h4 {
@@ -52,7 +59,7 @@
 		color: #f5a11c;
 	}
 
-	@media (max-width: 760px) {
+	@media (max-width: 500px) {
 		a.asset-entry {
 			width: 100%;
 		}
