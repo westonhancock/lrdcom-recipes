@@ -15,8 +15,44 @@
 		<span style="line-height: 1.4;">Netherlands</span></div>
 	<div class="event-subtitle">
 		March 17th, 2016</div>
-	<div class="register-button">
+	<div class="register-button pop-up-trigger">
 		<a class="btn" href="http://discover.liferay.com/liferay-valamis-digital-solutions-forum-q1-2016" target="_blank">Register Today!</a></div>
 </div>
 
+<script>
+AUI().ready(
+		 	'pop-up',
+		 	function(A) {
+		 		var activateCallback = function(classToggleInstance, node, targetNodes, targetClass) {
+		 		
+		 			//Contact us for registration
+		 				var nodeContent = '<div>Please contact us for registration.</div>';
+		 
+		 				var targetNodesContent = targetNodes.one('.' + classToggleInstance.get('baseClassName') + '-content');
+		 
+		 				if (targetNodesContent) {
+		 					targetNodesContent.setContent(nodeContent);
+						}
+		 			
+		 		};
+		 
+		 		var deactivateCallback = function(classToggleInstance, node, targetNodes, targetClass) {
+		 				var targetNodesContent = targetNodes.one('.' + classToggleInstance.get('baseClassName') + '-content');
+		
+		 				if (targetNodesContent) {
+		 				targetNodesContent.empty();
+		 			}
+		 	}
+		 
+		 	new A.PopUp(
+		 	{
+		 			activateCallback: activateCallback,
+		 			deactivateCallback: deactivateCallback,
+		 			defaultCallbacks: false,
+		 			overlayCssClass: ' video-overlay'
+		 		}
+		 	).render();
+			}
+		 );
+</script>
 
