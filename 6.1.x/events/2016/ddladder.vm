@@ -1,0 +1,162 @@
+<style>
+
+#ddlbuilder select, #ddlbuilder
+ul {
+
+  overflow: auto;
+  width: 200px;
+  border: 1px solid #000;
+}
+
+#ddlbuilder ul {
+  height: 300px;
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden;
+}
+
+#ddlbuilder li {
+  margin: 0;
+  padding: 0;
+}
+
+#ddlbuilder label {
+  display: block;
+  color: WindowText;
+  background-color: Window;
+  margin: 0;
+  padding: 0;
+  width: 100%;
+}
+
+#ddlbuilder label:hover {
+  background-color: Highlight;
+  color: HighlightText;
+}
+#message.error {
+	color: red;
+}
+#message.success {
+	color: green;
+}
+
+</style>
+
+<div id="message">
+
+</div>
+<form id="ddlbuilder">
+  	<label for="siteName">Site Name</label>
+  	<input type=text length=40 id="siteName">
+   	<label for="groupId">Events Site</label>
+   	<select id="groupid">
+      <option value="67510365" selected>Events 2016</option> 
+   	</select>
+
+   	<label for="structures">Structures to Create</label> 
+	<ul id="checkboxlist" name="structures">
+	</ul>
+	<input type=button value="Create Structures" ONCLICK="createStructures()">
+</form>
+
+<script>
+var ddmStructures=[
+{id: "69365905", name: "Agenda"},
+{id: "67579330", name: "Rooms"},
+{id: "69069681", name: "Speakers"},
+{id: "69488654", name: "Sponsors"},
+{id: "69701496", name: "Nav Links"},
+{id: "69756087", name: "Maps"},
+{id: "69756091", name: "Contacts"},
+{id: "69756095", name: "Activities"},
+{id: "69756099", name: "Photo Galleries"},
+{id: "69756103", name: "News"},
+{id: "69756107", name: "Beacon Regions"},
+{id: "69756111", name: "Beacon Region Events"},
+{id: "69756115", name: "Beacon Individual Events"},
+{id: "69756119", name: "Beacon Forms"},
+{id: "68745907", name: "Expert Exchange"}
+];
+
+addCheckboxes();
+
+function createStructures() {
+  var siteName = document.getElementById("siteName");
+  var cmdArray = [];
+  var checkboxes = document.querySelectorAll("input[type=checkbox]");
+  var groupId = document.getElementById("groupid");
+  if (checkboxes) {
+     for (var i = 0; i < checkboxes.length; i++) {
+       if (checkboxes[i].checked == true) {
+       var ddlName = siteName.value +  " | " + checkboxes[i].getAttribute("data-name");
+       	cmdArray.push({
+    					"/ddlrecordset/add-record-set" : {
+						      "groupId": groupId.value,
+						      "ddmStructureId": checkboxes[i].value,
+						      "recordSetKey": null,
+						      "nameMap": {
+						        "en_US": ddlName
+						      },
+						      "descriptionMap": {
+						        "en_US":ddlName
+						      },
+						      "minDisplayRows": 20,
+						      "scope": 0
+    					}
+  					});
+       }
+         
+    }
+  }
+  
+  
+  var invokeURL = "https://www.liferay.com/api/jsonws/invoke?cmd=";
+  
+	var req = new XMLHttpRequest();
+	req.onload = function () {
+		var events = JSON.parse(this.responseText);
+		if (!Array.isArray(events)) {
+			var message=events.exception ? events.exception: "Unknown error";
+		 document.getElementById('message').textContent = "ERROR: " + message;
+		 document.getElementById('message').classList.add("error");
+		  document.getElementById('message').classList.remove("succcess");
+		}
+		else {
+			document.getElementById('message').textContent = "";
+			
+		 document.getElementById('message').textContent = events.length + " DDM Structures were created";
+		
+		 document.getElementById('message').classList.add("success");
+		 document.getElementById('message').classList.remove("error");
+		}
+	};
+	req.open('get', invokeURL + JSON.stringify(cmdArray) + "&p_auth=" + Liferay.authToken, true);
+	req.send();
+}
+
+
+
+
+function addCheckboxes() {
+	var list = document.getElementById("checkboxlist");
+	for  (var i = 0; i < ddmStructures.length; i++) {
+  		var li = document.createElement("li");
+		var input = document.createElement("input");
+		var label = document.createElement("label");
+		label.htmlFor="chk" + i;
+		input.type = "checkbox";
+		input.name = label.htmlFor;
+		input.id = label.htmlFor;
+		input.value = ddmStructures[i].id;
+		input.setAttribute("data-name", ddmStructures[i].name);
+		var content  =document.createTextNode(ddmStructures[i].name);
+		label.appendChild(input);
+		label.appendChild(content);
+		li.appendChild(label);
+		list.appendChild(li);
+  	}
+}
+
+
+</script>
