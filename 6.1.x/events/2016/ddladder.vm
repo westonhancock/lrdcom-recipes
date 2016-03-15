@@ -43,6 +43,74 @@ ul {
 
 </style>
 
+
+#set ($ddl_records_local_service = $serviceLocator.findService("com.liferay.portlet.dynamicdatalists.service.DDLRecordLocalService"))
+#set ($record_id = 71376619)
+#set ($records = $ddl_records_local_service.getRecords($record_id))
+
+
+#set ($ddm_id_to_type = $portal.getClass().forName("java.util.TreeMap").newInstance())
+#foreach ($record in $records)
+    #set ($ddm_id = $record.getFieldValue("ddm_id"))
+    #set ($ddm_name = $record.getFieldValue("ddm_name"))
+    #set ($metadata_type = $record.getFieldValue("metadata_type"))
+  ##  <div> $ddm_id: $ddm_name: $metadata_type</div>
+    #if ($metadata_type && $metadata_type != "")
+  	  #set ($void = $ddm_id_to_type.put($ddm_id, $metadata_type))
+  	#end
+#end    
+
+
+#set ($ddlrecord_local_service = $serviceLocator.findService("com.liferay.portlet.dynamicdatalists.service.DDLRecordSetLocalService"))
+#set ($group_id = 67510365) 
+#set ($count_ddl_recordsets = $ddlrecord_local_service.getRecordSetsCount($group_id) )
+<p> $count_ddl_recordsets recordsets found for group id $group_id</p>
+
+#set ($ddl_events = $portal.getClass().forName("java.util.TreeMap").newInstance())
+
+#set ($ddl_list = $ddlrecord_local_service.getRecordSets($group_id))
+#foreach ($ddlrecordset in $ddl_list)
+#set ($ddl_name = $ddlrecordset.getName() )
+#set ($ddl_structid = $ddlrecordset.getDDMStructureId() )
+
+ #set ($ddl_name_array = $stringUtil.split($ddl_name, "|"))
+#set ($event_name = $ddl_name_array.get(0) ) 
+
+
+#if (!$ddl_events.get($event_name))
+	  
+      #set ($void = $ddl_events.put($event_name, $portal.getClass().forName("java.util.TreeMap").newInstance()))
+#end
+
+#set ($type = "")
+#set ($type = $ddm_id_to_type.get($ddl_structid.toString()) )
+
+#if ($type && $type != "")
+	#set ($void = $ddl_events.get($event_name).put($type, $ddlrecordset.getPrimaryKey()))
+#else
+	<div>Unknown type $ddl_name: $ddl_structid: $event_name: key: $ddlrecordset.getPrimaryKey()</div>
+#end
+
+
+#end
+
+#foreach ($event_name in $ddl_events.keySet())
+    #set ($keysetCount = $ddl_events.get($event_name).keySet().size() )
+	<div>$event_name: $keysetCount ddls</div>
+	<div>
+
+	
+	#set ($metadatatypes = "")
+	#foreach($ddltype in $ddl_events.get($event_name).keySet())
+	    #set ($metadatatypes = $metadatatypes + $ddltype + ":" + $ddl_events.get($event_name).get($ddltype))
+	    #if ($velocityCount != $keysetCount)
+	    	#set ($metadatatypes = $metadatatypes + ",")	
+	    #end
+	#end
+	$metadatatypes
+	</div>
+#end
+
 <div id="message">
 
 </div>
@@ -61,6 +129,9 @@ ul {
 </form>
 
 <script>
+
+
+
 var ddmStructures=[
 {id: "69365905", name: "Agenda"},
 {id: "67579330", name: "Rooms"},
