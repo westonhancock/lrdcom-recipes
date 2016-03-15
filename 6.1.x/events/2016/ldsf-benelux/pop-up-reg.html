@@ -6,6 +6,10 @@
         z-index: 100;
         
     }
+    .pop-up-content a{
+       text-decoration: underline;
+       font-weight: bold;
+    }
 .pop-up-content {
  display: none;
  }
@@ -21,7 +25,9 @@
         height: 60px;
         width: 60px;
     }
-
+.register-button {
+	cursor: pointer;
+}
 </style><div class="span-left">
 	&nbsp;</div>
 <div class="span-right">
@@ -41,8 +47,9 @@
 		March 17th, 2016</div>
 		
 	<div class="register-button pop-up">
-	<div class="pop-up-content"> Please contact us for registration.<br/></div>
-		<a class="btn">Contact us for registration</a></div>
+	<div class="pop-up-content" id="regpopup"><p>Thank you for your interest in the Liferay &amp; Valamis Digital Solutions Forum.</p>
+	<p>For registration please contact <a href="mailto:Yvette.hooijmans@liferay.com">Yvette Hooijmans</a> <a href="tel:+31853033491">+31 (0) 853033491</a></p></div>
+		<a class="btn">Register</a></div>
 </div>
 
 <script>
@@ -60,7 +67,7 @@ AUI().ready(
 		};
 
 		var copyToPopUp = function(event) {
-			var newPopUpContent = event.currentTarget.one('.pop-up-content');
+			var newPopUpContent = A.one('#regpopup');
 
 			var oldPopUpContent = pagePopUp.one('.pop-up-content');
 
@@ -123,6 +130,5 @@ AUI().ready(
 		);
 	}
 );
-</script>
 </script>
 
