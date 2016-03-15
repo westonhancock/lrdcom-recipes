@@ -43,7 +43,8 @@ ul {
 
 </style>
 
-
+<div> companyid: $companyId</div>
+<div>com.liferay.portlet.dynamicdatalists.model.DDLRecordSet</div>
 #set ($ddl_records_local_service = $serviceLocator.findService("com.liferay.portlet.dynamicdatalists.service.DDLRecordLocalService"))
 #set ($record_id = 71376619)
 #set ($records = $ddl_records_local_service.getRecords($record_id))
@@ -102,7 +103,7 @@ ul {
 	
 	#set ($metadatatypes = "")
 	#foreach($ddltype in $ddl_events.get($event_name).keySet())
-	    #set ($metadatatypes = $metadatatypes + $ddltype + ":" + $ddl_events.get($event_name).get($ddltype))
+	    #set ($metadatatypes = $metadatatypes + $ddltype + ":" + "<span class=eventddl>" + $ddl_events.get($event_name).get($ddltype) + "</span>")
 	    #if ($velocityCount != $keysetCount)
 	    	#set ($metadatatypes = $metadatatypes + ",")	
 	    #end
@@ -110,6 +111,8 @@ ul {
 	$metadatatypes
 	</div>
 #end
+
+<div id="myPropertyList" class="yui3-skin-sam"></div>
 
 <div id="message">
 
@@ -131,6 +134,35 @@ ul {
 <script>
 
 
+window.addEventListener("DOMContentLoaded", function() {
+
+	var nodelist = document.querySelectorAll(".eventddl");
+	for (var i = 0; i < nodelist.length; i++) {
+		nodelist[i].addEventListener("click", function(event) {
+			getRecordSet(event.currentTarget.innerText);
+		}); 	
+	}
+});
+
+function renderDDLStructure (ddl){
+	AUI().use(
+			  'aui-property-list',
+			  function(A) {
+				  var properties = [];
+				  for (var property in ddl) {
+					    if (ddl.hasOwnProperty(property)) {
+					        properties.push({name: property, value: ddl[property] });
+					    }
+					}
+			    
+			    new A.PropertyList(
+			      {
+			        recordset: properties
+			      }
+			    ).render('#myPropertyList');
+			  }
+			);
+}
 
 var ddmStructures=[
 {id: "69365905", name: "Agenda"},
@@ -151,6 +183,38 @@ var ddmStructures=[
 ];
 
 addCheckboxes();
+
+function getRecordSet(recordsetid) {
+	var cmdArray = [];
+  	cmdArray.push({
+		"/ddlrecordset/get-record-set" : {
+		      "recordSetId": recordsetid
+		
+		}
+		});
+  	 var invokeURL = "https://www.liferay.com/api/jsonws/invoke?cmd=";
+  	  
+ 	var req = new XMLHttpRequest();
+ 	req.onload = function () {
+ 		var events = JSON.parse(this.responseText);
+ 		if (!Array.isArray(events)) {
+ 			var message=events.exception ? events.exception: "Unknown error";
+ 		 document.getElementById('message').textContent = "ERROR: " + message;
+ 		 document.getElementById('message').classList.add("error");
+ 		  document.getElementById('message').classList.remove("succcess");
+ 		}
+ 		else {
+ 			document.getElementById('message').textContent = "";
+ 			renderDDLStructure(events[0]);
+ 		 document.getElementById('message').textContent = events.length + " ddl record set was fetched";
+ 		
+ 		 document.getElementById('message').classList.add("success");
+ 		 document.getElementById('message').classList.remove("error");
+ 		}
+ 	};
+ 	req.open('get', invokeURL + JSON.stringify(cmdArray) + "&p_auth=" + Liferay.authToken, true);
+ 	req.send();
+}
 
 function createStructures() {
   var siteName = document.getElementById("siteName");
@@ -174,6 +238,7 @@ function createStructures() {
 						      },
 						      "minDisplayRows": 20,
 						      "scope": 0
+						      
     					}
   					});
        }
@@ -202,7 +267,11 @@ function createStructures() {
 		 document.getElementById('message').classList.remove("error");
 		}
 	};
-	req.open('get', invokeURL + JSON.stringify(cmdArray) + "&p_auth=" + Liferay.authToken, true);
+	
+	//"serviceContext": {"guestPermissions": }
+	//var ctx = "&serviceContext.guestPermissions=" + JSON.stringify(["action.VIEW"]);
+	var ctx = "&serviceContext.addGuestPermissions=true";
+	req.open('get', invokeURL + JSON.stringify(cmdArray) + "&p_auth=" + Liferay.authToken + "&" + ctx, true);
 	req.send();
 }
 
