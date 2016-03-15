@@ -34,6 +34,15 @@
 #set ($count_ddl_recordsets = $ddlrecord_local_service.getRecordSetsCount($group_id) )
 <p> $count_ddl_recordsets recordsets found for group id $group_id</p>
 
+#set ($ddl_list = $ddlrecord_local_service.getRecordSets($group_id))
+#foreach ($ddlrecordset in $ddl_list)
+#set ($ddl_name = $ddlrecordset.getName() )
+#set ($ddl_structid = $ddlrecordset.getDDMStructureId() )
+<div> $ddl_name: $ddl_structid</div>
+#end
+
+
+
 #set ($localeEn = $localeUtil.fromLanguageId("en_US"))
 #set ($namemap = $portal.getClass().forName("java.util.HashMap").newInstance())
 #set ($descriptionmap= $portal.getClass().forName("java.util.HashMap").newInstance())
@@ -67,15 +76,15 @@
 
 ##set ($newRecordSet = $ddlrecord_local_service.addRecordSet($ddl_user_id, $ddl_group_id, $ddl_structure_id, $ddl_recordsetkey, $ddl_namemap, $ddl_descrmap, $ddl_mindisplayrows, $ddl_scope, $ddl_serviceContext ))			
 
-#set ($newRecordSet = $ddlrecord_local_service.addRecordSet($ddl_user_id, $ddl_group_id, $ddl_structure_id, null, $ddl_namemap, $ddl_descrmap, 20, 0, $ddl_serviceContext ))			
+##set ($newRecordSet = $ddlrecord_local_service.addRecordSet($ddl_user_id, $ddl_group_id, $ddl_structure_id, null, $ddl_namemap, $ddl_descrmap, 20, 0, $ddl_serviceContext ))			
 
-#set ($trainingid = $ddl_serviceContext.getAttribute("trainingCourseId"))
-<p> locator: $serviceLocator.toString() </p>
-#set ($servicecontext = $serviceLocator.findService("com.liferay.portal.service.ServiceContext"))
-<p> context = $servicecontext.toString() </p>
-<p> training course id: $trainingid	</p>		
-<p> new record set $newRecordSet.toString() </p>
-<p> new record set created on $newRecordSet.getCreateDate().toString() </p>
+##set ($trainingid = $ddl_serviceContext.getAttribute("trainingCourseId"))
+##<p> locator: $serviceLocator.toString() </p>
+##set ($servicecontext = $serviceLocator.findService("com.liferay.portal.service.ServiceContext"))
+##<p> context = $servicecontext.toString() </p>
+##<p> training course id: $trainingid	</p>		
+##<p> new record set $newRecordSet.toString() </p>
+##<p> new record set created on $newRecordSet.getCreateDate().toString() </p>
 ##
 ##	long userId, long groupId, long ddmStructureId, String recordSetKey,
 ##			Map<Locale, String> nameMap, Map<Locale, String> descriptionMap,
