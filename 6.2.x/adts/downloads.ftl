@@ -19,7 +19,7 @@
 				<#break>
 			</#list>
 
-			<a class="asset-entry font-color download-item-container link-wrapper standard-padding" href="${value}">
+			<a class="asset-entry cta font-color download-item-container link-wrapper standard-padding" href="${value!}" target="_blank">
 				<#list entry.getCategoryIds() as category_id >
 					<#assign category = asset_category_local_service_util.fetchAssetCategory(category_id) />
 
@@ -27,14 +27,16 @@
 				</#list>
 
 				<h4>${htmlUtil.escape(asset_renderer.getTitle(locale))}</h4>
-				<span class="alt-font-color link">${localize("download", "Download")} <svg class="link" height="10" width="8"><use xlink:href="#caret" /></svg></span>
+				<span class="alt-font-color link">${localize("download", "Download")} <svg class="cta-caret link" height="10" width="8"><use xlink:href="#caret" /></svg></span>
 			</a>
 		</#list>
 	</div>
 </#if>
 
 <style>
-	.aui a.link-wrapper:hover {
+	.aui a.link-wrapper,
+	.download-item-container .download-item,
+	.download-item-container .link {
 		text-decoration: none;
 	}
 
@@ -55,11 +57,6 @@
 	.download-item-container span.link {
 		color: #a9a9a9;
 		font-weight: normal;
-	}
-
-	.download-item-container:hover .download-item,
-	.download-item-container:hover .link {
-		text-decoration: none;
 	}
 
 	.download-item-container:hover h4 {
