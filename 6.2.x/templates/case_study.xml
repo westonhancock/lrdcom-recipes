@@ -27,10 +27,10 @@
 		</meta-data>
 	</dynamic-element>
 	<dynamic-element dataType="string" indexType="keyword" localizable="true" name="subheading" readOnly="false" repeatable="true" required="false" showLabel="true" type="text" width="large">
-		<dynamic-element dataType="string" indexType="keyword" localizable="true" name="summary_paragraph" readOnly="false" repeatable="true" required="false" showLabel="true" type="textarea" width="large">
+		<dynamic-element dataType="string" indexType="keyword" localizable="true" name="summary_paragraph" readOnly="false" repeatable="false" required="false" showLabel="true" type="textarea" width="large">
 			<meta-data locale="en_US">
 				<entry name="label">
-					<![CDATA[Summary Paragraph]]>
+					<![CDATA[Summary]]>
 				</entry>
 				<entry name="predefinedValue">
 					<![CDATA[]]>

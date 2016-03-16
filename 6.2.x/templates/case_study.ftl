@@ -212,9 +212,9 @@
 					<h2>${cur_subheading.data}</h2>
 				</#if>
 
-				<#list cur_subheading.summary_paragraph.siblings as paragraph>
-					<#if paragraph.data?has_content>
-						<p>${paragraph.data}</p>
+				<#list stringUtil.splitLines(cur_subheading.summary_paragraph.data) as paragraph>
+					<#if paragraph?has_content>
+						<p>${paragraph}</p>
 					</#if>
 				</#list>
 			</#list>
@@ -277,7 +277,7 @@
 			if (targetNodesContent) {
 				targetNodesContent.empty();
 			}
-		}
+		};
 
 		new A.PopUp(
 			{
