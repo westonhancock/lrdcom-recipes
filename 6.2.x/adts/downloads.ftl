@@ -27,7 +27,7 @@
 				</#list>
 
 				<h4>${htmlUtil.escape(asset_renderer.getTitle(locale))}</h4>
-				<span class="alt-font-color link">${localize("download", "Download")} <svg class="cta-caret link" height="10" width="8"><use xlink:href="#caret" /></svg></span>
+				<span class="alt-font-color link">${localize("download", "Download")} <svg class="cta-icon link" height="10" width="8"><use xlink:href="#caret" /></svg></span>
 			</a>
 		</#list>
 	</div>

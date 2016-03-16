@@ -55,16 +55,16 @@
 								<#assign svg_item = "" />
 
 								<#if block_link.siblings?size == 1>
-									<#assign svg_item = "<svg height='10' width='8'><use xlink:href='#navCaret' /></svg>" />
+									<#assign svg_item = "<svg class='cta-icon' height='10' width='8'><use xlink:href='#caret' /></svg>" />
 								</#if>
 
-								<a href="${block_link.block_link_url.data}">${block_link.data} ${svg_item}</a>
+								<a class="cta" href="${block_link.block_link_url.data}">${block_link.data} ${svg_item}</a>
 							</#list>
 						</#if>
 
 						<#if block.block_button_text.data?has_content>
 							<div>
-								<a class="btn btn-sm ${block.block_button_text.block_button_color.data}" href="${block.block_button_text.block_button_url.data}">${block.block_button_text.data}</a>
+								<a class="btn btn-sm standard-margin-vertical ${block.block_button_text.block_button_color.data}" href="${block.block_button_text.block_button_url.data}">${block.block_button_text.data}</a>
 							</div>
 						</#if>
 					</div>
@@ -73,7 +73,7 @@
 		</div>
 
 		<#if button_text.data?has_content && button_text.button_url.data?has_content>
-			<a class="btn ${button_text.button_color.data}" href="${button_text.button_url.data}">
+			<a class="btn standard-margin-vertical ${button_text.button_color.data}" href="${button_text.button_url.data}">
 				${button_text.data}
 			</a>
 		</#if>
