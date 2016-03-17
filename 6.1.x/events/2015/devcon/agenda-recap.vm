@@ -1,0 +1,1011 @@
+#*
+    This template basically loops once through all the records creating a treemap
+    object and then loops through that map object to generate the table. When
+    constructing the map it starts at the bottom (that is the deepest branches)
+    of the tree and works its way up, since we are adding individual records in the
+    correct places in tree. It is basically structured like this:
+
+    agenda={
+        day-2013-1-1={
+            row-100={
+                end-time=000900,
+                end-time-display=9:00am,
+                extended-sessions= {
+                    room-1=001000
+                },
+                sessions={
+                    room-1={
+                        end-time=000900,
+                        map-id=290837,
+                        record={},
+                        room-name=Grand Ballroom,
+                        room-number=1
+                    }
+                },
+                start-time=000800,
+                start-time=8:00am
+            }
+        }
+    }
+*#
+
+#macro (mark_as_extended5 $end_time $row_end_time $row_start_time)
+    #if ($end_time > $row_end_time)
+        #set ($extension_count = $extension_count + 1)
+        #set ($next_row = false)
+        #set ($next_row = $day.higherEntry("row-$row_start_time"))
+
+        #if ($next_row)
+            #set($next_row = $next_row.getValue())
+            #set($void = $next_row.get("extended-sessions").put("room-$room_number", $end_time))
+
+            #set($next_row_end_time = $integer.parseInt($next_row.get("end-time")))
+            #set($next_row_start_time = $next_row.get("start-time"))
+
+            #mark_as_extended5($end_time $next_row_end_time $next_row_start_time)
+        #end
+    #end
+#end
+
+#set ($days_to_print = "day-2015-10-7,day-2015-10-8")
+
+#set ($default_col_span = 2)
+#set ($integer = 0)
+
+## Prep work for Edit botton
+#set ($layout_id = $request.get("theme-display").get("plid"))
+#set ($layout_service = $serviceLocator.findService("com.liferay.portal.service.LayoutLocalService"))
+#set ($layout_long = $getterUtil.getLong($layout_id))
+#set ($layout = $layout_service.getLayout($layout_long))
+
+## Get DDL Records
+#set ($ddl_records_local_service = $serviceLocator.findService("com.liferay.portlet.dynamicdatalists.service.DDLRecordLocalService"))
+#set ($record_set_id = $getterUtil.getLong($reserved_record_set_id.data))
+#set ($records = $ddl_records_local_service.getRecords($record_set_id))
+
+## Create the empty map that will hold all the agenda info
+#set ($agenda = $portal.getClass().forName("java.util.TreeMap").newInstance())
+
+## Loop Through records and place them in the correct place in the map
+#foreach ($record in $records)
+    #if ($record.getFieldValue("display_on_live"))
+        ## Get date, start-time, end-time and room for sorting purposes
+        #set ($date = $record.getFieldValue("date"))
+
+        #set ($start_time_hour = $record.getFieldValue("start_time_hour"))
+        #set ($start_time_hour = $stringUtil.replace($start_time_hour, "[", ""))
+        #set ($start_time_hour = $stringUtil.replace($start_time_hour, "]", ""))
+        #set ($start_time_hour = $stringUtil.replace($start_time_hour, '"', ''))
+        #set ($start_time_hour_int = $integer.parseInt($start_time_hour))
+
+        #if ($start_time_hour.length() == 1)
+            #set ($start_time_hour_sort = "0" + $start_time_hour)
+        #else
+            #set ($start_time_hour_sort = $start_time_hour)
+        #end
+
+        #set ($start_time_minutes = $record.getFieldValue("start_time_minutes"))
+        #set ($start_time_minutes = $stringUtil.replace($start_time_minutes, "[", ""))
+        #set ($start_time_minutes = $stringUtil.replace($start_time_minutes, "]", ""))
+        #set ($start_time_minutes = $stringUtil.replace($start_time_minutes, '"', ''))
+        #if ($start_time_minutes == "0" || $start_time_minutes == "5")
+            #set ($start_time_minutes = "0" + $start_time_minutes)
+        #end
+
+        #set ($start_time_display = $start_time_hour_int + ":" + $start_time_minutes)
+        #set ($start_time_sort = $start_time_hour_sort + $start_time_minutes)
+
+        #set ($end_time_hour = $record.getFieldValue("end_time_hour"))
+        #set ($end_time_hour = $stringUtil.replace($end_time_hour, "[", ""))
+        #set ($end_time_hour = $stringUtil.replace($end_time_hour, "]", ""))
+        #set ($end_time_hour = $stringUtil.replace($end_time_hour, '"', ''))
+
+        #set ($end_time_hour_int = $integer.parseInt($end_time_hour))
+
+        #if ($end_time_hour.length() == 1)
+            #set ($end_time_hour_sort = "0" + $end_time_hour)
+        #else
+            #set ($end_time_hour_sort = $end_time_hour)
+        #end
+
+        #set ($end_time_minutes = $record.getFieldValue("end_time_minutes"))
+        #set ($end_time_minutes = $stringUtil.replace($end_time_minutes, "[", ""))
+        #set ($end_time_minutes = $stringUtil.replace($end_time_minutes, "]", ""))
+        #set ($end_time_minutes = $stringUtil.replace($end_time_minutes, '"', ''))
+        #if ($end_time_minutes == "0" || $end_time_minutes == "5")
+            #set ($end_time_minutes = "0" + $end_time_minutes)
+        #end
+
+        #set ($end_time_display = $end_time_hour_int + ":" +$end_time_minutes)
+        #set ($end_time_sort = $end_time_hour_sort + $end_time_minutes)
+
+        #if ($validator.isNotNull($record.getFieldValue("room_uuid")))
+            #set ($room_uuid = $record.getFieldValue("room_uuid"))
+            #set ($room_uuid = $stringUtil.replace($room_uuid, "[", ""))
+            #set ($room_uuid = $stringUtil.replace($room_uuid, "]", ""))
+            #set ($room_uuid = $stringUtil.replace($room_uuid, '"', ''))
+
+            #if ($validator.isNotNull($room_uuid))
+                #set ($room_record = $ddl_records_local_service.getDDLRecordByUuidAndGroupId($room_uuid, $groupId))
+            #end
+        #end
+
+        #if ($validator.isNotNull($room_record))
+            #set ($room_name = $room_record.getFieldValue("room_name"))
+            #set ($room_number = $room_record.getFieldValue("room_number"))
+            #set ($map_id = $room_record.getFieldValue("map_id"))
+        #else
+            #set ($room_name = "")
+            #set ($room_number = 0)
+            #set ($map_id = "")
+        #end
+
+        ## Create parts of map that dont exist
+        #if (!$agenda.get("day-$date"))
+            #set ($void = $agenda.put("day-$date", $portal.getClass().forName("java.util.TreeMap").newInstance()))
+        #end
+
+        #if (!$agenda.get("day-$date").get("row-$start_time_sort"))
+            #set ($row_map = $portal.getClass().forName("java.util.TreeMap").newInstance())
+            #set ($void = $row_map.put("end-time", $end_time_sort))
+            #set ($void = $row_map.put("end-time-display", $end_time_display))
+            #set ($void = $row_map.put("extended-sessions", $portal.getClass().forName("java.util.TreeMap").newInstance()))
+            #set ($void = $row_map.put("sessions", $portal.getClass().forName("java.util.TreeMap").newInstance()))
+            #set ($void = $row_map.put("start-time", $start_time_sort))
+            #set ($void = $row_map.put("start-time-display", $start_time_display))
+            #set ($void = $agenda.get("day-$date").put("row-$start_time_sort", $row_map))
+        #end
+
+        ## Add content to map
+        #set ($existing_row_map = $agenda.get("day-$date").get("row-$start_time_sort"))
+        #set ($existing_session_map = $existing_row_map.get("sessions"))
+        #set ($session_map_info = $portal.getClass().forName("java.util.TreeMap").newInstance())
+        #set ($void = $session_map_info.put("custom-css-class", $record.getFieldValue("custom_css_class")))
+        #set ($void = $session_map_info.put("end-time", $end_time_sort))
+        #set ($void = $session_map_info.put("end-time-display", $end_time_display))
+        #set ($void = $session_map_info.put("map-id", $map_id))
+        #set ($void = $session_map_info.put("room-name", $room_name))
+        #set ($void = $session_map_info.put("record", $record))
+        #set ($int_room_number = $getterUtil.getInteger($room_number))
+        #set ($mod_room_number = 100 + $int_room_number)
+        #set ($void = $session_map_info.put("room-number", $mod_room_number))
+        #set ($void = $existing_session_map.put("room-$mod_room_number", $session_map_info))
+        #set ($void = $existing_row_map.put("sessions", $existing_session_map))
+
+        #set ($existing_end_time = $existing_row_map.get("end-time"))
+
+        #if ($integer.parseInt($end_time_sort) < $integer.parseInt($existing_end_time))
+            #set ($void = $existing_row_map.put("end-time", $end_time_sort))
+            #set ($void = $existing_row_map.put("end-time-display", $end_time_display))
+        #end
+    #end
+#end
+
+#set ($day-2 = "7 October")
+#set ($day-3 = "8 October")
+
+<div class="agenda-wrapper class-toggle-carousel-day-1" id="agendaWrapper">
+    <div id="agendaTabs" class="togglers">
+        #foreach ($day_to_print in $stringUtil.split($days_to_print))
+                <span class="aui-w33 select-day select-day-$velocityCount class-toggle-carousel" data-target-class="day-$velocityCount" data-target-node="#agendaWrapper" data-value="date-$velocityCount">
+                    #if ($velocityCount == 1)
+                        $day-2
+                    #elseif ($velocityCount == 2)
+                        $day-3
+                    #end
+                </span>
+        #end
+    </div>
+
+    #foreach ($day_to_print in $stringUtil.split($days_to_print))
+
+        #set ($day = {})
+        #set ($day = $agenda.get("$day_to_print"))
+        #set ($start_time_display = {})
+
+        <table id="agenda-$day_to_print" class="agenda-table agenda-$velocityCount">
+            #foreach ($row in $day)
+                #set ($row_count = $velocityCount)
+
+                <tr class="table-row $row_count">
+                    #set ($room_count = 0)
+                    #set ($row_end_time_display = $row.get("end-time-display"))
+                    #set ($start_time = $row.get("start-time"))
+                    #if ($start_time_display == $row.get("start-time-display"))
+                        #set($same-as-previous = true)
+                    #end
+                    #set ($start_time_display = $row.get("start-time-display"))
+
+                    #if ($same-as-previous)
+                        <td class="first-col"></td>
+                    #else
+                        <td class="first-col">
+                            <div>$start_time_display</div>
+                        </td>
+                    #end
+
+                    #foreach ($session in $row.get("sessions"))
+                        #set ($custom_css_class = $session.get("custom-css-class"))
+                        #set ($end_time = $integer.parseInt($session.get("end-time")))
+                        #set ($extensions_time = false)
+                        #set ($room_count = $room_count + 1)
+                        #set ($room_name = $session.get("room-name"))
+                        #set ($room_number = $session.get("room-number"))
+                        #set ($row_end_time = $integer.parseInt($row.get("end-time")))
+                        #set ($row_sessions_size = $row.get("sessions").size())
+
+                        ## Find all extended sessions and mark them in the next array
+                        #set ($extension_count = 1)
+                        #mark_as_extended5($end_time $row_end_time $start_time)
+
+                        ## Get current rows extensions and generate all empty sessions
+                        #set ($extensions = $row.get("extended-sessions"))
+                        #set ($number_of_skipped_rooms = $room_number - $room_count)
+
+                        ## Set all variables needed for printing the td
+                        #set ($end_time_display = $session.get("end-time-display"))
+
+                        #set ($record = $session.get("record"))
+
+                        #set ($session_summary = $record.getFieldValue("session_summary"))
+
+                        #set ($filter_categories = $record.getFieldValue("filter_categories"))
+                        #set ($filter_categories = $stringUtil.replace($filter_categories, "[", ""))
+                        #set ($filter_categories = $stringUtil.replace($filter_categories, "]", ""))
+                        #set ($filter_categories = $stringUtil.replace($filter_categories, '"', ''))
+                        #set ($filter_categories_to_class = $stringUtil.replace($filter_categories, ' ', '-'))
+                        #set ($filter_categories_to_class = $stringUtil.replace($filter_categories_to_class, ',', ' '))
+
+                        #set ($speaker_array_uuid = $stringUtil.split($record.getFieldValue("speakers_uuid")))
+
+                        #set ($title = $record.getFieldValue("title"))
+                        #set ($filter_categories = $record.getFieldValue("filter_categories"))
+                        #set ($filter_categories = $stringUtil.replace($filter_categories, "[", ""))
+                        #set ($filter_categories = $stringUtil.replace($filter_categories, "]", ""))
+                        #set ($filter_categories = $stringUtil.replace($filter_categories, '"', ''))
+                        #set ($filter_categories = $stringUtil.replace($filter_categories, ',', ' '))
+
+                        #set ($pop_up_css_class = "")
+
+                        #if ($validator.isNotNull($custom_css_class))
+                            #set ($pop_up_css_class = "$pop_up_css_class $custom_css_class $filter_categories_to_class")
+                        #end
+
+                        #if ($row_sessions_size == 1 && $extensions.size() == 0)
+                            #set ($colspan = "colspan='$default_col_span'")
+                            #set ($pop_up_css_class = "$pop_up_css_class single-row-td")
+                        #else
+                            #set ($colspan = "")
+
+                            #set ($pop_up_css_class = "$pop_up_css_class multi-room-td room-$room_number")
+                        #end
+
+                        #if ($filter_categories != "" && $filter_categories)
+                            #set ($pop_up_css_class = "$pop_up_css_class $filter_categories")
+                        #end
+
+                        #if($extension_count > 1)
+                            #set ($rowspan = "rowspan='$extension_count'")
+                        #else
+                            #set ($rowspan = "")
+                        #end
+
+                        #foreach ($speakers_uuid in $speaker_array_uuid)
+                            #set ($speakers_uuid = $stringUtil.trim($speakers_uuid))
+                            #set ($speaker_record = false)
+                            #if ($validator.isNotNull($speakers_uuid))
+                                #set ($speaker_record_info = $ddl_records_local_service.getDDLRecordByUuidAndGroupId($speakers_uuid, $groupId))
+                                #set ($speaker_record = $ddl_records_local_service.fetchDDLRecord($getterUtil.getLong($speaker_record_info.recordId)))
+                            #end
+                            #if ($validator.isNotNull($speaker_record))
+                                #set ($speaker_image_group_id = $record.getGroupId())
+
+                                #set ($speaker_image = "")
+
+                                #if ($speaker_record.getField("speaker_image"))
+                                    #set ($speaker_image = $speaker_record.getFieldValue("speaker_image"))
+                                #end
+                                
+                                #set ($speaker_json_object = $jsonFactoryUtil.createJSONObject($speaker_image))
+                                #set ($speaker_image_uuid = $speaker_json_object.getString("uuid"))
+                                #set ($speaker_bio = $speaker_record.getFieldValue("speaker_bio"))
+                                #set ($speaker_company = $speaker_record.getFieldValue("speaker_company"))
+                                #set ($speaker_name = $speaker_record.getFieldValue("speaker_name"))
+                                #set ($speaker_title = $speaker_record.getFieldValue("speaker_title"))
+                            #else
+                                #set ($speaker_bio = "")
+                                #set ($speaker_company = "")
+                                #set ($speaker_name = "")
+                                #set ($speaker_title = "")
+                                #set ($speaker_image_group_id = "")
+                                #set ($speaker_image = "")
+                                #set ($speaker_image_uuid = "")
+                                #set ($speaker_json_object = "")
+                            #end
+                        #end
+
+                        #set ($speaker_image_group_id = $speaker_image_group_id)
+                        #set ($speaker_image = $speaker_image)
+                        #set ($speaker_image_uuid = $speaker_image_uuid)
+                        #set ($data_sources = "")
+
+        				#set ($video_url = $record.getFieldValue("video_url"))
+                        #set ($download_url = $record.getFieldValue("download_url"))
+
+                        #if ($validator.isNotNull($speaker_image))
+                            #set ($data_sources = "data-img='/documents/$speaker_image_group_id/$speaker_image_uuid'")
+                        #end
+
+                        #if ($validator.isNotNull($speaker_name))
+                            #set ($data_sources = $data_sources + " " + "data-speaker-name='$speaker_name'")
+                        #end
+
+                        #if ($validator.isNotNull($speaker_title))
+                            #set ($data_sources = $data_sources + " " + "data-speaker-role='$speaker_title'")
+                        #end
+
+                        #if ($validator.isNotNull($speaker_bio))
+                            #set ($data_sources = $data_sources + " " + "data-speaker-bio='$speaker_bio'")
+                        #end
+
+                        #if ($validator.isNotNull($video_url))
+                            #set ($data_sources = $data_sources + " " + "data-video-url='$video_url'")
+                        #end
+
+                        #if ($validator.isNotNull($download_url))
+                            #set ($data_sources = $data_sources + " " + "data-download-url='$download_url'")
+                        #end
+
+                        ## Print td
+                        <td class="$pop_up_css_class #if ($validator.isNotNull($download_url) || $validator.isNotNull($video_url))pop-up#end agenda-item" $colspan $rowspan $data_sources>
+                            #if ($title != "")
+                                <span class="trigger">
+                                  <span class="title-name">$title</span>
+                                  #if ($filter_categories.contains("workshop"))
+                                    <br/>
+                                    <span class="workshop-end">Session ends: $end_time_display</span>
+                                  #end
+                                </span>
+                            #end
+
+                            <div class="session-type
+
+                              #if ($filter_categories.indexOf("track-a") >= 0)
+                                  session-type-track-a
+                                #elseif ($filter_categories.indexOf("track-b") >= 0)
+                                  session-type-track-b
+                                #elseif ($filter_categories.indexOf("workshop") >= 0)
+                                  session-type-workshop
+                                #end
+                            ">
+                              #if ($filter_categories.indexOf("track-a") >= 0)
+                                Track A
+                              #elseif ($filter_categories.indexOf("track-b") >= 0)
+                                Track B
+                              #elseif ($filter_categories.indexOf("workshop") >= 0)
+                                Workshops
+                              #end
+                            </div>
+
+                            <div class="pop-up-content">
+                                <span class="data">
+                                    <h4>$title</h4>
+                                    <div class="room-session">
+                                        #if ($room_name != "") Room: $room_name,#end Time: $start_time_display - $end_time_display<br>
+                                    </div>
+
+                                    <div class="speaker-information">
+                                        #if ($speaker_name != "")
+                                            <strong>$speaker_name</strong>
+                                        #end
+                                        <div>
+                                            #if ($speaker_title != "" && $speaker_company != "")
+                                                $speaker_title, $speaker_company
+                                            #end
+                                        </div>
+                                    </div>
+
+                                    #if ($session_summary != "")
+                                        Session Summary:<br /><p>$session_summary</p>
+                                    #end
+
+                                    #if ($download_label != "")
+                                        <div class="centered" style="margin: 30px 0 10px;">
+                                            <a class="btn" href="$download_url" target="_blank">$download_label</a>
+                                        </div>
+                                    #end
+                                </span>
+                            </div>
+
+                            #if ($validator.isNotNull($speaker_array_uuid))
+                                <div class="speakers-agenda-info">
+                                    #foreach ($speakers_uuid in $speaker_array_uuid)
+                                        #set ($speakers_uuid = $stringUtil.trim($speakers_uuid))
+                                        #set ($speaker_record = false)
+                                        #if ($validator.isNotNull($speakers_uuid))
+                                            #set ($speaker_record_info = $ddl_records_local_service.getDDLRecordByUuidAndGroupId($speakers_uuid, $groupId))
+                                            #set ($speaker_record = $ddl_records_local_service.fetchDDLRecord($getterUtil.getLong($speaker_record_info.recordId)))
+                                        #end
+                                        #if ($validator.isNotNull($speaker_record))
+                                            #set ($speaker_name = $speaker_record.getFieldValue("speaker_name"))
+                                            #set ($speaker_company = $speaker_record.getFieldValue("speaker_company"))
+                                            #set ($speaker_title = $speaker_record.getFieldValue("speaker_title"))
+                                        #else
+                                            #set ($speaker_name = "")
+                                            #set ($speaker_company = "")
+                                            #set ($speaker_title = "")
+                                        #end
+
+                                        <div class="speaker-entry">
+                                            #if ($speaker_name != "" && $speaker_company != "")
+                                                $speaker_name, $speaker_company
+                                            #end
+
+                                            #if ($room_name != "")
+                                                ($room_name)
+                                            #end
+                                        </div>
+                                    #end
+                                </div>
+                            #end
+                        </td>
+
+                        #set ($multi_session_row = $extensions.size() > 0 || $row_sessions_size > 1)
+                    #end
+                </tr>
+            #end
+        </table>
+    #end
+  <div class="categorySelectors desktop-only">
+    <span class="filter-header">Filter by:</span>
+    <a class="category category-track-a" data-target-class="track-a" data-selected="false">Track A</a>
+    <a class="category category-track-b" data-target-class="track-b" data-selected="false">Track B</a>
+    <a class="category category-workshop" data-target-class="workshop" data-selected="false">Workshops</a>
+    <a class="category category-customizing" data-target-class="customizing" data-selected="false">Customizing Liferay</a>
+    <a class="category category-developing" data-target-class="developing" data-selected="false">Developing with Liferay</a>
+    <a class="category category-trends" data-target-class="trends" data-selected="false">Industry Trends & Updates</a>
+    <a class="category category-production" data-target-class="production" data-selected="false">Liferay in Production</a>
+    <a class="category category-mobile" data-target-class="mobile" data-selected="false">Mobile Technologies</a>
+    <a class="category category-features" data-target-class="features" data-selected="false">New Products & Features</a>
+    <a class="category category-ux" data-target-class="ux" data-selected="false">UI and UX</a>
+  </div>
+</div>
+
+<style>
+#agendaTabs {
+    width: 88%;
+}
+
+#agendaWrapper {
+    border-top: 1px solid #CCC;
+    margin: auto;
+    min-height: 685px;
+    overflow: hidden;
+    position: relative;
+}
+
+#agendaWrapper table {
+    box-sizing: border-box;
+    width: 100%;
+}
+
+#agendaWrapper tr {
+    border-bottom: 1px solid #E3E4E5;
+}
+
+#agendaWrapper td {
+    display: block;
+    padding: 10px;
+    width: 82%;
+}
+
+#agendaWrapper td.empty-session {
+    display: none;
+}
+
+#agendaWrapper td.multi-room-td {
+    display: block;
+}
+
+#agendaWrapper td.pop-up.last {
+    border-bottom-width: 0;
+}
+
+#agendaWrapper td.multi-room-td:last-child {
+    border-bottom: 0;
+}
+
+#agendaWrapper .agenda-2, #agendaWrapper .agenda-3, #agendaWrapper.class-toggle-carousel-day-2 .agenda-1, #agendaWrapper.class-toggle-carousel-day-2 .agenda-3, #agendaWrapper.class-toggle-carousel-day-3 .agenda-1, #agendaWrapper.class-toggle-carousel-day-3 .agenda-2, #agendaWrapper.hide-all tr, #agendaWrapper.hide-all td.pop-up {
+    display: none;
+}
+
+#agendaWrapper, #agendaWrapper .select-day-1, #agendaWrapper.class-toggle-carousel-day-2 .select-day-2, #agendaWrapper.class-toggle-carousel-day-3 .select-day-3 {
+    font-weight: normal;
+}
+
+#agendaWrapper.class-toggle-carousel-day-1 .select-day-1, #agendaWrapper.class-toggle-carousel-day-2 .select-day-2, #agendaWrapper.class-toggle-carousel-day-3 .select-day-3 {
+    color: #198aca;
+    font-weight: bold;
+}
+
+#agendaWrapper .select-day-2, #agendaWrapper .select-day-3, #agendaWrapper.class-toggle-carousel-day-2 .select-day-1, #agendaWrapper.class-toggle-carousel-day-2 .select-day-3, #agendaWrapper.class-toggle-carousel-day-3 .select-day-1, #agendaWrapper.class-toggle-carousel-day-3 .select-day-2 {
+    font-weight: lighter;
+}
+
+#agendaWrapper.class-toggle-carousel-day-2 .agenda-2, #agendaWrapper.class-toggle-carousel-day-3 .agenda-3 {
+    display: table;
+}
+
+#agendaWrapper.hide-all .display-track-a tr.track-a, #agendaWrapper.hide-all .display-track-b tr.track-b, #agendaWrapper.hide-all .display-workshop tr.workshop, #agendaWrapper.hide-all .display-customizing tr.customizing, #agendaWrapper.hide-all .display-developing tr.developing, #agendaWrapper.hide-all .display-production tr.production, #agendaWrapper.hide-all .display-trends tr.trends, #agendaWrapper.hide-all .display-mobile tr.mobile, #agendaWrapper.hide-all .display-ux tr.ux, #agendaWrapper.hide-all .display-features tr.features {
+    display: table-row;
+}
+
+#agendaWrapper.hide-all .display-track-a .track-a, #agendaWrapper.hide-all .display-track-b .track-b, #agendaWrapper.hide-all .display-workshop .workshop, #agendaWrapper.hide-all .display-customizing .customizing, #agendaWrapper.hide-all .display-developing .developing, #agendaWrapper.hide-all .display-production .production, #agendaWrapper.hide-all .display-features .features, #agendaWrapper.hide-all .display-trends .trends, #agendaWrapper.hide-all .display-mobile .mobile, #agendaWrapper.hide-all .display-ux .ux {
+    display: block;
+}
+
+#agendaWrapper.hide-all .display-analytics .analytics .first-col, #agendaWrapper.hide-all .display-case-study .case-study .first-col, #agendaWrapper.hide-all .display-engagement .engagement .first-col, #agendaWrapper.hide-all .display-mobile .mobile .first-col, #agendaWrapper.hide-all .display-platform .platform .first-col, #agendaWrapper.hide-all .display-technical .technical .first-col, #agendaWrapper.hide-all .display-theme .theme .first-col, #agendaWrapper.hide-all .display-tools .tools .first-col {
+    display: table-cell;
+}
+
+#agendaWrapper.hide-all .display-analytics .table-row.analytics, #agendaWrapper.hide-all .display-case-study .table-row.case-study, #agendaWrapper.hide-all .display-engagement .table-row.engagement, #agendaWrapper.hide-all .display-mobile .table-row.mobile, #agendaWrapper.hide-all .display-platform .table-row.platform, #agendaWrapper.hide-all .display-technical .table-row.technical, #agendaWrapper.hide-all .display-theme .table-row.theme, #agendaWrapper.hide-all .display-tools .table-row.tools {
+    display: table-row;
+}
+
+#agendaWrapper .first-col {
+    background: #FFF;
+    color: #909295;
+    display: table-cell;
+    font-size: 36px;
+    font-weight: lighter;
+    text-align: left;
+    vertical-align: top;
+    width: 20%;
+}
+
+#agendaWrapper .pop-up {
+    cursor: pointer;
+}
+
+#agendaWrapper .agenda-item {
+    min-height: 54px;
+    width: 82%;
+}
+
+#agendaWrapper .pop-up-content {
+    display: none;
+}
+
+
+#agendaWrapper .speaker-entry {
+    color: #818183;
+}
+
+#agendaWrapper .togglers {
+    background: #FFF;
+    border-bottom: 1px solid #CCC;
+    z-index: 10;
+}
+
+#agendaWrapper .togglers span:nth-child(2) {
+    margin-left: -4px;
+}
+
+#agendaWrapper .togglers span:last-of-type {
+    border-right: none;
+    margin-left: -4px;
+}
+
+#agendaWrapper .togglers .class-toggle-carousel {
+    border-right: 1px solid #CCC;
+    box-sizing: border-box;
+    cursor: pointer;
+    display: inline-block;
+    font-size: 18px;
+    padding: 20px;
+    text-align: center;
+    text-decoration: none;
+    width: 50%;
+    vertical-align: top;
+}
+
+#agendaWrapper .togglers .class-toggle-carousel:hover {
+    background: #178ACB;
+    color: #FFF;
+}
+
+#agendaWrapper .trigger {
+    display: inline-block;
+    font-size: 18px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    width: 80%;
+    vertical-align: middle;
+}
+
+#agendaWrapper .workshop-end {
+    font-size: 12px;
+    letter-spacing: 1px;
+}
+
+#agendaWrapper .session-type {
+    color: #FFF;
+    display: inline-block;
+    padding: 10px 0;
+    text-align: center;
+    vertical-align: middle;
+    width: 19%;
+}
+
+.categorySelectors {
+    text-align: center;
+}
+
+.categorySelectors div {
+    display: inline-block;
+    padding: 5px 20px;
+}
+
+.categorySelectors .category {
+    background: url(/documents/35935946/36204249/Close-Icon.png/eec12915-a262-40a2-90ef-7a65f1f53dfe) no-repeat;
+    color: #1A1A1A;
+    cursor: pointer;
+    display: inline-block;
+    margin: 5px;
+    padding: 8px 25px 8px 8px;
+    text-decoration: none;
+}
+
+.categorySelectors .category-track-a {
+  color: #1277a7;
+}
+
+.categorySelectors .category-track-a.track-a-selected, .categorySelectors .category-track-b.track-b-selected, .categorySelectors .category-workshop.workshop-selected, .categorySelectors .category-developing.developing-selected, .categorySelectors .category-customizing.customizing-selected, .categorySelectors .category-production.production-selected, .categorySelectors .category-features.features-selected, .categorySelectors .category-trends.trends-selected, .categorySelectors .category-mobile.mobile-selected, .categorySelectors .category-ux.ux-selected {
+  box-sizing: border-box;
+  color: #FFF;
+}
+
+.categorySelectors .category-developing, .categorySelectors .category-customizing, .categorySelectors .category-production, .categorySelectors .category-features, .categorySelectors .category-trends, .categorySelectors .category-mobile, .categorySelectors .category-ux {
+    color: #4C4C4E;
+}
+
+.categorySelectors .category-developing.developing-selected, .categorySelectors .category-customizing.customizing-selected, .categorySelectors .category-production.production-selected, .categorySelectors .category-features.features-selected, .categorySelectors .category-trends.trends-selected, .categorySelectors .category-mobile.mobile-selected, .categorySelectors .category-ux.ux-selected {
+    background: #4C4C4E;
+}
+
+.categorySelectors .category-track-a.track-a-selected {
+  background: #1277a7;
+}
+
+.categorySelectors .category-track-b {
+  color: #1c8f90;
+}
+
+.categorySelectors .category-track-b.track-b-selected {
+  background: #1c8f90;
+}
+
+.categorySelectors .category-workshop {
+  color: #34a5cc;
+}
+
+.categorySelectors .category-workshop.workshop-selected {
+  background: #34a5cc;
+}
+
+.categorySelectors.desktop-only {
+    background: #FFF;
+    border-left: 1px solid #CCC;
+    box-sizing: border-box;
+    max-width: 120px;
+    position: absolute;
+    right: 0px;
+    text-align: left;
+    top: 0px;
+    height: 100%;
+}
+
+.categorySelectors .filter-header {
+    font-weight: normal;
+}
+
+.categorySelectors .analytics-selected, .categorySelectors .case-study-selected, .categorySelectors .engagement-selected, .categorySelectors .mobile-selected, .categorySelectors .platform-selected, .categorySelectors .technical-selected, .categorySelectors .theme-selected, .categorySelectors .tools-selected {
+    background-position: 92% 50%;
+    color: #178ACB;
+    font-weight: normal;
+}
+
+.category-toggle-container .aui-toggler-content-collapsed {
+    display: none;
+}
+
+.category-toggle-container .aui-toggler-header-collapsed .arrow {
+    border: 7px solid transparent;
+    border-bottom-width: 0;
+    border-top-color: #4C4C4C;
+    content: "";
+    display: inline-block;
+    height: 0;
+    margin: 0 5px;
+    width: 0;
+}
+
+.category-toggle-container .aui-toggler-header-expanded .arrow {
+    border: 7px solid transparent;
+    border-bottom-color: #4C4C4C;
+    border-top-width: 0;
+    content: "";
+    display: inline-block;
+    height: 0;
+    margin: 0 5px;
+    width: 0;
+}
+
+.category-toggle-container .toggle-header {
+    cursor: pointer;
+    margin: 10px;
+}
+
+.break {
+    background-color: #def1f7;
+}
+
+.controls-hidden .edit-only {
+    display: none;
+}
+
+.controls-hidden form .separator, .controls-hidden form .aui-button {
+    display: none;
+}
+
+.desktop-hidden {
+    display: none;
+}
+
+.ie8 .pop-up-content {
+    background: #6B6C6B;
+    color: #FFF;
+}
+
+.lfr-meta-actions {
+    clear: both;
+}
+
+.pop-up-content {
+    color: #6B6C6B;
+}
+
+.keynote {
+    background-color: #dcf3f2;
+}
+
+.pop-up-content .view-all-bio-link, .pop-up-content .room-session, .pop-up-content .speaker-information {
+    padding-bottom: 1em;
+}
+
+.portlet-body {
+    clear: both;
+}
+
+.session-type-track-a {
+  background-color: #1277a7;
+}
+
+.session-type-track-b {
+  background-color: #1c8f90;
+}
+
+.session-type-workshop {
+  background-color: #34a5cc;
+}
+
+.taglib-header {
+    display: none;
+}
+
+@media all and (min-width: 480px) {
+
+    #agendaWrapper td {
+        width: 100%;
+    }
+}
+
+@media all and (max-width: 800px) {
+    .desktop-hidden {
+        display: block;
+    }
+
+    .desktop-only {
+        display: none;
+    }
+
+    .first-col div {
+        text-align: left;
+    }
+
+    #agendaWrapper .togglers {
+        margin-right: 0;
+        width: 100%;
+        position: initial;
+    }
+
+    #agendaWrapper table {
+        max-width: 100%;
+    }
+
+    #agendaWrapper td.multi-room-td, #agendaWrapper td.single-row-td {
+        box-sizing: border-box;
+        min-height: 74px;
+        width: 100%;
+    }
+}
+
+@media(max-width: 480px) {
+    #agendaWrapper .session-type {
+        width: 50%;
+    }
+
+    #agendaWrapper .trigger {
+        width: 100%;
+    }
+}
+</style>
+
+<script>
+AUI().use(
+  'node',
+  function(A) {
+    var category = A.all('.category');
+
+    var displayClass = function(event) {
+      event.stopPropagation();
+
+      var agendaTable = A.all('.agenda-table');
+
+      var agendaWrapper = A.all('#agendaWrapper');
+
+      var currentTargetNode = event.currentTarget;
+
+      var dataSelected = currentTargetNode.attr('data-selected');
+
+      var targetClass = currentTargetNode.attr('data-target-class');
+
+      var displayTargetClass = 'display-' + targetClass;
+
+      var selectedCategoryClass = targetClass + '-selected';
+
+      if (targetClass) {
+        agendaTable.toggleClass(displayTargetClass);
+
+        A.all('.' + targetClass).each(
+          function(node) {
+            node.ancestorsByClassName('table-row').addClass(targetClass);
+          }
+        );
+      }
+
+      if (dataSelected == 'false') {
+        currentTargetNode.setAttribute('data-selected', 'true');
+      }
+      else {
+        currentTargetNode.setAttribute('data-selected', 'false');
+      }
+
+      var hideAll = false;
+
+      category.each(
+        function(node) {
+          if (node.getAttribute('data-selected') == 'true') {
+            hideAll = true;
+          }
+        }
+      );
+
+      if (hideAll) {
+        agendaWrapper.addClass('hide-all');
+
+        currentTargetNode.toggleClass(selectedCategoryClass);
+      }
+      else {
+        agendaWrapper.removeClass('hide-all');
+
+        currentTargetNode.toggleClass(selectedCategoryClass);
+      }
+    };
+
+    category.on('click', displayClass);
+
+    /**
+     * Multiple Room Action
+     **/
+
+    var MRAction= function() {
+      this.prototype = {
+        get_categories : function(node) {
+          var data = [];
+
+          A.all(node).each(
+            function(el) {
+              if (el.getAttribute("data-selected") === "true") {
+                data.push(el.getAttribute("data-target-class"));
+              }
+            }
+          );
+
+          return data;
+        },
+
+        get_table_cells : function(filterArray, nodes) {
+          var data = [];
+          var queryNode = A.all(nodes);
+
+          queryNode.each(
+            function(node) {
+              var nodeCollectionSet = [];
+
+              var containerNode = A.one(node.getDOM().parentNode);
+              var classListenerNode = containerNode.all('.pop-up');
+
+              classListenerNode.each(
+                function(el) {
+                  var nodeHasProperty = false;
+
+                  A.all(filterArray).each(
+                    function(filter) {
+                      if (el.hasClass(filter)) {
+                        nodeHasProperty = true;
+                      }
+                    }
+                  );
+
+                  if (nodeHasProperty) {
+                    nodeCollectionSet.push(el);
+                  }
+                }
+              );
+
+              data.push(nodeCollectionSet);
+            }
+          );
+
+          return data;
+        },
+
+        remove_last_class : function(valueArray) {
+          A.each(valueArray, function(nodeArray) {
+            A.each(nodeArray, function(node) {
+              if (node.hasClass('last')) {
+                node.removeClass('last');
+              }
+            });
+          });
+        },
+
+        apply_last_class : function(valueArray) {
+          A.each(valueArray, function(sousArray) {
+            if (sousArray.length !== 0) {
+              var node = sousArray[sousArray.length - 1];
+
+              node.addClass('last');
+            }
+          });
+        }
+      };
+
+      return this.prototype;
+    };
+
+    category.on(
+      'click', function() {
+        var multiple_room = new MRAction();
+
+        var cat = multiple_room.get_categories(".categorySelectors .category");
+        var tableCells = multiple_room.get_table_cells(cat, '#agendaWrapper .first-col');
+
+        multiple_room.remove_last_class(tableCells);
+        multiple_room.apply_last_class(tableCells);
+      }
+    );
+  }
+);
+</script>
