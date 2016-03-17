@@ -1,10 +1,10 @@
 <#assign service_context = objectUtil("com.liferay.portal.service.ServiceContextThreadLocal").getServiceContext() />
 <#assign http_servlet_request = service_context.getRequest() />
 
-<#assign min_height = "768px" />
+<#assign max_height = "768px" />
 
 <#if height.data?has_content>
-	<#assign min_height = height.data />
+	<#assign max_height = height.data />
 </#if>
 
 <#assign image_info = "" />
@@ -25,14 +25,14 @@
 
 <#if video_info?has_content && !browserSniffer.isMobile(http_servlet_request) && !browserSniffer.isIe(http_servlet_request)>
 	<#assign banner_css = banner_css + " video-banner" />
-	<#assign banner_style = "min-height: ${min_height}" />
+	<#assign banner_style = "max-height: ${max_height}" />
 <#else>
-	<#assign banner_style = image_info + "min-height: ${min_height}" />
+	<#assign banner_style = image_info + "max-height: ${max_height}" />
 </#if>
 
 <div class="${banner_css}" id="article-${.vars['reserved-article-id'].data}" style="${banner_style}" >
 	<#if video_info?has_content && !browserSniffer.isMobile(http_servlet_request) && !browserSniffer.isIe(http_servlet_request)>
-		<video autoplay loop muted style="height: 100%; min-height: ${min_height};" width="100%" >
+		<video autoplay loop muted style="height: 100%; max-height: ${max_height};" width="100%" >
 			${video_info}
 			${video_image_info}
 		</video>
@@ -62,17 +62,3 @@
 		${css.data}
 	</#if>
 </style>
-
-<script>
-	AUI().ready(
-		'aui-base',
-		function(A) {
-			var WIN = A.getWin();
-			var winHeight = WIN.get('innerHeight');
-
-			var mainBanner = A.one('#article-${.vars['reserved-article-id'].data}');
-
-			mainBanner.setStyle('max-height', winHeight);
-		}
-	);
-</script>
