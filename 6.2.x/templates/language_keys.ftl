@@ -57,7 +57,7 @@
 			ja_JP: 'Fax',
 			pt_BR: 'Fax',
 			zh_CN: '传真'
-		}
+		},
 
 		firstname: {
 			de_DE: 'Vorname',
@@ -153,7 +153,7 @@
 			ja_JP: 'Tel',
 			pt_BR: 'Tel',
 			zh_CN: '电话'
-		}
+		},
 
 		x-is-required: {
 			en_US: '{0} is required',
