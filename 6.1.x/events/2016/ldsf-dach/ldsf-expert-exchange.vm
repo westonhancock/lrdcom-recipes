@@ -13,8 +13,14 @@
         vertical-align: top;
     }
 
+
+	.expert .image-container {
+		background-color: #FFF;
+		height: 139px;
+ 	   overflow: hidden;
+	}
     .expert .image-container img {
-        max-width: 160px;
+        max-width: 139px;
         opacity: 0.3;
         transition: opacity 0.3s ease-in-out;
     }
@@ -94,6 +100,11 @@
         margin: 0 auto;
         max-width: 1040px;
     }
+    
+    ## hack if expert is repeated, move over text where image is missing 
+    .expert-info-repeated{
+    	margin-left: 170px; 
+    }
 
     #main-content.full-screen-layout .portlet-column.aui-w30, #main-content.full-screen-layout .portlet-column.aui-w70 {
         display: inline-block;
@@ -111,7 +122,7 @@
         .expert-info {
             display: block;
             margin: 0 10px;
-            width: 100%;
+            width: auto;
         }
         .expert-exchange-content {
         	padding: 0 10px;
@@ -194,8 +205,14 @@
     #set ($void = $expert.put("logo", $logo))
     #set ($void = $expert.put("group_id", $group_id))
 
+  
+
     #if ($record.getStatus() == "0")
-        #set ($void = $experts.put("${title}-$velocityCount", $expert))
+    
+		#if (!$experts.get("${subtitle}"))
+      		#set ($void = $experts.put("${subtitle}", $portal.getClass().forName("java.util.TreeMap").newInstance()))
+    	#end
+    	#set ($void = $experts.get("${subtitle}").put("${title}-$velocityCount", $expert))
     #end
 #end
 
@@ -204,33 +221,41 @@
 	$content.data
 </div>
 <div class="aui-w70 expert-exchange-image-container">
-    #foreach($item in $experts)
-        #set ($record_uuid = $item.get("record_uuid"))
-        #set ($title = $item.get("title"))
-        #set ($subtitle = $item.get("subtitle"))
-        #set ($description = $item.get("description"))
-        #set ($group_id = $item.get("group_id"))
+    #foreach($speaker in $experts)
+		#foreach($item in $speaker)
+	        #set ($record_uuid = $item.get("record_uuid"))
+	        #set ($title = $item.get("title"))
+	        #set ($subtitle = $item.get("subtitle"))
+	        #set ($description = $item.get("description"))
+	        #set ($group_id = $item.get("group_id"))
+	
+	        #set ($image = $item.get("image"))
+	        #set ($image_json_object = $jsonFactoryUtil.createJSONObject($image))
+	        #set ($image_uuid = $image_json_object.getString("uuid"))
+	
+	        #set ($logo = $item.get("logo"))
+	        #set ($logo_json_object = $jsonFactoryUtil.createJSONObject($logo))
+	        #set ($logo_uuid = $logo_json_object.getString("uuid"))
 
-        #set ($image = $item.get("image"))
-        #set ($image_json_object = $jsonFactoryUtil.createJSONObject($image))
-        #set ($image_uuid = $image_json_object.getString("uuid"))
-
-        #set ($logo = $item.get("logo"))
-        #set ($logo_json_object = $jsonFactoryUtil.createJSONObject($logo))
-        #set ($logo_uuid = $logo_json_object.getString("uuid"))
-
-        <div class="expert">
-            <div class="image-container">
-                <img class="lazy-load" datasrc="/documents/${group_id}/${image_uuid}" /></div>
-            <div class="aui-helper-hidden info-container">
-                <img class="expert-logo lazy-load" datasrc="/documents/${group_id}/${logo_uuid}"/>
-                <div class="expert-info">
-                    <h3 class="blue-text lighter-font">$title</h3>
-                    <p class="blue-text expert-info-title">$subtitle</p>
-                    <p>$description</p>
-                </div>
-            </div>
-        </div>
+			#if ($velocityCount == 1)
+	        <div class="expert">
+	            <div class="image-container">
+	                <img src="/documents/${group_id}/${image_uuid}" /></div>
+	             <div class="aui-helper-hidden info-container">
+	                 <img class="expert-logo lazy-load" datasrc="/documents/${group_id}/${logo_uuid}">
+	        #end
+	          
+	             
+	                <div class="expert-info #if ($velocityCount !=1) expert-info-repeated #end">
+	                    <h3 class="blue-text lighter-font">$title</h3>
+	                    #if ($velocityCount == 1)
+	                    <p class="blue-text expert-info-title"   >$subtitle</p>
+	                    #end
+	                    <p>$description</p>
+	                </div>
+	     #end
+	     	</div>
+	     </div>
     #end
 </div>
 </div>
@@ -269,7 +294,6 @@ AUI().ready(
 
                     if (widthCount >= width -10) {
                         widthCount = node.get('offsetWidth');
-
                         count++;
                     }
 
