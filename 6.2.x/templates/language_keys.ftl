@@ -48,6 +48,17 @@
 			zh_CN: '邮箱'
 		},
 
+		fax: {
+			de_DE: 'Fax',
+			en_US: 'Fax',
+			es_ES: 'Fax',
+			fr_FR: 'Fax',
+			it_IT: 'Fax',
+			ja_JP: 'Fax',
+			pt_BR: 'Fax',
+			zh_CN: '传真'
+		}
+
 		firstname: {
 			de_DE: 'Vorname',
 			en_US: 'First Name',
@@ -132,6 +143,17 @@
 			pt_BR: 'Estado/Região *',
 			zh_CN: '省份 *'
 		},
+
+		tel: {
+			de_DE: 'Tel',
+			en_US: 'Tel',
+			es_ES: 'Tel',
+			fr_FR: 'Tel',
+			it_IT: 'Tel',
+			ja_JP: 'Tel',
+			pt_BR: 'Tel',
+			zh_CN: '电话'
+		}
 
 		x-is-required: {
 			en_US: '{0} is required',
