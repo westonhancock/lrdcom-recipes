@@ -12,8 +12,8 @@
 			<#assign dl_file_entry = dl_file_entry_local_service_util.fetchDLFileEntryByUuidAndGroupId(asset_renderer.getUuid(), asset_renderer.getGroupId()) >
 
 			<#assign resource_id = dl_file_entry.getFileEntryId() />
-			<#assign view_url = "/resource?folderId=" + dl_file_entry.getFolderId() + "&title=" + stringUtil.replace(dl_file_entry.getTitle(), " ", "-") />
-			<#--<#assign view_url = "/resource/" + dl_file_entry.getFolderId() + "/" + stringUtil.replace(dl_file_entry.getTitle(), " ", "-") />-->
+			<#assign view_url = "/resource?folderId=" + dl_file_entry.getFolderId() + "&title=" + stringUtil.replace(dl_file_entry.getTitle(), " ", "+") />
+			<#--<#assign view_url = "/resource/" + dl_file_entry.getFolderId() + "/" + stringUtil.replace(dl_file_entry.getTitle(), " ", "+") />-->
 		<#elseif asset_renderer.getClassName() == "com.liferay.portlet.journal.model.JournalArticle">
 			<#assign article = journal_article_local_service_util.fetchJournalArticleByUuidAndGroupId(asset_renderer.getUuid(), asset_renderer.getGroupId()) >
 
