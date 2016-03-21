@@ -208,7 +208,7 @@
 					<#if asset_url?has_content>
 						<#assign btn_text = localize("case-study", "Case Study") />
 
-						<#if asset_url.button_text.data?has_content>
+						<#if asset_url.button_text?? && asset_url.button_text.data?has_content>
 							<#assign btn_text = asset_url.button_text.data />
 						</#if>
 
