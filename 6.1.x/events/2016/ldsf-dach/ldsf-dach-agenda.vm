@@ -40,6 +40,7 @@
 ## if not "none" then defaults to uppercase...
 #set ($texttransform = "none")
 #set ($agendabutton = $enable_agenda_button.data.equalsIgnoreCase("true"))
+#set ($recap = ($agenda_recap_flag && $agenda_recap_flag.data))
 #set ($selector_color = "#0067aa")
 
 #set($void = $portalUtil.setPageSubtitle("", $request))
@@ -387,7 +388,8 @@
         width: 20%;
     }
 
-    #agendaWrapper .pop-up {
+
+    #agendaWrapper .agenda-item {
         width: 100%;
         width: calc(100% - 20px)
     }
@@ -970,8 +972,10 @@
             #set ($filter_categories = $stringUtil.replace($filter_categories, '"', ''))
             #set ($filter_categories = $stringUtil.replace($filter_categories, ',', ' '))
 
-            #set ($pop_up_css_class = "pop-up")
+			#set ($pop_up_css_class = "pop-up")
 
+		       
+            
             #if ($custom_css_class)
               #set ($pop_up_css_class = "$pop_up_css_class $custom_css_class")
             #end
@@ -995,12 +999,88 @@
               #set ($rowspan = "")
             #end
 
+			##-------------------------------get extra info for recapping ---- 
+			## --- is this loop code working right? getting last speaker for each group?..
+			 #foreach ($speakers_uuid in $speaker_array_uuid)
+	            #set ($speakers_uuid = $stringUtil.trim($speakers_uuid))
+	            #set ($speaker_record = false)
+	            #if ($validator.isNotNull($speakers_uuid))
+	                #set ($speaker_record_info = $ddl_records_local_service.getDDLRecordByUuidAndGroupId($speakers_uuid, $groupId))
+	                #set ($speaker_record = $ddl_records_local_service.fetchDDLRecord($getterUtil.getLong($speaker_record_info.recordId)))
+	            #end
+	            #if ($validator.isNotNull($speaker_record))
+	                #set ($speaker_image_group_id = $record.getGroupId())
+	
+	                #set ($speaker_image = "")
+	
+	                #if ($speaker_record.getField("speaker_image"))
+	                    #set ($speaker_image = $speaker_record.getFieldValue("speaker_image"))
+	                #end
+	                
+	                #set ($speaker_json_object = $jsonFactoryUtil.createJSONObject($speaker_image))
+	                #set ($speaker_image_uuid = $speaker_json_object.getString("uuid"))
+	                #set ($speaker_bio = $speaker_record.getFieldValue("speaker_bio"))
+	                #set ($speaker_company = $speaker_record.getFieldValue("speaker_company"))
+	                #set ($speaker_name = $speaker_record.getFieldValue("speaker_name"))
+	                #set ($speaker_title = $speaker_record.getFieldValue("speaker_title"))
+	            #else
+	                #set ($speaker_bio = "")
+	                #set ($speaker_company = "")
+	                #set ($speaker_name = "")
+	                #set ($speaker_title = "")
+	                #set ($speaker_image_group_id = "")
+	                #set ($speaker_image = "")
+	                #set ($speaker_image_uuid = "")
+	                #set ($speaker_json_object = "")
+	            #end
+	        #end
+	
+	        #set ($speaker_image_group_id = $speaker_image_group_id)
+	        #set ($speaker_image = $speaker_image)
+	        #set ($speaker_image_uuid = $speaker_image_uuid)
+	        #set ($data_sources = "")
+	
+			#set ($video_url = $record.getFieldValue("video_url"))
+	        #set ($download_url = $record.getFieldValue("download_url"))
+	
+	        #if ($validator.isNotNull($speaker_image))
+	            #set ($data_sources = "data-img='/documents/$speaker_image_group_id/$speaker_image_uuid'")
+	        #end
+	
+	        #if ($validator.isNotNull($speaker_name))
+	            #set ($data_sources = $data_sources + " " + "data-speaker-name='$htmlUtil.escape($speaker_name)'")
+	        #end
+	
+	        #if ($validator.isNotNull($speaker_title))
+	            #set ($data_sources = $data_sources + " " + "data-speaker-role='$htmlUtil.escape($speaker_title)'")
+	        #end
+	
+	        #if ($validator.isNotNull($speaker_bio))
+	            #set ($data_sources = $data_sources + " " + "data-speaker-bio='$htmlUtil.escape($speaker_bio)'")
+	        #end
+	
+	        #if ($validator.isNotNull($video_url))
+	            #set ($data_sources = $data_sources + " " + "data-video-url='$htmlUtil.escape($video_url)'")
+	        #end
+	
+	        #if ($validator.isNotNull($download_url))
+	            #set ($data_sources = $data_sources + " " + "data-download-url='$htmlUtil.escape($download_url)'")
+	        #end
+	        
+	        ## only show popup when download stuff available
+	        #if ($recap && $validator.isNull($download_url) && $validator.isNull($video_url)) 
+				#set ($pop_up_css_class = "")
+			#end     
+			##-------------------------------end get extra info for recapping ---- 
+
+
+
  			#if ($session_type != "blank" && $session_type == "Break")
  			   #set ($pop_up_css_class = "$pop_up_css_class break-row-td")
  			#end
             ## Print td
             #set ($session-title = "$title - $speaker_name")
-            <td class="$pop_up_css_class" $colspan data-session-title='$htmlUtil.escape($session-title)' $rowspan>
+            <td class="agenda-item $pop_up_css_class" $colspan data-session-title='$htmlUtil.escape($session-title)' $data_sources $rowspan>
              ##if ($session_type != "blank" && $session_type != "")
              ##   <span>$session_type:</span>
              ## #end
@@ -1013,7 +1093,7 @@
               #end
 
               #if ($title != "")
-                <span class="trigger">$title</span><br>
+                <span class="title-name trigger">$title</span><br>
               #end
 
               #if ($is_liferay_seven == "true" && $validator.isNotNull($is_liferay_seven))
@@ -1420,4 +1500,5 @@ AUI().ready(
 );
 </script>
 #end
+
 
