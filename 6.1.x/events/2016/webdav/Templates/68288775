@@ -1,0 +1,9 @@
+<p>hello world ${numportlets.data!0}</p>
+
+<#list 1.. numportlets.data?number as i> 
+
+<div id="embedded-portlet-${i}">
+   <runtime-portlet name="56" instance="embedded-portlet-${i}" queryString=""/>
+</div>
+
+</#list>

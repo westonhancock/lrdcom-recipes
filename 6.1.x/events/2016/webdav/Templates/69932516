@@ -1,0 +1,337 @@
+#set ($hs_form_article_id = $hubspot_form_article.data)
+
+<div class="aui-helper-hidden page-pop-up" data-overlay="true" id="popup">
+    <div class="close-popup-content">&nbsp;</div>
+    <div class="pop-up-content">
+        <div class="aui-w30 inline">
+            <div class="pop-up-img">
+                <img src=""/>
+    		</div>
+    		<div class="pop-up-name"></div>
+    		<div class="pop-up-role"></div>
+			<div class="pop-up-bio"></div>
+    	</div>
+    	<div class="aui-w65 inline">
+	    	<div class="pop-up-video"></div>
+			<div class="pop-up-title"></div>
+			<div class="pop-up-slides">
+				<div id="embedded-hs-form">
+					<runtime-portlet name="56" instance="targeted_$reserved-article-id.data" queryString=""/>
+				</div>
+				<a class="aui-helper-hidden backup-anchor btn" href="">Download Slides</a>
+			</div>
+    	</div>
+
+	</div>
+</div>
+
+<script>
+AUI().ready(
+	'aui-overlay-mask',
+	'node',
+	'node-base',
+	'node-event-delegate',
+	'node-event-simulate',
+	function(A) {
+		var popup = A.one('#popup');
+
+		var copyToPopUp = function(node) {
+			if (!node) {
+				return;
+			}
+
+			var newPopUpTitle = node.one('.title-name');
+
+			var oldPopUpTitle = popup.one('.pop-up-title');
+
+			if (!newPopUpTitle) {
+				return;
+			}
+
+			var oldPopUpImg = popup.one('.pop-up-img');
+
+			if (oldPopUpImg) {
+				var img = node.getAttribute('data-img');
+
+				if (img) {
+					oldPopUpImg.one('img').setAttribute('src', img);
+				}
+			}
+
+			var oldPopUpName = popup.one('.pop-up-name');
+
+			if (oldPopUpName) {
+				var name = node.getAttribute('data-speaker-name');
+
+				if (name) {
+					oldPopUpName.setContent(name);
+				}
+			}
+
+			var oldPopUpRole = popup.one('.pop-up-role');
+
+			if (oldPopUpRole) {
+				var role = node.getAttribute('data-speaker-role');
+
+				if (role) {
+					oldPopUpRole.setContent(role);
+				}
+			}
+
+			var oldPopUpBio = popup.one('.pop-up-bio');
+
+			if (oldPopUpBio) {
+				var bio = node.getAttribute('data-speaker-bio');
+
+				if (bio) {
+					oldPopUpBio.setContent(bio);
+				}
+			}
+
+			var oldPopUpSlides = popup.one('.pop-up-slides');
+
+			if (oldPopUpSlides) {
+				var slides = node.getAttribute('data-download-url');
+
+				if (slides) {
+					slidesForm = oldPopUpSlides.one('form');
+
+					if (slidesForm) {
+						slidesForm.setAttribute('data-asset-url', slides);
+					}
+				}
+			}
+
+			var oldPopUpVideo = popup.one('.pop-up-video');
+
+			if (oldPopUpVideo) {
+				var video = node.getAttribute('data-video-url');
+
+				if (video) {
+					oldPopUpVideo.setContent('<div class="video-overlay" data-embed="' + video + '" style="background-image: url(//img.youtube.com/vi/' + video + '/hqdefault.jpg);" ></div>');
+				}
+			}
+
+			oldPopUpTitle.setContent(newPopUpTitle.getContent());
+
+			popup.removeClass('aui-helper-hidden');
+
+			createOverlayMask();
+
+			centerOnPage(popup);
+
+			var popUpContent = popup.one('.pop-up-content');
+
+			popUpContent.on(
+				'clickoutside',
+				function(event) {
+					popup.addClass('aui-helper-hidden');
+
+					popUpContent.detach('clickoutside');
+
+					if (oldPopUpSlides.one('.backup-anchor')) {
+						oldPopUpSlides.one('.backup-anchor').setAttribute('href', '');
+					}
+
+					if (oldPopUpSlides.one('form')) {
+						oldPopUpSlides.one('form').setAttribute('data-tactic-item-fields', '');
+					}
+
+					oldPopUpVideo.setContent('');
+
+					var overlayMask = A.one('.aui-overlaymask');
+
+					if (overlayMask) {
+						overlayMask.remove(true);
+					}
+				}
+			);
+		};
+
+		var createOverlayMask = function() {
+			if (A.one('.aui-overlaymask')) {
+				return;
+			}
+
+			var overlay = new A.OverlayMask().render();
+
+			overlay.set('z-index', 20);
+			overlay.show();
+		};
+
+		var WIN = A.getWin();
+
+		var centerOnPage = function(node) {
+			var currentScrollPos = WIN.get('docScrollY');
+			var winHeight = WIN.get('innerHeight');
+			var winWidth = WIN.get('innerWidth');
+
+
+			if (winHeight == undefined) {
+				winHeight = document.documentElement.clientHeight;
+			}
+
+			var contentWidth = A.one('#wrapper').get('clientWidth');
+
+			var nodeHeight = node.get('clientHeight');
+			var nodeWidth = node.get('clientWidth');
+
+			var xCenter = (contentWidth / 2) - (nodeWidth / 2);
+			var yCenter = ((winHeight / 2) - (nodeHeight / 2)) + currentScrollPos;
+
+			if (node && xCenter && yCenter) {
+				node.setStyle('right', xCenter);
+				node.setStyle('top', yCenter);
+			}
+		};
+
+		var iOS = /iPad/i.test(navigator.userAgent) || /iPhone/i.test(navigator.userAgent);
+		var mouseEvent = 'click';
+
+		if (iOS) {
+			mouseEvent = 'mousemove';
+		}
+
+		A.all('.pop-up').on(
+			mouseEvent,
+			function(event) {
+				event.stopPropagation();
+
+				copyToPopUp(event.currentTarget);
+			}
+		);
+
+		/*#set ($current_url  = $request.get("attributes").get("CURRENT_URL"))
+		#set ($session_id = $httpUtil.getParameter($current_url, "pt", false))
+
+		#if ($session_id != "")
+			A.on(
+				'load',
+				function() {
+					copyToPopUp(A.one('#$session_id'));
+				}
+			);
+		#end*/
+
+		popup.delegate(
+			'click',
+			function () {
+				var embed = this.getAttribute('data-embed');
+
+				if (embed) {
+					this.addClass('video-playing');
+					this.removeClass('video-overlay');
+					this.setContent('<iframe allowfullscreen="true" frameborder="0" height="250px" src="//www.youtube.com/embed/' + embed + '?autoplay=1&enablejsapi=1&wmode=transparent" width="100%"></iframe>');
+				}
+			},
+			'.video-overlay'
+		);
+	}
+);
+</script>
+
+<style type="text/css">
+.inline {
+	display: inline-block;
+	vertical-align: top;
+}
+
+.not-relative .portlet-borderless-container {
+    position: static !important;
+}
+
+#popup {
+    background: white;
+    max-width: 80%;
+    position: absolute;
+    width: 100%;
+    z-index: 1000;
+}
+
+#popup .aui-w30 {
+	border-right: 1px solid #F0F2F4;
+}
+
+#popup .aui-w65 {
+	border-left: 1px solid #F0F2F4;
+	margin-left: -4px;
+}
+
+#popup .aui-w30, #popup .aui-w65 {
+	box-sizing: border-box;
+	padding: 25px;
+}
+
+#popup .close-popup-content {
+    background: url('/documents/14/43237314/x-close.png/fb100dfc-157b-43df-8ce1-5a8c8a873c3d') no-repeat;
+    cursor: pointer;
+    float: right;
+    height: 24px;
+    left: 0;
+    position: relative;
+    top: -30px;
+    width: 24px;
+}
+
+#popup .pop-up-img img {
+	width: 100%;
+}
+
+#popup .pop-up-name, #popup .pop-up-title {
+	color: #335f82;
+	font-size: 22px;
+	line-height: 22px;
+	margin: 15px 0;
+}
+
+#popup .pop-up-role {
+	color: #335f82;
+	font-size: 18px;
+	line-height: 18px;
+	margin: 0 0 10px;
+}
+
+#popup .pop-up-bio {
+	color: #919697;
+    font-size: 16px;
+    line-height: 18px;
+}
+
+#popup iframe {
+	height: 300px;
+}
+
+.video-overlay {
+    background-position: center;
+    background-size: cover;
+    cursor: pointer;
+    height: 300px;
+    margin: 0 auto;
+    position: relative;
+    width: 100%;
+}
+
+.video-overlay:after {
+    background-image: url('/documents/14/43237314/icon_sprite.png');
+    bottom: 0;
+    content: "";
+    height: 127px;
+    left: 0;
+    margin: auto;
+    position: absolute;
+    right: 0;
+    top: 0;
+    width: 128px;
+}
+
+@media(max-width: 1200px) {
+	#popup .aui-w30 {
+		display: none;
+	}
+
+	#popup .aui-w65 {
+		margin-left: 0;
+		width: 100%;
+	}
+}
+</style>

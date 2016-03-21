@@ -1,0 +1,232 @@
+<style type="text/css">
+	.sponsor-title {
+		text-align: center;
+	}
+
+	.taglib-header {
+		display: none;
+	}
+
+	.diamond, .main, .platinum {
+		text-align: left;
+	}
+
+	.diamond img, .platinum img {
+		max-width: 170px;
+		padding: 15px 0;
+	}
+
+	.download-heading-text {
+		color: #333;
+		font-size: 2em;
+		font-weight: normal;
+		margin-bottom: 0;
+		text-align: center;
+	}
+
+	.heading-container {
+		display: table-cell;
+		text-align: left;
+		vertical-align: top;
+		width: 210px;
+	}
+
+	.items-container {
+		display: table-cell;
+		padding-left: 40px;
+		text-align: left;
+		vertical-align: middle;
+	}
+
+	.main img {
+		max-width: 174px;
+		padding: 15px 0;
+	}
+
+	.sponsor-image-container {
+		display: inline-block;
+		max-width: 181px;
+		padding-right: 25px;
+		text-align: left;
+	}
+
+	.link-sponsor-symp {
+		display: block;
+	}
+
+	.sponsor-type {
+		display: table;
+	}
+
+	.sponsor-heading {
+		color: #414142;
+		font-size: 1.5em;
+		font-weight: normal;
+		text-align: left;
+	}
+
+	.sponsors-wrapper {
+		display: table;
+		margin: 50px auto 150px;
+	}
+
+	@media all and (min-width: 720px) {
+		.sponsor-heading {
+			font-size: 2em;
+			margin: 0.5em 0;
+		}
+	}
+
+	@media all and (max-width: 720px) {
+		.heading-container {
+			display: block;
+			margin: auto;
+		}
+
+		.items-container {
+			display: block;
+			padding-left: 0;
+			text-align: center;
+		}
+
+		.sponsor-heading {
+			display: block;
+			font-size: 2em;
+			font-weight: lighter;
+			text-align: center;
+		}
+
+		.sponsor-image-container img {
+			max-width: 174px;
+		}
+
+		.sponsor-type {
+			margin: auto;
+		}
+	}
+</style>
+
+<div class="sponsor-title" id="sponsors">
+	<h2 class="lighter-font">
+		$sponsor_header_text.data
+	</h2>
+</div>
+
+## Content Template
+#macro (content_template12 $heading $array)
+
+	<div class="sponsor-type">
+		<div class="heading-container">
+			<h2 class="sponsor-heading">
+				$heading
+			</h2>
+		</div>
+		<div class="items-container">
+
+			#foreach ($record in $array)		
+				<div class="sponsor-image-container">
+					
+					#set ($name = $record.get("name"))
+					#set ($image_url = $record.get("image_url"))
+					#set ($link = $record.get("link"))
+
+					<a class="link-sponsor-symp" href="$link" target="blank">
+						<img alt="$name" class="sponsor-image" src="$image_url" />
+					</a>
+				</div>
+			#end
+		</div>
+	</div>
+#end
+
+#set ($layout_id = $request.get("theme-display").get("plid"))
+#set ($layout_service = $serviceLocator.findService("com.liferay.portal.service.LayoutLocalService"))
+#set ($layout_long = $getterUtil.getLong($layout_id))
+#set ($layout = $layout_service.getLayout($layout_long))
+#set ($user_has_permissions = $layoutPermission.contains($permissionChecker, $layout, "UPDATE"))
+
+#set ($ddl_records_local_service = $serviceLocator.findService("com.liferay.portlet.dynamicdatalists.service.DDLRecordLocalService"))
+#set ($record_set_id = $getterUtil.getLong($record_set_id.data))
+#set ($records = $ddl_records_local_service.getRecords($record_set_id))
+
+## Empty arrays for each respective categories
+
+#set($all_sponsors = $portal.getClass().forName("java.util.TreeMap").newInstance())
+
+#set($sponsor_rank =  $portal.getClass().forName("java.util.TreeMap").newInstance())
+#set($rank_to_sponsor =  $portal.getClass().forName("java.util.TreeMap").newInstance())
+#set ($void = $sponsor_rank.put("main", 1) )
+#set ($void = $sponsor_rank.put("diamond", 2) )
+#set ($void = $sponsor_rank.put("platinum", 3) )
+#set ($void = $sponsor_rank.put("gold", 4) )
+#set ($void = $sponsor_rank.put("silver", 5) )
+#set ($void = $sponsor_rank.put("exhibitor", 6) )
+
+#foreach ($rank in $sponsor_rank.keySet())
+	#set ($void = $rank_to_sponsor.put( $sponsor_rank.get($rank), $rank))
+#end
+
+
+## Looping through the DDL
+#foreach ($record in $records)
+	## Prepare each of the field values
+	#set ($record = $record.record)
+	#set ($docmedia = $record.getFieldValue("docmedia"))
+	#set ($link = $record.getFieldValue("link"))
+	#set ($name = $record.getFieldValue("name").toUpperCase())
+	#set ($rank = $record.getFieldValue("rank"))
+
+	## Prepares Image Link
+	#set ($doc_media_json_object = $jsonFactoryUtil.createJSONObject($docmedia))
+	#set ($image_group_id = $record.getGroupId())
+	#set ($image_uuid = $doc_media_json_object.getString("uuid"))
+
+	#set ($image_url = "/documents/$image_group_id/$image_uuid")
+
+	## Lets prepare the data in its own box
+	#set($company = $portal.getClass().forName("java.util.TreeMap").newInstance())
+
+	#set ($void = $company.put("name", $name))
+	#set ($void = $company.put("image_url", $image_url))
+	#set ($void = $company.put("link", $link))
+
+
+	#set ($stripped_rank = $stringUtil.replace($rank, "[", ""))
+    #set ($stripped_rank = $stringUtil.replace($stripped_rank, "]", ""))
+    #set ($stripped_rank = $stringUtil.replace($stripped_rank, '"', ''))
+    #set ($stripped_rank=  $stringUtil.replace($stripped_rank, ',', ' '))
+	#set ($sponsor_order = $sponsor_rank.get($stripped_rank))
+
+   #if (!$all_sponsors.get($sponsor_order))
+    #set ($void = $all_sponsors.put($sponsor_order, $portal.getClass().forName("java.util.TreeMap").newInstance()))
+   #end
+   
+   
+   #set ($void = $all_sponsors.get($sponsor_order).put($name, $company))
+#end
+
+## gather labels
+#set($sponsor_labels = $portal.getClass().forName("java.util.TreeMap").newInstance())
+
+#foreach ($ranktextsection in $sponsor_text_setting.siblings)
+	#set ($void = $sponsor_labels.put($ranktextsection.sponsor_type.data, $ranktextsection.sponsor_text.data ))
+	##<p> $ranktextsection.sponsor_type.data: $ranktextsection.sponsor_text.data</p>
+#end
+
+
+<div class="sponsors-wrapper">
+   #foreach ($rank in $all_sponsors.keySet())
+   	#set ($rank_tree = $all_sponsors.get($rank) )
+	#if ($rank_tree.size() > 0)
+    	
+    	##<p> $rank: $stripped_rank </p>
+		#set ($sponsor_rank = $rank_to_sponsor.get($rank) ) 
+		#set ($rank_label = $sponsor_labels.get($sponsor_rank))
+		#if (!$sponsor_labels.containsKey($sponsor_rank) ) 
+		    #set ($rank_label = $sponsor_rank)
+		#end
+		#content_template12( $rank_label, $rank_tree)
+	#end
+  #end
+	
+</div>

@@ -1,0 +1,112 @@
+<?xml version="1.0"?>
+
+<root>
+	<dynamic-element name="left_section_item" type="text_area" index-type="" repeatable="false">
+		<meta-data>
+			<entry name="displayAsTooltip"><![CDATA[false]]></entry>
+			<entry name="required"><![CDATA[false]]></entry>
+			<entry name="instructions"><![CDATA[]]></entry>
+			<entry name="label"><![CDATA[left_section_item]]></entry>
+			<entry name="predefinedValue"><![CDATA[]]></entry>
+		</meta-data>
+	</dynamic-element>
+	<dynamic-element name="registration_time" type="text" index-type="" repeatable="false">
+		<dynamic-element name="year" type="text" index-type="" repeatable="false">
+			<meta-data>
+				<entry name="displayAsTooltip"><![CDATA[false]]></entry>
+				<entry name="required"><![CDATA[false]]></entry>
+				<entry name="instructions"><![CDATA[]]></entry>
+				<entry name="label"><![CDATA[year]]></entry>
+				<entry name="predefinedValue"><![CDATA[]]></entry>
+			</meta-data>
+		</dynamic-element>
+		<dynamic-element name="month" type="text" index-type="" repeatable="false">
+			<meta-data>
+				<entry name="displayAsTooltip"><![CDATA[false]]></entry>
+				<entry name="required"><![CDATA[false]]></entry>
+				<entry name="instructions"><![CDATA[]]></entry>
+				<entry name="label"><![CDATA[month]]></entry>
+				<entry name="predefinedValue"><![CDATA[]]></entry>
+			</meta-data>
+		</dynamic-element>
+		<dynamic-element name="day" type="text" index-type="" repeatable="false">
+			<meta-data>
+				<entry name="displayAsTooltip"><![CDATA[false]]></entry>
+				<entry name="required"><![CDATA[false]]></entry>
+				<entry name="instructions"><![CDATA[]]></entry>
+				<entry name="label"><![CDATA[day]]></entry>
+				<entry name="predefinedValue"><![CDATA[]]></entry>
+			</meta-data>
+		</dynamic-element>
+		<dynamic-element name="hour" type="text" index-type="" repeatable="false">
+			<meta-data>
+				<entry name="displayAsTooltip"><![CDATA[false]]></entry>
+				<entry name="required"><![CDATA[false]]></entry>
+				<entry name="instructions"><![CDATA[]]></entry>
+				<entry name="label"><![CDATA[hour]]></entry>
+				<entry name="predefinedValue"><![CDATA[]]></entry>
+			</meta-data>
+		</dynamic-element>
+		<meta-data>
+			<entry name="displayAsTooltip"><![CDATA[true]]></entry>
+			<entry name="required"><![CDATA[false]]></entry>
+			<entry name="instructions"><![CDATA[When adding date, please transfer time to UTC.]]></entry>
+			<entry name="label"><![CDATA[registration_time]]></entry>
+			<entry name="predefinedValue"><![CDATA[]]></entry>
+		</meta-data>
+	</dynamic-element>
+	<dynamic-element name="register_button_text" type="text" index-type="" repeatable="false">
+		<dynamic-element name="register_link" type="text" index-type="" repeatable="false">
+			<meta-data>
+				<entry name="displayAsTooltip"><![CDATA[true]]></entry>
+				<entry name="required"><![CDATA[false]]></entry>
+				<entry name="instructions"><![CDATA[]]></entry>
+				<entry name="label"><![CDATA[register_link]]></entry>
+				<entry name="predefinedValue"><![CDATA[]]></entry>
+			</meta-data>
+		</dynamic-element>
+		<dynamic-element name="early_bird_text" type="text" index-type="" repeatable="false">
+			<meta-data>
+				<entry name="displayAsTooltip"><![CDATA[true]]></entry>
+				<entry name="required"><![CDATA[false]]></entry>
+				<entry name="instructions"><![CDATA[]]></entry>
+				<entry name="label"><![CDATA[early_bird_text]]></entry>
+				<entry name="predefinedValue"><![CDATA[]]></entry>
+			</meta-data>
+		</dynamic-element>
+		<meta-data>
+			<entry name="displayAsTooltip"><![CDATA[false]]></entry>
+			<entry name="required"><![CDATA[false]]></entry>
+			<entry name="instructions"><![CDATA[]]></entry>
+			<entry name="label"><![CDATA[register_button_text]]></entry>
+			<entry name="predefinedValue"><![CDATA[]]></entry>
+		</meta-data>
+	</dynamic-element>
+	<dynamic-element name="events_app" type="text" index-type="" repeatable="false">
+		<meta-data>
+			<entry name="displayAsTooltip"><![CDATA[true]]></entry>
+			<entry name="required"><![CDATA[false]]></entry>
+			<entry name="instructions"><![CDATA[]]></entry>
+			<entry name="label"><![CDATA[events_app]]></entry>
+			<entry name="predefinedValue"><![CDATA[]]></entry>
+		</meta-data>
+	</dynamic-element>
+	<dynamic-element name="social_media" type="text" index-type="" repeatable="false">
+		<dynamic-element name="twitter" type="text" index-type="" repeatable="false">
+			<meta-data>
+				<entry name="displayAsTooltip"><![CDATA[true]]></entry>
+				<entry name="required"><![CDATA[false]]></entry>
+				<entry name="instructions"><![CDATA[]]></entry>
+				<entry name="label"><![CDATA[twitter]]></entry>
+				<entry name="predefinedValue"><![CDATA[]]></entry>
+			</meta-data>
+		</dynamic-element>
+		<meta-data>
+			<entry name="displayAsTooltip"><![CDATA[true]]></entry>
+			<entry name="required"><![CDATA[false]]></entry>
+			<entry name="instructions"><![CDATA[]]></entry>
+			<entry name="label"><![CDATA[social_media]]></entry>
+			<entry name="predefinedValue"><![CDATA[]]></entry>
+		</meta-data>
+	</dynamic-element>
+</root>

@@ -1,0 +1,91 @@
+## Get DDL Records
+#set ($ddm_local_service = $serviceLocator.findService("com.liferay.portlet.dynamicdatamapping.service.DDMStructureLocalService"))
+#set ($count_ddm_structures = $ddm_local_service.getDDMStructuresCount() )
+
+<p> We have found $count_ddm_structures ddm structures </p>
+
+#set ($ddm_list = $ddm_local_service.getDDMStructures(0, $count_ddm_structures) )
+
+<table>
+<tr>
+<Th> id</th>
+<th>Name</th>
+<th>Group</th>
+</tr>
+#foreach ($ddmstruct in $ddm_list)
+#set ($ddm_name = $ddmstruct.getName() )
+#set ($ddm_group = $ddmstruct.getGroupId() )
+#set ($ddm_id = $ddmstruct.getPrimaryKey() )
+
+<tr>
+<td>$ddm_id</td>
+<td>$ddm_name</td>
+<td>$ddm_group</td>
+</tr>
+
+	
+#end
+</table>
+#set ($compname = $portalUtil.getComputerName() )
+<p> server: $compname </p>
+
+#set ($ddlrecord_local_service = $serviceLocator.findService("com.liferay.portlet.dynamicdatalists.service.DDLRecordSetLocalService"))
+#set ($group_id = 67510365) 
+#set ($count_ddl_recordsets = $ddlrecord_local_service.getRecordSetsCount($group_id) )
+<p> $count_ddl_recordsets recordsets found for group id $group_id</p>
+
+#set ($ddl_list = $ddlrecord_local_service.getRecordSets($group_id))
+#foreach ($ddlrecordset in $ddl_list)
+#set ($ddl_name = $ddlrecordset.getName() )
+#set ($ddl_structid = $ddlrecordset.getDDMStructureId() )
+<div> $ddl_name: $ddl_structid</div>
+#end
+
+
+
+#set ($localeEn = $localeUtil.fromLanguageId("en_US"))
+#set ($namemap = $portal.getClass().forName("java.util.HashMap").newInstance())
+#set ($descriptionmap= $portal.getClass().forName("java.util.HashMap").newInstance())
+#set ($recordSetName = "LPSF-UK | Photo Galleries" )
+#set ($void = $namemap.put($localeEn, $recordSetName))
+#set ($void = $descriptionmap.put($localeEn, $recordSetName) )
+
+
+#set ($ddl_user_id = $request.attributes.get('USER_ID') )
+#set ($ddl_group_id = $group_id)
+## Gallery List - definition (mobile app)
+#set ($ddl_structure_id = 69756099 )  
+#set ($ddl_recordsetkey = "" )
+#set ($ddl_namemap = $namemap.toString() )
+#set ($ddl_descrmap = $descriptionmap.toString() )
+#set ($ddl_mindisplayrows = 20 )
+#set ($ddl_scope = 0 )
+#set ($ddl_serviceContext = $portal.getClass().forName("com.liferay.portal.service.ServiceContextThreadLocal").getServiceContext()))
+<p> locale: $localeEn.toString() </p>
+<p> user id: $ddl_user_id</p>
+<p> group: $ddl_group_id </p>
+<p> structureid : $ddl_structure_id </p>
+<p> record set key: $ddl_recordsetkey </p>
+<p> name map: $ddl_namemap $namemap.size()  $namemap.keySet().size()</p>
+<p> description map: $ddl_descrmap $descriptionmap.size() $descriptionmap.keySet().size()</p>
+<p> scope: $ddl_scope </p>
+<p> display rows: $ddl_mindisplayrows </p>
+<p> service context: $ddl_serviceContext.toString() </p>
+<p> args:  $ddlrecord_local_service, $ddl_user_id, $ddl_group_id, $ddl_structure_id, $ddl_recordsetkey, $ddl_namemap, $ddl_descrmap, $ddl_mindisplayrows, $ddl_scope, $ddl_serviceContext </p>
+
+
+##set ($newRecordSet = $ddlrecord_local_service.addRecordSet($ddl_user_id, $ddl_group_id, $ddl_structure_id, $ddl_recordsetkey, $ddl_namemap, $ddl_descrmap, $ddl_mindisplayrows, $ddl_scope, $ddl_serviceContext ))			
+
+##set ($newRecordSet = $ddlrecord_local_service.addRecordSet($ddl_user_id, $ddl_group_id, $ddl_structure_id, null, $ddl_namemap, $ddl_descrmap, 20, 0, $ddl_serviceContext ))			
+
+##set ($trainingid = $ddl_serviceContext.getAttribute("trainingCourseId"))
+##<p> locator: $serviceLocator.toString() </p>
+##set ($servicecontext = $serviceLocator.findService("com.liferay.portal.service.ServiceContext"))
+##<p> context = $servicecontext.toString() </p>
+##<p> training course id: $trainingid	</p>		
+##<p> new record set $newRecordSet.toString() </p>
+##<p> new record set created on $newRecordSet.getCreateDate().toString() </p>
+##
+##	long userId, long groupId, long ddmStructureId, String recordSetKey,
+##			Map<Locale, String> nameMap, Map<Locale, String> descriptionMap,
+##			int minDisplayRows, int scope, ServiceContext serviceContext)

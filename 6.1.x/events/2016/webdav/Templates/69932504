@@ -1,0 +1,76 @@
+<style type="text/css">
+
+    .plus-minus {
+        float: right;
+		margin-top: -2px;
+		width: 40px;
+	}
+
+	.aui-toggler-header-collapsed .plus-minus {
+		background: url(/documents/14/8455413/plus-minus-sprite.png/eca64fff-30bb-4b93-ae1c-4695f0b0b9bc) no-repeat 8px 2px;
+	}
+
+	.aui-toggler-header-expanded .plus-minus {
+		background: url(/documents/14/8455413/plus-minus-sprite.png/eca64fff-30bb-4b93-ae1c-4695f0b0b9bc) no-repeat 8px -47px;
+	}
+    
+    .toggler-content {
+        border-bottom: 3px solid #f7f7f7;
+        border-left: 3px solid #f7f7f7;
+        border-right: 3px solid #f7f7f7;
+        color: #484b4c;
+        padding: 30px 40px;
+    }
+    
+    .toggler-header {
+        background: #e6e6e6;
+        color: #484b4c;
+        margin-bottom: 0;
+        padding: 10px 10px 10px 40px;
+        text-transform: uppercase;
+    }
+
+	#togglerSections-$uniqueId.data .toggler-header:hover {
+		cursor: pointer;
+	}
+
+$cssfield.data
+</style>
+
+<div id="togglerSections-$uniqueId.data">
+	#foreach ($toggler_header in $toggler_headers.siblings)
+		<div class="toggler-section toggler-section-$velocityCount">
+			<div class="toggler-header aui-toggler-header-collapsed">
+				<span class="toggler-header-text">$toggler_header.data</span>
+				<div class="plus-minus">
+					&nbsp;
+				</div>
+			</div>
+			<div class="toggler-content aui-toggler-content-collapsed">
+				$toggler_header.toggler_content.data
+			</div>
+		</div>
+	#end
+</div>
+
+<script>
+	AUI().use(
+		'aui-base', 'aui-toggler',
+		function(A) {
+			new A.TogglerDelegate(
+				{
+                    animated: true,
+					closeAllOnExpand: true,
+					container: '#togglerSections-$uniqueId.data',
+					content: '.toggler-content',
+                    transition: {
+                        duration: .5,
+                        easing: 'cubic-bezier'
+                    },
+					expanded: false,
+					header: '.toggler-header'
+				}
+			);
+		}
+	);
+</script>

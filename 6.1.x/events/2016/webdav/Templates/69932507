@@ -1,0 +1,191 @@
+#set ($days_to_print = '')
+
+
+
+<div class="at-a-glance max-960 class-toggle-carousel-default" id="togglerDisplayWrapper">
+    <h2 class="title">
+		$at-a-glance.data
+	</h2>
+	#foreach ($current_date in $date.siblings)
+		<div class="graph-wrapper day-$velocityCount">
+			<div class="date">
+				$current_date.data
+			</div>
+
+			<div class="change-date togglers">
+
+			#set ($count = $velocityCount)
+
+			#foreach ($toggle_date in $date.siblings)
+				#if ($count == $velocityCount)
+					#if ($velocityCount == 1) #else | #end <span class="current-selection" data-value="date-${velocityCount}">$toggle_date.month-day.data</span>
+				#else 
+					#if ($velocityCount == 1) #else | #end <span class="selection class-toggle-carousel" data-target-class="${velocityCount}-date-toggle" data-target-node="#togglerDisplayWrapper" data-value="date-$velocityCount">$toggle_date.month-day.data</span> 
+				#end
+			#end
+
+			</div>
+
+			<table>
+				#set ($integer = 0)
+				#set ($start = 1)
+				#set ($maxColInt = $integer.parseInt($current_date.maxColumn.data))
+				#set ($end = $maxColInt)
+
+				#foreach ($category in $current_date.category.siblings)
+					#set ($colspanNum = 10)
+					#set ($starttimeInt = $integer.parseInt($category.starttime.data))
+					#set ($endtimeInt = $integer.parseInt($category.endtime.data))
+					#set ($colspanNum = $endtimeInt - $starttimeInt)
+
+					<tr>
+						<td class="category-title desktop-only">$category.data</td>
+
+						#foreach($i in [$start..$end])
+							#if ($i == $category.starttime.data)
+								<td class="colored $velocityCount" colspan="$colspanNum"><span class="mobile-only">$category.data</span></td>
+
+								#set ($i = $category.endtime.data)
+							#elseif ($i < $maxColInt - $colspanNum)
+								<td class="$i"></td>
+							#end
+						#end
+					</tr>
+				#end
+
+				<tr>
+				#foreach ($i in [$start..$end])
+					#if ($i == 1)
+						<td class="category-title desktop-only"></td>
+					#elseif ($i == $end)
+
+					#else
+						#set ($hour = $i + $integer.parseInt($current_date.first-hour.data) - 2)
+
+						#if ($hour > 12)
+							#set ($hour = $hour - 12)
+						#end
+
+						#if ($hour % 2 == 0)
+							<td class="time-indication mobile-hidden">$hour#if($hour == 12)P#end</td>
+						#else
+							<td class="time-indication">$hour</td>
+						#end
+					#end
+				#end
+				</tr>
+			</table>
+		</div>
+	#end
+</div>
+
+<style>
+h2.title, td.colored {
+	color: #FFF;
+	margin: auto;
+	text-align: center;
+}
+
+h2.title, .date {
+	text-transform: uppercase;
+}
+
+table {
+	width: 100%;
+}
+
+table tr td:last-child {
+	border-right: 1px solid #FFF;
+}
+
+table tr td.time-indication {
+	border-right: 0px solid;
+}
+
+#set ($cellWidth = (100 / ($maxColInt - 1)))
+
+td {
+	border-left: 1px solid #FFF;
+	width: $cellWidth%;
+}
+
+td.category-title {
+	border-left: 0px solid;
+	color: #FFF;
+	width: 20%;
+}
+
+
+.at-a-glance {
+	background: #178ACB;
+	padding: 30px;
+}
+
+.change-date {
+	color: #FFF;
+	display: inline-block;
+	float: right;
+}
+
+#foreach ($style_date in $date.siblings) #if ($velocityCount == 1) #elseif ($velocityCount > 2), .class-toggle-carousel-default .day-${velocityCount}.graph-wrapper #else .class-toggle-carousel-default .day-${velocityCount}.graph-wrapper #end #end {
+	display: none;
+}
+
+#foreach ($style1_date in $date.siblings)
+	#set ($count = $velocityCount)
+	#foreach ($style2_date in $date.siblings)
+		#if ($count == $velocityCount)
+		#else
+			#if ($count == 1 && $velocityCount == 2) #else, #end .class-toggle-carousel-${count}-date-toggle .day-${velocityCount}.graph-wrapper 
+		#end
+	#end
+#end {
+	display: none;
+}
+
+.class-toggle-carousel {
+	text-decoration: underline;
+}
+
+.colored {
+	background: #F7BC20;
+}
+
+.current-selection {
+	font-weight: normal;
+}
+
+.date {
+	color: #FFF;
+	display: inline-block;
+	float: left;
+	font-size: 2em;
+}
+
+.mobile-only {
+	display: none;
+}
+
+.selection {
+	cursor: pointer;
+}
+
+.time-indication {
+	border-left: 0px solid;
+	color: #FFF;
+	text-align: center;
+}
+
+@media all and (max-width: 720px) {
+	td.mobile-hidden {
+		visibility: hidden;
+	}
+	.desktop-only {
+		display: none;
+	}
+
+	.mobile-only {
+		display: inline;
+	}
+}
+</style>

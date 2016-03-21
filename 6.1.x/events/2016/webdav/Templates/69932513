@@ -1,0 +1,208 @@
+<div class="at-a-glance max-960 class-toggle-carousel-default" id="togglerDisplayWrapper">
+    <h2 class="title">
+        $at-a-glance.data
+    </h2>
+    #foreach ($date in $date.siblings)
+        <div class="graph-wrapper day-$velocityCount">
+            <div class="date">
+                $date.data
+            </div>
+
+            <div class="change-date togglers">
+            #if ($velocityCount == 1)
+                <span class="current-selection option-1" data-value="date-1">10/21</span> | <span class="selection class-toggle-carousel option-2" data-target-class="day-2" data-target-node="#wrapper" data-value="date-2">10/22</span>
+            #else
+                <span class="selection class-toggle-carousel current-selection option-1" data-target-class="day-1" data-target-node="#wrapper" data-value="date-1">10/21</span> | <span class="option-2" data-value="date-2">10/22</span>
+            #end
+            </div>
+
+            <table>
+                #set ($integer = 0)
+                #set ($start = 1)
+                #set ($maxColInt = $integer.parseInt($date.maxColumn.data))
+                #set ($end = $maxColInt)
+
+                #foreach ($category in $date.category.siblings)
+                    <tr>
+                        <td class="category-title desktop-only">$category.data</td>
+
+                        #set ($count = 1)
+                        #foreach($i in [$start..$end])
+                            #foreach($block in $category.timeblock.siblings)
+                                #set ($colspanNum = 10)
+                                #set ($starttimeInt = $integer.parseInt($block.starttime.data))
+                                #set ($endtimeInt = $integer.parseInt($block.endtime.data))
+                                #set ($colspanNum = $endtimeInt - $starttimeInt)
+
+                                #if ($count == $starttimeInt)
+                                    <td class="colored" colspan="$colspanNum"><span class="mobile-only">$category.data</span></td>
+
+                                    #set ($count = $endtimeInt)
+                                #end
+                            #end
+
+                            #if ($count < $end - 1)
+                                <td class="$count"></td>
+                                #set ($count = $count + 1)
+                            #end
+                        #end
+                    </tr>
+                #end
+
+                <tr>
+                #foreach ($i in [$start..$end])
+                    #if ($i == 1)
+                        <td class="category-title desktop-only"></td>
+                    #elseif ($i == $end)
+
+                    #else
+                        #set ($hour = $i + $integer.parseInt($date.first-hour.data) - 2)
+
+                        #if ($hour > 12)
+                            #set ($hour = $hour - 12)
+                        #end
+
+                        #if ($hour % 2 == 0)
+                            <td class="time-indication mobile-hidden">$hour#if($hour == 12)P#end</td>
+                        #else
+                            <td class="time-indication">$hour</td>
+                        #end
+                    #end
+                #end
+                </tr>
+            </table>
+        </div>
+    #end
+</div>
+
+<style>
+h2.title, td.colored {
+    color: #FFF;
+    margin: auto;
+    text-align: center;
+}
+
+h2.title, .date {
+    text-transform: uppercase;
+}
+
+table {
+    width: 100%;
+}
+
+table tr td:last-child {
+    border-right: 1px solid #FFF;
+}
+
+table tr td.time-indication {
+    border-right: 0px solid;
+}
+
+#set ($cellWidth = (100 / ($maxColInt - 1)))
+
+td {
+    border-left: 1px solid #FFF;
+    width: $cellWidth%;
+}
+
+td.category-title {
+    border-left: 0px solid;
+    color: #FFF;
+    width: 20%;
+}
+
+
+.at-a-glance {
+    background: #178ACB;
+    padding: 30px;
+}
+
+.change-date {
+    color: #FFF;
+    display: inline-block;
+    float: right;
+}
+
+#wrapper.class-toggle-carousel-day-2 .graph-wrapper.day-2 {
+    display: block;
+}
+
+.graph-wrapper.day-2 {
+    display: none;
+}
+
+.class-toggle-carousel-day-1 .graph-wrapper.day-1 {
+    display: block;
+}
+
+.class-toggle-carousel-day-1 .day-2.graph-wrapper{
+    display: none;
+}
+
+.class-toggle-carousel-day-2 .graph-wrapper.day-2 {
+    display: block;
+}
+
+.class-toggle-carousel-day-2 .day-1.graph-wrapper{
+    display: none;
+}
+
+.class-toggle-carousel-day-1 .option-1, .class-toggle-carousel-day-2 .option-2 {
+    font-weight: normal;
+    text-decoration: underline;
+}
+
+.class-toggle-carousel-day-2 .current-selection {
+    font-weight: lighter;
+    text-decoration: none;
+}
+
+.colored {
+    background: #F7BC20;
+}
+
+.current-selection {
+    font-weight: normal;
+    text-decoration: underline;
+}
+
+.date {
+    color: #FFF;
+    display: inline-block;
+    float: left;
+    font-size: 2em;
+}
+
+#if ($agenda_min_height.data)
+.graph-wrapper {
+    min-height: $agenda_min_height.data;
+}
+#end
+
+.mobile-only {
+    display: none;
+}
+
+.selection {
+    cursor: pointer;
+}
+
+.time-indication {
+    border-left: 0px solid;
+    color: #FFF;
+    text-align: center;
+}
+
+@media all and (max-width: 720px) {
+    td.mobile-hidden {
+        visibility: hidden;
+    }
+    .desktop-only {
+        display: none;
+    }
+
+    .mobile-only {
+        display: inline;
+    }
+}
+</style>

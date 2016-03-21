@@ -1,0 +1,11 @@
+<?xml version="1.0"?>
+
+<root>
+	<dynamic-element name="background_image" type="document_library" index-type="" repeatable="false"/>
+	<dynamic-element name="background_image_tablet" type="document_library" index-type="" repeatable="false"/>
+	<dynamic-element name="background_image_mobile" type="document_library" index-type="" repeatable="false"/>
+	<dynamic-element name="video_id" type="text" index-type="" repeatable="false"/>
+	<dynamic-element name="header" type="text" index-type="" repeatable="false"/>
+	<dynamic-element name="paragraph" type="text_box" index-type="" repeatable="false"/>
+	<dynamic-element name="sectionid" type="text" index-type="" repeatable="false"/>
+</root>

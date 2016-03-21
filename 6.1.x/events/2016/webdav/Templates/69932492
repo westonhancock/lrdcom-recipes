@@ -1,0 +1,30 @@
+<style>
+	.update-me-container {
+		background-color: #00548E;
+		color: #FFF;
+		padding: 25px 0;
+	}
+
+	.update-me-container .aui-w60 {
+		width: 59%;
+	}
+
+	.text-align-right {
+		text-align: right;
+	}
+
+	#main-content.full-screen-layout .portlet-column.aui-w60, #main-content.full-screen-layout .portlet-column.aui-w40 {
+		display: inline-block;
+	}
+</style>
+
+<div class="update-me-container">
+	<div class="max-large">
+		<div class="portlet-column aui-w60 text-align-right">
+			$text.data
+		</div>
+		<div class="portlet-column aui-w40" id="embedded-targeted-article-$namespace">
+			<runtime-portlet name="56" instance="targeted_$namespace" queryString=""/>
+		</div>
+	</div>
+</div>

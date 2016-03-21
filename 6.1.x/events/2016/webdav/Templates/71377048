@@ -1,0 +1,302 @@
+<style>
+
+#ddlbuilder select, #ddlbuilder
+ul {
+
+  overflow: auto;
+  width: 200px;
+  border: 1px solid #000;
+}
+
+#ddlbuilder ul {
+  height: 300px;
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden;
+}
+
+#ddlbuilder li {
+  margin: 0;
+  padding: 0;
+}
+
+#ddlbuilder label {
+  display: block;
+  color: WindowText;
+  background-color: Window;
+  margin: 0;
+  padding: 0;
+  width: 100%;
+}
+
+#ddlbuilder label:hover {
+  background-color: Highlight;
+  color: HighlightText;
+}
+#message.error {
+	color: red;
+}
+#message.success {
+	color: green;
+}
+
+</style>
+
+<div> companyid: $companyId</div>
+<div>com.liferay.portlet.dynamicdatalists.model.DDLRecordSet</div>
+#set ($ddl_records_local_service = $serviceLocator.findService("com.liferay.portlet.dynamicdatalists.service.DDLRecordLocalService"))
+#set ($record_id = 71376619)
+#set ($records = $ddl_records_local_service.getRecords($record_id))
+
+
+#set ($ddm_id_to_type = $portal.getClass().forName("java.util.TreeMap").newInstance())
+#foreach ($record in $records)
+    #set ($ddm_id = $record.getFieldValue("ddm_id"))
+    #set ($ddm_name = $record.getFieldValue("ddm_name"))
+    #set ($metadata_type = $record.getFieldValue("metadata_type"))
+  ##  <div> $ddm_id: $ddm_name: $metadata_type</div>
+    #if ($metadata_type && $metadata_type != "")
+  	  #set ($void = $ddm_id_to_type.put($ddm_id, $metadata_type))
+  	#end
+#end    
+
+
+#set ($ddlrecord_local_service = $serviceLocator.findService("com.liferay.portlet.dynamicdatalists.service.DDLRecordSetLocalService"))
+#set ($group_id = 67510365) 
+#set ($count_ddl_recordsets = $ddlrecord_local_service.getRecordSetsCount($group_id) )
+<p> $count_ddl_recordsets recordsets found for group id $group_id</p>
+
+#set ($ddl_events = $portal.getClass().forName("java.util.TreeMap").newInstance())
+
+#set ($ddl_list = $ddlrecord_local_service.getRecordSets($group_id))
+#foreach ($ddlrecordset in $ddl_list)
+#set ($ddl_name = $ddlrecordset.getName() )
+#set ($ddl_structid = $ddlrecordset.getDDMStructureId() )
+
+ #set ($ddl_name_array = $stringUtil.split($ddl_name, "|"))
+#set ($event_name = $ddl_name_array.get(0) ) 
+
+
+#if (!$ddl_events.get($event_name))
+	  
+      #set ($void = $ddl_events.put($event_name, $portal.getClass().forName("java.util.TreeMap").newInstance()))
+#end
+
+#set ($type = "")
+#set ($type = $ddm_id_to_type.get($ddl_structid.toString()) )
+
+#if ($type && $type != "")
+	#set ($void = $ddl_events.get($event_name).put($type, $ddlrecordset.getPrimaryKey()))
+#else
+	<div>Unknown type $ddl_name: $ddl_structid: $event_name: key: $ddlrecordset.getPrimaryKey()</div>
+#end
+
+
+#end
+
+#foreach ($event_name in $ddl_events.keySet())
+    #set ($keysetCount = $ddl_events.get($event_name).keySet().size() )
+	<div>$event_name: $keysetCount ddls</div>
+	<div>
+
+	
+	#set ($metadatatypes = "")
+	#foreach($ddltype in $ddl_events.get($event_name).keySet())
+	    #set ($metadatatypes = $metadatatypes + $ddltype + ":" + "<span class=eventddl>" + $ddl_events.get($event_name).get($ddltype) + "</span>")
+	    #if ($velocityCount != $keysetCount)
+	    	#set ($metadatatypes = $metadatatypes + ",")	
+	    #end
+	#end
+	$metadatatypes
+	</div>
+#end
+
+<div id="myPropertyList" class="yui3-skin-sam"></div>
+
+<div id="message">
+
+</div>
+<form id="ddlbuilder">
+  	<label for="siteName">Site Name</label>
+  	<input type=text length=40 id="siteName">
+   	<label for="groupId">Events Site</label>
+   	<select id="groupid">
+      <option value="67510365" selected>Events 2016</option> 
+   	</select>
+
+   	<label for="structures">Structures to Create</label> 
+	<ul id="checkboxlist" name="structures">
+	</ul>
+	<input type=button value="Create Structures" ONCLICK="createStructures()">
+</form>
+
+<script>
+
+
+window.addEventListener("DOMContentLoaded", function() {
+
+	var nodelist = document.querySelectorAll(".eventddl");
+	for (var i = 0; i < nodelist.length; i++) {
+		nodelist[i].addEventListener("click", function(event) {
+			getRecordSet(event.currentTarget.innerText);
+		}); 	
+	}
+});
+
+function renderDDLStructure (ddl){
+	AUI().use(
+			  'aui-property-list',
+			  function(A) {
+				  var properties = [];
+				  for (var property in ddl) {
+					    if (ddl.hasOwnProperty(property)) {
+					        properties.push({name: property, value: ddl[property] });
+					    }
+					}
+			    
+			    new A.PropertyList(
+			      {
+			        recordset: properties
+			      }
+			    ).render('#myPropertyList');
+			  }
+			);
+}
+
+var ddmStructures=[
+{id: "69365905", name: "Agenda"},
+{id: "67579330", name: "Rooms"},
+{id: "69069681", name: "Speakers"},
+{id: "69488654", name: "Sponsors"},
+{id: "69701496", name: "Nav Links"},
+{id: "69756087", name: "Maps"},
+{id: "69756091", name: "Contacts"},
+{id: "69756095", name: "Activities"},
+{id: "69756099", name: "Photo Galleries"},
+{id: "69756103", name: "News"},
+{id: "69756107", name: "Beacon Regions"},
+{id: "69756111", name: "Beacon Region Events"},
+{id: "69756115", name: "Beacon Individual Events"},
+{id: "69756119", name: "Beacon Forms"},
+{id: "68745907", name: "Expert Exchange"}
+];
+
+addCheckboxes();
+
+function getRecordSet(recordsetid) {
+	var cmdArray = [];
+  	cmdArray.push({
+		"/ddlrecordset/get-record-set" : {
+		      "recordSetId": recordsetid
+		
+		}
+		});
+  	 var invokeURL = "https://www.liferay.com/api/jsonws/invoke?cmd=";
+  	  
+ 	var req = new XMLHttpRequest();
+ 	req.onload = function () {
+ 		var events = JSON.parse(this.responseText);
+ 		if (!Array.isArray(events)) {
+ 			var message=events.exception ? events.exception: "Unknown error";
+ 		 document.getElementById('message').textContent = "ERROR: " + message;
+ 		 document.getElementById('message').classList.add("error");
+ 		  document.getElementById('message').classList.remove("succcess");
+ 		}
+ 		else {
+ 			document.getElementById('message').textContent = "";
+ 			renderDDLStructure(events[0]);
+ 		 document.getElementById('message').textContent = events.length + " ddl record set was fetched";
+ 		
+ 		 document.getElementById('message').classList.add("success");
+ 		 document.getElementById('message').classList.remove("error");
+ 		}
+ 	};
+ 	req.open('get', invokeURL + JSON.stringify(cmdArray) + "&p_auth=" + Liferay.authToken, true);
+ 	req.send();
+}
+
+function createStructures() {
+  var siteName = document.getElementById("siteName");
+  var cmdArray = [];
+  var checkboxes = document.querySelectorAll("input[type=checkbox]");
+  var groupId = document.getElementById("groupid");
+  if (checkboxes) {
+     for (var i = 0; i < checkboxes.length; i++) {
+       if (checkboxes[i].checked == true) {
+       var ddlName = siteName.value +  " | " + checkboxes[i].getAttribute("data-name");
+       	cmdArray.push({
+    					"/ddlrecordset/add-record-set" : {
+						      "groupId": groupId.value,
+						      "ddmStructureId": checkboxes[i].value,
+						      "recordSetKey": null,
+						      "nameMap": {
+						        "en_US": ddlName
+						      },
+						      "descriptionMap": {
+						        "en_US":ddlName
+						      },
+						      "minDisplayRows": 20,
+						      "scope": 0
+						      
+    					}
+  					});
+       }
+         
+    }
+  }
+  
+  
+  var invokeURL = "https://www.liferay.com/api/jsonws/invoke?cmd=";
+  
+	var req = new XMLHttpRequest();
+	req.onload = function () {
+		var events = JSON.parse(this.responseText);
+		if (!Array.isArray(events)) {
+			var message=events.exception ? events.exception: "Unknown error";
+		 document.getElementById('message').textContent = "ERROR: " + message;
+		 document.getElementById('message').classList.add("error");
+		  document.getElementById('message').classList.remove("succcess");
+		}
+		else {
+			document.getElementById('message').textContent = "";
+			
+		 document.getElementById('message').textContent = events.length + " DDM Structures were created";
+		
+		 document.getElementById('message').classList.add("success");
+		 document.getElementById('message').classList.remove("error");
+		}
+	};
+	
+	//"serviceContext": {"guestPermissions": }
+	var ctx = "&serviceContext.guestPermissions=" + JSON.stringify(["action.VIEW"]);
+	var ctx = "&serviceContext.addGuestPermissions=true";
+	req.open('get', invokeURL + JSON.stringify(cmdArray) + "&p_auth=" + Liferay.authToken + "&" + ctx, true);
+	req.send();
+}
+
+
+
+
+function addCheckboxes() {
+	var list = document.getElementById("checkboxlist");
+	for  (var i = 0; i < ddmStructures.length; i++) {
+  		var li = document.createElement("li");
+		var input = document.createElement("input");
+		var label = document.createElement("label");
+		label.htmlFor="chk" + i;
+		input.type = "checkbox";
+		input.name = label.htmlFor;
+		input.id = label.htmlFor;
+		input.value = ddmStructures[i].id;
+		input.setAttribute("data-name", ddmStructures[i].name);
+		var content  =document.createTextNode(ddmStructures[i].name);
+		label.appendChild(input);
+		label.appendChild(content);
+		li.appendChild(label);
+		list.appendChild(li);
+  	}
+}
+
+
+</script>

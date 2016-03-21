@@ -1,0 +1,15 @@
+<?xml version="1.0"?>
+
+<root>
+	<dynamic-element name="hs_form_id" type="text" index-type="" repeatable="false"/>
+	<dynamic-element name="field_name" type="text" index-type="" repeatable="true">
+		<dynamic-element name="label" type="text" index-type="" repeatable="false"/>
+		<dynamic-element name="required_message" type="text" index-type="" repeatable="false"/>
+	</dynamic-element>
+	<dynamic-element name="number_of_fields" type="text" index-type="" repeatable="false"/>
+	<dynamic-element name="number_of_fields_first_col" type="text" index-type="" repeatable="false"/>
+	<dynamic-element name="thank_you_text" type="text_box" index-type="" repeatable="false"/>
+	<dynamic-element name="on_success_js" type="text_box" index-type="" repeatable="false"/>
+	<dynamic-element name="default_tactic_id" type="text" index-type="" repeatable="false"/>
+	<dynamic-element name="submit_text" type="text" index-type="" repeatable="false"/>
+</root>

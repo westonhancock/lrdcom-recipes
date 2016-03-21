@@ -1,0 +1,9 @@
+<?xml version="1.0"?>
+
+<root>
+	<dynamic-element name="uniqueId" type="text" index-type="" repeatable="false"/>
+	<dynamic-element name="toggler_headers" type="text" index-type="" repeatable="true">
+		<dynamic-element name="toggler_content" type="text_box" index-type="" repeatable="false"/>
+	</dynamic-element>
+	<dynamic-element name="cssfield" type="text_box" index-type="" repeatable="false"/>
+</root>

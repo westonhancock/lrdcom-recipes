@@ -1,0 +1,7 @@
+<?xml version="1.0"?>
+
+<root>
+	<dynamic-element name="nav_item" type="text" index-type="" repeatable="true">
+		<dynamic-element name="nav_url" type="text" index-type="" repeatable="false"/>
+	</dynamic-element>
+</root>

@@ -1,0 +1,6 @@
+<div> my ubtitle is $pageSubtitle </div
+
+#set($void = $portalUtil.setPageSubtitle("asda", $request))
+#set($void = $portalUtil.addPageSubtitle("asda", $request))
+#set ($comname = $portalUtil.getComputerName())
+<div> comname $comname</div>
