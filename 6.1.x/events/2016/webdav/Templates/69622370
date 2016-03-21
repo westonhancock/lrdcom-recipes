@@ -1,0 +1,527 @@
+#set ($ddl_records_local_service = $serviceLocator.findService("com.liferay.portlet.dynamicdatalists.service.DDLRecordLocalService"))
+#set ($records = $ddl_records_local_service.getRecords(69701505))
+#foreach ($record in $records)
+    #set ($link_name = $record.getFieldValue("link_name"))
+    <div> $link_name </div>
+#end 
+
+<style type="text/css">
+nav#navigation {
+    display: block;
+    float: left;
+    left: 0;
+    margin-left: 40px;
+    position: absolute;
+}
+
+
+nav#navigation a {
+    color: #FFF;
+    font-weight: lighter;
+    padding: 20px 10px;
+}
+
+.events-nav {
+        background-color: #06A;
+        margin-top: 40px;
+        float: left;
+        left: 0;
+        overflow: hidden;
+        position: fixed;
+        top: 0;
+        z-index: 9999;
+    }
+
+    .events-nav.register {
+        overflow: visible;
+    }
+
+    .btn.register-btn {
+        padding: 10px 20px 15px;
+        position: fixed;
+        right: 0px;
+        top: 40px;
+        width: auto;
+    }
+
+    .events-nav li, .events-nav .image-link {
+        display: inline-block;
+    }
+
+    .events-nav .image-link {
+        margin: 5px 20px 5px 25px;
+        padding: 0;
+        width: 90px
+    }
+
+    .events-nav ul {
+        display: inline-block;
+        position: relative;
+        margin: 1em 20px 1em 0;
+        vertical-align: top;
+    }
+
+    .events-nav ul li a:hover {
+        background-color: #F45B49;
+    }
+
+    .events-nav ul li a.active {
+        font-weight: normal;
+    }
+
+    .events-nav a {
+        color: #FFF;
+        font-size: 1.2em;
+        padding: 5px 15px;
+        position: relative;
+        width: 40px;
+        z-index: 3;
+    }
+
+    .events-nav a:hover {
+        cursor: pointer;
+    }
+
+    .nav-icon {
+        height: 28px;
+        position: relative;
+        top: 10px;
+    }
+
+    .right-fixed {
+        float: right;
+        padding: 20px 15px;
+    }
+
+    #navAbout:after {
+        left: 14%;
+        width: 120%;
+    }
+
+.safari #navAbout:after {
+left: -20px;
+}
+
+    #navAgenda:after, #navExperts:after, #navLogistics:after, #navSponsors:after {
+        left: 30%;
+    }
+
+    .safari #navAgenda:after, .safari #navExperts:after, .safari #navLogistics:after, .safari #navSponsors:after {
+        left: 0px;
+    }
+
+    #navSpeakers:after {
+        left: 25%;
+    }
+
+    .safari #navSpeakers:after {
+        left: 0px;
+    }
+
+    #startHomeFixedNav {
+        height: 0;
+        margin: 0;
+    }
+
+@media (max-width: 770px) {
+    nav.desktop-only {
+        display: none;
+    }
+
+    nav.responsive-only {
+        background-color: #06a;
+        height: 60px;
+        position: fixed;
+        top: 0;
+        width: 100%;
+        z-index: 5;
+    }
+
+    nav.responsive-only #navigationToggle {
+        background-image: url(/documents/14/48124953/hamburger.png);
+        cursor: pointer;
+        display: inline-block;
+        height: 18px;
+        position: relative;
+        left: 5%;
+        top: 20px;
+        width: 21px;
+    }
+
+    nav.responsive-only .register-button {
+        bottom: -17px;
+        display: block;
+        float: right;
+        position: relative;
+        right: 20px;
+    }
+
+    nav.responsive-only .register-button a {
+        padding: 8px 25px;
+    }
+
+    nav#navigation {
+        display: none;
+    }
+
+    #responsiveEventsNav {
+        background-color: #DBE0E4;
+        display: none;
+        position: relative;
+        top: 35px;
+        width: 100%;
+    }
+
+    #responsiveEventsNav.class-toggle-active {
+        display: block;
+    }
+
+    #responsiveEventsNav ul {
+        list-style: none;
+        margin: 0;
+    }
+
+    #responsiveEventsNav ul li {
+        padding: 10px 5%;
+        font-size: 18px;
+    }
+
+    #responsiveEventsNav ul a {
+        color: #FFF;
+    }
+
+    .responsive-only {
+        display: block !important;
+    }
+}</style>
+<p id="startHomeFixedNav" style="text-align: center;">
+	&nbsp;</p>
+<nav class="aui-helper-hidden events-nav primary-background desktop-only fade">
+	<a class="image-link animate-scroll" href="#wrapper"><img class="nav-icon" src="/documents/47511614/49384334/LPSF-small.svg/aae2faef-d8b1-4de0-bf0d-cacda3ff0f58" /></a>
+	<ul>
+		<li>
+			<a class="animate-scroll" href="#das-event" id="navAbout">Das Event</a></li>
+		<li>
+			<a class="animate-scroll" href="#referenten" id="navSpeakers">Referenten</a></li>
+		<li>
+			<a class="animate-scroll" href="#agenda" id="navAgenda">Agenda</a></li>
+		<li>
+			<a class="animate-scroll" href="#experten" id="navExperts">Experten</a></li>
+		<li>
+			<a class="animate-scroll" href="#logistik" id="navLogistics">Logistik</a></li>
+		<li>
+			<a class="animate-scroll" href="#sponsors" id="navSponsors">Sponsoren</a></li>
+	</ul>
+</nav>
+<nav class="aui-helper-hidden events-nav desktop-only fade register aui-helper-hidden">
+	<a class="register-btn btn" href="http://discover.liferay.com/anmeldung-lpsf-2015" target="_blank">Jetzt anmelden!</a></nav>
+<nav class="responsive-only">
+	<div class="class-toggle" data-target-node="#responsiveEventsNav" id="navigationToggle">
+		&nbsp;</div>
+	<div class="register-button">
+		<a class="btn" href="http://discover.liferay.com/anmeldung-lpsf-2015">Jetzt anmelden!</a></div>
+	<div class="responsive-content-height" id="responsiveEventsNav">
+		<ul>
+			<li>
+				<a class="animate-scroll" href="#das-event" id="navAbout">Das Event</a></li>
+			<li>
+				<a class="animate-scroll" href="#referenten" id="navSpeakers">Referenten</a></li>
+			<li>
+				<a class="animate-scroll" href="#agenda" id="navAgenda">Agenda</a></li>
+			<li>
+				<a class="animate-scroll" href="#experten" id="navExperts">Experten</a></li>
+			<li>
+				<a class="animate-scroll" href="#logistik" id="navLogistics">Logistik</a></li>
+			<li>
+				<a class="animate-scroll" href="#sponsors" id="navSponsors">Sponsoren</a></li>
+		</ul>
+	</div>
+</nav>
+<script>
+    AUI().use(
+        'node',
+        function(A) {
+            var WIN = A.getWin();
+            var fixedNav = A.all('.events-nav');
+
+            var displayFixedNav = function() {
+                var currentScrollPos = WIN.get('docScrollY');
+                var startPosition = A.one('#startHomeFixedNav').getY();
+                var fadeInPosition = A.one('#aboutStartNav').getY();
+                var topNavPosition = A.one('#navigation').getY();
+
+                if (currentScrollPos <= topNavPosition) {
+                    fixedNav.addClass('aui-helper-hidden');
+                }
+                else if (currentScrollPos + 5 >= fadeInPosition) {
+                    fixedNav.addClass('in');
+                } else {
+                    fixedNav.removeClass('in');
+                    fixedNav.removeClass('aui-helper-hidden');
+                }
+
+                navActiveItem(currentScrollPos);
+            };
+
+            var navActiveItem = function (scrollPos) {
+                var speakersSection = A.one('#referenten');
+                var agendaSection = A.one('#agenda');
+                var expertsSection = A.one('#experten');
+                var logisticsSection = A.one('#logistik');
+                var sponsorsSection = A.one('#sponsors');
+
+                var aboutNavItem = A.one('#navAbout');
+                var speakersNavItem = A.one('#navSpeakers');
+                var agendaNavItem = A.one('#navAgenda');
+                var expertsNavItem = A.one('#navExperts');
+                var logisticsNavItem = A.one('#navLogistics');
+                var sponsorsNavItem = A.one('#navSponsors');
+
+                //with agenda section
+                if (scrollPos + 5 < speakersSection.getY() && !aboutNavItem.hasClass('active')) {
+                    if (speakersNavItem.hasClass('active')) {
+                        speakersNavItem.removeClass('active');
+                    }
+
+                    aboutNavItem.addClass('active');
+                }
+                else if (scrollPos + 5 >= speakersSection.getY() && scrollPos + 5 < agendaSection.getY() && !speakersNavItem.hasClass('active')) {
+
+                    if (aboutNavItem.hasClass('active')) {
+                        aboutNavItem.removeClass('active');
+                    }
+
+                    if (agendaNavItem.hasClass('active')) {
+                        agendaNavItem.removeClass('active');
+                    }
+
+                    speakersNavItem.addClass('active')
+                }
+                else if (scrollPos + 5 >= agendaSection.getY() && scrollPos + 5 < expertsSection.getY() && !agendaNavItem.hasClass('active')) {
+                    if (speakersNavItem.hasClass('active')) {
+                        speakersNavItem.removeClass('active');
+                    }
+
+                    if (expertsNavItem.hasClass('active')) {
+                        expertsNavItem.removeClass('active');
+                    }
+
+                    agendaNavItem.addClass('active')
+                }
+                else if (scrollPos + 5 >= expertsSection.getY() && scrollPos + 5 < logisticsSection.getY() && !expertsNavItem.hasClass('active')) {
+                    if (agendaNavItem.hasClass('active')) {
+                        agendaNavItem.removeClass('active');
+                    }
+
+                    if (logisticsNavItem.hasClass('active')) {
+                        logisticsNavItem.removeClass('active');
+                    }
+
+                    expertsNavItem.addClass('active')
+                }
+                else if (scrollPos + 5 >= logisticsSection.getY() && scrollPos + 5 < sponsorsSection.getY() && !logisticsNavItem.hasClass('active')) {
+                    if (expertsNavItem.hasClass('active')) {
+                        expertsNavItem.removeClass('active');
+                    }
+
+                    if (sponsorsNavItem.hasClass('active')) {
+                        sponsorsNavItem.removeClass('active');
+                    }
+
+                    logisticsNavItem.addClass('active')
+                }
+                else if (scrollPos + 5 >= sponsorsSection.getY() && scrollPos + 5 && !sponsorsNavItem.hasClass('active')) {
+                    if (logisticsNavItem.hasClass('active')) {
+                        logisticsNavItem.removeClass('active');
+                    }
+
+                    sponsorsNavItem.addClass('active')
+                }
+                else if (scrollPos + 5 >= sponsorsSection.getY()) {
+                    if (logisticsNavItem.hasClass('active')) {
+                        logisticsNavItem.removeClass('active');
+                    }
+                }
+            }
+
+            A.on('scroll', displayFixedNav);
+        }
+    );
+</script>
+<style type="text/css">
+
+a.btn {
+  color: #FFF;
+  padding: 15px;
+  font-size: 16px;
+  background-color: #0067aa;
+}
+a.btn:hover {
+  background-color: #0067cc;
+}
+
+.content .span-left {
+	background: url($logo_image.data);
+	display: inline-block;
+	vertical-align: top;
+	width: 125px;
+}
+.content .event-logo-text {
+ 	background: url($logo_image.logo_text_image.data);
+	width: 400px;
+}
+.content .span-left, .content .event-logo-text {
+	background-repeat: no-repeat;
+	background-size: 100%;
+	height: 125px;
+}
+
+.content .span-right {
+	color: #4d4d4f;
+	display: inline-block;
+	margin-top: 5px;
+    max-width: 340px;
+	text-align: left;
+}
+
+.content .event-subtitle {
+	font-size: 18px;
+}
+
+.content .register-button {
+	margin-top: 40px;
+}
+
+.fade {
+	opacity: 0;
+	transition: opacity 1s ease-in-out;
+}
+
+.fade.in {
+	opacity: 1;
+}
+
+#intro {
+	background: url($background_image.data) no-repeat center bottom;
+	background-size: cover;
+	overflow: hidden;
+    position: relative;
+}
+
+#intro .content {
+    position: absolute;
+    left: 38%;
+    top: 15%;
+	transition: all 1s ease-in-out;
+	z-index: 3;
+}
+
+#intro .content.slided {
+	left: 15%;
+}
+#intro .content img {
+	height: 190px;
+}
+
+#introCover {
+    transition: width 1s ease-in-out;
+	height: 0;
+	## 800px here to avoid multiple edits in individual border widths 
+	## this is one huge border that when blown up shows a 45 degree angle
+	border: 800px solid $banner_color.data;
+	border-right-color:  transparent;	
+	border-left-width: 0;
+	border-bottom-width: 0;	
+
+}
+#introCover.start {
+	width: 100%;
+}
+#introCover.slided {   
+    width: 25%;
+}
+
+## fit event logo images from 320px - 600px screens by reducing everything in half...
+@media screen and (max-width: 600px) {
+#intro .content, #intro .content.slided {
+	left: 5%;
+}
+#introCover.start, #introCover.slided {   
+    width: 25%;
+}
+.content .span-left {
+	width: 60px;
+}
+.content .event-logo-text {
+	width: 200px;
+}
+.content .span-left, .content .event-logo-text {
+	height: 60px;
+}
+
+#introCover {
+    border: 400px solid $banner_color.data;
+    border-right-color:  transparent;	
+	border-left-width: 0;
+	border-bottom-width: 0;	
+	}
+	
+	.content .event-subtitle {
+	font-size: 12px;
+}
+
+a.btn {
+  padding: 10px;
+  font-size: 12px;
+
+}
+	
+}
+
+</style>
+<div id="intro">
+	<div class="border">
+		<div id="introCover" class="start">
+			<div id="bannerContent" class="content fade">
+				<div class="span-left">
+				</div>
+				<div class="span-right">
+					<div class="event-logo-text"></div>
+					<div class="event-subtitle top">
+						#foreach($event_text_line in $event_text.getSiblings())
+							<span style="line-height: 1.4;">$event_text_line.getData()</span> <br/>
+						#end
+					</div>
+					<div class="register-button">
+						<a class="btn" href="$button_text.button_url.data target="_blank">$button_text.data</a></div>
+					</div>
+			</div>
+		</div>
+	</div>
+</div>
+<script>
+AUI().ready(
+	'aui-base',
+	function(A) {
+		## fade in banner content
+		var bannerContent = document.getElementById("bannerContent");
+		if (bannerContent != null) {
+			bannerContent.className += " in";
+		}
+
+		## slide in banner cover 2 seconds on load
+		A.on('load', function() {
+			## only slide if desktop/ tablet
+			//if (window.innerWidth > 600) {
+				window.setTimeout(function () {
+					var introCover = document.getElementById("introCover");
+					if (introCover != null) {
+						introCover.className += " slided";
+					}
+					bannerContent.className += " slided";
+				}, 2000 );
+			//}
+		});
+	}
+);
+</script>

@@ -1,0 +1,128 @@
+<style>
+.hs-form .hs-field-desc {
+    color: #000;
+}
+
+#wrapper .hbspt-form .btn {
+	background: #0F8BBC;
+	border: 1px solid #0F8BBC;
+	color: #FFF;
+	font-size: 16px;
+	font-weight: normal;
+	padding: 5px 15px;
+	text-shadow: none;
+}
+
+#wrapper .hbspt-form .btn:hover {
+	background: #FFF;
+	color: #0F8BBC;
+}
+
+#form {
+	padding: 25px 100px;
+	width: 435px;
+}
+
+#form .content span {
+	color: #000;
+}
+
+#form .hbspt-form .form-field {
+    padding-bottom: 8px;
+}
+
+#form .hbspt-form .form-field input {
+	max-width: 482px;
+}
+
+#formWrapper {
+	background: url(/documents/24222655/45138160/stay-connected-slide.png) no-repeat;
+	cursor: pointer;
+	height: 580px;
+	overflow: hidden;
+	position: fixed;
+	right: 0;
+	top: 20%;
+	width: 65px;
+	z-index: 10;
+}
+
+#formWrapper .hs-form.stacked .actions {
+	margin-left: -20px;
+	margin-top: 0;
+	padding-top: 5px;
+}
+
+#formWrapper .hs-form.stacked .field {
+	margin-bottom: 12px;
+}
+
+#formWrapper .hs-form.stacked label {
+	font-size: 12px;
+	margin: 0;
+}
+
+#formWrapper .hs-form .hs-button {
+	background: transparent;
+	border: 2px solid #FFF;
+	color: #FFF;
+	font: 12px helvetica;
+	margin-top: 5px;
+	text-shadow: none;
+	width: 100px;
+}
+
+#formWrapper .hs-form .hs-button:hover {
+	background: #FFF;
+	color: #FAA325;
+}
+
+#formWrapper.pop-click-active {
+	background: url(/documents/24222655/45138160/stay-connected-slide.png) no-repeat;
+	width: 530px;
+}
+
+.chrome #formWrapper {
+	-webkit-transition: width 1s, background 0s 1s;
+	transition: width 1s, background 0s 1s;
+}
+
+.chrome #formWrapper.pop-click-active {
+	-webkit-transition: width 1s;
+	transition: width 1s;
+}
+
+#form .pop-click-content {
+	cursor: default;
+}
+
+#form .form-design-field {
+	padding: 4px 5px;
+}
+</style>
+<div class="pop-click pop-click-active" id="formWrapper">
+	<div id="form">
+		<div class="content pop-click-content">
+			<div class="close"></div>
+			<span style="font-weight:bold;">$content.getData()</span>
+		    <div id="embedded-hs-form">
+    			<runtime-portlet name="56" instance="targeted_$reserved-article-id.data" queryString=""/>
+			</div>
+		</div>
+	</div>
+</div>
+
+<script type="text/javascript" charset="utf-8">
+
+	AUI().ready( 
+	function(A) {
+    	setTimeout(
+    			function(){
+    				activePopClick = A.all('.pop-click-active');
+    				activePopClick.removeClass('pop-click-active');
+    			}, 1000
+    	);
+    }
+);
+
+</script>

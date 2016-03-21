@@ -1,0 +1,13 @@
+#set($layoutLocalService = $serviceLocator.findService("com.liferay.portal.service.LayoutLocalService"))
+#set($xyz = $layoutLocalService.getFriendlyURLLayout($layout.getOwnerId(), "/home")) 
+
+#set($userLocalService = $serviceLocator.findExceptionSafeService("com.liferay.portal.service.UserLocalService"))
+
+
+#** Get the group name *#
+#set($currentGroup = $layout.getGroup())
+#set($currentGroupName = $currentGroup.getName())
+#set($currentGroupURL = $currentGroup.getFriendlyURL())
+#set($templayouts = $layout.getChildren())
+
+$currentGroupURL.getName()

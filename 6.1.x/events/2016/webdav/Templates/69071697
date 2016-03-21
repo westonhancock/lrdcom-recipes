@@ -1,0 +1,450 @@
+<style type="text/css">
+#footer {
+    display: none;
+}
+
+.app-download a {
+    display: block;
+    margin: 10px 0;
+    height: 44px;
+    width: 130px;
+}
+
+.app-download a.android {
+    background-size: 95%;
+}
+
+a.ios {
+    background: url(/documents/67510365/67612719/Apple+Hover.svg/df9ff5e4-ba62-442c-b039-5c65f9ae9b47) no-repeat;
+    background-size: 95%;
+    opacity: 0.4;
+}
+
+a.ios:hover, a.android:hover {
+    opacity: 1;
+}
+
+a.android {
+    background: url(/documents/67510365/67612719/Google+Play+Hover.svg/c2d3feec-4cb0-406d-91d7-df0cc1c11397) no-repeat;
+    opacity: 0.4;
+}
+
+.aui-w12 {
+    width: 12%;
+}
+
+.light-red-font {
+    color: #E58A70;
+}
+
+.countdown h3 {
+    font-size: 14px;
+    opacity: .8;
+}
+
+.countdown-timer {
+    font-size: 48px;
+    height: 64px;
+}
+
+.countdown-values {
+    margin: 0 auto 40px;
+    max-width: 260px;
+}
+
+.countdown-values .countdown-units{
+    display: inline-block;
+    font-size: 16px;
+    width: 23.5%;
+}
+
+.dark-red-font {
+    color: #e6602c;
+}
+
+.footer {
+    background-color: #E3E4E5;
+    padding: 60px 145px;
+}
+
+.footer h3 {
+    margin: 0;
+}
+
+.footer li {
+    margin: 5px 0;
+}
+
+.footer li.separator {
+    border-top: 1px solid #BFBFBF;
+    height: 0;
+    margin: 15.5px 0;
+    max-width: 140px;
+}
+
+.footer li a {
+    color: #909295;
+}
+
+.footer ul {
+    list-style: none;
+}
+
+.footer .content-column {
+    margin: 0;
+}
+
+.footer .countdown {
+    margin: 0 auto;
+    text-align: center;
+    width: 32%;
+}
+
+.get-app {
+    color: #000;
+    font-size: 1.2em;
+}
+
+.company-footer, .info-form {
+    color: #FFF;
+}
+
+.company-footer {
+    background-color: #414142;
+    padding: 1em;
+    text-align: center;
+}
+
+.company-footer .created-by {
+    float: left;
+}
+
+.company-footer .liferay-logo {
+    margin: 0 auto;
+    display: inline-block;
+    vertical-align: middle;
+}
+
+.company-footer .copyright {
+    float: right;
+}
+
+.company-footer div {
+    line-height: 32px;
+}
+
+.footer .social {
+    float: right
+}
+
+.social li {
+    font-size: 16px;
+    margin: 25px 0 0;
+}
+
+.social li:first-child {
+    margin-top: 0;
+}
+
+.social li:hover a {
+    color: #FFF;
+}
+
+.social li a {
+    color: #000;
+    padding: 7px 10px 7px 5px;
+}
+
+
+.social li a:hover {
+    background-color: -webkit-linear-gradient(45deg,transparent 50%,#df8f1d 0),#f1a31e left top;
+    background: -o-linear-gradient(45deg,transparent 50%,#df8f1d 0),#f1a31e left top;
+    background: -moz-linear-gradient(45deg,transparent 50%,#df8f1d 0),#f1a31e left top;
+    background: linear-gradient(45deg,transparent 50%,#df8f1d 0),#f1a31e left top;
+}
+
+.social li a:before {
+    background: url('/documents/67510365/67612719/social-sprite.svg/4225309a-8463-4dbb-b71c-38f7f6b40ddd') no-repeat;
+    content: "";
+    display: inline-block;
+    height: 16px;
+    margin-right: 15px;
+    width: 18px;
+}
+
+.social li.facebook a:before {
+    background-position: -18px 0;
+}
+
+.social li.facebook:hover a:before {
+    background-position: 0 0;
+}
+
+.social li.twitter a:before {
+    background-position: -18px -18px;
+}
+
+.social li.twitter:hover a:before {
+    background-position: 0 -18px;
+}
+
+.social li.linkedin a:before {
+    background-position: -18px -36px;
+}
+
+.social li.linkedin:hover a:before {
+    background-position: 0 -36px;
+}
+
+.social li.youtube a:before {
+    background-position: -18px -53px;
+}
+
+.social li.youtube:hover a:before {
+    background-position: 0 -53px;
+}
+
+.social li.blog a:before {
+    background-position: -18px -72px;
+}
+
+.social li.blog:hover a:before {
+    background-position: 0 -72px;
+}
+
+@media(max-width: 1200px) {
+    .footer {
+        padding: 50px 20px;
+    }
+
+    .footer .countdown {
+    	width:  33%;
+	}
+}
+
+@media(max-width: 840px) {
+    .responsive .footer .desktop-only {
+        display: none !important;
+    }
+
+    .company-footer .created-by, .company-footer .copyright {
+        float: none;
+        font-size: 12px;
+    }
+
+    .company-footer div {
+        line-height: 18px;
+    }
+
+    .company-footer .liferay-logo {
+        margin-bottom: 15px;
+    }
+
+    .footer .footer-responsive-top-container.responsive-only {
+        display: block !important;
+    }
+
+    .footer {
+        padding-bottom: 1px;
+    }
+
+    .footer .app-download a {
+        margin: 20px auto;
+    }
+
+    .footer .content-column {
+        float: none;
+    }
+
+    .footer .countdown, .footer .app-download  {
+        text-align: center;
+        width: 100%;
+    }
+
+    .footer li.separator {
+        margin: 10px 0;
+    }
+
+    .footer .page-nav.responsive-only, .footer .scroll-nav.responsive-only {
+        display: inline-block !important;
+        vertical-align: top;
+    }
+
+    .footer .page-nav.responsive-only {
+
+        width: 43% !important;
+    }
+
+    .footer .scroll-nav.responsive-only {
+        width: 55% !important;
+    }
+
+    .footer .social {
+        display: block;
+        float: none;
+        margin: 0 auto;
+        max-width: 120px;
+        width: 100%;
+    }
+
+    .footer .footer-responsive-top-container {
+        margin: 40px auto 20px;
+        max-width: 228px;
+    }
+
+    .social li:last-child {
+        margin-bottom: 25px;
+    }
+}</style>
+<div class="aui-helper-clearfix footer">
+    <ul class="aui-w15 content-column desktop-only scroll-nav">
+        #foreach($leftItem in $left_section_item.siblings)
+            <li>
+                <a class="animate-scroll" href="$leftItem.href.data">$leftItem.data</a></li>
+            <li>
+        #end
+    </ul>
+    <ul class="aui-w20 content-column desktop-only page-nav">
+        #if ($right_section_item.data != "" && $right_section_item.data)
+            #foreach($rightItem in $right_section_item.siblings)
+                <li>
+                    <a $rightItem.attribute.data #if ($rightItem.className.data != "" && $rightItem.className.data)class="$rightItem.className.data"#end href="$rightItem.href.data">$rightItem.data</a></li>
+                #if ($rightItem.separator.data == true && $rightItem.separator)
+                    <li class="separator">&nbsp;</li>
+            	#end
+            #end
+        #end
+	</ul>
+	<div class="content-column countdown">
+		<h3 class="light-red-font lighter-font">
+			#if ($registration_time.early_bird_text.data != "" && $registration_time.early_bird_text.data)
+				$registration_time.early_bird_text.data
+			#else
+				Early Bird Registration Open For
+			#end
+		</h3>
+		<div class="countdown-timer dark-red-font">
+			&nbsp;</div>
+		<div class="countdown-values light-red-font">
+			#if ($register_button_text.day.data != "" && $register_button_text.day.data)
+			<div class="countdown-units">
+				$register_button_text.day.data</div>
+			<div class="countdown-units">
+				$register_button_text.hour.data</div>
+			<div class="countdown-units">
+				$register_button_text.minute.data</div>
+			<div class="countdown-units">
+				$register_button_text.day.data</div>
+			#else
+				<div class="countdown-units">
+					D</div>
+				<div class="countdown-units">
+					H</div>
+				<div class="countdown-units">
+					M</div>
+				<div class="countdown-units">
+					S</div>
+			#end
+		</div>
+		<a class="btn" href="$register_button_text.register_url.data" id="earlyBirdButton" target="_blank">$register_button_text.data</a></div>
+	<div class="footer-responsive-top-container content-column responsive-only">
+		<ul class="aui-w12 content-column responsive-only scroll-nav">
+	        #foreach($leftItem in $left_section_item.siblings)
+	            <li>
+	                <a class="animate-scroll" href="$leftItem.href.data">$leftItem.data</a></li>
+	            <li>
+	        #end
+		</ul>
+		<ul class="aui-w20 content-column responsive-only page-nav">
+	        #if ($right_section_item.data != "" && $right_section_item.data)
+	            #foreach($rightItem in $right_section_item.siblings)
+	                <li>
+	                    <a $rightItem.attribute.data #if ($rightItem.className.data != "" && $rightItem.className.data)class="$rightItem.className.data"#end href="$rightItem.href.data">$rightItem.data</a></li>
+	                #if ($rightItem.separator.data == true && $rightItem.separator)
+	                    <li class="separator">&nbsp;</li>
+	            	#end
+	            #end
+	        #end
+		</ul>
+	</div>
+	<div class="social content-column">
+		<ul class="content-column lighter-font">
+			<li class="social-item facebook">
+				<a href="//www.facebook.com/pages/Liferay/45119213107" target="_blank">Facebook</a></li>
+			<li class="social-item twitter">
+				<a href="//www.twitter.com/liferaybenelux" target="_blank">Twitter</a></li>
+			<li class="social-item linkedin">
+				<a href="//www.linkedin.com/company/83609?trk=NUS_CMPY_TWIT" target="_blank">Linkedin</a></li>
+			<li class="social-item youtube">
+				<a href="//www.youtube.com/user/liferayinc" target="_blank">Youtube</a></li>
+			<li class="social-item blog">
+				<a href="/community/blogs" target="_blank">LR Blogs</a></li>
+		</ul>
+	</div>
+</div>
+<div class="company-footer">
+	<img class="liferay-logo" src="/documents/67510365/67612719/Liferay+Footer.svg/fe8309ca-36a6-4a32-8e9a-b5674e80e8c8" />
+	<div class="created-by">
+		Handmade on Liferay in Diamond Bar, CA</div>
+	<div class="copyright">
+		© 2015 Liferay Inc. All Rights Reserved.</div>
+</div>
+<script>
+AUI().ready(
+    'node',
+    function(A) {
+        function CountDownTimer(year, month, day, hour, minute, second, selector) {
+            var end = new Date(Date.UTC(year, month, day, hour, minute, second));
+
+            var _second = 1000;
+            var _minute = _second * 60;
+            var _hour = _minute * 60;
+            var _day = _hour * 24;
+            var timer;
+
+            function showRemaining() {
+                var now = new Date();
+
+                var distance = end - now;
+                if (distance < 0) {
+                    clearInterval(timer);
+                    A.one(selector).set('innerHTML', 'EXPIRED!');
+                    A.one('#earlyBirdButton').hide();
+                    A.one('.countdown-values').hide();
+
+                    return;
+                }
+
+                var days = Math.floor(distance / _day);
+                var hours = Math.floor((distance % _day) / _hour);
+                var minutes = Math.floor((distance % _hour) / _minute);
+                var seconds = Math.floor((distance % _minute) / _second);
+
+                var units = [days, hours, minutes, seconds];
+                var count = 0;
+
+                units.forEach(function(unit) {
+                    if (unit < 10) {
+                        unit = '0' + unit;
+                        units[count] = unit;
+                    }
+
+                    count++;
+                });
+
+                A.one(selector).set('innerHTML', units[0] + ':' + units[1] + ':' + units[2] + ':' + units[3]);
+            }
+
+            timer = setInterval(showRemaining, 1000);
+        }
+
+        var year = parseInt($registration_time.year.data);
+        var month = parseInt($registration_time.month.data) - 1;
+        var day = parseInt($registration_time.day.data);
+        var hour = parseInt($registration_time.hour.data);
+
+        //months start from 0 (Jan) to 11(Dec)
+        CountDownTimer(year, month, day, hour, 0, 0, '.countdown-timer');
+    }
+);
+</script>

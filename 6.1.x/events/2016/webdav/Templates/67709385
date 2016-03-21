@@ -1,0 +1,183 @@
+<style type="text/css">
+.description {
+    background: -webkit-linear-gradient(125deg, transparent 65%, #d15221 0%);
+    background: -o-linear-gradient(125deg, transparent 65%, #d15221 0%);
+    background: -moz-linear-gradient(125deg, transparent 65%, #d15221 0%);
+    background: linear-gradient(125deg, transparent 65%, #d15221 0%);
+    color: #FFF;
+    margin-left: 10%;
+    min-height: 130px;
+    padding: 60px 40px 60px 0;
+}
+
+.description .title, .description .subtitle {
+    display: inline-block;
+    font-weight: 100;
+    margin: 0 auto;
+}
+
+.description .title {
+    font-size: 1.5em;
+    max-width: 34%;
+    text-shadow: 0px 0px 30px rgba(12, 0, 5, 0.8);
+    width: 100%;
+}
+
+.description .title a, .description .responsive-title a {
+    color: #FFF;
+}
+
+.description .title a:hover, .description .responsive-title a:hover {
+    color: #DBE0E4;
+}
+
+.description .title .name {
+    margin-left: 15%;
+}
+
+.description .subtitle {
+    font-size: 2em;
+    font-style: italic;
+    line-height: 1.5em;
+    max-width: 65%;
+    z-index: 2;
+}
+
+.portal-header {
+    background: -webkit-linear-gradient(125deg, transparent 40%, #E6602C 0%), url('$background_image.data') no-repeat left;
+    background: -o-linear-gradient(125deg, transparent 40%, #E6602C 0%), url('$background_image.data') no-repeat left;
+    background: -moz-linear-gradient(125deg, transparent 40%, #E6602C 0%), url('$background_image.data') no-repeat left;
+    background: linear-gradient(125deg, transparent 35%, #E6602C 0%), url('$background_image.data') no-repeat left;
+    width: 100%;
+}
+
+.responsive-title  {
+    display: none;
+}
+
+@media(max-width: 1260px) {
+    .description {
+        margin-left: 5%;
+    }
+}
+
+@media(max-width: 990px) {
+    .description {
+        min-height: 0;
+    }
+
+    .portal-header {
+        background: -webkit-linear-gradient(125deg, transparent 25%, #E6602C 0%), url('$background_image.data') no-repeat left bottom;
+        background: -o-linear-gradient(125deg, transparent 25%, #E6602C 0%), url('$background_image.data') no-repeat left bottom;
+        background: -moz-linear-gradient(125deg, transparent 25%, #E6602C 0%), url('$background_image.data') no-repeat left bottom;
+        background: linear-gradient(125deg, transparent 25%, #E6602C 0%), url('$background_image.data') no-repeat left bottom;
+        background-size: contain;
+    }
+
+    .portal-header .description {
+        background: -webkit-linear-gradient(125deg, transparent 75%, #d15221 0%);
+        background: -o-linear-gradient(125deg, transparent 75%, #d15221 0%);
+        background: -moz-linear-gradient(125deg, transparent 75%, #d15221 0%);
+        background: linear-gradient(125deg, transparent 75%, #d15221 0%);
+        margin-left: 30%;
+        padding: 20px 10px 20px;
+    }
+
+    .portal-header .description .subtitle {
+        font-size: 22px;
+        float: none;
+        max-width: 100%;
+        top: 0;
+    }
+
+    .portal-header .description .title {
+        display: none;
+    }
+
+    .portal-header .title {
+        font-size: 12px;
+        margin: 0;
+        max-width: 300px;
+        padding-bottom: 10%;
+    }
+
+    .responsive-title {
+        color: #FFF;
+        display: block;
+        font-size: 18px;
+        opacity: .8;
+    }
+}
+
+@media(max-width: 760px) {
+    .description {
+        padding: 40px 0;
+    }
+}
+
+@media(max-width: 520px) {
+    .portal-header {
+        background: #E6602C;
+    }
+
+    .portal-header .description {
+    	background: -webkit-linear-gradient(125deg, transparent 49%, #d15221 0%);
+		background: -o-linear-gradient(125deg, transparent 49%, #d15221 0%);
+		background: -moz-linear-gradient(125deg, transparent 49%, #d15221 0%);
+		background: linear-gradient(125deg, transparent 49%, #d15221 0%);
+		margin-left: 0%;
+		padding: 25px;
+    }
+
+    .portal-header .description .subtitle {
+        font-size: 18px;
+    }
+
+    .responsive-title {
+        color: #FFF;
+        display: block;
+        font-size: 14px;
+        opacity: .8;
+    }
+}</style>
+<div class="portal-header">
+    <div class="description">
+        #if ($background_image.data != "")
+            <div class="title">
+                <div class="name">
+                    $name.data</div>
+                <div>
+                #if ($twitter_handle.data != "" && $twitter_handle.data)
+                    <a href="https://twitter.com/$twitter_handle.data" target="_blank">@$twitter_handle.data</a>
+                #end
+                </div>
+            </div>
+            <p class="subtitle">
+                $quote.data</p>
+            <div class="responsive-title">
+                $name.data
+            </div>
+        #else
+            <p class="subtitle">
+                $quote.data</p>
+            <div class="responsive-title">
+                $name.data
+            </div>
+            <div class="title">
+                <div class="name">
+                    $name.data</div>
+                <div>
+                #if ($twitter_handle.data != "" && $twitter_handle.data)
+                    <a href="https://twitter.com/$twitter_handle.data" target="_blank">@$twitter_handle.data</a>
+                #end
+                </div>
+            </div>
+        #end
+        #if ($twitter_handle.data != "" && $twitter_handle.data)
+            <div>
+                <a href="https://twitter.com/$twitter_handle.data" target="_blank">@$twitter_handle.data</a>
+            </div>
+        #end
+        </div>
+    </div>
+</div>

@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+
+<root>
+	<dynamic-element name="record_set_id" type="text" index-type="" repeatable="false"/>
+	<dynamic-element name="sponsor_header_text" type="text" index-type="" repeatable="false"/>
+	<dynamic-element name="sponsor_text_setting" type="selection_break" index-type="" repeatable="true">
+		<dynamic-element name="sponsor_type" type="list" index-type="" repeatable="false">
+			<dynamic-element name="Silver" type="silver" index-type="" repeatable="false"></dynamic-element>
+			<dynamic-element name="Gold" type="gold" index-type="" repeatable="false"></dynamic-element>
+			<dynamic-element name="Exhibitor" type="exhibitor" index-type="" repeatable="false"></dynamic-element>
+			<dynamic-element name="Platinum" type="platinum" index-type="" repeatable="false"></dynamic-element>
+			<dynamic-element name="Diamond" type="diamond" index-type="" repeatable="false"></dynamic-element>
+			<dynamic-element name="Main" type="main" index-type="" repeatable="false"/>
+		</dynamic-element>
+		<dynamic-element name="sponsor_text" type="text" index-type="" repeatable="false"/>
+	</dynamic-element>
+</root>

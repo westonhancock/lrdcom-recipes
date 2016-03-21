@@ -1,0 +1,63 @@
+<?xml version="1.0"?>
+
+<root>
+	<dynamic-element name="height" type="text" index-type="" repeatable="false">
+		<meta-data>
+			<entry name="displayAsTooltip"><![CDATA[false]]></entry>
+			<entry name="required"><![CDATA[false]]></entry>
+			<entry name="instructions"><![CDATA[]]></entry>
+			<entry name="label"><![CDATA[Height of each block]]></entry>
+			<entry name="predefinedValue"><![CDATA[]]></entry>
+		</meta-data>
+	</dynamic-element>
+	<dynamic-element name="location" type="text" index-type="" repeatable="true">
+		<dynamic-element name="width" type="list" index-type="" repeatable="false">
+			<dynamic-element name=" 100% " type="100" repeatable="false"/>
+			<dynamic-element name=" 50% " type="50" repeatable="false"/>
+			<dynamic-element name=" 33% " type="33" repeatable="false"/>
+			<meta-data>
+				<entry name="displayAsTooltip"><![CDATA[false]]></entry>
+				<entry name="required"><![CDATA[false]]></entry>
+				<entry name="instructions"><![CDATA[]]></entry>
+				<entry name="label"><![CDATA[Width]]></entry>
+				<entry name="predefinedValue"><![CDATA[]]></entry>
+			</meta-data>
+		</dynamic-element>
+		<dynamic-element name="location_info_link" type="text" index-type="" repeatable="false">
+			<meta-data>
+				<entry name="displayAsTooltip"><![CDATA[false]]></entry>
+				<entry name="required"><![CDATA[false]]></entry>
+				<entry name="instructions"><![CDATA[]]></entry>
+				<entry name="label"><![CDATA[URL for location's site]]></entry>
+				<entry name="predefinedValue"><![CDATA[]]></entry>
+			</meta-data>
+		</dynamic-element>
+		<dynamic-element name="background" type="text" index-type="" repeatable="false">
+			<dynamic-element name="is_photo" type="list" index-type="" repeatable="false">
+				<dynamic-element name=" photo " type="true" repeatable="false"/>
+				<dynamic-element name=" Color " type="false" repeatable="false"/>
+				<meta-data>
+					<entry name="displayAsTooltip"><![CDATA[false]]></entry>
+					<entry name="required"><![CDATA[false]]></entry>
+					<entry name="instructions"><![CDATA[]]></entry>
+					<entry name="label"><![CDATA[Type of background]]></entry>
+					<entry name="predefinedValue"><![CDATA[]]></entry>
+				</meta-data>
+			</dynamic-element>
+			<meta-data>
+				<entry name="displayAsTooltip"><![CDATA[true]]></entry>
+				<entry name="required"><![CDATA[false]]></entry>
+				<entry name="instructions"><![CDATA[Use either a hex color reference, or a URL linked to a photo.]]></entry>
+				<entry name="label"><![CDATA[Backgroud]]></entry>
+				<entry name="predefinedValue"><![CDATA[]]></entry>
+			</meta-data>
+		</dynamic-element>
+		<meta-data>
+			<entry name="displayAsTooltip"><![CDATA[false]]></entry>
+			<entry name="required"><![CDATA[false]]></entry>
+			<entry name="instructions"><![CDATA[]]></entry>
+			<entry name="label"><![CDATA[location]]></entry>
+			<entry name="predefinedValue"><![CDATA[]]></entry>
+		</meta-data>
+	</dynamic-element>
+</root>

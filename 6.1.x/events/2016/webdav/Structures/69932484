@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+
+<root>
+	<dynamic-element name="at-a-glance" type="text" index-type="" repeatable="false"/>
+	<dynamic-element name="date" type="text" index-type="" repeatable="true">
+		<dynamic-element name="month-day" type="text" index-type="" repeatable="false"/>
+		<dynamic-element name="month-language" type="text" index-type="" repeatable="false"/>
+		<dynamic-element name="day-language" type="text" index-type="" repeatable="false"/>
+		<dynamic-element name="first-hour" type="text" index-type="" repeatable="false"/>
+		<dynamic-element name="category" type="text" index-type="" repeatable="true">
+			<dynamic-element name="starttime" type="text" index-type="" repeatable="false"/>
+			<dynamic-element name="endtime" type="text" index-type="" repeatable="false"/>
+		</dynamic-element>
+		<dynamic-element name="maxColumn" type="text" index-type="" repeatable="false"/>
+	</dynamic-element>
+</root>
