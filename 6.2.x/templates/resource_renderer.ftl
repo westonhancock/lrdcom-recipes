@@ -72,12 +72,12 @@
 					<path class="element-stroke transparent-fill" d="M141.5,187.5H3.5c-1.6,0-3-1.4-3-3V3.5c0-1.6,1.4-3,3-3h138c1.6,0,3,1.4,3,3v181 C144.5,186.1,143.1,187.5,141.5,187.5z"/>
 
 					<svg x="10%" viewBox="0 0 152 36" width="80%">
-						<use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#liferayLogo-liferay"></use>
-						<use class="logo-border" xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#liferayLogo-logoBorder"></use>
-						<use class="light-fill" xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#liferayLogo-gradientLightest"></use>
-						<use class="logo-gradient-light" xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#liferayLogo-gradientLight"></use>
-						<use class="logo-gradient-dark" xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#liferayLogo-gradientDark"></use>
-						<use class="logo-gradient-darkest" xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#liferayLogo-gradientDarkest"></use>
+						<use xlink:href="#liferayLogo-liferay"></use>
+						<use class="logo-border" xlink:href="#liferayLogo-logoBorder"></use>
+						<use class="light-fill" xlink:href="#liferayLogo-gradientLightest"></use>
+						<use class="logo-gradient-light" xlink:href="#liferayLogo-gradientLight"></use>
+						<use class="logo-gradient-dark" xlink:href="#liferayLogo-gradientDark"></use>
+						<use class="logo-gradient-darkest" xlink:href="#liferayLogo-gradientDarkest"></use>
 					</svg>
 				</svg>
 			</div>
@@ -95,6 +95,26 @@
 
 				${journal_content_util.getContent(groupId, hubspot_form_article_id, "", locale, document.asXML())!}
 			</div>
+
+			<#if layoutPermission.contains(permissionChecker, layout, "UPDATE")>
+				<#assign current_url = request.attributes.CURRENT_COMPLETE_URL! />
+
+				<#assign edit_url = portletURLFactory.create(http_servlet_request, "20", plid, "0") />
+				<#assign VOID = edit_url.setParameter("p_p_state", "maximized") />
+				<#assign VOID = edit_url.setParameter("p_p_lifecycle", "0") />
+				<#assign VOID = edit_url.setParameter("groupId", "${groupId}") />
+				<#assign VOID = edit_url.setParameter("struts_action", "/document_library/edit_file_entry") />
+				<#assign VOID = edit_url.setParameter("redirect", "${current_url}") />
+				<#assign VOID = edit_url.setParameter("folderId", "${dl_file_entry.getFolderId()?string}") />
+				<#assign VOID = edit_url.setParameter("fileEntryId", "${dl_file_entry.getFileEntryId()?string}") />
+
+				<span class="lfr-icon-action lfr-icon-action-edit lfr-meta-actions pull-right">
+					<a href="${edit_url}" class="taglib-icon">
+						<img src="/osb-community-theme/images/spacer.png" alt="Edit" style="background-image: url('/osb-community-theme/sprite/images/common/_sprite.png'); background-position: 50% -608px; background-repeat: no-repeat; height: 16px; width: 16px;">
+						<span class="taglib-text ">Edit</span>
+					</a>
+				</span>
+			</#if>
 		</div>
 	<#else>
 		Thank you for playing. Unfortunately you have chosen poorly and this marks then end of your "Choose Your Own Adventure" journey.
