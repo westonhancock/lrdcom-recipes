@@ -172,17 +172,17 @@
 	<dynamic-element dataType="string" indexType="keyword" localizable="true" name="video_id" readOnly="false" repeatable="false" required="false" showLabel="true" type="text" width="large">
 		<meta-data locale="en_US">
 			<entry name="label">
-				<![CDATA[Case Study Video URL]]>
+				<![CDATA[Case Study Video URL ID]]>
 			</entry>
 			<entry name="predefinedValue">
 				<![CDATA[]]>
 			</entry>
 			<entry name="tip">
-				<![CDATA[]]>
+				<![CDATA[For example, if the url looks like: 'https://www.youtube.com/watch?v=qTLwM4J_3jg', the id would be 'qTLwM4J_3jg', which is the portion after '?v=']]>
 			</entry>
 		</meta-data>
 	</dynamic-element>
-	<dynamic-element dataType="boolean" indexType="keyword" localizable="false" name="hightlighted" readOnly="false" repeatable="false" required="false" showLabel="true" type="checkbox" width="">
+	<dynamic-element dataType="boolean" indexType="keyword" localizable="true" name="hightlighted" readOnly="false" repeatable="false" required="false" showLabel="true" type="checkbox" width="">
 		<meta-data locale="en_US">
 			<entry name="label">
 				<![CDATA[Highlighted]]>
