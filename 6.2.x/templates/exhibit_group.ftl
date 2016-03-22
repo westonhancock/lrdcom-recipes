@@ -52,13 +52,7 @@
 
 						<#if block.block_link_text.data?has_content>
 							<#list block.block_link_text.siblings as block_link>
-								<#assign svg_item = "" />
-
-								<#if block_link.siblings?size == 1>
-									<#assign svg_item = "<svg class='cta-icon' height='10' width='8'><use xlink:href='#caret' /></svg>" />
-								</#if>
-
-								<a class="cta" href="${block_link.block_link_url.data}">${block_link.data} ${svg_item}</a>
+								<a class="cta" href="${block_link.block_link_url.data}">${block_link.data} <svg class='cta-icon' height='10' width='8'><use xlink:href='#caret' /></svg></a>
 							</#list>
 						</#if>
 
