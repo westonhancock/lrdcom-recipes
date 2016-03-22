@@ -11,15 +11,15 @@
 		</meta-data>
 	</dynamic-element>
 	<dynamic-element name="enable_agenda_button" type="list" index-type="" repeatable="false">
-		<dynamic-element name=" Wahr " type="true" repeatable="false"/>
-		<dynamic-element name=" Falsch " type="false" repeatable="false"/>
 		<meta-data>
 			<entry name="displayAsTooltip"><![CDATA[false]]></entry>
 			<entry name="required"><![CDATA[false]]></entry>
-			<entry name="instructions"><![CDATA[true or false, if the Agenda button with v slide out  should be displayed]]></entry>
+			<entry name="instructions"><![CDATA[true or false, if the Agenda button with v slide outshould be displayed]]></entry>
 			<entry name="label"><![CDATA[enable_agenda_button]]></entry>
 			<entry name="predefinedValue"><![CDATA[]]></entry>
 		</meta-data>
+		<dynamic-element name=" Wahr " type="true" index-type="" repeatable="false"></dynamic-element>
+		<dynamic-element name=" Falsch " type="false" index-type="" repeatable="false"/>
 	</dynamic-element>
 	<dynamic-element name="agenda_button_text" type="text" index-type="" repeatable="false">
 		<meta-data>
@@ -84,4 +84,5 @@
 			<entry name="predefinedValue"><![CDATA[]]></entry>
 		</meta-data>
 	</dynamic-element>
+	<dynamic-element name="agenda_recap_flag" type="boolean" index-type="" repeatable="false"/>
 </root>
