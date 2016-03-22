@@ -4,7 +4,7 @@
 
 		<#assign number_of_heading_fields = 2 />
 
-		<div class="align-baseline block-container justify-center">
+		<div class="align-baseline block-container justify-center w100">
 			<#list block_title.siblings as block>
 				<#assign block_css_class = "block exhibit standard-padding w${row_percent.data}"/>
 
@@ -52,7 +52,7 @@
 
 						<#if block.block_link_text.data?has_content>
 							<#list block.block_link_text.siblings as block_link>
-								<a class="cta" href="${block_link.block_link_url.data}">${block_link.data} <svg class='cta-icon' height='10' width='8'><use xlink:href='#caret' /></svg></a>
+								<a class="cta cta-primary" href="${block_link.block_link_url.data}">${block_link.data} <svg class='cta-icon' height='10' width='8'><use xlink:href='#caret' /></svg></a>
 							</#list>
 						</#if>
 
