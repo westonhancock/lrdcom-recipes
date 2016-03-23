@@ -1164,15 +1164,15 @@
 			##-------------------------------get extra info for recapping ---- 
 			## --- this currently only gets one of the speakers if there are multiple..
 			## clear variables in case we don't go through the loop
-			 #set ($speaker_bio = "")
-	         #set ($speaker_company = "")
+			#set ($speaker_bio = "")
+	        #set ($speaker_company = "")
             #set ($speaker_name = "")
             #set ($speaker_title = "")
             #set ($speaker_image_group_id = "")
             #set ($speaker_image = "")
             #set ($speaker_image_uuid = "")
             #set ($speaker_json_object = "")
-	 	#set ($speaker_array_uuid = $stringUtil.split($record.getFieldValue("speakers_uuid")))
+	 		#set ($speaker_array_uuid = $stringUtil.split($record.getFieldValue("speakers_uuid")))
 		
 			 #foreach ($speakers_uuid in $speaker_array_uuid)
 	            #set ($speakers_uuid = $stringUtil.trim($speakers_uuid))
@@ -1238,7 +1238,7 @@
 	        
 	        ## only show popup when download stuff available
 	        #if ($recap && $validator.isNull($download_url) && $validator.isNull($video_url)) 
-				#set ($pop_up_css_class = "")
+				#set ($pop_up_css_class = $pop_up_css_class.replace("pop-up", ""))
 			#end     
 			##-------------------------------end get extra info for recapping ---- 
 

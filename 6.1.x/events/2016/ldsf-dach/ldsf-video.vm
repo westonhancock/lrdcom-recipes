@@ -1,3 +1,8 @@
+#set ($headerpos = "top")
+#if ($header_position && $header_position.data != "") 
+	#set ($headerpos = $header_position.data)
+#end
+
 <style>
     .aui-overlaymask-content {
         opacity: 0.85 !important;
@@ -22,7 +27,6 @@
     .engage-section h2.title {
         font-size: 28px;
         font-weight: normal;
-        text-align: center;
         line-height: 1.5em;
         margin: 10px;
        
@@ -37,10 +41,13 @@
         font-size: 1.25em;
         font-weight: normal;
         line-height: 1.5em;
-        margin: 15px 0;
-        padding: 0 20px;
         text-shadow: 0 0 30px rgba(12, 0, 5, 0.8);
     }
+    
+    .engage-text h3.subtitle, .engage-text h2.title {
+		margin: 15px 0;
+		padding: 0 20px;
+     }
 
     h2.light, h3.light {
         color: #FFF;
@@ -68,7 +75,6 @@
         background-position: top center;
         background-repeat: no-repeat;
         background-size: cover;
-        min-height: 375px;
     }
     
     @media screen and (max-width: 768px) {
@@ -245,7 +251,9 @@
 <div id="$sectionid.data">
    <div id="aboutStartNav">
         <div class="engage-section">
-        	<h2 class="title light">$header.data</h2>
+        	#if ($headerpos == "top")
+        	<h2 class="centered title light">$header.data</h2>
+            #end
             <div class="engage-container">
                 <div class="video-swap ">
                     <svg title="Play Video" class="video-wrapper" data-embed="$video_id.data" version="1.1"  
@@ -260,6 +268,9 @@
 					</svg>
                 </div>
             	<div class="engage-text" >
+            		#if ($headerpos != "top")
+        				<h2 class="title light">$header.data</h2>
+           			 #end
                     <h3 class="subtitle light">$paragraph.data</h3>
                 </div>
             </div>

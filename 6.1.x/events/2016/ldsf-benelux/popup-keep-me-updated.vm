@@ -1,0 +1,226 @@
+<style type="text/css">
+
+.responsive-padding {
+	padding: 0 10px;
+}
+
+.responsive .content-column .content-column-content,
+.responsive .content-column .portlet-column-content,
+.responsive .portlet-column .content-column-content,
+.responsive .portlet-column .portlet-column-content {
+    padding: 0 !important;
+}
+
+.content-column {
+    float: left;
+}
+
+.content-column .left-column {
+    padding-right: 10px;
+}
+
+.content-column .middle-column {
+    padding: 0 10px;
+}
+
+.content-column .right-column {
+    padding-left: 10px;
+}
+
+.btn {
+    background: linear-gradient(45deg,transparent 50%, #DF8F1D 0), #F1A31E left top;
+    color: #FFF;
+    font-size: 1.2em;
+    padding: 15px;
+    transition: background .5s;
+    -webkit-transition: background .5s;
+}
+
+.btn:hover {
+    color:#FFF;
+    background: linear-gradient(45deg,transparent 50%, #F1A31E 0), #DF8F1D left top;
+}
+
+.custom-nav-container .portlet-borderless-container, .style-page .portlet-borderless-container, #agenda .portlet-borderless-container  {
+    min-height: 0;
+}
+
+.portal-header {
+    background: #E66026;
+}
+
+.video-swap {
+    margin: 20px auto;
+}
+
+#experts {
+    padding: 0 0 80px;
+}
+
+#introCover:after {
+    top: -320px;
+}
+
+.taglib-header {
+    display: none;
+}
+
+@media (max-width: 840px){
+    #introCover:after {
+        height: 615px;
+    }
+}
+
+@media all and (max-width: 720px) {
+    .content-column {
+        display: block;
+        width: 100%;
+    }
+
+    .content-column .content-column-content {
+        padding: 15px !important;
+    }
+
+    .max-960 {
+        margin: 0 20px;
+    }
+}
+
+@media (max-width: 590px) {
+    #introCover:after {
+      top: -395px;
+    }
+}
+
+@media (max-width: 420px) {
+    #introCover:after {
+      left: -80px;
+      width: 150%;
+    }
+}
+
+
+.close-popup-content {
+    background: url('/documents/14/43237314/x-close.png/fb100dfc-157b-43df-8ce1-5a8c8a873c3d') no-repeat;
+    cursor: pointer;
+    float: right;
+    height: 24px;
+    left: 0px;
+    position: relative;
+    top: 18px;
+    width: 24px;
+}
+
+#updatePopUp {
+      display: none;
+  }
+
+  #updatePopUp.class-toggle-active {
+    display: block;
+    position: fixed;
+    left: 50%;
+    margin-left: -360px;
+    max-width: 720px;
+    top: 0;
+    width: 100%;
+    z-index: 9999;
+  }
+
+  #updatePopUp .pop-content {
+  	background-color: #FFF;
+  	box-sizing: border-box;
+  	max-height: 540px;
+  	overflow-y: auto;
+    padding: 15px;
+    position: relative;
+    top: 60px;
+  }
+
+@media(max-width: 720px) {
+  #updatePopUp.class-toggle-active {
+    margin-left: -240px;
+    max-width: 480px;
+  }
+
+  #updatePopUp.class-toggle-active .pop-content {
+max-height: 320px;
+    overflow-y: auto;
+  }
+}
+
+@media(max-width: 480px) {
+  #updatePopUp.class-toggle-active {
+    margin-left: -160px;
+    max-width: 320px;
+  }
+}
+.responsive .content-column.countdown {
+display: none !important;
+}
+</style>
+<div class="pop-up" id="updatePopUp">
+	<div class="close-popup-content class-toggle" data-target-node="#updatePopUp">
+		&nbsp;</div>
+	<div class="pop-content">
+		<runtime-portlet instance="targeted_$reserved-article-id.data" name="56" querystring=""> </runtime-portlet></div>
+</div>
+<script>
+AUI().ready(
+  'aui-overlay-mask',
+  'aui-tabs',
+  'node',
+  'substitute',
+  function(A) {
+    var WIN = A.getWin();
+    var popUps = A.all('.pop-up');
+    var classToggleNodes = A.all('.register-button .btn');
+
+    var createOverlayMask = function() {
+      var bindUI = function() {
+        var overlayMask = A.one('.aui-overlaymask');
+
+        if (overlayMask) {
+          var closePopUpContent = A.all('.close-popup-content');
+
+          overlayMask.on(
+            'click',
+            function() {
+              overlayMask.remove(true);
+              popUps.each(function(node){
+                node.removeClass('class-toggle-active');
+              });
+            }
+          );
+
+          closePopUpContent.each(function(node) {
+            node.on('click', function() {
+              overlayMask.remove(true);
+            });
+          });
+        }
+      }
+
+      var init = function() {
+        if (A.one('.aui-overlaymask')) {
+          return
+        }
+
+        var overlay = new A.OverlayMask().render();
+
+        overlay.set('z-index', 20);
+        overlay.show();
+
+        bindUI();
+      }
+
+      return init();
+    }
+
+    classToggleNodes.each(function(node) {
+      node.on('click', function() {
+        createOverlayMask();
+      });
+    });
+  }
+);
+</script>

@@ -127,6 +127,10 @@
 		width: auto;
 		z-index: 9999;
 	}
+	.floating-nav.register-button.class-toggle-active {	
+		z-index: 0;
+	}
+
 
 	.floating-nav.register-button .btn {
 		display: block;
@@ -273,6 +277,7 @@
 	.content .span-left {
 		background: url($logo_image.data);
 		background-repeat: no-repeat;
+		background-size: 100%;
 		display: inline-block;
 		vertical-align: top;
 		width: 125px;
@@ -355,7 +360,7 @@
 		
 		#intro .content, #intro .content.slided {
 			left: 5%;
-			top: 5%;
+			top: 10%;
 		}
 		
 	}
@@ -404,6 +409,16 @@
 		a.btn {
 			font-size: 16px;
 			padding: 10px;
+		}
+		
+		
+		.content .event-title.top {
+	   	 	font-size: 22px
+		}
+	
+		.content .event-title.bottom {
+	 	   font-size: 18px;
+	    	margin: 0;
 		}
 	}
 
@@ -538,7 +553,7 @@
 
 #if ($button_text.button_url.data != "")
 <nav class="fade floating-nav register-button" id="fixedRegisterBtn">
-	<a class="btn class-toggle" href="$button_text.button_url.data" data-target-node="#updatePopUp">$button_text.data</a>
+	<a class="btn class-toggle" href="$button_text.button_url.data" data-target-node="#updatePopUp, #fixedRegisterBtn">$button_text.data</a>
 </nav>
 #end
 
