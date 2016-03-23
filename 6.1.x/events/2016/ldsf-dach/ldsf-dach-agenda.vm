@@ -41,11 +41,12 @@
 #set ($texttransform = "none")
 #set ($agendabutton = $enable_agenda_button.data.equalsIgnoreCase("true"))
 #set ($recap = ($agenda_recap_flag && ($agenda_recap_flag.data == true)))
+#set ($agendaid = "agenda")
+#if ($sectionid && $sectionid.data != "") 
+	#set ($agendaid = $sectionid.data)
+#end
+
 #set ($selector_color = "#0067aa")
-
-#set($void = $portalUtil.setPageSubtitle("", $request))
-
-
 
 
 #macro (mark_as_extended5 $end_time $row_end_time $row_start_time)
@@ -829,6 +830,26 @@
 
 #if ($recap) 
 <style type="text/css">
+
+.hbspt-form input.aui-button-input {
+    background:#1277a7;
+    color:#FFF;
+    font-size:1.2em;
+    padding:15px;
+    transition:background .5s;
+    -webkit-transition:background .5s
+}
+.hbspt-form input.aui-button-input:hover {
+    background:#1277a7;
+    color:#FFF
+}
+.hbspt-form input.aui-button-input,.hbspt-form input.aui-button-input:hover {
+    border-color:transparent;
+    border-radius:0;
+    font-weight:lighter;
+    text-shadow:none
+}
+
 #popup .pop-up-content {
 	display: block;
 }
@@ -968,7 +989,7 @@
 </div>
 #end
 
- <div id="agenda">
+ <div id="$agendaid">
  #if ($agendabutton)
  <div class="lego-article" id="article-54196071">
  	 <div class="lego-article-content max-960">
@@ -1141,7 +1162,18 @@
             #end
 
 			##-------------------------------get extra info for recapping ---- 
-			## --- is this loop code working right? getting last speaker for each group?..
+			## --- this currently only gets one of the speakers if there are multiple..
+			## clear variables in case we don't go through the loop
+			 #set ($speaker_bio = "")
+	         #set ($speaker_company = "")
+            #set ($speaker_name = "")
+            #set ($speaker_title = "")
+            #set ($speaker_image_group_id = "")
+            #set ($speaker_image = "")
+            #set ($speaker_image_uuid = "")
+            #set ($speaker_json_object = "")
+	 	#set ($speaker_array_uuid = $stringUtil.split($record.getFieldValue("speakers_uuid")))
+		
 			 #foreach ($speakers_uuid in $speaker_array_uuid)
 	            #set ($speakers_uuid = $stringUtil.trim($speakers_uuid))
 	            #set ($speaker_record = false)
@@ -1174,20 +1206,16 @@
 	                #set ($speaker_image_uuid = "")
 	                #set ($speaker_json_object = "")
 	            #end
+
 	        #end
 	
-	        #set ($speaker_image_group_id = $speaker_image_group_id)
-	        #set ($speaker_image = $speaker_image)
-	        #set ($speaker_image_uuid = $speaker_image_uuid)
 	        #set ($data_sources = "")
-	
 			#set ($video_url = $record.getFieldValue("video_url"))
-	        #set ($download_url = $record.getFieldValue("download_url"))
-	
+	        #set ($download_url = $record.getFieldValue("download_url"))	      
+	          
 	        #if ($validator.isNotNull($speaker_image))
 	            #set ($data_sources = "data-img='/documents/$speaker_image_group_id/$speaker_image_uuid'")
 	        #end
-	
 	        #if ($validator.isNotNull($speaker_name))
 	            #set ($data_sources = $data_sources + " " + "data-speaker-name='$htmlUtil.escape($speaker_name)'")
 	        #end
@@ -1248,8 +1276,7 @@
                     #if ($room_name != "") Room: $room_name,#end Time: $start_time_display - $end_time_display<br>
                   </div>
 
-                  #set ($speaker_array_uuid = $stringUtil.split($record.getFieldValue("speakers_uuid")))
-
+               
                   #foreach ($speakers_uuid in $speaker_array_uuid)
                     #set ($speakers_uuid = $stringUtil.trim($speakers_uuid))
                     #set ($speaker_record = false)
@@ -1628,7 +1655,7 @@ AUI().ready(
 
 
 <p class="centered">
-	<a class="class-toggle animate-scroll agenda-arrow" data-target-node="#agendaPop" href="#agenda"> <svg enable-background="new 0 0 15 30" height="30px" id="Layer_1" version="1.1" viewbox="0 0 15 30" width="15px" x="0px" xml:space="preserve" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" y="0px"> <polyline fill="none" points="14.5,29 0.5,15 14.5,1 " stroke="#909295" stroke-miterlimit="10"></polyline> </svg></a>
+	<a class="class-toggle animate-scroll agenda-arrow" data-target-node="#agendaPop" href="#$agendaid"> <svg enable-background="new 0 0 15 30" height="30px" id="Layer_1" version="1.1" viewbox="0 0 15 30" width="15px" x="0px" xml:space="preserve" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" y="0px"> <polyline fill="none" points="14.5,29 0.5,15 14.5,1 " stroke="#909295" stroke-miterlimit="10"></polyline> </svg></a>
 </p>
 
 <script>

@@ -18,10 +18,28 @@
 #end
 
 #set ($button_color = "#0067aa")
-#set ($text_color = "#4d4d4f")
+#set ($text_color = "#ffffff")
 #set ($mobile_breakpoint = "770")
 
 <style type="text/css">
+
+	.content .event-title {
+	    text-transform: uppercase
+	}
+	
+	.content .event-title.top {
+	    font-size: 42px
+	}
+	
+	.content .event-title.bottom {
+	    font-size: 36px;
+	    margin-top: -10px
+	}
+
+	.special-font {
+		font-weight: normal;
+	}
+
 	/* override padding in mobile */
 	.responsive .content-column .content-column-content,
 	.responsive .content-column .portlet-column-content,
@@ -171,10 +189,7 @@
 		margin: 0 20px 0 25px;
 	}
 
-	#navigationbar ul li a:hover {
-		color: #0067aa;
- 		font-weight: normal;
-	}
+
 
 	## nav icon auto width does not work in ie
 	.nav-icon {
@@ -246,47 +261,29 @@
 	}
 
 	.btn {
-		background-color: $button_color;
+		
 		color: #FFF;
 		font-size: 16px;
 		padding: 15px;
 	}
 
-	.btn:hover {
-		background-color: #153F6D;
-		color: #FFF;
-	}
-	 #fixedRegisterBtn .btn{
-	 	background-color: #153F6D;
-	 }
-	 #fixedRegisterBtn .btn:hover {
-	 	background-color: $button_color;
-	 }
+
 	 
 
 	.content .span-left {
 		background: url($logo_image.data);
+		background-repeat: no-repeat;
 		display: inline-block;
 		vertical-align: top;
 		width: 125px;
+		height: 200px;
 	}
-
-	.content .event-logo-text {
-		background: url($logo_image.logo_text_image.data);
-		width: 400px;
-	}
-
-	.content .span-left, .content .event-logo-text {
-		background-repeat: no-repeat;
-		background-size: 100%;
-		height: 125px;
-	}
-
+	
 	.content .span-right {
 		color: $text_color;
 		display: inline-block;
 		margin-top: 5px;
-		max-width: 340px;
+		max-width: 450px;
 		text-align: left;
 	}
 
@@ -541,7 +538,7 @@
 
 #if ($button_text.button_url.data != "")
 <nav class="fade floating-nav register-button" id="fixedRegisterBtn">
-	<a class="btn" href="$button_text.button_url.data" target="_blank">$button_text.data</a>
+	<a class="btn class-toggle" href="$button_text.button_url.data" data-target-node="#updatePopUp">$button_text.data</a>
 </nav>
 #end
 
@@ -552,7 +549,9 @@
 				<div class="span-left">
 				</div>
 				<div class="span-right">
-					<div class="event-logo-text"></div>
+					<div class="event-title special-font top">Liferay &amp; Valamis</div>
+					<div class="event-title bottom">
+							Digital Solutions Forum</div>
 					<div class="event-subtitle top">
 						#foreach($event_text_line in $event_text.getSiblings())
 							<span style="line-height: 1.4;">$event_text_line.getData()</span> <br/>
@@ -560,7 +559,7 @@
 					</div>
 					#if ($button_text.button_url.data != "")
 					<div class="register-button">
-						<a class="btn" href="$button_text.button_url.data" target="_blank">$button_text.data</a></div>
+						<a class="btn class-toggle" href="$button_text.button_url.data" data-target-node="#updatePopUp">$button_text.data</a></div>
 					</div>
 					#end
 			</div>
