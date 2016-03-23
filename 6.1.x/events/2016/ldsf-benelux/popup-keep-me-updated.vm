@@ -105,9 +105,9 @@
     cursor: pointer;
     float: right;
     height: 24px;
-    left: 0px;
+    left: -25px;
     position: relative;
-    top: 18px;
+    top: -30px;
     width: 24px;
 }
 
@@ -117,7 +117,7 @@
 
   #updatePopUp.class-toggle-active {
     display: block;
-    position: fixed;
+    position: absolute;
     left: 50%;
     margin-left: -360px;
     max-width: 720px;
@@ -129,11 +129,8 @@
   #updatePopUp .pop-content {
   	background-color: #FFF;
   	box-sizing: border-box;
-  	max-height: 540px;
   	overflow-y: auto;
     padding: 15px;
-    position: relative;
-    top: 60px;
   }
 
 @media(max-width: 720px) {
@@ -143,7 +140,6 @@
   }
 
   #updatePopUp.class-toggle-active .pop-content {
-max-height: 320px;
     overflow-y: auto;
   }
 }
@@ -158,11 +154,14 @@ max-height: 320px;
 display: none !important;
 }
 </style>
+
+<div id="updatePopUpContainer" style="position:relative;">
 <div class="pop-up" id="updatePopUp">
 	<div class="close-popup-content class-toggle" data-target-node="#updatePopUp">
 		&nbsp;</div>
 	<div class="pop-content">
 		<runtime-portlet instance="targeted_$reserved-article-id.data" name="56" querystring=""> </runtime-portlet></div>
+</div>
 </div>
 <script>
 AUI().ready(
@@ -174,7 +173,34 @@ AUI().ready(
     var WIN = A.getWin();
     var popUps = A.all('.pop-up');
     var classToggleNodes = A.all('.register-button .btn');
+    var regButtons = A.all('.register-button');
+	var ourbody = A.one("#updatePopUpContainer");
+    var updatePopup = A.one("#updatePopUp");
+	var centerOnPage = function(node, top) {
+			var currentScrollPos = WIN.get('docScrollY');
+			var winHeight = WIN.get('innerHeight');
+			var winWidth = WIN.get('innerWidth');
 
+			if (winHeight == undefined) {
+				winHeight = document.documentElement.clientHeight;
+			}
+
+			var contentWidth = A.one('#wrapper').get('clientWidth');
+
+			var nodeHeight = node.get('clientHeight');
+			var nodeWidth = node.get('clientWidth');
+
+			var xCenter = (contentWidth / 2) - (nodeWidth / 2);
+			var yCenter = ((winHeight / 2) - (nodeHeight / 2)) + currentScrollPos - top.getY();
+
+			// don't be so negative
+			if (node && xCenter >= 0 && yCenter >= 0) {
+				node.setStyle('right', xCenter);
+				node.setStyle('top', yCenter);
+			}
+			
+		};
+		
     var createOverlayMask = function() {
       var bindUI = function() {
         var overlayMask = A.one('.aui-overlaymask');
@@ -189,12 +215,18 @@ AUI().ready(
               popUps.each(function(node){
                 node.removeClass('class-toggle-active');
               });
+               regButtons.each(function(node){
+                node.removeClass('class-toggle-active');
+              });
             }
           );
 
           closePopUpContent.each(function(node) {
             node.on('click', function() {
               overlayMask.remove(true);
+              regButtons.each(function(node){
+                node.removeClass('class-toggle-active');
+              });
             });
           });
         }
@@ -219,6 +251,7 @@ AUI().ready(
     classToggleNodes.each(function(node) {
       node.on('click', function() {
         createOverlayMask();
+        centerOnPage(updatePopup, ourbody);
       });
     });
   }
