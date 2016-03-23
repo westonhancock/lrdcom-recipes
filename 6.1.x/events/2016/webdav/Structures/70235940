@@ -85,4 +85,5 @@
 		</meta-data>
 	</dynamic-element>
 	<dynamic-element name="agenda_recap_flag" type="boolean" index-type="" repeatable="false"/>
+	<dynamic-element name="sectionid" type="text" index-type="" repeatable="false"/>
 </root>
