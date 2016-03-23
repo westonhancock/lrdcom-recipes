@@ -182,10 +182,10 @@
 			</entry>
 		</meta-data>
 	</dynamic-element>
-	<dynamic-element dataType="boolean" indexType="keyword" localizable="true" name="hightlighted" readOnly="false" repeatable="false" required="false" showLabel="true" type="checkbox" width="">
+	<dynamic-element dataType="boolean" indexType="keyword" localizable="true" name="featured" readOnly="false" repeatable="false" required="false" showLabel="true" type="checkbox" width="">
 		<meta-data locale="en_US">
 			<entry name="label">
-				<![CDATA[Highlighted]]>
+				<![CDATA[featured]]>
 			</entry>
 			<entry name="predefinedValue">
 				<![CDATA[false]]>
