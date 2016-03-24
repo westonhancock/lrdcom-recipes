@@ -1,0 +1,87 @@
+<style>
+#message.error {
+	color: red;
+}
+#message.success {
+	color: green;
+}
+
+</style>
+
+
+#set ($ddl_records_local_service = $serviceLocator.findService("com.liferay.portlet.dynamicdatalists.service.DDLRecordLocalService"))
+#set ($record_set_id = $getterUtil.getLong($record_set_id.data))
+#set ($records = $ddl_records_local_service.getRecords($record_set_id))
+
+
+## Loop Through records and place them in the correct place in the map
+#foreach ($record in $records)
+
+	<div>  $record.getFieldValue("link_name") </div>
+	
+	
+#end
+<div id="message">
+
+</div>
+<input type=button value="Add Entry" id="addentry">
+
+<script>
+
+window.addEventListener("DOMContentLoaded", function() {
+
+	var addbutton = document.getElementById("addentry");
+	addbutton.addEventListener("click", function(event) {
+		createRecord();
+	});
+});
+
+
+
+function createRecord() {
+  var cmdArray = [];
+  cmdArray.push({
+    					"/ddlrecord/add-record" : {
+						      "groupId": 67510365,
+						      "recordSetId": $record_set_id,
+						      "displayIndex": 0,
+						      "fieldsMap": {
+						        "link_name": "test link",
+						        "link_href": "test",
+						        "link_id" : "navtest",
+						        "link_order": 10
+						      }
+						      
+    					}
+  					});
+    
+  var invokeURL = "https://www.liferay.com/api/jsonws/invoke?cmd=";
+  
+	var req = new XMLHttpRequest();
+	var messageDiv = document.getElementById("message");
+	req.onload = function () {
+		var events = JSON.parse(this.responseText);
+		if (!Array.isArray(events)) {
+			var message=events.exception ? events.exception: "Unknown error";
+			messageDiv.textContent = "ERROR: " + message;
+			messageDiv.classList.add("error");
+			messageDiv.classList.remove("succcess");
+		}
+		else {
+			messageDiv.textContent = "";
+			
+			messageDiv.textContent = events.length + " DDL Entry was created";
+		
+			messageDiv.classList.add("success");
+			messageDiv.classList.remove("error");
+		}
+	};
+	
+	var ctx = "serviceContext.userId=66748356";
+	req.open('get', invokeURL + JSON.stringify(cmdArray) + "&p_auth=" + Liferay.authToken + "&"+ctx , true);
+	req.send();
+}
+
+
+
+</script>
