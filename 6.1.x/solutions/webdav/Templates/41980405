@@ -1,0 +1,32 @@
+<style>
+#caseStudySection {
+	padding: 100px 0;
+}
+
+#caseStudySection .section-center {
+	margin: auto;
+	text-align: center;
+}
+
+#caseStudySection p {
+	color: #FFF;
+	font-size: 15px;
+	margin-bottom: 30px;
+}
+
+$custom_css.data
+</style>
+
+
+<div id="caseStudySection">
+	<div class="section-center">
+		#if ($title.image.data != "")
+			<img class="heading-image" src="$title.image.data"/>
+		#end
+
+		<h2>$title.data</h2>
+		<p class="">$info.data</p>
+
+		<a href="$download_url.data" class="btn" id="downloadBundleBtn" target="_blank" #if($asset_id.data != "" && $asset_name.data != "" && $asset_type.data != "")onclick="postToHubspot('$asset_id.data', '$asset_name.data', '$asset_type.data'); window.open('$download_url.data');"#end>$button_text.data</a>
+	</div>
+</div>

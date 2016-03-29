@@ -1,0 +1,12 @@
+<?xml version="1.0"?>
+
+<root>
+	<dynamic-element name="background_image" type="text" index-type="" repeatable="false"/>
+	<dynamic-element name="video_id" type="text" index-type="" repeatable="false"/>
+	<dynamic-element name="header" type="text" index-type="" repeatable="false"/>
+	<dynamic-element name="paragraph" type="text_box" index-type="" repeatable="false"/>
+	<dynamic-element name="display_locales" type="text" index-type="" repeatable="false"/>
+	<dynamic-element name="target_user" type="text" index-type="" repeatable="true">
+		<dynamic-element name="article_id" type="text" index-type="" repeatable="false"/>
+	</dynamic-element>
+</root>

@@ -1,0 +1,9 @@
+<?xml version="1.0"?>
+
+<root>
+	<dynamic-element name="title" type="text" index-type="" repeatable="false"/>
+	<dynamic-element name="logos" type="document_library" index-type="" repeatable="true">
+		<dynamic-element name="company_url" type="text" index-type="" repeatable="false"/>
+		<dynamic-element name="description" type="text_box" index-type="" repeatable="false"/>
+	</dynamic-element>
+</root>

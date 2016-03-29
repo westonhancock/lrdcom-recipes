@@ -1,0 +1,406 @@
+#if (!$display_locales || $display_locales.getData() == "" || $display_locales.getData().contains($locale.toString()))
+    <style type="text/css">
+        .lego-image {
+    		max-height: 100%;
+			max-width: 100%;
+		}
+
+		.max-960 {
+			margin: 0 auto;
+			max-width: 960px;
+		}
+
+		.no-max .max-960 {
+			max-width: none;
+		}
+
+		$lego_css.data
+
+		#foreach ($media_query in $lego_media_query.siblings)
+			#set ($media_query_text = "@media all")
+
+			#if ($media_query.media_query_max.data != "")
+				#set ($media_query_text = $media_query_text + " and (max-width: $media_query.media_query_max.data)")
+			#end
+
+			#if ($media_query.media_query_min.data != "")
+				#set ($media_query_text = $media_query_text + " and (min-width: $media_query.media_query_min.data)")
+			#end
+
+			#if ($media_query.data !="")
+				$media_query_text {
+					$media_query.data
+				}
+			#end
+		#end
+	</style>
+	#set ($article_css_class = "lego-article")
+	#if ($lego_css_class.data != "")
+		#set ($article_css_class = $article_css_class + " $lego_css_class.data")
+	#end
+	<div class="$article_css_class" id="article-${reserved-article-id.data}">
+		<div class="lego-article-content max-960">
+			#foreach ($section in $lego_section_attr.siblings)
+				#set ($section_count = $velocityCount)
+				#set ($section_css_class = "aui-helper-clearfix lego-section section-${section_count}")
+
+				#if ($section.section_css_class.data != "")
+					#set ($section_css_class = $section_css_class + " $section.section_css_class.data" )
+				#end
+
+				<div class="$section_css_class" $section.data>
+					#foreach ($block in $section.lego_block_attr.siblings)
+						#set ($block_count = $velocityCount)
+						#set ($block_css_class = "aui-w${block.width.data} block-${block_count} content-column lego-block")
+
+						#if ($block.block_css_class.data != "")
+							#set ($block_css_class = $block_css_class + " $block.block_css_class.data" )
+						#end
+
+						<div class="$block_css_class" $block.data>
+							<div class="content-column-content ${block.column_position.data}-column">
+								#foreach ($element in $block.lego_element_attr.siblings)
+									#set ($element_css_class = "lego-element")
+
+									#if ($element.element_css_class.data != "")
+										#set ($element_css_class = $element_css_class + " $element.element_css_class.data" )
+									#end
+
+									#if ($element.element_type.data == "button")
+										<a class="btn $element_css_class" id="button-${reserved-article-id.data}${section_count}${block_count}$velocityCount" $element.data>$element.element_content.data</a>
+									#elseif ($element.element_type.data == "heading")
+										<h2 class="redesign heading $element_css_class" $element.data>$element.element_content.data</h2>
+									#elseif ($element.element_type.data == "image")
+										<img class="lego-img $element_css_class" $element.data src="$element.element_content.data" />
+									#elseif ($element.element_type.data == "sub_heading")
+										<p class="redesign sub-heading $element_css_class" $element.data>$element.element_content.data</p>
+									#else
+										<$element.element_type.data class="$element_css_class" $element.data>
+											$element.element_content.data
+										</$element.element_type.data>
+									#end
+								#end
+							</div>
+						</div>
+					#end
+
+					#if ($section.custom_content.data != "")
+						$section.custom_content.data
+					#end
+					<style>
+					#closePopUp {
+						background: url(/documents/14/22417885/close.png/7a3f2170-f576-43f2-9d3f-eb98d7f44acb) no-repeat;
+						cursor: pointer;
+						float: right;
+						height: 44px;
+						width: 44px;
+					}
+                    
+                    .hbspt-form label {
+                        font-weight: normal;
+                    }
+
+					.hs-form.stacked label {
+						width: 31%;
+						float: left;
+					}
+
+					.hs-form.stacked .field div.input {
+						display: inline-block;
+						text-align: right;
+						width: 66%;
+					}
+
+					.hs-form .hs_submit {
+						text-align: right;
+					}
+
+					.hs-form .input select.hs-input, .hs-form .input textarea.hs-input {
+						width: 94%;
+					}
+
+					.input input.hs-input, .input textarea.hs-input, .input select.hs-input {
+						border-radius: 1px;
+						box-shadow: none;
+					}
+
+					.pop-up-content {
+						background: #FFF;
+					}
+
+					.thank-you-msg {
+						padding-bottom: 10px;
+						text-align: left;
+					}
+
+					#contactPop .pop-up-content h2{
+						color: #1B3A6A;
+						text-align: left;
+					}
+
+					@media (max-width: 500px) {
+						.hs-form.stacked label {
+							font-size: 0.8em;
+						}
+						.hs-form.stacked .field {
+							margin-bottom: 9px;
+						}
+
+						.hs-form.stacked .input textarea {
+							min-height: 100px;
+						}
+					}
+
+					.page-pop-up  {
+						background: #FFF;
+						border: 1px solid #CCC;
+						position: fixed;
+						text-align: center;
+						width: 95%;
+						z-index: 2000;
+					}
+
+					.page-pop-up  .pop-up-content {
+						padding: 30px 35px 0;
+					}
+
+					.page-pop-up  .pop-up-content .speaker-company, .page-pop-up  .pop-up-content .speaker-name, .page-pop-up  .pop-up-content .speaker-title {
+						display: block;
+					}
+
+					.page-pop-up  .speaker-company {
+						font-style: italic;
+					}
+
+					.page-pop-up  .speaker-name {
+						color: #3AA0D5;
+						font-size: 1.2em;
+						margin: 5px 0;
+					}
+
+					.page-pop-up  .speaker-title, .page-pop-up  .speaker-company {
+						font-weight: normal;
+					}
+
+					.ie7 .page-pop-up , .ie8 .page-pop-up  {
+						background: #FFF;
+					}
+
+					.ie8 #heading .company-title .logo {
+						background-color: #F5FAFD;
+					}
+
+					.ie8.show-nav #navigation {
+						background: #F5FAFD;
+					}
+
+					@media all and (min-width: 720px) {
+						.page-pop-up  {
+							width: 440px;
+						}
+
+						
+
+						.page-pop-up .bottom:after {
+							border-top-color: #FFF;
+							bottom: -29px;
+							right: 50%;
+						}
+
+						.page-pop-up .bottom:before {
+							border-top-color: #CCC;
+							bottom: -30px;
+							right: 50%;
+						}
+
+						.page-pop-up .left:after {
+							border-left-color: #FFF;
+							right: -29px;
+							top: 50%;
+						}
+
+						.page-pop-up .left:before {
+							border-left-color: #CCC;
+							right: -30px;
+							top: 50%;
+						}
+
+						.page-pop-up .right:after {
+							border-right-color: #FFF;
+							left: -29px;
+							top: 50%;
+						}
+
+						.page-pop-up .right:before {
+							border-right-color: #CCC;
+							left: -30px;
+							top: 50%;
+						}
+
+						.page-pop-up .top:after {
+							border-bottom-color: #FFF;
+							right: 50%;
+							top: -29px;
+						}
+
+						.page-pop-up .top:before {
+							border-bottom-color: #CCC;
+							right: 50%;
+							top: -30px;
+						}
+					}</style>
+					<script>
+					AUI().ready(
+						'aui-overlay-mask',
+						'node',
+						function(A) {
+							var WIN = A.getWin();
+
+							var centerOnPage = function(node) {
+								var currentScrollPos = WIN.get('docScrollY');
+								var winHeight = WIN.get('innerHeight');
+
+								if (winHeight == undefined) {
+									winHeight = document.documentElement.clientHeight;
+								}
+
+								var winWidth = WIN.get('innerWidth');
+
+								if (winWidth == undefined) {
+									winWidth = document.documentElement.clientWidth;
+								}
+
+								var nodeHeight = node.get('clientHeight');
+								var nodeWidth = node.get('clientWidth');
+
+								xCenter = (winWidth / 2) - (nodeWidth / 2);
+								yCenter = ((winHeight / 2) - (nodeHeight / 2));
+
+								node.setStyle('left', xCenter);
+								node.setStyle('top', yCenter);
+							};
+
+							var createOverlayMask = function() {
+								var bindUI = function() {
+									var overlayMask = A.one('.aui-overlaymask');
+
+									if (overlayMask) {
+										overlayMask.on(
+											'click',
+											function() {
+												overlayMask.remove(true);
+											}
+										);
+									}
+								}
+
+								var init = function() {
+									if (A.one('.aui-overlaymask')) {
+										return
+									}
+
+									var overlay = new A.OverlayMask().render();
+
+									overlay.set('z-index', 20);
+									overlay.show();
+
+									bindUI();
+								}
+
+								return init();
+							}
+
+							var displayPopUp = function(node) {
+								node.removeClass('aui-helper-hidden');
+
+								centerOnPage(node);
+
+								var popUpContent = node.one('.pop-up-content')
+
+								if (node.getAttribute('data-overlay')) {
+									createOverlayMask();
+								}
+
+								popUpContent.on(
+									'clickoutside',
+									function(event) {
+										var overlayMask = A.one('.aui-overlaymask');
+
+										if (overlayMask) {
+											overlayMask.remove();
+										}
+
+										node.addClass('aui-helper-hidden');
+
+										popUpContent.detach('clickoutside');
+									}
+								);
+							};
+
+							// Popup open when url = "variable"
+	
+							var open = /\?contact-us/g;
+							var open_location = window.location.href;
+
+							var matches = open_location.match(open);
+
+							if (matches) {
+								var initializePop = A.one('.page-pop-up');
+								displayPopUp(initializePop);
+
+								A.one('.page-pop-up #closePopUp').on('click', function() {
+									var overlayMask = A.one('.aui-overlaymask');
+
+									if (overlayMask) {
+										overlayMask.remove(true);
+									}
+
+									initializePop.toggle();
+								});
+							}
+
+							var iOS = /iPad/i.test(navigator.userAgent) || /iPhone/i.test(navigator.userAgent);
+							var mouseEvent = 'click';
+
+							if (iOS) {
+								mouseEvent = 'mousemove';
+							}
+
+							A.all('.pop-up').on(
+								mouseEvent,
+								function(event) {
+									event.stopPropagation();
+
+									var popDisplay = event.currentTarget.getAttribute("data-pop-display");
+
+									var popUp = A.one(popDisplay);
+									displayPopUp(popUp);
+								}
+							);
+						}
+					);
+					</script>
+					<div class="aui-helper-hidden page-pop-up " data-overlay="true" id="$pop_up_id.data">
+						<div id="closePopUp">
+							&nbsp;</div>
+						<div class="pop-up-content">
+							#if ($pop_up_heading.data != "")
+								<h2 class="redesign heading pop-heading">$pop_up_heading.data</h2>
+							#end
+							#if ($pop_up_content.data != "")
+								<div>
+									$pop_up_content.data
+								</div>
+							#end
+							#if ($form_id.data != "")
+								<div id="embed$reserved-article-id.data">
+									<runtime-portlet name="56" instance="embed_$reserved-article-id.data" queryString=""/>
+								</div>
+							#end
+						</div>
+					</div>
+				</div>
+			#end
+		</div>
+	</div>
+#end

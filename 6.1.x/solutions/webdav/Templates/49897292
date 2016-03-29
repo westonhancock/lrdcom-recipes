@@ -1,0 +1,383 @@
+#set ($count = '')
+
+<div id="valueSurveySection">
+    <div class="result-hide result">
+        #if ($heading != '')
+    		<h2 class="paginator-heading">
+			$heading.data
+			</h2>
+		#end
+
+		<div class="page-container">
+			<div class="questions">
+				#foreach ($question_header in $question_header.siblings)
+				<div class="question">
+					<div class="aui-w70 question-container">
+						<h2>${velocityCount}. $question_header.data</h2>
+
+						<div class="question-field">
+							<p> $question_header.question_field.data</p>
+						</div>
+
+						#if ($question_header.question_field.value_on_yes.data != "")
+							#set ($yesValue = true)
+						#else
+							#set ($yesValue = false)
+						#end
+
+						<div class="response-section aui-paginator-page-container">
+							<div class="questions-pagination aui-helper-unselectable aui-paginator-container">
+							</div>
+							<div class="btn-container">
+								<div class="btn yes yes-$velocityCount" name="group-$velocityCount" #if ($yesValue) value="1" #end>
+									$yes.data
+								</div>
+								<div class="btn no no-$velocityCount" name="group-$velocityCount" #if ($yesValue == false) value="1" #end>
+									$no.data
+								</div>
+							</div>
+						</div>
+					</div>
+
+					<div class="aui-w30 count-container">
+						<div class="current-count">
+							<div class="value">0</div><span>$points.data</span>
+						</div>
+					</div>
+
+					#set ($count = $velocityCount)
+				</div>
+				#end
+			</div>
+		</div>
+
+		<div class="questions-pagination">
+		</div>
+
+		<div class="paginator"></div>
+	</div>
+
+	<div class="result-show result">
+		<div class="count-container">
+			<div class="current-count final ">
+				<div class="value">0</div><span>$points.data</span>
+			</div>
+		</div>
+
+		<div class="result-message"> 
+			<h2 class="requirements">Temporary Filler</h2>
+		</div>
+		#if ($retake_text != '')
+			<a class="teal-link" href="$checklistID.data" onclick="javascript:window.location.href = '$checklistID.data'; window.location.reload(true);">$retake_text.data</a>
+		#end
+	</div>
+</div>
+
+<script>
+AUI().ready(
+	'aui-base',
+	'aui-paginator',
+	function(A) {
+		var valueSurveySection = A.one('#valueSurveySection');
+		var items = valueSurveySection.all('.page-container .question');
+
+		paginator = new A.Paginator(
+			{
+				circular: false,
+				containers: '.questions-pagination',
+				maxPageLinks: 10,
+				on: {
+					changeRequest: function(event) {
+						var newState = event.state;
+						var currentPage = newState.page;
+
+						this.setState(newState);
+
+						var lastPage = newState.before && newState.before.page;
+
+						var rowsPerPage = newState.rowsPerPage;
+
+						items.each(function(item, index, collection) {
+							item.set('className', 'item');
+
+							var itemOnPage = Math.floor((index) / rowsPerPage) + 1;
+
+							item.addClass('page' + itemOnPage);
+						});
+
+						valueSurveySection.all('.page' + currentPage).addClass('active');
+					}
+				},
+				pageLinkContent: function(pageEl, pageNumber) {
+					pageEl.html('&nbsp;');
+				},
+				total: $count
+			}
+		).render();
+
+		var markSelected = function(node) {
+			node.addClass('selected');
+		};
+
+		var value = 0;
+		var swapValues = valueSurveySection.all(".current-count");
+		var nextPage = valueSurveySection.one('.aui-paginator-next-link');
+
+		valueSurveySection.all('.response-section .btn').on(
+			'click',
+			function(event) {
+				event.stopPropagation();
+
+				var currentTarget = event.currentTarget;
+
+				if (currentTarget.hasClass('selected')) {
+					return;
+				}
+				else {
+					var siblings = currentTarget.siblings();
+
+					siblings.removeClass('selected');
+
+					markSelected(currentTarget);
+				}
+
+				var valueNodes = valueSurveySection.all('.response-section .btn.selected[value="1"]');
+				var value = valueNodes.size();
+				var swapContent = '<div class="value">' + value + '</div><span>$points.data</span>';
+
+				if (value === 1) {
+					var swapContent = '<div class="value">' + value + '</div><span>$point.data</span>';
+				}
+
+				var blockNumber = currentTarget.getAttribute('name');
+
+				var test = ('group-' + $count);
+
+				if (value >= 2 ) {
+					var indicatorColor = 'orange';
+				}
+
+				if (value >= 4) {
+					var indicatorColor = 'red';
+				}
+
+				var values = valueSurveySection.one('.current-count.final');
+
+				values.setStyle('color', indicatorColor);
+				values.setStyle('border-color', indicatorColor);
+
+				if (blockNumber == test) {
+					var showHide = valueSurveySection.all('.result');
+                    var showHideArticles = A.all('.no-line.result');
+					showHide.addClass('finished');
+                    showHideArticles.addClass('finished');
+
+					var resultMessage = valueSurveySection.one('.result-show .requirements');
+
+					if (value === 0) {
+						var requirementsMet = '$requirements_met.data';
+						resultMessage.html(requirementsMet);
+					} else {
+						var requirementsMet = '$requirements_not_met.data';
+						resultMessage.html(requirementsMet);
+					}
+				}
+
+				swapValues.html(swapContent);
+			}
+		);
+	}
+);
+
+</script>
+
+<style>
+.response-section {
+	max-width: 435px;
+}
+
+.response-section .questions-pagination .aui-paginator-link {
+	display: none;
+	background: none;
+	border: 0;
+	height: auto;
+	margin: auto;
+	padding: auto;
+	width: auto;
+}
+
+.response-section .questions-pagination .aui-paginator-link.aui-paginator-next-link {
+	float: right;
+}
+
+.response-section .questions-pagination .aui-paginator-link.aui-paginator-next-link, .response-section .questions-pagination .aui-paginator-link.aui-paginator-prev-link {
+	display: inline-block;
+	font-size: 18px;
+	margin: 2px 20px;
+}
+
+.response-section .questions-pagination .aui-paginator-link.aui-paginator-prev-link {
+	float: left;
+}
+
+.aui-paginator-container {
+	clear: both;
+	text-align: center;
+}
+
+.aui-paginator-link {
+	background: #FFF;
+	border: 1px solid #1C75B9;
+	box-sizing: border-box;
+	display: inline-block;
+	height: 4px;
+	margin: 2px;
+	padding: 4px;
+	width: 0px;
+}
+
+.aui-paginator-link.aui-paginator-current-page {
+	background: #1C75B9;
+}
+
+.btn.selected, .response-section .btn:hover {
+	background: #00B8B9 !important;
+	color: #FFF !important;
+}
+
+.count-container {
+	display: table-cell;
+	vertical-align: middle;
+	text-align: center;
+}
+
+.current-count {
+	border: 2px solid #1C75B9;
+	border-radius: 2px;
+	display: block;
+	margin: auto;
+	text-align: center;
+	box-sizing: border-box;
+	padding: 24px;
+	width: 160px;
+}
+
+.current-count span {
+	font-size: 1.3em;
+}
+
+.current-count {
+	color: #1C75B9;
+}
+
+.current-count .value {
+	font-size: 3em;
+	font-weight: normal;
+	line-height: 1.3em;
+}
+
+.item.active {
+	display: table;
+}
+
+.item, .aui-paginator-first-link, .aui-paginator-prev-link, .aui-paginator-next-link, .aui-paginator-last-link, .aui-paginator-current-page-report, .aui-paginator-total, .aui-paginator-rows-per-page {
+	display: none;
+}
+
+.paginator-heading {
+	font-size: 2em;
+	max-width: 70%;
+	color: #1C75B9;
+}
+
+.question-container {
+	display: table-cell;
+	padding-right: 30px;
+	vertical-align: middle;
+	width: 100%;
+}
+
+.question-container h2 {
+	font-size: 1.4em;
+	font-weight: normal;
+	line-height: 1.4em;
+	margin: 0px;
+}
+
+.question-container p {
+	font-size: 1.3em;
+	line-height: 1.3em;
+	margin-top: 0;
+}
+
+.question-field {
+	min-height: 55px;
+}
+
+.questions {
+	border-bottom: 1px solid;
+	margin: 30px auto;
+	min-height: ;
+	padding-bottom: 30px;
+}
+
+.response-section .btn {
+	background: transparent;
+	border-color: #00B8B9;
+	box-sizing: border-box;
+	color: #00B8B9;
+	font-size: 1.2em;
+	padding: 6px 40px;
+}
+
+.response-section .no {
+	margin-left: 21px;
+}
+
+.result-hide.finished, .result-show {
+	display: none;
+}
+
+.result-hide.result {
+	margin-bottom: 80px;
+	margin-top: 90px;
+}
+
+.result-message {
+	color: #1C75B9;
+	font-size: 1.2em;
+	margin: 0px auto 90px;
+	max-width: 500px;
+	text-align: left;
+}
+
+.result-show.finished {
+	border-bottom: 1px solid #404040;
+	margin-bottom: 84px;
+	padding-bottom: 20px;
+	text-align: center;
+}
+
+.result-show.finished.no-line {
+	border-bottom: 0px;
+}
+
+.result-show.finished, .result-show .count-container {
+	display: block;
+}
+
+.result-show .count-container {
+	margin-bottom: 20px;
+	margin-top: 95px;
+}
+
+@media all and (max-width: 720px) {
+	.paginator-heading {
+		max-width: 100%;
+	}
+
+	.questions .count-container {
+		display: none;
+	}
+}
+</style>

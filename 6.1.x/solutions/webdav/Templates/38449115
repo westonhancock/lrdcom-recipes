@@ -1,0 +1,48 @@
+#set ($portlet_bean_locator = $portal.getClass().forName('com.liferay.portal.kernel.bean.PortletBeanLocatorUtil'))
+#set ($hs_contact_local_service = $portlet_bean_locator.locate("hubspot-portlet", "com.liferay.hubspot.service.HSContactLocalService.velocity"))
+#set ($hsutk = $request.attributes.OSB_HUBSPOT_UTK)
+
+#if ($hsutk)
+    #set ($hsContact = $hs_contact_local_service.fetchHSContactByUserToken($hsutk))
+#end
+
+#if ($hsContact && $hsContact.getEmailAddress() && $hsContact.getEmailAddress() != "")
+    <div class="aui-helper-hidden" id="hiddenForm">
+		<script charset="utf-8" src="//js.hsforms.net/forms/current.js"></script>
+		<script>
+			hbspt.forms.create(
+				{
+					sfdcCampaignId: '#if($campaign_id.data != "")$campaign_id.data#end',
+					portalId: '252686',
+					formId: 'ba3c95eb-d6e8-42ef-9014-91ae07307c52'
+				}
+			);
+		</script>
+	</div>
+#end
+
+<script>
+	AUI().ready(
+		'node-event-simulate',
+		function(A) {
+			postToHubspot = function(assetId, assetName, assetType, channel) {
+				var hiddenForm = A.one('#hiddenForm form');
+
+				if (!hiddenForm) {
+					return;
+				}
+
+				hiddenForm.one('.hs_asset_id input').set('value', assetId);
+				hiddenForm.one('.hs_asset_name input').set('value', assetName);
+				hiddenForm.one('.hs_asset_type input').set('value', assetType);
+
+				if (channel){
+					hiddenForm.one('.hs_channel input').set('value', channel);
+				}
+
+				hiddenForm.one(".hs_submit input").simulate("click");
+				console.log('sent');
+			}
+		}
+	);
+</script>

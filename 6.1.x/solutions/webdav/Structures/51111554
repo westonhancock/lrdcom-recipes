@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+
+<root>
+	<dynamic-element name="header" type="text" index-type="" repeatable="true">
+		<dynamic-element name="title" type="text" index-type="" repeatable="false"></dynamic-element>
+		<dynamic-element name="header-graphic" type="document_library" index-type="" repeatable="false"></dynamic-element>
+		<dynamic-element name="header-graphic-hover" type="document_library" index-type="" repeatable="false"></dynamic-element>
+		<dynamic-element name="quote-image" type="document_library" index-type="" repeatable="false"></dynamic-element>
+		<dynamic-element name="content" type="text_box" index-type="" repeatable="false"></dynamic-element>
+		<dynamic-element name="embedded-article-id" type="text" index-type="" repeatable="false"></dynamic-element>
+		<dynamic-element name="quote" type="text" index-type="" repeatable="false"></dynamic-element>
+		<dynamic-element name="image" type="text" index-type="" repeatable="false"></dynamic-element>
+		<dynamic-element name="download_url" type="text" index-type="" repeatable="false"></dynamic-element>
+		<dynamic-element name="download_title" type="text" index-type="" repeatable="false"/>
+	</dynamic-element>
+	<dynamic-element name="custom_styles" type="text_box" index-type="" repeatable="false"/>
+</root>

@@ -1,0 +1,67 @@
+<style>
+#downloadSection {
+    padding: 100px 0;
+}
+
+#downloadSection p {
+    text-align: left;
+}
+</style>
+#set ($portlet_bean_locator = $portal.getClass().forName('com.liferay.portal.kernel.bean.PortletBeanLocatorUtil'))
+#set ($hs_contact_local_service = $portlet_bean_locator.locate("hubspot-portlet", "com.liferay.hubspot.service.HSContactLocalService.velocity"))
+
+#set ($hsutk = $request.attributes.OSB_HUBSPOT_UTK)
+#if ($hsutk)
+    #set ($hsContact = $hs_contact_local_service.fetchHSContactByUserToken($hsutk))
+	#set ($hsContactObject = $hsContact.getHSContactJSONObject().getJSONObject("properties"))
+#end
+
+#set ($hs_form_local_service = $portlet_bean_locator.locate("hubspot-portlet", "com.liferay.hubspot.service.HSFormLocalService.velocity"))
+#set ($hs_form = $hs_form_local_service.fetchHSFormByGUID($form_id.data))
+#set ($hs_form_fields = $hs_form.getHSFormJSONObject().getJSONArray("fields"))
+
+#set($popUrl = $request.attributes.CURRENT_COMPLETE_URL)
+
+#set ($verified = false)
+
+#if (($popUrl.contains("?85243")))
+	#set ($verified = true)
+#elseif ($hs_form_fields)
+	#set ($checks_out = true)
+	#if (!$hsContactObject)
+		#set ($checks_out = false)
+	#end
+
+	#set($start = 0)
+	#set($end = $hs_form_fields.length() - 1)
+	#set($range = [$start..$end])
+
+	#foreach ($i in $range)
+		#set ($field = $hs_form_fields.getJSONObject($i))
+
+		#if ($hsContactObject.getJSONObject("$field.getString('name')").getString("value") == "" && !$field.getBoolean('hidden'))
+			#set ($checks_out = false)
+		#end
+	#end
+
+	#if ($checks_out)
+		#set ($verified = true)
+	#end
+#end
+
+<div id="downloadSection">
+	<div class="max-small section-center">
+		#if ($title.image.data != "")
+			<img class="heading-image" src="$title.image.data"/>
+		#end
+
+		<h2>$title.data</h2>
+		<p class="">$info.data</p>
+
+		#if ($verified)
+			<a href="$download_url.data" class="btn" id="downloadBundleBtn" target="_blank" #if($asset_id.data != "" && $asset_name.data != "" && $asset_type.data != "")onclick="postToHubspot('$asset_id.data', '$asset_name.data', '$asset_type.data'); window.open('$download_url.data');"#end>$button_text.data</a>
+		#else
+			<a href="javascript:;" class="btn pop-up" data-pop-display="#downloadPopUp">$button_text_gated.data</a>
+		#end
+	</div>
+</div>

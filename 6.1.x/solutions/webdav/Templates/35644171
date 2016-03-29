@@ -1,0 +1,71 @@
+<style>
+.highlight-container {
+	text-align: center;
+}
+
+.highlight-wrapper {
+    padding: 100px 0 40px;
+}
+
+.highlight-wrapper .solutions-heading {
+    text-align: center;
+}
+
+.highlight-wrapper .sponsor-container {
+	display: block;
+	text-align: center;
+	width: 100%;
+}
+
+.highlight-wrapper .sponsor-content {
+	padding: 40px 10px;
+}
+
+.highlight-wrapper .sponsor-container.last {
+	padding-right: 0;
+}
+
+.highlight-wrapper .sponsor-container .sponsor-description {
+	text-align: left;
+}
+
+.highlight-wrapper .sponsor-logo {
+	padding-bottom: 20px;
+}
+
+@media all and (min-width: 780px) {
+	.highlight-wrapper .sponsor-container {
+		display: inline-block;
+		text-align: center;
+		vertical-align: top;
+		width: 33%;
+	}
+
+	.highlight-wrapper .sponsor-content {
+		padding: 15px 30px;
+	}
+}
+</style>
+
+<div class="aui-helper-clearfix highlight-wrapper max-full">
+	<div class="highlight-container">
+		<h2 class="solutions-heading">$title.data</h2>
+
+		#foreach ($logo in $logos.siblings)
+			<div class="sponsor-container sponsor-$velocityCount #if ($velocityCount % 3 == 0) last #end">
+				<div class="sponsor-content">
+					#if ($logo.company_url.data != "")
+						<a href="$logo.company_url.data" target="_blank">
+							<img class="sponsor-logo" src="$logo.data">
+						</a>
+					#else
+						<img class="sponsor-logo" src="$logo.data">
+					#end
+					<div class="sponsor-description">
+						$logo.description.data
+					</div>
+				</div>
+			</div>
+		#end
+	</div>
+</div>

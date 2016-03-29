@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+
+<root>
+	<dynamic-element name="heading" type="text" index-type="" repeatable="false"/>
+	<dynamic-element name="point" type="text" index-type="" repeatable="false"/>
+	<dynamic-element name="points" type="text" index-type="" repeatable="false"/>
+	<dynamic-element name="yes" type="text" index-type="" repeatable="false"/>
+	<dynamic-element name="no" type="text" index-type="" repeatable="false"/>
+	<dynamic-element name="question_header" type="text" index-type="" repeatable="true">
+		<dynamic-element name="question_field" type="text_box" index-type="" repeatable="false">
+			<dynamic-element name="value_on_yes" type="boolean" index-type="" repeatable="false"/>
+		</dynamic-element>
+	</dynamic-element>
+	<dynamic-element name="requirements_not_met" type="text_box" index-type="" repeatable="false"/>
+	<dynamic-element name="requirements_met" type="text_box" index-type="" repeatable="false"/>
+	<dynamic-element name="retake_text" type="text" index-type="" repeatable="false"/>
+	<dynamic-element name="checklistID" type="text" index-type="" repeatable="false"/>
+</root>

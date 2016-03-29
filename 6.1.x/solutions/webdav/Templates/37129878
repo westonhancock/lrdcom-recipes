@@ -1,0 +1,68 @@
+<style>
+$css.data
+</style>
+#set ($portlet_bean_locator = $portal.getClass().forName('com.liferay.portal.kernel.bean.PortletBeanLocatorUtil'))
+#set ($hs_contact_local_service = $portlet_bean_locator.locate("hubspot-portlet", "com.liferay.hubspot.service.HSContactLocalService.velocity"))
+
+#set ($hsutk = $request.attributes.OSB_HUBSPOT_UTK)
+
+#if ($hsutk)
+    #set ($hsContact = $hs_contact_local_service.fetchHSContactByUserToken($hsutk))
+#end
+
+#if ($hsContact)
+    #set ($hsContactObject = $hsContact.getHSContactJSONObject().getJSONObject("properties"))
+#end
+
+#set ($hs_form_local_service = $portlet_bean_locator.locate("hubspot-portlet", "com.liferay.hubspot.service.HSFormLocalService.velocity"))
+#set ($hs_form = $hs_form_local_service.fetchHSFormByGUID($form_id.data))
+
+#if ($hs_form)
+    #set ($hs_form_fields = $hs_form.getHSFormJSONObject().getJSONArray("fields"))
+#end
+
+#set($popUrl = $request.attributes.CURRENT_COMPLETE_URL)
+
+#set ($verified = false)
+
+#if (($popUrl.contains("?85243")))
+	#set ($verified = true)
+#elseif ($hs_form_fields)
+	#set ($checks_out = true)
+	#if (!$hsContactObject)
+		#set ($checks_out = false)
+	#end
+
+	#set($start = 0)
+	#set($end = $hs_form_fields.length() - 1)
+	#set($range = [$start..$end])
+
+	#foreach ($i in $range)
+		#set ($field = $hs_form_fields.getJSONObject($i))
+
+		#if ($hsContact && $hsContactObject.getJSONObject("$field.getString('name')").getString("value") == "" && !$field.getBoolean('hidden'))
+			#set ($checks_out = false)
+		#end
+	#end
+
+	#if ($checks_out)
+		#set ($verified = true)
+	#end
+#end
+
+<div id="whitepaperSection">
+	<div class="max-small section-center whitepaper-container">
+		#if ($title.image.data != "")
+			<img class="heading-image" src="$title.image.data"/>
+		#end
+
+		<h2 class="whitepaper-title">$title.data</h2>
+		<p class="">$info.data</p>
+
+		#if ($verified)
+			<a href="$download_url.data" class="btn" id="downloadBundleBtn" target="_blank" #if($asset_id.data != "" && $asset_name.data != "" && $asset_type.data != "")onclick="postToHubspot('$htmlUtil.escape($asset_id.data)', '$htmlUtil.escape($asset_name.data)', '$htmlUtil.escape($asset_type.data)'); ga('send', 'event', 'Redesign Phase 1 Metrics', 'Whitepapers', 'Building for Todays Customer: 6 Essential Web Strategies for Financial Services']);"#end>$button_text.data</a>
+		#else
+			<a href="javascript:;" class="btn pop-up" data-pop-display="#downloadPopUp">$button_text_gated.data</a>
+		#end
+	</div>
+</div>

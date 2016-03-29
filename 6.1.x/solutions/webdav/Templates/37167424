@@ -1,0 +1,127 @@
+#set ($portlet_bean_locator = $portal.getClass().forName('com.liferay.portal.kernel.bean.PortletBeanLocatorUtil'))
+#set ($hs_contact_local_service = $portlet_bean_locator.locate("hubspot-portlet", "com.liferay.hubspot.service.HSContactLocalService.velocity"))
+
+#set ($hsutk = $request.attributes.OSB_HUBSPOT_UTK)
+
+#if ($hsutk)
+    #set ($hsContact = $hs_contact_local_service.fetchHSContactByUserToken($hsutk))
+	#set ($hsContactObject = $hsContact.getHSContactJSONObject().getJSONObject("properties"))
+#end
+
+#set ($hs_form_local_service = $portlet_bean_locator.locate("hubspot-portlet", "com.liferay.hubspot.service.HSFormLocalService.velocity"))
+#set ($hs_form = $hs_form_local_service.fetchHSFormByGUID($hs_form_id.data))
+
+#if ($hs_form)
+    #set ($hs_form_fields = $hs_form.getHSFormJSONObject().getJSONArray("fields"))
+#end
+
+#set($popUrl = $request.attributes.CURRENT_COMPLETE_URL)
+
+#set ($verified = true)
+
+## #if (($popUrl.contains("?832957")))
+##     #set ($verified = true)
+## #elseif ($hs_form_fields)
+##     #set ($checks_out = true)
+##     #if (!$hsContactObject)
+## 		#set ($checks_out = false)
+## 	#end
+
+## 	#set($start = 0)
+## 	#set($end = $hs_form_fields.length() - 1)
+## 	#set($range = [$start..$end])
+
+## 	#foreach ($i in $range)
+## 		#set ($field = $hs_form_fields.getJSONObject($i))
+
+## 		#if ($hsContactObject.getJSONObject("$field.getString('name')").getString("value") == "" && !$field.getBoolean('hidden'))
+## 			#set ($checks_out = false)
+## 		#end
+## 	#end
+
+## 	#if ($checks_out)
+## 		#set ($verified = true)
+## 	#end
+## #end
+
+#set ($video_overlay_css_class = "video-wrapper video-overlay pop-up")
+
+#if ($verified)
+	#set ($video_overlay_css_class = "video-wrapper video-overlay verified")
+#end
+
+#if (($popUrl.contains("?832957")))
+	#set ($video_overlay_css_class = "video-wrapper verified")
+#end
+
+<div class="lego-article">
+	<div class="lego-article-content max-960" >
+		<div class="aui-helper-clearfix lego-section max-full section-1" >
+			<div class="aui-w100 block-1 content-column lego-block" >
+				<div class="content-column-content only-column" >
+					<img class="lego-img lego-element" src="/documents/35606059/37087558/FSI-Info-Hub-Demo-Icon.png/430ad86f-c831-42d4-b0df-d243514d29f6"/>
+					<h2 class="lego-element">$heading.data</h2>
+				</div>
+			</div>
+
+			#if ($content.data != "")
+				<div class="aui-w100 block-2 content-column lego-block video-page-content">
+					<div class="content-column-content only-column">
+						<p class="lego-element">$content.data</p>
+					</div>
+				</div>
+			#end
+
+			<div class="aui-w100 block-3 content-column lego-block">
+				<div class="content-column-content only-column">
+					<div class="lego-element">
+						<div class="$video_overlay_css_class">
+							#if (($popUrl.contains("?832957")))
+								<iframe allowfullscreen="true" frameborder="0" height="450px" src="//www.youtube.com/embed/${youtube_id.data}?wmode=transparent&rel=0&autoplay=1" width="100%"></iframe>
+							#end
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+<style>
+.video-wrapper {
+	cursor: pointer;
+	height: 450px;
+}
+
+.video-overlay {
+	background: url(/documents/35606059/37087558/FSI-Info-Hub-Video-Screenshot.jpg/cfd32fd5-c256-4591-8f94-b3100e54b63f) center no-repeat;
+	background-size: 100% auto;
+	position: relative;
+}
+
+.video-page-content {
+	padding-top: 20px;
+}
+</style>
+
+<script>
+	AUI().ready(
+		'base',
+		function(A){
+			var video = A.one('.video-overlay.verified');
+
+			if (!video) {
+				return
+			}
+
+			video.on(
+				'click',
+				function(event){
+					video.removeClass('video-overlay');
+					video.addClass('display-video');
+					video.setContent('<iframe allowfullscreen="true" frameborder="0" height="450px" src="//www.youtube.com/embed/${youtube_id.data}?wmode=transparent&rel=0&autoplay=1" width="100%"></iframe>');
+				}
+			);
+		}
+	);
+</script>

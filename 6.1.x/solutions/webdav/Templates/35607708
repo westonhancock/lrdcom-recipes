@@ -1,0 +1,283 @@
+<style>
+#videoCarousel {
+    margin: 0 auto;
+	padding: 100px 30px;
+}
+
+#videoCarousel .carousel-title {
+	font-size: 1.3em;
+	padding: 15px 15px 25px;
+}
+
+#videoThumbnailCarousel {
+	overflow-x: auto;
+	overflow-y: hidden;
+	padding: 5px 0;
+	visibility: hidden;
+	width: 98%;
+}
+
+#videoThumbnailCarousel .carousel-title {
+	font-size: 1em;
+	padding: 0;
+}
+
+#videoThumbnailCarouselContent {
+	visibility: visible;
+	width: 3000px;
+}
+
+#videoThumbnailCarouselContent .caption-text {
+	display: none;
+}
+
+#videoThumbnailCarouselWrapper {
+	border-top: 1px solid #A7A7A7;
+	position: relative;
+}
+
+.caption-text {
+	font-size: 10px;
+}
+
+.carousel-button {
+	border: 15px solid transparent;
+	border-right-color: #A7A7A7;
+	left: -30px;
+	position: absolute;
+	top: 49px;
+}
+
+.carousel-button.right-btn {
+	border-left-color: #A7A7A7;
+	border-right-color: transparent;
+	right: -30px;
+	left: auto;
+}
+
+.carousel-item {
+	cursor: pointer;
+	float: left;
+	margin: 10px 15px;
+	max-width: 180px;
+	text-align: center;
+}
+
+.carousel-thumbnail {
+	background-position: center;
+	background-size: cover;
+	border: 4px solid transparent;
+	height: 100px;
+	position: relative;
+	width: 170px;
+}
+
+.gated .carousel-thumbnail {
+	border-color: rgba(25, 58, 106,.7);
+}
+
+.gated .carousel-thumbnail:after {
+	color: #FFF;
+	content: "$gated_video_text.data";
+	left: 40px;
+	position: absolute;
+	top: 40px;
+}
+
+.gated .carousel-thumbnail:before {
+	background: rgba(25, 58, 106,.7);
+	content: "";
+	display: block;
+	height: 100%;
+	width: 100%;
+}
+
+.selected .carousel-thumbnail {
+	border-color: #01B9BA;
+}
+
+@media (max-width: 720px) {
+	#videoContent iframe {
+		height: 300px !important;
+	}
+
+	.touch #videoThumbnailCarousel {
+		visibility: visible;
+	}
+}
+</style>
+
+#set ($scheme = $request.get("scheme"))
+
+#set ($portlet_bean_locator = $portal.getClass().forName('com.liferay.portal.kernel.bean.PortletBeanLocatorUtil'))
+#set ($hs_contact_local_service = $portlet_bean_locator.locate("hubspot-portlet", "com.liferay.hubspot.service.HSContactLocalService.velocity"))
+
+#set ($hsutk = $request.attributes.OSB_HUBSPOT_UTK)
+#if ($hsutk)
+	#set ($hsContact = $hs_contact_local_service.fetchHSContactByUserToken($hsutk))
+#end
+
+#if ($hsContact)
+	#set ($hsContactObject = $hsContact.getHSContactJSONObject().getJSONObject("properties"))
+#end
+
+#set ($hs_form_local_service = $portlet_bean_locator.locate("hubspot-portlet", "com.liferay.hubspot.service.HSFormLocalService.velocity"))
+#set ($hs_form = $hs_form_local_service.fetchHSFormByGUID($form_id.data))
+#set ($hs_form_fields = $hs_form.getHSFormJSONObject().getJSONArray("fields"))
+
+#set($popUrl = $request.attributes.CURRENT_COMPLETE_URL)
+
+#set ($open_videos = 2)
+
+#if ($number_of_open_videos.data != "")
+	#set ($open_videos = $open_videos.parseInt($number_of_open_videos.data))
+#end
+
+#set ($verified = false)
+
+#if (($popUrl.contains("?832957")))
+	#set ($verified = true)
+#elseif ($hs_form_fields)
+	#set ($checks_out = true)
+	#if (!$hsContactObject)
+		#set ($checks_out = false)
+	#end
+
+	#set($start = 0)
+	#set($end = $hs_form_fields.length() - 1)
+	#set($range = [$start..$end])
+
+	#foreach ($i in $range)
+		#set ($field = $hs_form_fields.getJSONObject($i))
+
+		#if ($hsContactObject && $hsContactObject.getJSONObject("$field.getString('name')").getString("value") == "" && !$field.getBoolean('hidden'))
+			#set ($checks_out = false)
+		#end
+	#end
+
+	#if ($checks_out)
+		#set ($verified = true)
+	#end
+#end
+
+#if ($heading.data != "")
+	<h2 class="solutions-heading">$heading.data</h2>
+#end
+
+#if ($sub_heading.data != "")
+	<p class="solutions-sub-heading">$sub_heading.data</p>
+#end
+
+<div id="videoCarousel" class="max-full">
+	<div id="videoContent">
+		<iframe allowfullscreen="true" frameborder="0" height="450px" src="//www.youtube.com/embed/${video_embed.data}?wmode=transparent&rel=0&enablejsapi=1" width="100%"></iframe>
+		<div class="carousel-title">
+			$video_embed.title.data
+			#if ($video_embed.caption-text.data != '')
+				<br /><span class="caption-text">${video_embed.caption-text.data}</span>
+			#end
+		</div>
+	</div>
+
+	<div id="videoThumbnailCarouselWrapper">
+		<a class="carousel-button left-btn" data-scroll-value="-208" href="javascript:;"></a>
+		#set ($videoCount = 0)
+		#foreach ($video in $video_embed.siblings)
+			#if ($video.data != '')
+				#set ($videoCount = $videoCount + 1)
+			#end
+		#end
+
+		<div id="videoThumbnailCarousel" data-length="$videoCount">
+			<div id="videoThumbnailCarouselContent">
+				#foreach($video in $video_embed.siblings)
+					#if ($video.data != '')
+						#set ($carousel_css_class = "carousel-item item-$velocityCount solution-video-$velocityCount")
+						#set ($gated = "")
+
+						#if ($velocityCount == 1)
+							#set ($carousel_css_class = "$carousel_css_class selected")
+						#end
+
+						#if (!$verified && $velocityCount > $open_videos)
+							#set ($carousel_css_class = "$carousel_css_class gated pop-up")
+							#set ($gated = "- Gated")
+						#end
+
+						#set ($thumbnail = "${scheme}://img.youtube.com/vi/${video.data}/0.jpg")
+
+						#if ($video.thumbnail.data != "")
+							#set ($thumbnail = "$video.thumbnail.data")
+						#end
+
+						<div class="$carousel_css_class" data-pop-display="#videoPopUp" #if($$video.asset_id.data != "" && $video.asset_name.data != "" && $video.asset_type.data != "")onclick="postToHubspot('$video.asset_id.data', '$video.asset_name.data', '$video.asset_type.data')"#end>
+							<div class="carousel-thumbnail" style="background-image: url($thumbnail);"#if($verified || $velocityCount <= $open_videos) data-embed="${scheme}://www.youtube.com/embed/${video.data}?wmode=transparent&rel=0&enablejsapi=1"#end onclick="ga('send', event', 'Info Hub Sites', 'MZM', 'Videos - $video.title.data $gated');"> </div>
+							<span class="carousel-title">
+								$video.title.data
+								#if ($video.caption-text.data != '')
+									<br /><span class="caption-text">$video.caption-text.data</span>
+								#end
+							</span>
+						</div>
+					#end
+				#end
+			</div>
+		</div>
+		<a class="carousel-button right-btn" data-scroll-value="208" href="javascript:;"></a>
+	</div>
+</div>
+
+<script>
+AUI().ready(
+	'anim',
+	function(A) {
+		var videoCarousel = A.one('#videoCarousel');
+		var videoThumbnailCarousel = videoCarousel.one('#videoThumbnailCarousel')
+
+		videoCarousel.all('.carousel-item').on(
+			'click',
+			function(event) {
+				var item = event.currentTarget;
+
+				if (item.hasClass('gated')) {
+					return
+				}
+
+				var embed = item.one('.carousel-thumbnail').getAttribute('data-embed');
+				videoCarousel.one('#videoContent iframe').set('src', embed);
+
+				var title = item.one('.carousel-title').getContent();
+				videoCarousel.one('#videoContent .carousel-title').setContent(title);
+
+				videoThumbnailCarousel.all('.selected').removeClass('selected');
+				item.addClass('selected');
+			}
+		);
+
+		videoCarousel.all('.carousel-button').on(
+			'click',
+			function(event) {
+				var scrollValue = parseInt(event.currentTarget.getAttribute('data-scroll-value'));
+				var startScrollPos = parseInt(videoThumbnailCarousel.get('scrollLeft'));
+
+				var scrollTo = startScrollPos + scrollValue;
+
+				new A.Anim(
+					{
+						duration: 0.5,
+						easing: 'easeBoth',
+						node: videoThumbnailCarousel,
+						to: {
+							scroll: [scrollTo, 0]
+						}
+					}
+				).run();
+			}
+		);
+
+		var carouselLength = parseInt(videoThumbnailCarousel.getAttribute('data-length'));
+		var width = carouselLength * 215;
+		videoThumbnailCarousel.one('#videoThumbnailCarouselContent').setStyle('width', width + 'px');
+	}
+);
+</script>

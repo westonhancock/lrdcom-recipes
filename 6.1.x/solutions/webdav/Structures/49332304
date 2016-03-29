@@ -1,0 +1,110 @@
+<?xml version="1.0"?>
+
+<root>
+	<dynamic-element name="lego_section_attr" type="text" index-type="" repeatable="true">
+		<dynamic-element name="lego_block_attr" type="text" index-type="" repeatable="true">
+			<dynamic-element name="lego_element_attr" type="text" index-type="" repeatable="true">
+				<dynamic-element name="element_type" type="list" index-type="" repeatable="false">
+					<dynamic-element name="h1" type="h1" index-type="" repeatable="false"></dynamic-element>
+					<dynamic-element name="h2" type="h2" index-type="" repeatable="false"></dynamic-element>
+					<dynamic-element name="h3" type="h3" index-type="" repeatable="false"></dynamic-element>
+					<dynamic-element name="span" type="span" index-type="" repeatable="false"></dynamic-element>
+					<dynamic-element name="div" type="div" index-type="" repeatable="false"></dynamic-element>
+					<dynamic-element name="p" type="p" index-type="" repeatable="false"></dynamic-element>
+					<dynamic-element name="image" type="image" index-type="" repeatable="false"></dynamic-element>
+					<dynamic-element name="button" type="button" index-type="" repeatable="false"></dynamic-element>
+					<dynamic-element name=" heading " type=" heading " index-type="" repeatable="false"></dynamic-element>
+					<dynamic-element name=" sub_heading " type=" sub_heading " index-type="" repeatable="false"/>
+				</dynamic-element>
+				<dynamic-element name="element_content" type="text_box" index-type="" repeatable="false"></dynamic-element>
+				<dynamic-element name="element_css_class" type="text" index-type="" repeatable="false"/>
+			</dynamic-element>
+			<dynamic-element name="block_css_class" type="text" index-type="" repeatable="false"></dynamic-element>
+			<dynamic-element name="column_position" type="list" index-type="" repeatable="false">
+				<dynamic-element name="only" type="only" index-type="" repeatable="false"></dynamic-element>
+				<dynamic-element name="left" type="left" index-type="" repeatable="false"></dynamic-element>
+				<dynamic-element name="middle" type="middle" index-type="" repeatable="false"></dynamic-element>
+				<dynamic-element name="right" type="right" index-type="" repeatable="false"/>
+			</dynamic-element>
+			<dynamic-element name="width" type="list" index-type="" repeatable="false">
+				<dynamic-element name="100" type="100" index-type="" repeatable="false"></dynamic-element>
+				<dynamic-element name="95" type="95" index-type="" repeatable="false"></dynamic-element>
+				<dynamic-element name="90" type="90" index-type="" repeatable="false"></dynamic-element>
+				<dynamic-element name="85" type="85" index-type="" repeatable="false"></dynamic-element>
+				<dynamic-element name="80" type="80" index-type="" repeatable="false"></dynamic-element>
+				<dynamic-element name="75" type="75" index-type="" repeatable="false"></dynamic-element>
+				<dynamic-element name="70" type="70" index-type="" repeatable="false"></dynamic-element>
+				<dynamic-element name="66" type="66" index-type="" repeatable="false"></dynamic-element>
+				<dynamic-element name="65" type="65" index-type="" repeatable="false"></dynamic-element>
+				<dynamic-element name="60" type="60" index-type="" repeatable="false"></dynamic-element>
+				<dynamic-element name="55" type="55" index-type="" repeatable="false"></dynamic-element>
+				<dynamic-element name="50" type="50" index-type="" repeatable="false"></dynamic-element>
+				<dynamic-element name="45" type="45" index-type="" repeatable="false"></dynamic-element>
+				<dynamic-element name="40" type="40" index-type="" repeatable="false"></dynamic-element>
+				<dynamic-element name="35" type="35" index-type="" repeatable="false"></dynamic-element>
+				<dynamic-element name="33" type="33" index-type="" repeatable="false"></dynamic-element>
+				<dynamic-element name="30" type="30" index-type="" repeatable="false"></dynamic-element>
+				<dynamic-element name="25" type="25" index-type="" repeatable="false"></dynamic-element>
+				<dynamic-element name="20" type="20" index-type="" repeatable="false"></dynamic-element>
+				<dynamic-element name="15" type="15" index-type="" repeatable="false"></dynamic-element>
+				<dynamic-element name="10" type="10" index-type="" repeatable="false"></dynamic-element>
+				<dynamic-element name="5" type="5" index-type="" repeatable="false"/>
+			</dynamic-element>
+		</dynamic-element>
+		<dynamic-element name="section_css_class" type="text" index-type="" repeatable="false"></dynamic-element>
+		<dynamic-element name="custom_content" type="text_area" index-type="" repeatable="false"/>
+	</dynamic-element>
+	<dynamic-element name="lego_css_class" type="text" index-type="" repeatable="false">
+		<meta-data>
+			<entry name="displayAsTooltip"><![CDATA[false]]></entry>
+			<entry name="required"><![CDATA[false]]></entry>
+			<entry name="instructions"><![CDATA[]]></entry>
+			<entry name="label"><![CDATA[heading]]></entry>
+			<entry name="predefinedValue"><![CDATA[]]></entry>
+		</meta-data>
+	</dynamic-element>
+	<dynamic-element name="lego_css" type="text_box" index-type="" repeatable="false">
+		<meta-data>
+			<entry name="displayAsTooltip"><![CDATA[true]]></entry>
+			<entry name="required"><![CDATA[false]]></entry>
+			<entry name="instructions"><![CDATA[]]></entry>
+			<entry name="label"><![CDATA[pop_up_info]]></entry>
+			<entry name="predefinedValue"><![CDATA[]]></entry>
+		</meta-data>
+	</dynamic-element>
+	<dynamic-element name="lego_media_query" type="text_box" index-type="" repeatable="true">
+		<dynamic-element name="media_query_max" type="text" index-type="" repeatable="false"></dynamic-element>
+		<dynamic-element name="media_query_min" type="text" index-type="" repeatable="false"/>
+	</dynamic-element>
+	<dynamic-element name="display_locales" type="text" index-type="" repeatable="false">
+		<meta-data>
+			<entry name="displayAsTooltip"><![CDATA[false]]></entry>
+			<entry name="required"><![CDATA[false]]></entry>
+			<entry name="instructions"><![CDATA[]]></entry>
+			<entry name="label"><![CDATA[form_article_id]]></entry>
+			<entry name="predefinedValue"><![CDATA[]]></entry>
+		</meta-data>
+	</dynamic-element>
+	<dynamic-element name="pop_up_id" type="text" index-type="" repeatable="false">
+		<meta-data>
+			<entry name="displayAsTooltip"><![CDATA[false]]></entry>
+			<entry name="required"><![CDATA[false]]></entry>
+			<entry name="instructions"><![CDATA[]]></entry>
+			<entry name="label"><![CDATA[thank_you_heading]]></entry>
+			<entry name="predefinedValue"><![CDATA[]]></entry>
+		</meta-data>
+	</dynamic-element>
+	<dynamic-element name="pop_up_heading" type="text" index-type="" repeatable="false">
+		<meta-data>
+			<entry name="displayAsTooltip"><![CDATA[true]]></entry>
+			<entry name="required"><![CDATA[false]]></entry>
+			<entry name="instructions"><![CDATA[]]></entry>
+			<entry name="label"><![CDATA[thank_you_content]]></entry>
+			<entry name="predefinedValue"><![CDATA[]]></entry>
+		</meta-data>
+	</dynamic-element>
+	<dynamic-element name="pop_up_content" type="text_box" index-type="" repeatable="false"/>
+	<dynamic-element name="submit_button_class" type="text" index-type="" repeatable="false"/>
+	<dynamic-element name="form_id" type="text" index-type="" repeatable="false"/>
+	<dynamic-element name="pop_up_below" type="text_area" index-type="" repeatable="false"/>
+</root>

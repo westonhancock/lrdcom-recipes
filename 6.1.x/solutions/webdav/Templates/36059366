@@ -1,0 +1,31 @@
+<div class="customer-list-wrapper max-full">
+    <div class="customer-list-container">
+	    <h2 class="tc">$title.data</h2>
+
+		#foreach ($column_title in $column_titles.siblings)
+			<div class="aui-w33 content-column column-$velocityCount">
+				<div class="content-column-content #if ($velocityCount == '1') left-column #end #if ($velocityCount == '2') middle-column #end #if ($velocityCount == '3') right-column #end">
+					<div class="heading-wrapper tc">
+						<img src="$column_title.logo.data" />
+						<h3>$column_title.data</h3>
+					</div>
+					<ul>
+						#foreach ($bullet_text in $column_title.bullet_texts.siblings)
+							<li>
+								#if ($bullet_text.bullet_link.data != "")
+									<a href="$bullet_text.bullet_link.data" target="_blank">$bullet_text.data</a>
+								#else
+									<span class="text-only">$bullet_text.data</span>
+								#end
+							</li>
+						#end
+					</ul>
+				</div>
+			</div>
+		#end
+	</div>
+</div>
+
+<style>
+$custom_css.data
+</style>

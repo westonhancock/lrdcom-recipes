@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+
+<root>
+	<dynamic-element name="heading" type="text" index-type="" repeatable="false"/>
+	<dynamic-element name="sub_heading" type="text_box" index-type="" repeatable="false"/>
+	<dynamic-element name="video_embed" type="text" index-type="" repeatable="true">
+		<dynamic-element name="title" type="text" index-type="" repeatable="false"></dynamic-element>
+		<dynamic-element name="caption-text" type="text" index-type="" repeatable="false"></dynamic-element>
+		<dynamic-element name="thumbnail" type="document_library" index-type="" repeatable="false"></dynamic-element>
+		<dynamic-element name="asset_id" type="text" index-type="" repeatable="false"></dynamic-element>
+		<dynamic-element name="asset_name" type="text" index-type="" repeatable="false"></dynamic-element>
+		<dynamic-element name="asset_type" type="text" index-type="" repeatable="false"/>
+	</dynamic-element>
+	<dynamic-element name="number_of_open_videos" type="text" index-type="" repeatable="false"/>
+	<dynamic-element name="form_id" type="text" index-type="" repeatable="false"/>
+	<dynamic-element name="gated_video_text" type="text" index-type="" repeatable="false"/>
+</root>

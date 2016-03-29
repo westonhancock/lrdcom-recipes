@@ -1,0 +1,424 @@
+<div class="section-toggler toggle-section">
+    <div class="header-sections">
+    	#foreach ($header in $header.siblings)
+			#set ($blockCount = $velocityCount)
+			<div class="header-block header-$velocityCount class-toggle-carousel" data-target-node=".toggle-section" data-target-class="item-$velocityCount">
+				<h2>$header.title.data</h2>
+				<div class="header-image header-image-$velocityCount">
+				</div>
+			</div>
+			<div class="responsive-show mid-section">
+				<div class="content-block item-$velocityCount">
+					<div class="lower-section">
+						<img src="$header.image.data"></img>
+						<div class="content">
+							$header.content.data
+						</div>
+					</div>
+					#if ($header.embedded-article-id.data != "")
+						<div id="embedded-targeted-article-$header.embedded-article-id.data">
+							<runtime-portlet name="56" instance="targeted_$header.embedded-article-id.data" queryString=""/>
+						</div>
+					#end
+					#if ($header.quote.data != "")
+						<div class="quote-section">
+							<div class="aui-helper-clear-fix max-960">
+								<div class="aui-w65">
+									<div class="content-column-content left-column">
+										<div class="lego-element content">
+											<div class="left-quote">
+											</div>
+											<div class="left-quote">
+											</div>
+											<div class="quote-text">
+												$header.quote.data
+											</div>
+											<div class="right-quote">
+											</div>
+											<div class="right-quote">
+											</div>
+										</div>
+									</div>
+								</div>
+								<div class="aui-w35 centered">
+									<div class="content-column-content right-column">
+										<img src="$header.quote-image.data"/>
+										<a class="btn" href="$header.download_url.data" target="_blank">
+											$header.download_title.data
+										</a>
+										<div class="triangle-right">&nbsp;
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					#end
+				</div>
+			</div>
+		#end
+		<div class="responsive-hidden lower-section">
+			#foreach ($header in $header.siblings)
+				<div class="content-block item-$velocityCount">
+					<div class="max-960 info-section">
+						<img src="$header.image.data">
+						<div class="info-content">
+							$header.content.data
+						</div>
+					</div>
+					#if ($header.embedded-article-id.data != "")
+						<div id="embedded-targeted-article-$header.embedded-article-id.data">
+							<runtime-portlet name="56" instance="targeted_$header.embedded-article-id.data" queryString=""/>
+						</div>
+					#end
+					#if ($header.quote.data != "")
+						<div class="quote-section">
+							<div class="aui-helper-clear-fix max-960">
+								<div class="aui-w65">
+									<div class="content-column-content left-column">
+										<div class="lego-element content">
+											<div class="left-quote">
+											</div>
+											<div class="left-quote">
+											</div>
+											<div class="quote-text">
+												$header.quote.data
+											</div>
+											<div class="right-quote">
+											</div>
+											<div class="right-quote">
+											</div>
+										</div>
+									</div>
+								</div>
+								<div class="aui-w35 centered">
+									<div class="content-column-content right-column">
+										<img src="$header.quote-image.data"></img>
+										<a class="btn" href="$header.download_url.data" target="_blank">
+											$header.download_title.data
+										</a>
+										<div class="triangle-right"></div>
+									</div>
+								</div>
+							</div>
+						</div>
+					#end
+				</div>
+			#end
+		</div>
+	</div>
+</div>
+
+#set ($blockWidth = (100/$blockCount))
+
+<script>
+
+</script>
+
+<style>
+#foreach ($header in $header.siblings)
+	.class-toggle-carousel-item-$velocityCount .content-block.item-$velocityCount {
+		display: block;
+	}
+
+	.class-toggle-carousel-item-$velocityCount .header-block.header-$velocityCount {
+		background-color: #0DA04B;
+	}
+
+	.class-toggle-carousel-item-$velocityCount .header-block.header-$velocityCount .header-image.header-image-$velocityCount {
+		background-image: url('$header.header-graphic-hover.data');
+		background-position: center;
+		background-repeat: no-repeat;
+	}
+
+	.class-toggle-carousel-item-$velocityCount .header-block.header-$velocityCount h2{
+		color: #FFF;
+	}
+
+	.header-block .header-image.header-image-$velocityCount {
+		background-image: url('$header.header-graphic.data');
+	}
+
+	.header-block:hover .header-image.header-image-$velocityCount {
+		background-image: url('$header.header-graphic-hover.data');
+}
+#end
+
+.header-block {
+	border-right: 1px solid #CCC;
+	border-top: 1px solid #CCC;
+	border-bottom: 1px solid #CCC;
+	box-sizing: border-box;
+    cursor: pointer;
+	float: left;
+	min-height: 295px;
+	padding: 20px;
+	position: relative;
+	text-align: center;
+	width: ${blockWidth}%;
+}
+
+.header-block:hover {
+	background: #0DA04B;
+}
+
+.header-block:hover h2 {
+	color: #FFF;
+}
+
+.header-block .header-image {
+	background-position: center;
+	background-repeat: no-repeat;
+	padding-bottom: 132px;
+}
+
+.lower-section .content-block .info-section {
+	min-height: 220px;
+	position: relative;
+	padding: 40px;
+}
+
+.lower-section .content-block .info-section img {
+	display: block;
+	padding: 40px;
+	position: absolute;
+}
+
+.lower-section .content-block .info-section .info-content {
+	font-size: 1.5em;
+	margin-left: 210px;
+	max-width: 700px;
+	padding: 40px;
+}
+
+.responsive-show {
+	display: none;
+}
+
+.header-block h2 {
+	font-size: 1.6em;
+	font-weight: lighter;
+	line-height: 1.2em;
+	margin-bottom: 0.5em;
+	min-height: 2.4em;
+}
+
+.mid-section .content-block {
+	display: none;
+}
+
+.lower-section {
+	clear: both;
+	max-height: 0px;
+	-webkit-transition: max-height 0.8s;
+	-moz-transition: max-height 0.8s;
+	transition: max-height 0.8s;
+}
+
+.lower-section .content-block {
+	display: none;
+}
+
+#foreach ($header in $header.siblings)
+	.class-toggle-carousel-item-$velocityCount .lower-section {
+		max-height: 1000px;
+	}
+#end
+
+.header-block img {
+
+}
+
+/* quote section styles */
+
+.left-quote, .right-quote {
+	display: inline-block;
+	position: relative;
+}
+
+.left-quote {
+	border-bottom: 13px solid transparent;
+	border-left: 13px solid #1C75B9;
+	border-right: 13px solid transparent;
+	border-top: 13px solid #1C75B9;
+	left: 50px;
+	top: 15px;
+}
+
+.right-quote {
+	border-bottom: 13px solid #1C75B9;
+	border-left: 13px solid transparent;
+	border-right: 13px solid #1C75B9;
+	border-top: 13px solid transparent;
+	right: -83%;
+	top: -5px;
+}
+
+.quote-section {
+	overflow: hidden;
+	position: relative;
+	background-color: #1B3A6A;
+}
+
+.quote-section .aui-w65, .quote-section .aui-w35 {
+	float: left;
+}
+
+.quote-section .content{
+	color: #FFF;
+}
+
+.quote-section .content .quote-text {
+	box-sizing: border-box;
+	font-size: 24px;
+	padding: 20px 80px;
+	position: relative;
+}
+
+.quote-section .left-column .lego-element.content {
+	border-right: 1px solid #FFF;
+	margin: 40px 0;
+}
+
+.quote-section .right-column {
+	margin: 90px 0;
+}
+
+.quote-section .right-column img {
+	display: block;
+	margin: 0 auto 20px;
+}
+
+.quote-section .right-column .btn {
+	border: 1px solid #FFF;
+	border-radius: 3px;
+	color: #FFF;
+	cursor: pointer;
+	padding: 5px 15px;
+}
+
+.quote-section .right-column .btn:hover {
+	background-color: #FFF;
+	color: #1B3A6A;
+}
+
+.quote-section .triangle-right {
+	border-bottom: 60px solid transparent;
+	border-left: 60px solid transparent;
+	border-right: 60px solid #0DA04B;
+	border-top: 60px solid #0DA04B;
+	content: "";
+	height: 0;
+	position: absolute;
+	right: 0;
+	top: 0;
+	width: 0;
+}
+
+#if ($custom_styles.data != "")
+	$custom_styles.data
+#end
+
+@media all and (max-width: 780px) {
+	.header-sections .header-1 {
+		border-top: 1px solid #CCC;
+	}
+
+	.mid-section .lower-section > img {
+		display: none;
+	}
+
+	.quote-section .triangle-right {
+		display: none;
+	}
+
+	.quote-section .left-column .lego-element.content {
+		border-right: 0;
+	}
+
+	.quote-section .aui-w65, .quote-section .aui-w35 {
+		float: none;
+		width: 100%;
+	}
+
+	.quote-section .left-column .lego-element.content {
+		margin: 0px;
+	}
+
+	.quote-section .right-column {
+		margin: 0px 0px 40px;
+	}
+
+	.quote-section .content .quote-text {
+		padding: 10px 90px;
+		font-size: 1.1em;
+	}
+}
+
+@media all and (max-width: 480px) {
+    .header-block {
+        padding: 2px;
+    }
+
+    .header-block h2 {
+        margin-left: 110px !important;
+        margin-top: 5px !important;
+    }
+
+    .header-block .header-image {
+        padding-bottom: 78px;
+    }
+    
+    .left-quote {
+		left: 0;
+	}
+    
+    .quote-section .content .quote-text {
+		padding: 20px;
+	}
+    
+    .responsive-show .lower-section {
+        padding: 15px !important;
+    }
+}
+
+/* end quote section */
+
+
+@media all and (max-width: 780px) {
+	.header-block {
+		border: 0px;
+		border-bottom: 1px solid #CCC;
+		width: 100%;
+		min-height: 0px;
+	}
+
+	.header-block h2 {
+		margin-left: 30%;
+		margin-top: 36px;
+		text-align: left;
+	}
+
+	.header-block img {
+		position: absolute;
+		left: 20%;
+		top: 60px;
+	}
+
+	.responsive-show {
+		display: block;
+	}
+
+	.responsive-show .lower-section {
+		padding: 40px 15px;
+	}
+
+	.header-image {
+		width: 110px;
+		top: 0px;
+		position: absolute;
+		left: 2%;
+		background-size: 80%;
+	}
+
+}
+</style>

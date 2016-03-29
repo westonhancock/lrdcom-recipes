@@ -1,0 +1,109 @@
+<style>
+@media all and (max-width: 480px) {
+    .legacy #carousel menu {
+        display: none;
+    }
+}
+
+#set ($count = 1)
+
+#foreach ($each-image in $image.siblings)
+	.vp960 .aui-carousel-item-$count {
+		background-image: url($each-image.data);
+	}
+
+	.vp720 .aui-carousel-item-$count {
+		background-image: url($each-image.image-720.data);
+	}
+
+	#set ($count = $count + 1)
+#end
+
+#if($count == 2)
+	.carousel menu {
+		display: none;
+	}
+#end
+
+/* ronald $count */
+
+.aui-carousel-item {
+	width: 100%;
+	background-position: center;
+	background-size: cover;
+}
+
+.loading {
+	text-align: center;
+}
+
+#main-content {
+	padding-top: 4px;
+}
+#if ($locale == "de_DE")
+	.banner-content-section {
+		display: none;
+	}
+#end
+</style>
+
+<div style="text-align: center;">
+	<img class="loading-carousel" src="/osb-community-theme/images/progress_bar/loading_animation.gif"/>
+</div>
+
+<div class="aui-helper-hidden" id="carsouelWrapper">
+	<div class="carousel" id="carousel">
+		#set ($count = 1)
+		#set ($activeClass = '')
+
+		#foreach ($each-image in $image.siblings)
+			#if ($count == 1)
+				#set ($activeClass = 'aui-carousel-item-active')
+			#end
+			<div class="aui-carousel-item aui-carousel-item-$count $activeClass" style="background-image:url($each-image.data)">
+				<div class="carousel-item-content $each-image.carousel_custom_class.data">
+					$each-image.content.data
+				</div>
+			</div>
+			#set ($activeClass = '')
+
+			#set ($count = $count + 1)
+		#end
+	</div>
+</div>
+
+#if ($custom_css.data != "")
+	<style>
+		$custom_css.data
+	</style>
+#end
+
+<script>
+
+AUI().ready('aui-carousel', function(A) {
+
+	//init
+	var component = new A.Carousel(
+		{
+			intervalTime: 13,
+			contentBox: '#carousel',
+			activeIndex: 0,
+			after: {
+				render: function() {
+					A.one('.aui-carousel-item-1').setStyle('opacity' , 1);
+				}
+			}
+		}
+	)
+	.render();
+
+	A.on(
+		'load',
+		function() {
+			A.one(".loading-carousel").hide();
+			A.one('#carsouelWrapper').show();
+		}
+	);
+});
+
+</script>

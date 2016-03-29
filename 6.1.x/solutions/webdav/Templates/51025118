@@ -1,0 +1,537 @@
+#set ($render_default = true)
+
+#if ($target_user && ($target_user.getData() != ""))
+    #parse("$journalTemplatesPath/57886330")
+
+    #foreach ($targets in $target_user.siblings)
+		#set ($article_id = $targets.article_id.data)
+
+		#foreach ($target in $stringUtil.split($targets.data))
+			#set ($portlet_embedded = false)
+
+			#if (($target == "random") || ($target == $target_country) || ($target == $target_industry) || ($target == $target_persona) || (($target == "hubspot") && $hs_contact))
+				#set ($portlet_embedded = true)
+
+				#if ($article_id == "default")
+					#break
+				#end
+
+				#set ($render_default = false)
+				#set ($namespace = "${reserved-article-id.data}-${velocityCount}")
+
+				#if ($target == "random")
+					#set ($articles = $stringUtil.split($article_id))
+					#set ($namespace = $articles.get($mathTool.random(0, $articles.size())))
+				#elseif ($article_id != "")
+					#set ($namespace = $article_id)
+				#end
+
+				<div id="embedded-targeted-article-$namespace">
+					<runtime-portlet name="56" instance="targeted_$namespace" queryString=""/>
+				</div>
+
+				#break
+			#end
+		#end
+
+		#if ($portlet_embedded)
+			#break
+		#end
+	#end
+#end
+
+#if ($render_default && (!$display_locales || $display_locales.getData() == "" || $display_locales.getData().contains($locale.toString())))
+<style>
+.aui-overlaymask-content {
+	opacity: 0.85!important;	
+}
+
+.engage-section {
+	margin: auto;
+	padding-bottom: 6em;
+	padding-top: 5em;
+}
+
+.engage-section h2.title {
+	font-size: 2.25em;
+    font-weight: lighter;
+	line-height: 1.5em;
+	margin: 28px 0;
+}
+
+.engage-section > div {
+	display: table;
+}
+
+.engage-video, .engage-text {
+	vertical-align: middle;
+	float: left;
+	display: table-cell;
+	text-shadow: 0px 0px 30px rgba(12, 0, 5, 0.8);
+}
+
+.engage-text h3.subtitle {
+	font-size: 15px;
+	font-weight: lighter;
+	line-height: 17px;
+	margin: 15px 0;
+    text-shadow: 0px 0px 30px rgba(12, 0, 5, 0.8);
+}
+
+h2.light, h3.light {
+	color: #FFF;
+}
+
+h2.title {
+	
+}
+
+.ie8 .video-swap {
+	background: url('/documents/35606059/51025072/sprite.png/396bd465-ed95-45fd-a2c6-0d2e956700cb?t=1418251188000?t=1418251188000');
+	background-position: 393px 0px;
+	content: "";
+	cursor: pointer;
+	height: 235px;
+	margin: auto;
+	width: 393px;
+}
+
+.max-960 {
+	margin: 0 auto;
+	max-width: 960px;
+}
+
+.video-swap {
+	background: url('/documents/35606059/51025068/video-frame.svg/08cb3f65-2bda-4612-9f17-f1e4acf07cb6');
+	cursor: pointer;
+	height: 234px;
+	margin: auto;
+	width: 393px;
+}
+
+#article-${reserved-article-id.data} {
+	background: url($background_image.data);
+	min-height: 375px;
+	background-position: top center;
+	background-repeat: no-repeat;
+	background-attachment: fixed;
+	background-size: cover;
+}
+
+#closePopUp {
+	background: url('/documents/35606059/51025070/x-close.png/fb100dfc-157b-43df-8ce1-5a8c8a873c3d?t=1412091471000?t=1412091471000') no-repeat;
+	cursor: pointer;
+	float: right;
+	height: 24px;
+	left: 0px;
+	position: relative;
+	top: 18px;
+	width: 24px;
+}
+
+#videoPopUp {
+	max-width: 910px;
+	position: absolute;
+	width: 85%;
+	z-index: 2000;
+}
+
+#videoPopUp .pop-up-content {
+	max-width: 890px;
+	padding: 50px 35px 30px;
+}
+
+#videoPopUp .pop-up-content .speaker-company, #videoPopUp .pop-up-content .speaker-name, #videoPopUp .pop-up-content .speaker-title {
+	display: block;
+}
+
+#videoPopUp .speaker-company {
+	font-style: italic;
+}
+
+#videoPopUp .speaker-name {
+	color: #3AA0D5;
+	font-size: 1.2em;
+	margin: 5px 0;
+}
+
+#videoPopUp .speaker-title, #videoPopUp .speaker-company {
+	font-weight: normal;
+}
+
+.ie7 #videoPopUp, .ie8 #videoPopUp {
+	background: #FFF;
+}
+
+.ie8 #heading .company-title .logo {
+	background-color: #F5FAFD;
+}
+
+.ie8.show-nav #navigation {
+	background: #F5FAFD;
+}
+
+#videoPopUp:after, #videoPopUp:before {
+	border: 30px solid transparent;
+	content: "";
+	display: block;
+	margin: -30px;
+	position: absolute;
+}
+
+#videoPopUp.bottom:after {
+	border-top-color: #FFF;
+	bottom: -29px;
+	right: 50%;
+}
+
+#videoPopUp.bottom:before {
+	border-top-color: #CCC;
+	bottom: -30px;
+	right: 50%;
+}
+
+#videoPopUp.left:after {
+	border-left-color: #FFF;
+	right: -29px;
+	top: 50%;
+}
+
+#videoPopUp.left:before {
+	border-left-color: #CCC;
+	right: -30px;
+	top: 50%;
+}
+
+#videoPopUp.right:after {
+	border-right-color: #FFF;
+	left: -29px;
+	top: 50%;
+}
+
+#videoPopUp.right:before {
+	border-right-color: #CCC;
+	left: -30px;
+	top: 50%;
+}
+
+#videoPopUp.top:after {
+	border-bottom-color: #FFF;
+	right: 50%;
+	top: -29px;
+}
+
+#videoPopUp.top:before {
+	border-bottom-color: #CCC;
+	right: 50%;
+	top: -30px;
+}
+
+.pop-up-content iframe {
+	width: 100%;
+	height: 500px;
+}
+
+@media all and (min-width: 720px) {
+	#videoPopUp {
+		width: 85%;
+	}
+}
+
+@media all and (max-width: 815px) {
+	.pop-up-content iframe {
+		height: 350px;
+	}
+}
+
+@media all and (max-width: 690px) {
+	.pop-up-content iframe {
+		height: 260px;
+	}
+}
+
+@media all and (max-width: 520px) {
+	.pop-up-content iframe {
+		height: 200px;
+	}
+}
+
+@media(max-width: 820px) {
+	.engage-section > div {
+		display: block;
+		margin: auto;
+		float: none;
+	}
+}
+
+@media(max-width: 500px) {
+	.video-swap {
+	    cursor: pointer;
+	    background: url("/documents/35606059/51025068/video-frame.svg/08cb3f65-2bda-4612-9f17-f1e4acf07cb6") no-repeat scroll 30px 0px / 70% auto transparent;
+	    height: 117px;
+	    max-width: 280px;
+	}
+}
+</style>
+
+<div id="article-${reserved-article-id.data}">
+	<div class="lego-article-content max-960" id="aboutStartNav">
+		<div class="aui-helper-clearfix lego-section section-1 engage-section">
+			<div class="aui-w60 block-1 content-column lego-block engage-video">
+				<div class="content-column-content left-column">
+					<div class="lego-element video-swap video-wrapper" data-embed="$video_id.data">
+					</div>
+				</div>
+			</div>
+			<div class="aui-w40 block-2 content-column lego-block engage-text">
+				<div class="content-column-content right-column" >
+					<h2 class="lego-element title light"> $header.data</h2>
+					<h3 class="lego-element subtitle light"> $paragraph.data</h3>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+<script>
+	AUI().ready(
+		'aui-overlay-mask',
+		'node',
+		function(A) {
+			var WIN = A.getWin();
+
+			var videoPopUp = A.one('#videoPopUp');
+
+			if (!videoPopUp) {
+				A.one('#wrapper').append('<div class="aui-helper-hidden" id="videoPopUp" data-overlay="true"><div id="closePopUp" class="close-section"></div><div class="pop-up-content"></div></div>');
+
+				videoPopUp = A.one('#videoPopUp');
+			};
+
+			var centerOnPage = function(node) {
+				var currentScrollPos = WIN.get('docScrollY');
+
+				var winHeight = WIN.get('innerHeight');
+
+				if (winHeight == undefined) {
+					winHeight = document.documentElement.clientHeight;
+				}
+
+				var contentWidth = A.one('#wrapper').get('clientWidth');
+
+				var nodeHeight = node.get('clientHeight');
+				var nodeWidth = node.get('clientWidth');
+
+				xCenter = (contentWidth / 2) - (nodeWidth / 2);
+				yCenter = ((winHeight / 2) - (nodeHeight / 2)) + currentScrollPos;
+
+				node.setStyle('left', 'auto');
+				node.setStyle('right', xCenter);
+				node.setStyle('top', yCenter);
+
+				if (node.getAttribute('data-overlay')) {
+					createOverlayMask();
+				}
+			};
+
+			var centerOnTarget = function(node) {
+				var targetNode = A.one('#' + node.getAttribute('data-target-node-id'));
+
+				if (!targetNode) {
+					return
+				}
+
+				var targetNodeCenterX = targetNode.getX() + (targetNode.get('clientWidth') / 2);
+				var targetNodeCenterY = targetNode.getY() + (targetNode.get('clientHeight') / 2);
+
+				var nodeHeight = node.get('clientHeight');
+				var nodeWidth = node.get('clientWidth');
+
+				var nodeCenterX = (nodeWidth / 2);
+				var nodeCenterY = (nodeHeight / 2);
+
+				var nodeClass = 'middle';
+
+				var nodeLeft = targetNodeCenterX - nodeCenterX;
+				var nodeTop = targetNodeCenterY - nodeCenterY;
+
+				var popUpDirection = node.getAttribute('data-pop-up-direction');
+
+				if (targetNode.getAttribute('data-pop-up-direction')) {
+					popUpDirection = targetNode.getAttribute('data-pop-up-direction');
+				}
+
+				var popUpOffset = parseInt(node.getAttribute('data-pop-up-offset'));
+
+				if (!popUpOffset) {
+					popUpOffset = 30;
+				}
+
+				if (popUpDirection == 'bottom') {
+					nodeClass = 'bottom';
+					nodeTop = targetNodeCenterY - nodeHeight - popUpOffset;
+				} else if (popUpDirection == 'left') {
+					nodeClass = 'left';
+					nodeLeft = targetNodeCenterX - nodeWidth - popUpOffset;
+				} else if (popUpDirection == 'right') {
+					nodeClass = 'right';
+					nodeLeft = targetNodeCenterX + popUpOffset;
+				} else if (popUpDirection == 'top') {
+					nodeClass = 'top';
+					nodeTop = targetNodeCenterY + popUpOffset;
+				}
+
+				if (nodeLeft < 0) {
+					nodeClass += ' repositioned';
+
+					nodeLeft = 2;
+				}
+
+				if (nodeLeft + nodeWidth > WIN.get('innerWidth')) {
+					nodeClass += ' repositioned';
+
+					nodeLeft = WIN.get('innerWidth') - nodeWidth - 18;
+				}
+
+				if (nodeTop < 0) {
+					nodeClass += ' repositioned';
+
+					nodeTop = 2;
+				}
+
+				node.removeClass('bottom');
+				node.removeClass('left');
+				node.removeClass('middle');
+				node.removeClass('repositioned');
+				node.removeClass('right');
+				node.removeClass('top');
+
+				node.addClass(nodeClass);
+				node.setStyle('left', nodeLeft);
+				node.setStyle('top', nodeTop);
+			};
+
+			var copyToPopUp = function(node) {
+				var embed = node.getAttribute('data-embed');
+
+				if (embed) {
+					videoPopUp.one('.pop-up-content').setContent('<iframe allowfullscreen="" frameborder="0" class="pop-up-iframe" src="//www.youtube.com/embed/' + embed + '?wmode=transparent&autoplay=1&modestbranding=1&rel=0&showinfo=0&enablejsapi=1" frameborder="0" allowfullscreen"></iframe>');
+				}
+				else {
+					return;
+				}
+
+				videoPopUp.removeClass('aui-helper-hidden');
+
+				videoPopUp.setAttribute('data-target-node-id', node.generateID());
+
+				positionPopUp(videoPopUp);
+
+				var popUpContent = videoPopUp.one('.pop-up-content');
+
+				popUpContent.on(
+					'clickoutside',
+					function(event) {
+						var overlayMask = A.one('.aui-overlaymask');
+
+						if (overlayMask) {
+							overlayMask.remove();
+						}
+
+						videoPopUp.addClass('aui-helper-hidden');
+
+						popUpContent.detach('clickoutside');
+						popUpContent.setContent("");
+					}
+				);
+			};
+
+			var createOverlayMask = function() {
+				var bindUI = function() {
+					var overlayMask = A.one('.aui-overlaymask');
+
+					if (overlayMask) {
+						overlayMask.on(
+							'click',
+							function() {
+								overlayMask.remove(true);
+							}
+						);
+					}
+				}
+
+				var init = function() {
+					if (A.one('.aui-overlaymask')) {
+						return
+					}
+
+					var overlay = new A.OverlayMask().render();
+
+					overlay.set('z-index', 20);
+					overlay.show();
+
+					bindUI();
+				}
+
+				return init();
+			}
+
+			var positionPopUp = function(node) {
+				if (node.hasClass('aui-helper-hidden')) {
+					return
+				}
+
+				var popUpCentered = true;
+
+				if ((node.getAttribute('data-pop-up-position') == "target") && (WIN.get('innerWidth') > 720)) {
+					popUpCentered = false;
+				}
+
+				if (popUpCentered) {
+					centerOnPage(node);
+				} else {
+					centerOnTarget(node);
+				}
+			};
+
+			A.on(
+				'load',
+				function() {
+					var url = document.URL;
+
+					var popUpId = url.substring(url.indexOf('popUp'));
+
+					var popUp = A.one('#' + popUpId);
+
+					if (popUp) {
+						copyToPopUp(popUp);
+					}
+				}
+			);
+
+			var iOS = /iPad/i.test(navigator.userAgent) || /iPhone/i.test(navigator.userAgent);
+			var mouseEvent = 'click';
+
+			if (iOS) {
+				mouseEvent = 'mousemove';
+			}
+
+			A.all('.video-wrapper').on(
+				mouseEvent,
+				function(event) {
+					event.stopPropagation();
+
+					copyToPopUp(event.currentTarget);
+				}
+			);
+
+			A.on(
+				'resize',
+				function() {
+					positionPopUp(videoPopUp);
+				}
+			);
+		}
+	);
+</script>
+#end

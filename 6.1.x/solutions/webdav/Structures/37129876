@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+
+<root>
+	<dynamic-element name="title" type="text" index-type="" repeatable="false">
+		<dynamic-element name="image" type="document_library" index-type="" repeatable="false"/>
+	</dynamic-element>
+	<dynamic-element name="info" type="text_box" index-type="" repeatable="false"/>
+	<dynamic-element name="form_id" type="text" index-type="" repeatable="false"/>
+	<dynamic-element name="download_url" type="text" index-type="" repeatable="true">
+		<dynamic-element name="download_title" type="text" index-type="" repeatable="false"/>
+	</dynamic-element>
+	<dynamic-element name="button_text" type="text" index-type="" repeatable="false"/>
+	<dynamic-element name="button_text_gated" type="text" index-type="" repeatable="false"/>
+	<dynamic-element name="asset_id" type="text" index-type="" repeatable="false"/>
+	<dynamic-element name="asset_name" type="text" index-type="" repeatable="false"/>
+	<dynamic-element name="asset_type" type="text" index-type="" repeatable="false"/>
+	<dynamic-element name="css" type="text_box" index-type="" repeatable="false"/>
+</root>

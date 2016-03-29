@@ -1,0 +1,73 @@
+<?xml version="1.0"?>
+
+<root>
+	<dynamic-element name="title" type="text" index-type="" repeatable="false">
+		<meta-data>
+			<entry name="displayAsTooltip"><![CDATA[false]]></entry>
+			<entry name="required"><![CDATA[false]]></entry>
+			<entry name="instructions"><![CDATA[]]></entry>
+			<entry name="label"><![CDATA[title]]></entry>
+			<entry name="predefinedValue"><![CDATA[]]></entry>
+		</meta-data>
+	</dynamic-element>
+	<dynamic-element name="subtitle" type="text_box" index-type="" repeatable="false">
+		<meta-data>
+			<entry name="displayAsTooltip"><![CDATA[false]]></entry>
+			<entry name="required"><![CDATA[false]]></entry>
+			<entry name="instructions"><![CDATA[]]></entry>
+			<entry name="label"><![CDATA[subtitle]]></entry>
+			<entry name="predefinedValue"><![CDATA[]]></entry>
+		</meta-data>
+	</dynamic-element>
+	<dynamic-element name="section_titles" type="text" index-type="" repeatable="true">
+		<dynamic-element name="register_btn_url" type="text" index-type="" repeatable="true">
+			<dynamic-element name="page" type="text" index-type="" repeatable="false"/>
+			<dynamic-element name="disabled" type="boolean" index-type="" repeatable="false"/>
+			<dynamic-element name="register_btn_txt" type="text" index-type="" repeatable="false">
+				<meta-data>
+					<entry name="displayAsTooltip"><![CDATA[false]]></entry>
+					<entry name="required"><![CDATA[false]]></entry>
+					<entry name="instructions"><![CDATA[]]></entry>
+					<entry name="label"><![CDATA[register_btn_txt]]></entry>
+					<entry name="predefinedValue"><![CDATA[]]></entry>
+				</meta-data>
+			</dynamic-element>
+			<dynamic-element name="date" type="text" index-type="" repeatable="false">
+				<meta-data>
+					<entry name="displayAsTooltip"><![CDATA[false]]></entry>
+					<entry name="required"><![CDATA[false]]></entry>
+					<entry name="instructions"><![CDATA[]]></entry>
+					<entry name="label"><![CDATA[date]]></entry>
+					<entry name="predefinedValue"><![CDATA[]]></entry>
+				</meta-data>
+			</dynamic-element>
+			<dynamic-element name="event_title" type="text_box" index-type="" repeatable="false">
+				<meta-data>
+					<entry name="displayAsTooltip"><![CDATA[false]]></entry>
+					<entry name="required"><![CDATA[false]]></entry>
+					<entry name="instructions"><![CDATA[]]></entry>
+					<entry name="label"><![CDATA[event_info]]></entry>
+					<entry name="predefinedValue"><![CDATA[]]></entry>
+				</meta-data>
+			</dynamic-element>
+			<dynamic-element name="event_info" type="text_box" index-type="" repeatable="false">
+				<meta-data>
+					<entry name="displayAsTooltip"><![CDATA[true]]></entry>
+					<entry name="required"><![CDATA[false]]></entry>
+					<entry name="instructions"><![CDATA[]]></entry>
+					<entry name="label"><![CDATA[TextBoxField]]></entry>
+					<entry name="predefinedValue"><![CDATA[]]></entry>
+				</meta-data>
+			</dynamic-element>
+		</dynamic-element>
+	</dynamic-element>
+	<dynamic-element name="css_field" type="text_box" index-type="" repeatable="false">
+		<meta-data>
+			<entry name="displayAsTooltip"><![CDATA[false]]></entry>
+			<entry name="required"><![CDATA[false]]></entry>
+			<entry name="instructions"><![CDATA[]]></entry>
+			<entry name="label"><![CDATA[css_field]]></entry>
+			<entry name="predefinedValue"><![CDATA[]]></entry>
+		</meta-data>
+	</dynamic-element>
+</root>

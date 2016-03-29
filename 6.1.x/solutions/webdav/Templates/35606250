@@ -1,0 +1,125 @@
+<style>
+
+#whitepaperContent {
+    background: #193A6A;
+    padding: 200px 0;
+    text-align: center;
+}
+
+#whitepaperContent .heading-image {
+    margin: 0 auto;
+}
+
+#whitepaperContent form .btn {
+	display: block;
+	margin: 10px auto;
+}
+
+#wrapper input, #wrapper select {
+	background: #FFF;
+	color: #BCBDC0;
+	font-size: 1.1em;
+	margin: 10px;
+	padding: 7px 14px;
+	text-shadow: none;
+	width: 240px;
+
+	box-sizing: border-box;
+	border-radius: 4px;
+	-webkit-border-radius: 4px;
+	-moz-border-radius: 4px;
+	-ms-border-radius: 4px;
+}
+
+#wrapper input.btn {
+	width: auto;
+}
+
+#whitepaperContent .whitepaper-select {
+	display: block;
+	margin: 0 auto;
+}
+
+.btn.pop-up, .btn.solution-whitepaper-page-cta {
+	display: inline-block;
+	margin: 10px auto;
+}
+
+#wrapper .hs-input {
+	height: 32px !important;
+	padding: 0 10px !important;
+}
+
+#wrapper .hs-form-field .input input {
+	width: 261px;
+}
+
+</style>
+#set ($portlet_bean_locator = $portal.getClass().forName('com.liferay.portal.kernel.bean.PortletBeanLocatorUtil'))
+#set ($hs_contact_local_service = $portlet_bean_locator.locate("hubspot-portlet", "com.liferay.hubspot.service.HSContactLocalService.velocity"))
+
+#set ($hsutk = $request.attributes.OSB_HUBSPOT_UTK)
+
+#if ($hsutk)
+	#set ($hsContact = $hs_contact_local_service.fetchHSContactByUserToken($hsutk))
+#end
+
+#if ($hsContact)
+	#set ($hsContactObject = $hsContact.getHSContactJSONObject().getJSONObject("properties"))
+#end
+
+#set ($hs_form_local_service = $portlet_bean_locator.locate("hubspot-portlet", "com.liferay.hubspot.service.HSFormLocalService.velocity"))
+#set ($hs_form = $hs_form_local_service.fetchHSFormByGUID($form_id.data))
+#set ($hs_form_fields = $hs_form.getHSFormJSONObject().getJSONArray("fields"))
+
+#set($popUrl = $request.attributes.CURRENT_COMPLETE_URL)
+
+#set ($verified = false)
+
+#if (($popUrl.contains("?957832")))
+	#set ($verified = true)
+#elseif ($hs_form_fields)
+	#set ($checks_out = true)
+	#if (!$hsContactObject)
+		#set ($checks_out = false)
+	#end
+
+	#set($start = 0)
+	#set($end = $hs_form_fields.length() - 1)
+	#set($range = [$start..$end])
+
+	#foreach ($i in $range)
+		#set ($field = $hs_form_fields.getJSONObject($i))
+
+		#if ($hsContactObject && $hsContactObject.getJSONObject("$field.getString('name')").getString("value") == "" && !$field.getBoolean('hidden'))
+			#set ($checks_out = false)
+		#end
+	#end
+
+	#if ($checks_out)
+		#set ($verified = true)
+	#end
+#end
+
+<div id="whitepaperContent">
+	<div class="max-med">
+		#if ($title.image.data != "")
+			<img class="heading-image" src="$title.image.data"/>
+		#end
+
+		<h2 class="light solutions-heading">$title.data</h2>
+		<p class="light solutions-sub-heading">$info.data</p>
+	</div>
+
+	<select name="download" class="whitepaper-select" onChange="if(AUI().one('#downloadWhitepaperBtn')){AUI().one('#downloadWhitepaperBtn').set('href', this.value)}">
+		#foreach($download in $download_url.siblings)
+			<option #if($verified)value="$download.data"#end>$download.download_title.data</option>
+		#end
+	</select>
+
+	#if ($verified)
+		<a href="$download_url.data" target="_blank" class="btn solution-whitepaper-page-cta ${page.data}-download-cta" id="downloadWhitepaperBtn" #if($asset_id.data != "" && $asset_name.data != "" && $asset_type.data != "")onclick="ga('send', 'event', 'Info Hub Sites', 'MZM', 'Whitepaper Download');postToHubspot('$asset_id.data', '$asset_name.data', '$asset_type.data'); if(AUI().one('html').hasClass('safari')){window.open('$download_url.data')};"#end>$button_text.data</a>
+	#else
+		<a href="javascript:;" class="btn solution-whitepaper-page-cta pop-up ${page.data}-form-cta" data-pop-display="#whitepapersPopUp" onclick="ga('send', 'event', 'Info Hub Sites', 'MZM', 'Whitepaper Download - Gated');">$button_text_gated.data</a>
+	#end
+</div>

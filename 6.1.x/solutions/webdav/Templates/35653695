@@ -1,0 +1,152 @@
+<div id="eventsWrapper">
+    <div class="eventblock max-full">
+    	<div class="event-heading">
+			<h2 class="light solutions-heading">$title.data</h1>
+			<p class="light solutions-sub-heading"> 
+				$subtitle.data
+			</p>
+		</div>
+
+		#foreach ($section_title in $section_titles.siblings)
+            #set($outer_loop = $velocityCount)
+			<div class="events-section">
+				<h3>$section_title.data</h3>
+				#foreach ($register_btn in $section_title.register_btn_url.siblings)
+					<div>
+					#if ($register_btn.disabled.data != 'true')
+						<a class="btn #if ($register_btn.page.data != "") ${register_btn.page.data}-solution-event-register-$outer_loop$velocityCount #else solution-event-register-$outer_loop$velocityCount #end" href="$register_btn.data" onclick="ga('send', 'event', 'Info Hub Sites', 'MZM', 'Events - $register_btn.event_title.data');" target="_blank">$register_btn.register_btn_txt.data</a>
+					#else
+						<span class="btn">$register_btn.register_btn_txt.data</span>
+					#end
+						<div class="eventdata">
+							<span class="eventdate">
+								<strong>$register_btn.date.data</strong>
+							</span>
+							<span class="responsive-hide">
+								-
+							</span>
+							<span>
+								<strong>$register_btn.event_title.data</strong>
+							</span>
+							<p>
+								$register_btn.event_info.data
+							</p>
+						</div>
+						<br>
+
+					</div>
+				#end
+			</div>
+		#end
+	</div>
+</div>
+
+<style>
+#if ($css_field.data)
+	$css_field.data
+#end
+#eventsWrapper {
+	background-position: center center;
+	background-size: cover;
+	margin: auto;
+	padding: 175px 20px 175px 20px;
+}
+
+.ie7 #eventsWrapper, .ie8 #eventsWrapper {
+	padding: 100px 20px;
+}
+
+#eventsWrapper .eventblock {
+	background: rgba(0,171,231,.95);;
+	min-height: 590px;
+	margin: auto;
+	padding: 76px 70px;
+}
+
+.ie7 #eventsWrapper .eventblock, .ie8 #eventsWrapper .eventblock {
+	background: rgb(0,171,231);
+}
+
+#eventsWrapper .event-heading {
+	text-align: center;
+	margin: auto;
+	max-width: 600px;
+}
+
+#eventsWrapper .event-heading h1 {
+	margin: 0;
+}
+
+#eventsWrapper .events-section {
+	color: #FFF;
+}
+
+#eventsWrapper .events-section h3 {
+	color: #FFF;
+	font-weight: normal;
+	margin-bottom: 8px;
+}
+
+.ie7 #eventsWrapper .events-section span, .ie8 #eventsWrapper .events-section span {
+	display: block;
+}
+
+.ie7 #eventsWrapper .events-section .responsive-hide, .ie8 #eventsWrapper .events-section .responsive-hide  {
+	display: none;
+}
+
+#eventsWrapper .eventblock a {
+	margin: 5px 10px 5px 0;
+	min-width: 110px;
+	padding: 5px 15px;
+	position: absolute;
+}
+
+#eventsWrapper .eventblock span.btn {
+	background: #CCC;
+	color: #FFF;
+	margin: 5px 10px 5px 0;
+	min-width: 110px;
+	padding: 5px 15px;
+	position: absolute;
+}
+
+#eventsWrapper .eventblock a:hover {
+	background: #EF8131;
+	color: #7D342D;
+}
+
+.events-section .eventdata {
+	margin-left: 160px;
+	padding-top: 9px;
+}
+
+.events-section .eventdata p {
+	max-width: 600px;
+}
+
+@media all and (max-width: 725px) {
+
+	#eventsWrapper {
+		padding: 100px 20px;
+	}
+
+	#eventsWrapper .events-section span {
+		display: block;
+	}
+
+	#eventsWrapper .events-section .responsive-hide {
+		display: none;
+	}
+
+	#eventsWrapper .eventblock {
+		padding: 40px 50px;
+	}
+}
+
+@media all and (max-width: 500px) {
+	#eventsWrapper .eventblock {
+		padding: 40px 10px;
+	}
+}
+</style>
