@@ -2,7 +2,8 @@
 
 <style>
 	figcaption {
-		padding: .5em 0 1em;
+		line-height: 1.3em;
+		padding: 1em 0 1em;
 	}
 
 	figure {
@@ -128,7 +129,8 @@
 
 	.stat {
 		border-bottom: 1px solid #1C75B9;
-		font-size: 2.5em;
+		font-size: 3em;
+		line-height: 1.5em;
 	}
 </style>
 
