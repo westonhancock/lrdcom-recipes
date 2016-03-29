@@ -8,4 +8,8 @@
 	<dynamic-element name="header" type="text" index-type="" repeatable="false"/>
 	<dynamic-element name="paragraph" type="text_box" index-type="" repeatable="false"/>
 	<dynamic-element name="sectionid" type="text" index-type="" repeatable="false"/>
+	<dynamic-element name="header_position" type="list" index-type="" repeatable="false">
+		<dynamic-element name="side" type="side" index-type="" repeatable="false"></dynamic-element>
+		<dynamic-element name="top" type="top" index-type="" repeatable="false"/>
+	</dynamic-element>
 </root>

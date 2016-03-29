@@ -40,7 +40,7 @@ h2.light, h3.light {
 }
 
 .ie8 .video-swap {
-    background: url('/documents/67510365/70126974/sprite.png/396bd465-ed95-45fd-a2c6-0d2e956700cb?t=1418251188000');
+    background: url('//account.liferay.com/documents/67510365/70126974/sprite.png/396bd465-ed95-45fd-a2c6-0d2e956700cb?t=1418251188000');
     background-position: 393px 0px;
     content: "";
     cursor: pointer;
@@ -55,7 +55,7 @@ h2.light, h3.light {
 }
 
 .video-swap {
-    background: url('/documents/67510365/70126972/video-frame.svg/08cb3f65-2bda-4612-9f17-f1e4acf07cb6') no-repeat;
+    background: url('//account.liferay.com/documents/67510365/70126972/video-frame.svg/08cb3f65-2bda-4612-9f17-f1e4acf07cb6') no-repeat;
     cursor: pointer;
     height: 234px;
     margin: auto;
@@ -63,7 +63,7 @@ h2.light, h3.light {
 }
 
 #article-${reserved-article-id.data} {
-    background: url($background_image.data);
+    background: url(//account.liferay.com$background_image.data);
     min-height: 375px;
     background-position: top center;
     background-repeat: no-repeat;
@@ -72,7 +72,7 @@ h2.light, h3.light {
 }
 
 #closePopUp {
-    background: url('/documents/67510365/70126970/x-close.png/fb100dfc-157b-43df-8ce1-5a8c8a873c3d?t=1412091471000') no-repeat;
+    background: url('//account.liferay.com/documents/67510365/70126970/x-close.png/fb100dfc-157b-43df-8ce1-5a8c8a873c3d?t=1412091471000') no-repeat;
     cursor: pointer;
     float: right;
     height: 24px;

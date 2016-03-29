@@ -86,13 +86,20 @@
 			font-weight: lighter;
 			text-align: center;
 		}
-
+		.sponsor-image-container {
+			padding: 0;
+		}
 		.sponsor-image-container img {
 			max-width: 174px;
+			padding: 15px 0;
 		}
 
 		.sponsor-type {
 			margin: auto;
+		}
+		
+		.sponsors-wrapper {
+			margin-bottom: 50px;
 		}
 	}
 </style>
