@@ -26,8 +26,8 @@
 		bottom: -30px;
 		right: 50%;
 		transform: translateX(50%);
+		-ms-transform: translateX(50%);
 		-webkit-transform: translateX(50%);
-      	-ms-transform: translateX(50%);
 	}
 
 	.carousel-banner img {
