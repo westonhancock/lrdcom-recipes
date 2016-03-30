@@ -1,0 +1,213 @@
+<style>
+.taglib-header {
+    display: none;
+}
+
+.exhibitors,
+.gold,
+.platinum {
+    text-align: left;
+}
+
+.exhibitors img, .gold img, .platinum img {
+    max-width: 170px;
+    padding: 15px 0;
+    vertical-align: middle;
+}
+
+.download-heading-text {
+    color: #333;
+    font-size: 2em;
+    font-weight: normal;
+    margin-bottom: 0;
+    text-align: center;
+}
+
+.heading-container {
+    display: table-cell;
+    text-align: left;
+    width: 210px;
+    vertical-align: top;
+}
+
+.items-container {
+    display: table-cell;
+    text-align: left;
+    vertical-align: top;
+}
+
+.sponsor-image-container {
+    max-width: 174px;
+	display: inline-block;
+	text-align: left;
+    margin-right: 4px;
+}
+
+.sponsor-image-container a {
+	background-position: 176px 0;
+	height: 99px;
+	width: 176px;
+}
+
+.sponsor-image-container:hover a {
+	background-position: 0 0;
+}
+
+.link-sponsor-symp {
+	display: block;
+}
+
+.sponsor-type {
+	display: table;
+}
+
+.sponsor-type.gold {
+    padding-top: 50px;
+}
+
+.sponsor-heading {
+	color: #414142;
+	font-size: 1.5em;
+	font-weight: normal;
+	text-align: left;
+}
+
+.sponsors-wrapper {
+    display: table;
+    margin: 80px auto 40px;
+    max-width: 960px;
+}
+
+@media all and (min-width: 720px) {
+	.sponsor-heading {
+		font-size: 2em;
+		margin: .5em 0;
+	}
+}
+
+@media all and (max-width: 720px) {
+	.heading-container {
+		display: block;
+		margin: auto;
+	}
+	
+	.items-container {
+		display: block;
+		text-align: center;
+	}
+
+	.sponsor-heading {
+		display: block;
+		font-size: 2em;
+		font-weight: lighter;
+		text-align: center;
+	}
+
+	.sponsor-image-container img {
+		max-width: 174px;
+	}
+    
+    .sponsor-type {
+        margin: auto;
+    }
+}
+</style>
+
+## Content Template
+#macro (content_template14 $heading $array)
+	#set ($className = $stringUtil.replace($heading, " ", "_").toLowerCase())
+
+	<div class="$className sponsor-type">
+		<div class="heading-container">
+			<h2 class="sponsor-heading">
+				$heading
+			</h2>
+		</div>
+		<div class="items-container">
+
+			#foreach ($record in $array)
+				<div class="sponsor-image-container">
+					#set ($name = $record.get("name"))
+					#set ($image_url = $record.get("image_url"))
+					#set ($link = $record.get("link"))
+
+					<a href="$link" target="blank" class="link-sponsor-symp" style="background-image: url($image_url);">
+						&nbsp;
+					</a>
+				</div>
+			#end
+		</div>
+	</div>
+#end
+
+#set ($layout_id = $request.get("theme-display").get("plid"))
+#set ($layout_service = $serviceLocator.findService("com.liferay.portal.service.LayoutLocalService"))
+#set ($layout_long = $getterUtil.getLong($layout_id))
+#set ($layout = $layout_service.getLayout($layout_long))
+#set ($user_has_permissions = $layoutPermission.contains($permissionChecker, $layout, "UPDATE"))
+
+#set ($ddl_records_local_service = $serviceLocator.findService("com.liferay.portlet.dynamicdatalists.service.DDLRecordLocalService"))
+#set ($record_set_id = $getterUtil.getLong($reserved_record_set_id.data))
+#set ($records = $ddl_records_local_service.getRecords($record_set_id))
+
+## Empty arrays for each respective categories
+#set($gold_sorted = $portal.getClass().forName("java.util.TreeMap").newInstance())
+#set($exhibitors_sorted = $portal.getClass().forName("java.util.TreeMap").newInstance())
+#set($platinum_sorted = $portal.getClass().forName("java.util.TreeMap").newInstance())
+#set($silver_sorted = $portal.getClass().forName("java.util.TreeMap").newInstance())
+
+## Looping through the DDL
+#foreach ($record in $records)
+	## Differenate rank
+	#set ($exhibitors = '["exhibitors"]')
+	#set ($gold = '["gold"]')
+	#set ($platinum = '["platinum"]')
+	#set ($silver = '["silver"]')
+
+	## Prepare each of the field values
+	#set ($record = $record.record)
+	#set ($sprite = $record.getFieldValue("sprite"))
+	#set ($link = $record.getFieldValue("link"))
+	#set ($name = $record.getFieldValue("name"))
+	#set ($rank = $record.getFieldValue("rank"))
+
+	## Prepares Sprite
+	#set ($sprite_json_object = $jsonFactoryUtil.createJSONObject($sprite))
+	#set ($image_group_id = $record.getGroupId())
+	#set ($image_uuid = $sprite_json_object.getString("uuid"))
+
+	#set ($image_url = "/documents/$image_group_id/$image_uuid")
+
+	## Lets prepare the data in its own box
+	#set($company = $portal.getClass().forName("java.util.TreeMap").newInstance())
+
+	#set ($void = $company.put("image_url", $image_url))
+	#set ($void = $company.put("link", $link))
+	#set ($void = $company.put("name", $name))
+
+	## ...and ship em out!
+	#if ($rank == $gold)
+		#set ($void = $gold_sorted.put($name, $company))
+	#elseif ($rank == $exhibitors)
+		#set ($void = $exhibitors_sorted.put($name, $company))
+	#elseif ($rank == $platinum)
+		#set ($void = $platinum_sorted.put($name, $company))
+	#elseif ($rank == $silver)
+		#set ($void = $silver_sorted.put($name, $company))
+	#end
+#end
+
+<div class="sponsors-wrapper">
+	#if ($platinum_sorted.size() > 0)
+		#content_template14("Platinum", $platinum_sorted)
+	#end
+	#if ($gold_sorted.size() > 0)
+		#content_template14("Gold", $gold_sorted)
+	#end
+	#if ($exhibitors_sorted.size() > 0)
+		#content_template14("Exhibitors", $exhibitors_sorted)
+	#end
+	#if ($silver_sorted.size() > 0)
+		#content_template14("Silver", $silver_sorted)
+	#end
+</div>

@@ -136,22 +136,43 @@
 	</div>
 	<div class="max-960">
 		#foreach($info in $info.siblings)
+		#set ($section_count = $velocityCount)
 		<div class="aui-w50 section-$velocityCount">
 			<div class="max-med">
 				<div class="light solutions-sub-heading">$info.data</div>
 			</div>
-			<select name="download" class="whitepaper-select" onChange="if(AUI().one('.section-$velocityCount #downloadWhitepaperBtn')){AUI().one('.section-$velocityCount #downloadWhitepaperBtn').set('href', this.value)}">
+			<select name="download" id="section${section_count}wpselect$velocityCount" class="whitepaper-select" onChange="if(AUI().one('.section-$velocityCount #downloadWhitepaperBtn')){AUI().one('.section-$velocityCount #downloadWhitepaperBtn').set('href', this.value)}">
 				#foreach($download_url in $info.download_url.siblings)
-					<option #if($verified)value="$download_url.data"#end>$download_url.download_title.data</option>
+					<option data-download-url="$download_url.data" #if($verified)value="$download_url.data"#end>$download_url.download_title.data</option>
 				#end
 			</select>
 
 			#if ($verified)
 				<a href="$info.download_url.data" target="_blank" class="btn solution-whitepaper-page-cta ${page.data}-download-cta" id="downloadWhitepaperBtn" #if($asset_id.data != "" && $asset_name.data != "" && $asset_type.data != "")onclick="ga('send', 'event', 'Info Hub Sites', 'MZM', 'Whitepaper Download');postToHubspot('$info.asset_id.data', '$info.asset_name.data', '$info.asset_type.data'); if(AUI().one('html').hasClass('safari')){window.open('$info.download_url.data')};"#end>$button_text.data</a>
 			#else
-				<a href="javascript:;" class="btn solution-whitepaper-page-cta pop-up ${page.data}-form-cta" data-pop-display="#whitepapersPopUp" onclick="ga('send', 'event', 'Info Hub Sites', 'MZM', 'Whitepaper Download - Gated');">$button_text_gated.data</a>
+				<a href="javascript:;" class="btn solution-whitepaper-page-cta pop-up ${page.data}-form-cta" data-select-box="section${section_count}wpselect$velocityCount" data-pop-display="#whitepapersPopUp" onclick="gatedPopUpClick(this)">$button_text_gated.data</a>
 			#end
 		</div>
 		#end
 	</div>
 </div>
+
+<script>
+
+var gatedPopUpClick = function(node) {
+	if (window.ga) {
+		ga('send', 'event', 'Info Hub Sites', 'MZM', 'Whitepaper Download - Gated');
+	}
+	var hsform = document.querySelector("#whitepapersPopUp form");
+	if (hsform) {
+		var mySelectBox = node.getAttribute("data-select-box");
+		var selectBox = document.getElementById(mySelectBox);
+		if (selectBox) {
+			var thisOption = selectBox.options[selectBox.selectedIndex];
+			
+	 		hsform.setAttribute("data-asset-url", thisOption.getAttribute("data-download-url"));
+	 	}
+	}
+}
+
+</script>

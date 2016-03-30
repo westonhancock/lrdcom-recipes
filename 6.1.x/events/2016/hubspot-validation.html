@@ -1,0 +1,47 @@
+<style>
+#errordiv {
+        text-align: left;
+    font-weight: bold;
+    color: red;
+    font-size: 20px;
+}
+</style>
+<script>
+    
+    
+function hasClass(element, cls) {
+    return (' ' + element.className + ' ').indexOf(' ' + cls + ' ') > -1;
+}
+
+// create an observer instance
+var observer = new MutationObserver(function(mutations) {
+  
+  var toggleErrorDiv = function(toggle) {
+        var submitbutton = document.querySelector("form input[type=submit]");
+        var errorDiv = document.querySelector("#errordiv");
+        if (errorDiv) errorDiv.parentNode.removeChild(errorDiv);
+        if (toggle) {
+            var div = document.createElement("div");
+            div.id = "errordiv";
+            var content  =document.createTextNode("Bitte überprüfen Sie Ihre Eingaben!");
+            div.appendChild(content);
+            submitbutton.parentNode.appendChild(div);
+        } 
+  }
+  
+  mutations.forEach(function(mutation) {
+    if (document.querySelector(".hs-error-msgs") == null) 
+        toggleErrorDiv(false);
+    if (mutation.type == "childList" && mutation.addedNodes.length > 0) {
+        for (var i = 0; i < mutation.addedNodes.length; i++) {
+             if(hasClass(mutation.addedNodes[i], "hs-error-msgs")) {
+                 toggleErrorDiv(true);
+             } 
+        }
+    }
+  });    
+});
+// pass in the target node, as well as the observer options
+observer.observe(document, { subtree: true, childList: true });
+
+</script>

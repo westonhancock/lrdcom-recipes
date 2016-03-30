@@ -1,0 +1,14 @@
+<script id="templateheader" type="text/x-handlebars-template">​
+ <div> Name: {headerTitle} </div>​
+​</script>
+<script>
+AUI().ready(
+	'node', function(A) {
+	
+		var template = A.one("#templateheader").getContent();
+		var templateData = { headerTitle: "hello world"};
+		var html = A.Lang.sub(template, templateData);
+		console.log(html);
+	});
+
+</script>

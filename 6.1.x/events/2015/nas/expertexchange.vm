@@ -1,0 +1,387 @@
+<style type="text/css">
+#experts .portlet-body {
+    margin: 0 auto;
+    max-width: 1040px;
+}
+
+#main-content.full-screen-layout .portlet-column.aui-w30, #main-content.full-screen-layout .portlet-column.aui-w70 {
+    display: inline-block;
+}
+
+.blue-text {
+    color: #06a;
+}
+
+.collapse {
+    max-height: 0;
+	overflow:hidden;
+	position:relative;
+	-webkit-transition-timing-function:ease;
+	-o-transition-timing-function:ease;
+	transition-timing-function:ease;
+	-webkit-transition-duration:.8s;
+	-o-transition-duration:.8s;
+	transition-duration:.8s;
+	-webkit-transition-property:max-height,visibility;
+	-o-transition-property:max-height,visibility;
+	transition-property:max-height,visibility;
+	visibility: hidden;
+}
+
+.collapse.in {
+	max-height: 999px;
+	visibility: visible;
+}
+
+.expert {
+	cursor: pointer;
+	display: inline-block;
+	padding: 0 4px 7.5px;
+	vertical-align: top;
+}
+
+.expert .image-container {
+	background-color: #FFF;
+	height: 139px;
+    overflow: hidden;
+}
+
+.expert .image-container img {
+	opacity: .3;
+	max-width: 139px;
+	transition: opacity .3s ease-in-out;
+}
+
+.expert .image-container:hover img, .expert .image-container.active img {
+	opacity: 1;
+}
+
+.expert-exchange-description {
+	display: inline-block;
+	margin-right: 5px;
+	vertical-align: top;
+}
+
+.expert-exchange-image-container {
+	margin-top: 95px;
+	width: 100%;
+}
+
+
+.expert-info {
+    box-sizing: border-box;
+	display: inline-block;
+    padding: 10px 20px 10px 10px;
+	width: 65%;
+}
+
+.expert-info h3 {
+	font-size: 22.5px;
+	margin: 10px 0 0;
+}
+
+.expert-info p {
+	font-size: 15px;
+	font-weight: lighter;
+}
+
+.expert-info-title {
+	font-size: 15px;
+	text-transform: uppercase;
+}
+
+.expert-logo {
+	display: inline-block;
+	margin: 20px 10px;
+	vertical-align: top;
+	width: 130px;
+}
+
+.expert-title {
+	margin-bottom: 10px;
+}
+
+.firefox #main-content.full-screen-layout .portlet-column.aui-w70 {
+	width: 69%;
+}
+
+.info-display {
+	background: #FFF;
+	border: 1px solid grey;
+	margin: 0px 5px 10px;
+	max-width: 675px;
+	width: 100%;
+}
+
+.lighter-font {
+	font-weight: 100;
+}
+
+@media(max-width: 1000px) {
+	.expert-info {
+		display: block;
+		margin: 0 10px;
+		width: 100%;
+	}
+
+	.info-display {
+		max-width: 505px;
+	}
+}
+
+@media(max-width: 759px) {
+	.info-display {
+		max-width: 330px;
+	}
+}
+
+@media (max-width: 720px) {
+	.expert-exchange-description {
+		margin-right: 0;
+		padding:0;
+	}
+
+	.expert-exchange-image-container {
+		margin-top: 10px;
+		text-align: center;
+	}
+
+	.expert-logo {
+		display: block;
+		margin: 20px 0 20px 10px;
+	}
+
+	.expert-title {
+		margin: 0 auto;
+		max-width: 250px;
+	}
+
+	.info-display {
+		margin: 0 auto 20px;
+		max-width: 505px;
+		text-align: left;
+	}
+}
+
+@media (max-width: 535px) {
+	.info-display {
+		max-width: 330px;
+	}
+}
+</style>
+
+#set ($ddl_records_local_service = $serviceLocator.findService("com.liferay.portlet.dynamicdatalists.service.DDLRecordLocalService"))
+#set ($record_set_id = $getterUtil.getLong($reserved_record_set_id.data))
+#set ($records = $ddl_records_local_service.getRecords($record_set_id))
+
+#set($experts = $portal.getClass().forName("java.util.TreeMap").newInstance())
+
+#foreach ($record in $records)
+	#set ($record = $record.record)
+	#set ($record_uuid = $record.getUuid())
+	#set ($title = $record.getFieldValue("expert_title"))
+	#set ($subtitle = $record.getFieldValue("expert_subtitle"))
+	#set ($description = $record.getFieldValue("expert_description"))
+	#set ($image = $record.getFieldValue("expert_image"))
+	#set ($logo = $record.getFieldValue("expert_logo"))
+	#set ($group_id = $record.getGroupId())
+
+	#set($expert = $portal.getClass().forName("java.util.TreeMap").newInstance())
+
+	#set ($void = $expert.put("record", $record))
+	#set ($void = $expert.put("title", $title))
+	#set ($void = $expert.put("subtitle", $subtitle))
+	#set ($void = $expert.put("description", $description))
+	#set ($void = $expert.put("image", $image))
+	#set ($void = $expert.put("logo", $logo))
+	#set ($void = $expert.put("group_id", $group_id))
+
+	#if ($record.getStatus() == "0")
+		#set ($void = $experts.put("${title}-$velocityCount", $expert))
+	#end
+#end
+
+
+<div class="expert-exchange-image-container">
+	#foreach($item in $experts)
+		#set ($record_uuid = $item.get("record_uuid"))
+		#set ($title = $item.get("title"))
+		#set ($subtitle = $item.get("subtitle"))
+		#set ($description = $item.get("description"))
+		#set ($group_id = $item.get("group_id"))
+
+		#set ($image = $item.get("image"))
+		#set ($image_json_object = $jsonFactoryUtil.createJSONObject($image))
+		#set ($image_uuid = $image_json_object.getString("uuid"))
+
+		#set ($logo = $item.get("logo"))
+		#set ($logo_json_object = $jsonFactoryUtil.createJSONObject($logo))
+		#set ($logo_uuid = $logo_json_object.getString("uuid"))
+
+		<div class="expert">
+			<div class="image-container">
+				<img src="/documents/${group_id}/${image_uuid}" /></div>
+			<div class="info-container aui-helper-hidden">
+				<img class="expert-logo" src="/documents/${group_id}/${logo_uuid}"/>
+				<div class="expert-info">
+					<h3 class="lighter-font blue-text">$title</h3>
+					<p class="expert-info-title blue-text">$subtitle</p>
+					<p>$description</p>
+				</div>
+			</div>
+		</div>
+	#end
+</div>
+
+<script>
+AUI().ready(
+	'aui-base',
+	function(A) {
+		var addCollapse = function(displayNode, clickedNode) {
+			var clickedNodeInfo = clickedNode.one('.info-container');
+			var clickedNodeHTML = clickedNodeInfo.get('innerHTML');
+
+			if (!displayNode.hasClass('collapse.in')) {
+				displayNode.addClass('in');
+			}
+
+			clickedNode.one('.image-container').addClass('active');
+			displayNode.set('innerHTML', clickedNodeHTML);
+		};
+
+		var removeCollapse = function() {
+			var displayNode = A.one('.info-display.collapse.in');
+			var activeContainer = A.one('.image-container.active');
+
+			activeContainer.removeClass('active');
+			displayNode.removeClass('in');
+		};
+
+		var assignRow = function(container, nodes) {
+			var width = container.get('offsetWidth');
+			var widthCount = 0;
+			var count = 1;
+
+			nodes.each(
+				function(node) {
+					widthCount += node.get('offsetWidth');
+
+					if (widthCount >= width -10) {
+						widthCount = node.get('offsetWidth');
+
+						count++;
+					}
+
+					node.addClass('row-' + count);
+				}
+			);
+		};
+
+		var insertAfter = function(newNode, referenceNode) {
+			referenceNode.get('parentNode').insertBefore(newNode, referenceNode.get('nextSibling'));
+		};
+
+		var removeRows = function(nodes) {
+			var lastNode = nodes.item(nodes.size() - 1);
+			var className = lastNode.get('className');
+			var numRows = className.substring(className.length - 1);
+
+			for(var i = 1; i <= numRows; i++) {
+				var nodesInRow = A.all('.row-' + i);
+
+				nodesInRow.each(
+					function(node) {
+						node.removeClass('row-' + i);
+					}
+				);
+			}
+		};
+
+		var addDisplayBoxes = function(nodes) {
+			var lastNode = nodes.item(nodes.size()-1);
+			var className = lastNode.get('className');
+			var numRows = className.substring(className.length - 1);
+
+			for(var i = 1; i <= numRows; i++) {
+				var nodesInRow = A.all('.row-' + i);
+				var display = A.Node.create('<div class="info-display collapse row-' + i + '"></div>');
+
+				lastNodeInList = nodesInRow.item(nodesInRow.size() - 1);
+				insertAfter(display, lastNodeInList);
+			}
+		};
+
+		var destroyDisplayBoxes = function() {
+			var nodes = expertExchangeContainer.all('.info-display');
+
+			nodes.each(
+				function(node) {
+					node.remove(true);
+				}
+			);
+		}
+
+		var expertExchangeContainer = A.one('.expert-exchange-image-container');
+		var experts = expertExchangeContainer.all('.expert');
+
+		assignRow(expertExchangeContainer, experts);
+		addDisplayBoxes(experts);
+
+		expertExchangeContainer.delegate(
+			'click',
+			function(e) {
+				var node = e.currentTarget;
+
+				if (node.one('.image-container').hasClass('active')) {
+					removeCollapse();
+				}
+				else {
+					var nodeClassName = node.get('className');
+					var rowIndex = nodeClassName.indexOf('row-') + 4;
+					var rowNumber = nodeClassName.substring(rowIndex);
+
+					var displayingNode = A.one('.info-display.collapse.in');
+					var displayNode = A.one('.info-display.row-' + rowNumber);
+
+					if (displayingNode && displayingNode.hasClass('row-' + rowNumber)) {
+						A.one('.image-container.active').removeClass('active');
+					}
+					else if (displayingNode && !displayingNode.hasClass('row-' + rowNumber)) {
+						removeCollapse();
+					}
+
+					addCollapse(displayNode, node);
+				}
+			},
+			'.expert'
+		);
+
+		expertExchangeContainer.on(
+			'clickoutside',
+			function() {
+				if (A.one('.image-container.active')) {
+					removeCollapse();
+				}
+
+				expertExchangeContainer.detach('clickoutside');
+			}
+		);
+
+		A.on(
+			'windowresize',
+			function() {
+				var activeContainer = A.one('.image-container.active');
+
+				if (activeContainer) {
+					activeContainer.removeClass('active');
+				}
+
+				removeRows(experts);
+				assignRow(expertExchangeContainer, experts);
+				destroyDisplayBoxes();
+				addDisplayBoxes(experts);
+			}
+		);
+	}
+);
+</script>
