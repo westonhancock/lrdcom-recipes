@@ -26,12 +26,12 @@ var step3 = (function() {
 
 				ajax.open(
 					'POST',
-					'http://forms.hubspot.com/uploads/form/v2/' +
+					'https://forms.hubspot.com/uploads/form/v2/' +
 					core.config.hubspotPortal + '/' + core.config.hubspotForm +
-					'?email=' + entry.email +
-					'&recent_interaction=' + entry.recentInteraction +
-					'&recent_interaction_detail=' + entry.recentInteractionDetail +
-					'&recent_interaction_date=' + entry.recentInteractionDate +
+					'?email=' + entry["Email Address"] +
+					'&recent_interaction=' + entry["Interaction"] +
+					'&recent_interaction_detail=' + entry["Interaction Detail"] +
+					'&recent_interaction_date=' + entry["Interaction Date"] +
 					'&recent_interaction_type=' + data.interactionType +
 					'&recent_interaction_campaign=' + data.campaign
 				);
@@ -150,7 +150,7 @@ var step3 = (function() {
 		}
 
 		var updateProgressInfo = function(entry, current, total) {
-			var currentEntryEmail = entry.email;
+			var currentEntryEmail = entry["Email Address"];
 			var entriesLeft = total - current;
 			var timeLeftinSeconds = ((total * config.cycle_duration) - (current * config.cycle_duration)) / 1000;
 

@@ -50,7 +50,7 @@ var step2 = (
 						interactionType.addEventListener(
 							'change',
 							function(e) {
-								core.data.updateData('interactionType', interactionType.options[interactionType.selectedIndex].value);
+								core.data.updateData('interactionType', interactionType.options[interactionType.selectedIndex].text);
 								tests.validateAll();
 							},
 							false
