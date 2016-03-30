@@ -815,6 +815,13 @@
 
 					var userToken = '$hsutk';
 
+
+if (form.hasAttribute('data-asset-url')) {
+						redirectAssetURL = form.getAttribute('data-asset-url');
+					}
+
+
+
 					if ((redirectAssetURL != "") && (form.getAttribute('data-asset-new-tab') == "true")) {
 						window.open(redirectAssetURL, '_blank');
 					}
