@@ -80,7 +80,19 @@
 
 			<#assign dl_file_entry = dl_file_entry_local_service_util.fetchDLFileEntryByUuidAndGroupId(asset_renderer.getUuid(), asset_renderer.getGroupId()) >
 
+			<#assign fieldsMap = dl_file_entry.getFieldsMap(dl_file_entry.getFileVersion().getFileVersionId()) />
+
+			<#list fieldsMap.values() as field>
+				<#assign dl_title = dl_file_entry.getTitle() />
+				<#assign dl_display_title = field.get("display_title")! />
+
+				<#if dl_display_title?has_content>
+					<#assign dl_title = dl_display_title.getValue() />
+				</#if>
+			</#list>
+
 			<#assign resource_id = dl_file_entry.getFileEntryId() />
+
 			<#-- <#assign view_url = "/resource?folderId=" + dl_file_entry.getFolderId() + "&title=" + stringUtil.replace(dl_file_entry.getTitle(), " ", "+") /> -->
 			<#assign view_url = "/resource/" + dl_file_entry.getFolderId() + "/" + stringUtil.replace(dl_file_entry.getTitle(), " ", "+") />
 		<#elseif asset_renderer.getClassName() == "com.liferay.portlet.journal.model.JournalArticle">
@@ -120,7 +132,11 @@
 						<#elseif article_description?has_content>
 							<#assign resource_info = stringUtil.shorten(asset_renderer.getTitle(locale) + ": " + article_description, 129, "...") />
 						<#else>
-							<#assign resource_info = asset_renderer.getTitle(locale) />
+							<#if dl_title?? && dl_title?has_content>
+								<#assign resource_info = dl_title />
+							<#else>
+								<#assign resource_info = asset_renderer.getTitle(locale) />
+							</#if>
 						</#if>
 
 						<#if structure_field_featured?? && structure_field_featured && logo_node?has_content>
