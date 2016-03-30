@@ -204,8 +204,6 @@
 
 			<#assign redirect_url = hs_form.getRedirect()! />
 
-			<#assign salesforce_campaign_id = hs_form.getLeadNurturingCampaignId()! />
-
 			<#if thank_you_text.data?has_content>
 				<#assign thank_you_message = localize(thank_you_text.data, "Thank You") />
 			<#else>
@@ -271,6 +269,7 @@
 								}
 								if (utmCampaign && utmCampaign != '(not set)') {
 									fields['campaign'] = utmCampaign;
+									fields['sfCampaign'] = utmCampaign;
 								}
 								if (utmMedium && utmMedium != '(not set)') {
 									fields['recent_conversion_medium'] = utmMedium;
@@ -319,7 +318,7 @@
 								return;
 							}
 
-							var fieldsString = "";
+							var fieldsString = '';
 
 							for(field in fields) {
 								fieldsString = fieldsString + field + ':;:' + fields[field] + ':;:';
@@ -333,43 +332,43 @@
 							var pageName = document.title;
 							var assetURL = '';
 
-							if (fields["asset_id"]) {
-								assetURL = 'documents/${groupId}/'+ fields["asset_folder_id"] + '/' + fields["asset_title"];
+							if (fields['asset_id']) {
+								assetURL = 'documents/${groupId}/'+ fields['asset_folder_id'] + '/' + fields['asset_title'];
 							}
 
 							var redirectURL = '${redirect_url}';
-							var salesforceCampaignId = '${salesforce_campaign_id}';
+							var salesforceCampaignId = '${hs_form.getLeadNurturingCampaignId()!}';
 
-							if (fields["sfCampaign"]) {
-								salesforceCampaignId = fields["sfCampaign"];
+							if (fields['sfCampaign']) {
+								salesforceCampaignId = fields['sfCampaign'];
 							}
 
 							var userToken = '${hsutk!}';
 
-							if ((assetURL != "") && (form.getAttribute('data-asset-new-tab') == "true")) {
+							if ((assetURL != '') && (form.getAttribute('data-asset-new-tab') == 'true')) {
 								window.open(assetURL, '_blank');
 							}
 
-							if (fields["asset_primary_buyers_stage"]) {
-								var assetPrimaryBuyersStage = fields["asset_primary_buyers_stage"];
+							if (fields['asset_primary_buyers_stage']) {
+								var assetPrimaryBuyersStage = fields['asset_primary_buyers_stage'];
 
-								if (assetPrimaryBuyersStage == "Awareness") {
-									var trackEventId = "000000245927";
+								if (assetPrimaryBuyersStage == 'Awareness') {
+									var trackEventId = '000000245927';
 								}
-								else if (assetPrimaryBuyersStage == "Education") {
-									var trackEventId = "000000245928";
+								else if (assetPrimaryBuyersStage == 'Education') {
+									var trackEventId = '000000245928';
 								}
-								else if (assetPrimaryBuyersStage == "Evaluation") {
-									var trackEventId = "000000245929";
+								else if (assetPrimaryBuyersStage == 'Evaluation') {
+									var trackEventId = '000000245929';
 								}
-								else if (assetPrimaryBuyersStage == "Justification") {
-									var trackEventId = "000000245931";
+								else if (assetPrimaryBuyersStage == 'Justification') {
+									var trackEventId = '000000245931';
 								}
 
 								try {
 									_hsq.push(
 										[
-											"trackEvent", {
+											'trackEvent', {
 												id: trackEventId,
 												value: null
 											}
@@ -418,7 +417,8 @@
 							);
 						}
 					);
-				};
+				}
+
 				AUI().ready(
 					'aui-base',
 					'json-parse',
@@ -490,7 +490,7 @@
 						form.all('.dependant-field').each(
 							function(node) {
 								var targetFieldName = node.getAttribute('data-target-field');
-								var targetField = form.one('#${article_namespace}_' + targetFieldName + ' select')
+								var targetField = form.one('#${article_namespace}_' + targetFieldName + ' select');
 
 								if (!targetField) {
 									return;

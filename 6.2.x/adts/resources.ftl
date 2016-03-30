@@ -57,11 +57,13 @@
 <#assign journal_article_local_service_util = staticUtil["com.liferay.portlet.journal.service.JournalArticleLocalServiceUtil"] />
 
 <#-- <#assign svg_sprite = dl_file_entry_local_service_util.getFileEntry(2420757) /> -->
-<div class="block-container justify-center">
+<div class="block-container justify-center" id="resourcesDisplay">
 	<#list entries as entry>
+		<#assign asset_renderer = entry.getAssetRenderer() />
+
 		<#assign category_names = asset_category_local_service_util.getCategoryNames(entry.getClassNameId(), entry.getClassPK()) />
 
-		<#assign asset_renderer = entry.getAssetRenderer() />
+		<#assign article_description = "" />
 
 		<#if asset_renderer.getClassName() == "com.liferay.portlet.documentlibrary.model.DLFileEntry">
 			<#if category_names?seq_contains("Business Whitepapers")>
@@ -79,31 +81,57 @@
 			<#assign dl_file_entry = dl_file_entry_local_service_util.fetchDLFileEntryByUuidAndGroupId(asset_renderer.getUuid(), asset_renderer.getGroupId()) >
 
 			<#assign resource_id = dl_file_entry.getFileEntryId() />
-			<#assign view_url = "/resource?folderId=" + dl_file_entry.getFolderId() + "&title=" + stringUtil.replace(dl_file_entry.getTitle(), " ", "+") />
-			<#--<#assign view_url = "/resource/" + dl_file_entry.getFolderId() + "/" + stringUtil.replace(dl_file_entry.getTitle(), " ", "+") />-->
+			<#-- <#assign view_url = "/resource?folderId=" + dl_file_entry.getFolderId() + "&title=" + stringUtil.replace(dl_file_entry.getTitle(), " ", "+") /> -->
+			<#assign view_url = "/resource/" + dl_file_entry.getFolderId() + "/" + stringUtil.replace(dl_file_entry.getTitle(), " ", "+") />
 		<#elseif asset_renderer.getClassName() == "com.liferay.portlet.journal.model.JournalArticle">
+			<#assign article = journal_article_local_service_util.getLatestArticle(entry.getClassPK()) >
+
+			<#assign article_description = article.getDescription(locale)! />
+
+			<#assign document = saxReaderUtil.read(article.getContent()) />
+			<#assign root_element = document.getRootElement() />
+			<#assign xPath = saxReaderUtil.createXPath("//dynamic-element[@name='featured']/dynamic-content") />
+
+			<#assign structure_field_featured = xPath.booleanValueOf(root_element) />
+			<#assign structure_field_video_id = document.selectSingleNode("//dynamic-element[@name='video_id']/dynamic-content").getText()! />
+
 			<#if category_names?seq_contains("Case Studies")>
 				<#assign svg_id = "#caseStudyIcon">
 			</#if>
 
-			<#-- <#assign document = saxReaderUtil.read(xmlRequest) /> -->
-			<#-- <#assign element = document.elementByID("video_id")! /> -->
+			<#if structure_field_video_id?has_content>
+				<#assign svg_id = "#videoCaseStudyIcon">
+			</#if>
 
-			<#assign article = journal_article_local_service_util.fetchJournalArticleByUuidAndGroupId(asset_renderer.getUuid(), asset_renderer.getGroupId()) >
+			<#if structure_field_featured>
+				<#assign logo_node = document.selectSingleNode("//dynamic-element[@name='logo']/dynamic-content").getText()! />
+			</#if>
 
-			<#assign view_url = "/resource?title=" + article.getUrlTitle() />
-			<#--<#assign view_url = "/resource/case-studies/" + article.getUrlTitle() />-->
+			<#-- <#assign view_url = "/resource?title=" + article.getUrlTitle() /> -->
+			<#assign view_url = "/resource/case-studies/" + article.getUrlTitle() />
 		</#if>
 
 		<#if view_url??>
-			<div class="asset-entry block-container block resource small-padding w25">
-				<a class="element-border block-container font-color justify-center no-padding text-center w100" href="${view_url}">
+			<div class="asset-entry block resource small-padding">
+				<a class="element-border font-color no-padding text-center w100" href="${view_url}">
 					<div class="resource-wrapper">
-						<svg>
-							<use xlink:href=${svg_id}></use>
-						</svg>
+						<#if article_description?has_content && structure_field_featured>
+							<#assign resource_info = stringUtil.shorten(article_description, 129, "...") />
+						<#elseif article_description?has_content>
+							<#assign resource_info = stringUtil.shorten(asset_renderer.getTitle(locale) + ": " + article_description, 129, "...") />
+						<#else>
+							<#assign resource_info = asset_renderer.getTitle(locale) />
+						</#if>
 
-						<h4 class="asset-entry-title">${htmlUtil.escape(asset_renderer.getTitle(locale))}</h4>
+						<#if structure_field_featured?? && structure_field_featured && logo_node?has_content>
+							<img src=${logo_node} />
+						<#else>
+							<svg><use xlink:href=${svg_id}></use></svg>
+						</#if>
+
+						<h4 class="asset-entry-title">
+							${htmlUtil.escape(resource_info)}
+						</h4>
 					</div>
 				</a>
 			</div>
@@ -131,22 +159,39 @@
 	}
 
 	.resource {
-		min-width: 288px;
+		flex-basis: 288px;
+		flex-grow: 1;
+		max-width: 25%;
 	}
 
 	.resource-wrapper {
 		padding: 3.5em 1.5em 0;
 	}
 
-	.resource-wrapper svg {
-		height: 64px;
-		width: 64px;
+	.resource-wrapper img, .resource-wrapper svg {
 		padding-bottom: 2em;
 	}
 
-	@media all and (max-width: 767px) and (min-width: 479px) {
-		.resource.block-container.block {
-			width: 50% !important;
+	.resource-wrapper svg {
+		height: 64px;
+		width: 64px;
+	}
+
+	@media all and (max-width: 1184px) {
+		.resource {
+			max-width: 33%;
+		}
+	}
+
+	@media all and (max-width: 896px) {
+		.resource {
+			max-width: 50%;
+		}
+	}
+
+	@media all and (max-width: 608px) {
+		.resource {
+			max-width: 100%;
 		}
 	}
 </style>

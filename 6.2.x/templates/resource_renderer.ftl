@@ -19,7 +19,7 @@
 
 <#include "${templatesPath}/1561886" />
 
-<a href="/resources">< ${localize("back", "Back")}</a>
+<a class="cta" href="/resources">${localize("back-to-resources", "Back To Resources")}</a>
 
 <div class="resource-display">
 	<#if dl_file_entry_local_service_util.fetchFileEntry(groupId, folder_id, title)??>
@@ -83,7 +83,19 @@
 			</div>
 
 			<div class="block right-block w70">
-				<h1 class="title">${dl_file_entry.getTitle()}</h1>
+				<#assign fieldsMap = dl_file_entry.getFieldsMap(dl_file_entry.getFileVersion().getFileVersionId()) />
+
+				<#list fieldsMap.values() as field>
+					<#assign title = dl_file_entry.getTitle() />
+					<#assign display_title = field.get("display_title")! />
+
+					<#if display_title?has_content>
+						<#assign title = display_title.getValue() />
+					</#if>
+				</#list>
+
+				<h1 class="title">${title}</h1>
+
 				<p class="description">${dl_file_entry.getDescription()}</p>
 
 				<#assign embed_asset_id = dl_file_entry.getFileEntryId() />
@@ -116,7 +128,5 @@
 				</span>
 			</#if>
 		</div>
-	<#else>
-		Thank you for playing. Unfortunately you have chosen poorly and this marks then end of your "Choose Your Own Adventure" journey.
 	</#if>
 </div>

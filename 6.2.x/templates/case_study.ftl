@@ -2,7 +2,8 @@
 
 <style>
 	figcaption {
-		padding: .5em 0 1em;
+		line-height: 1.3em;
+		padding: 1em 0 1em;
 	}
 
 	figure {
@@ -11,7 +12,7 @@
 		width: 100%;
 	}
 
-	sup {
+	.carousel sup {
 		font-size: 0.3em;
 		top: -1.5em;
 	}
@@ -22,8 +23,11 @@
 
 	.carousel menu {
 		background: none;
-		bottom: 0;
+		bottom: -30px;
 		right: 50%;
+		transform: translateX(50%);
+		-webkit-transform: translateX(50%);
+      	-ms-transform: translateX(50%);
 	}
 
 	.carousel-banner img {
@@ -125,7 +129,8 @@
 
 	.stat {
 		border-bottom: 1px solid #1C75B9;
-		font-size: 2.5em;
+		font-size: 3em;
+		line-height: 1.5em;
 	}
 </style>
 

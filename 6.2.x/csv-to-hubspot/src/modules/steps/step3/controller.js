@@ -1,88 +1,98 @@
 var step3 = (function() {
 
-	steps.initStep({
-		html: '<div class="page step3" data-step="3">\n	<div class="centered">\n			<h1>Just a minute...</h1>\n			<p class="page-description">We\'re uploading your data to Hubspot!</p>\n			\n\n			<div class="progress-bar-container">\n				<span class="progress-bar-description">Sample description</span>\n				<div class="progress-bar">\n					<span class="percentage"></span>\n				</div>\n			</div>\n\n			<div class="progress-information-container">\n				<div class="info entries-left">\n					<span class="desc">Entries Left</span>\n					<span class="value"></span>\n				</div>\n				<div class="info time-left">\n					<span class="desc">Estimated Time Left</span>\n					<span class="value"></span>\n				</div>\n			</div>\n	</div>\n</div>',
-		onLoad: function() {
-			core.ui.changeNavigationState('block');
-			util.initUploader();
-			setTimeout(function() {
-				util.startUpload();
-			}, 500);
-
-		},
-		onComplete: function() {
-			ui.doneUploading();
-		}
-	});
-
-	var util = (function() {
-		var sendToHubspot = function(entry) {
-			var ajax = new XMLHttpRequest();
-
-			ajax.open(
-				"POST",
-				'http://forms.hubspot.com/uploads/form/v2/' +
-				core.config.hubspotPortal + '/' + core.config.hubspotForm +
-				'?email=' + entry.email +
-				'&recent_interaction=' + entry.recentInteraction +
-				'&recent_interaction_detail=' + entry.recentInteractionDetail +
-				'&recent_interaction_date=' + entry.recentInteractionDate +
-				'&recent_interaction_type=' + data.interactionType +
-				'&recent_interaction_campaign=' + data.campaign
-			);
-
-			ajax.send();
-		};
-
-		var initUploader = function() {
-			var entries = data.json;
-			var noOfEntries = entries.length;
-			ui.updateProgress(entries[0], -1, noOfEntries);
-		}
-
-		var startUpload = function() {
-			var i = 0;
-			var entries = data.json;
-			var noOfEntries = entries.length;
-
-			// our recursive timer for loop
-			function timer() {	
-				setTimeout(function () {
-
-					// 1) upload to hubspot
-					sendToHubspot(entries[i]);
-
-					// 2) update UI
-					ui.updateProgress(entries[i], i, noOfEntries);
-
-					if (i < noOfEntries - 1) {
-						timer();
-						i++	
-					}
-
-					else if (i === noOfEntries - 1) {
-						steps.completeStep(3);
-					}
-				}, config.cycle_duration);
+	steps.initStep(
+		{
+			html: '<div class="page step3" data-step="3">\n	<div class="centered">\n			<h1>Just a minute...</h1>\n			<p class="page-description">We\'re uploading your data to Hubspot!</p>\n			\n\n			<div class="progress-bar-container">\n				<span class="progress-bar-description">Sample description</span>\n				<div class="progress-bar">\n					<span class="percentage"></span>\n				</div>\n			</div>\n\n			<div class="progress-information-container">\n				<div class="info entries-left">\n					<span class="desc">Entries Left</span>\n					<span class="value"></span>\n				</div>\n				<div class="info time-left">\n					<span class="desc">Estimated Time Left</span>\n					<span class="value"></span>\n				</div>\n			</div>\n	</div>\n</div>',
+			onComplete: function() {
+				ui.doneUploading();
+			},
+			onLoad: function() {
+				core.ui.changeNavigationState('block');
+				util.initUploader();
+				setTimeout(
+					function() {
+						util.startUpload();
+					},
+					500
+				);
 			}
-			timer();
 		}
-			
-		return {
-			initUploader: initUploader,
-			startUpload: startUpload
+	);
+
+	var util = (
+		function() {
+			var sendToHubspot = function(entry) {
+				var ajax = new XMLHttpRequest();
+
+				ajax.open(
+					'POST',
+					'http://forms.hubspot.com/uploads/form/v2/' +
+					core.config.hubspotPortal + '/' + core.config.hubspotForm +
+					'?email=' + entry.email +
+					'&recent_interaction=' + entry.recentInteraction +
+					'&recent_interaction_detail=' + entry.recentInteractionDetail +
+					'&recent_interaction_date=' + entry.recentInteractionDate +
+					'&recent_interaction_type=' + data.interactionType +
+					'&recent_interaction_campaign=' + data.campaign
+				);
+
+				ajax.send();
+			};
+
+			var initUploader = function() {
+				var entries = data.json;
+				var noOfEntries = entries.length;
+
+				ui.updateProgress(entries[0], -1, noOfEntries);
+			};
+
+			var startUpload = function() {
+				var entries = data.json;
+				var i = 0;
+				var noOfEntries = entries.length;
+
+				// our recursive timer for loop
+				function timer() {
+					setTimeout(
+						function() {
+
+							// 1) upload to hubspot
+							sendToHubspot(entries[i]);
+
+							// 2) update UI
+							ui.updateProgress(entries[i], i, noOfEntries);
+
+							if (i < noOfEntries - 1) {
+								timer();
+								i++;
+							}
+
+							else if (i === noOfEntries - 1) {
+								steps.completeStep(3);
+							}
+						},
+						config.cycle_duration
+					);
+				}
+
+				timer();
+			};
+
+			return {
+				initUploader: initUploader,
+				startUpload: startUpload
+			};
 		}
-		
-	})();
+	)();
 
 	var ui = (function() {
 
-		var pageTitle = document.querySelector('.step3 h1');
-		var pageSubitle = document.querySelector('.step3 .page-description');
-		var progressBar = document.querySelector('.progress-bar');
-		var progressBarPercentage = document.querySelector('.progress-bar > .percentage');
-		var progressBarDescription = document.querySelector('.progress-bar-description');
 		var entriesLeftDescription = document.querySelector('.entries-left > .value');
+		var pageSubitle = document.querySelector('.step3 .page-description');
+		var pageTitle = document.querySelector('.step3 h1');
+		var progressBar = document.querySelector('.progress-bar');
+		var progressBarDescription = document.querySelector('.progress-bar-description');
+		var progressBarPercentage = document.querySelector('.progress-bar > .percentage');
 		var timeleftDescription = document.querySelector('.time-left > .value');
 
 		// higher function to update all the different UI
@@ -92,28 +102,28 @@ var step3 = (function() {
 
 			// update progress info
 			updateProgressInfo(entry, current + 1, total);
-
-		}
+		};
 
 		var updateBar = function(current, total) {
 			var percentage = (current / total) * 100;
 
-			progressBar.style.width = percentage + "%";
-			progressBarPercentage.innerHTML = Math.round(percentage) + "%"
+			progressBar.style.width = percentage + '%';
+			progressBarPercentage.innerHTML = Math.round(percentage) + '%';
 
 			if (current === total) {
-				progressBar.style.width = "100%";		
+				progressBar.style.width = '100%';
 			}
-		}
+		};
 
 		function startTimer(duration, display) {
-			var start = Date.now(),
-				diff,
-				minutes,
-				seconds;
+			var diff;
+			var minutes;
+			var seconds;
+			var start = Date.now();
 
 			function timer() {
-				// get the number of seconds that have elapsed since 
+
+				// get the number of seconds that have elapsed since
 				// startTimer() was called
 				diff = duration - (((Date.now() - start) / 1000) | 0);
 
@@ -124,32 +134,34 @@ var step3 = (function() {
 				minutes = minutes < 10 ? '0' + minutes : minutes;
 				seconds = seconds < 10 ? '0' + seconds : seconds;
 
-				display.textContent = minutes + ':' + seconds; 
+				display.textContent = minutes + ':' + seconds;
 
 				if (diff <= 0) {
+
 					// add one second so that the count down starts at the full duration
 					// example 05:00 not 04:59
 					start = Date.now() + 1000;
 				}
-			};
+			}
+
 			// we don't want to wait a full second before the timer starts
 			timer();
 			setInterval(timer, 1000);
 		}
 
 		var updateProgressInfo = function(entry, current, total) {
-			var entriesLeft = total - current;
 			var currentEntryEmail = entry.email;
+			var entriesLeft = total - current;
 			var timeLeftinSeconds = ((total * config.cycle_duration) - (current * config.cycle_duration)) / 1000;
 
 			progressBarDescription.innerHTML = 'Current Entry: ' + currentEntryEmail;
 			entriesLeftDescription.innerHTML = entriesLeft;
-			startTimer(timeLeftinSeconds, timeleftDescription)
+			startTimer(timeLeftinSeconds, timeleftDescription);
 		};
 
 		var doneUploading = function() {
 			progressBarDescription.innerHTML = '';
-			pageTitle.innerHTML = "We're done, skipper!";
+			pageTitle.innerHTML = 'We\'re done, skipper!';
 			pageSubitle.innerHTML = 'Form data successfully uploaded to <a href="https://app.hubspot.com/forms/' + config.hubspotPortal + '/' + config.hubspotForm + '/submissions" target="_blank">Hubspot.</a>';
 		};
 
