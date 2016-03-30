@@ -37,9 +37,13 @@
 	}
 
 	#select-${reserved_article_id} select {
+		background: url(osb-community-theme/images/custom/form_dropdowns.svg) no-repeat right 50%;
 		border: none;
 		cursor: pointer;
 		padding-left: 10px;
+		padding-top: 0;
+		
+		-webkit-appearance: none;
 	}
 
 	#select-${reserved_article_id} select:focus {
