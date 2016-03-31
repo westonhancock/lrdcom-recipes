@@ -2,7 +2,7 @@
 
 <#assign reserved_article_id = .vars["reserved-article-id"].data />
 
-<div id="select-${reserved_article_id}" class="block-container no-padding ${form_class.data}">
+<div id="select-${reserved_article_id}" class="block-container small-padding ${form_class.data}">
 	<select
 		onchange="AUI().one('#select-${reserved_article_id} a').set('href', this.value);"
 		onkeypress="if (event.keyCode == 13) window.location = this.value;">
@@ -12,7 +12,7 @@
 		</#list>
 	</select>
 
-	<a href="${link_url.data}" class="${form_class.data}" target="_blank" type="">${localize("download", "Download")}</a>
+	<a href="${link_url.data}" class="${form_class.data}" target="_blank" type=""><@liferay.language key="download" /></a>
 </div>
 
 <style>
@@ -30,6 +30,10 @@
 		padding-right: 10px;
 		text-decoration: none;
 		text-transform: capitalize;
+	}
+
+	.mobile #select-${reserved_article_id} a {
+		border-left: 0;
 	}
 
 	#select-${reserved_article_id} a, #select-${reserved_article_id} select {
