@@ -44,6 +44,31 @@
 		box-sizing: border-box;
 		flex-basis: 200px;
 		flex-grow: 1;
+		max-width: 20%;
+	}
+
+	@media all and (max-width: 1032px) {
+		.download-item-container {
+			max-width: 25%
+		}
+	}
+
+	@media all and (max-width: 832px) {
+		.download-item-container {
+			max-width: 33%
+		}
+	}
+
+	@media all and (max-width: 632px) {
+		.download-item-container {
+			max-width: 50%
+		}
+	}
+
+	@media all and (max-width: 432px) {
+		.download-item-container {
+			max-width: 100%
+		}
 	}
 
 	.download-item-container .asset-entry-category {
