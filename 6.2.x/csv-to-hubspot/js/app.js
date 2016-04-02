@@ -332,7 +332,6 @@ var step1 = (function() {
 	})();
 
 	var util = (function() {
-
 		// convert csv to JSON object
 		var csvToJSON = function(csv) {
 			var lines = csv.split('\n');
@@ -355,34 +354,34 @@ var step1 = (function() {
 			return result;
 		};
 
+		var getFileType = function(filename) {
+			var parts = filename.split('/');
+
+			return parts[parts.length - 1];
+		};
+
 		// read file in browser
 		var readFile = function(file) {
-			var textType = 'csv';
-			var windowsTextType = 'vnd.ms-excel';
 
-			var getFileType = function(filename) {
-				var parts = filename.split('/');
+			return new Promise(function(resolve, reject) {
+				var textType = 'csv';
+				var windowsTextType = 'vnd.ms-excel';
+				var fileType = getFileType(file.type);
 
-				return parts[parts.length - 1];
-			};
+				if (fileType === textType || fileType === windowsTextType) {
+					var reader = new FileReader();
+					var content = reader.readAsText(file);
 
-			if (getFileType(file.type) === textType || getFileType(file.type) === windowsTextType) {
-				var reader = new FileReader();
+					step1Data.csvDone = false;
 
-				var content = reader.readAsText(file);
-
-				step1Data.csvDone = false;
-
-				reader.onload = function(e) {
-					core.publisher.fire('fileRead', reader.result);
-					return reader.result;
-				};
-			}
-			else {
-				// wrong file type
-				UI.fileGrade('fail', 'Wrong file type. Upload CSV File');
-				data.incompleteStep(1);
-			}
+					reader.onload = function() {
+						resolve(reader.result);
+					}
+				}
+				else {
+					reject(Error('Wrong File Type'));
+				}
+			});
 		};
 
 		// get information file
@@ -402,32 +401,44 @@ var step1 = (function() {
 
 		// higher order function to manage the processing
 		var processFile = function(file) {
-			readFile(file);
 
-			// listen for when file is done being read
-			core.publisher.on(
-				'fileRead',
-				function(csv) {
+			readFile(file)
+
+				// when file is done being read, test csv
+				.then(function(csv) {
 					step1Data.csv = csv;
-					if (tests.checkCSV(csv)) {
-						core.publisher.fire('csvChecked', step1Data.csv);
+					
+					return csv;
+				})
+				// if there's an error with csv
+				.catch(function(e) {
+					// wrong file type
+					console.error(e);
+					UI.fileGrade('fail', 'Wrong file type. Upload CSV File');
+					data.incompleteStep(1);
+				})
+				// additional tests on csv
+				.then(function(csv) {
+					if (!tests.checkCSV(csv)) {
+						throw "CSV is no good";
 					}
-				}
-			);
+				})
+				// if file is checked, parse to JSON
+				.then(function(csv) {
+					if (csv) {
+						var json = csvToJSON(csv);
 
-			// listen for when csv is being done checked to turn into a JSON
-			core.publisher.on(
-				'csvChecked',
-				function(csv) {
-					data.updateData('json', csvToJSON(csv));
+						data.updateData('json', json);
+					}
 
-					// if we pass the JSON testing, we should complete the step
+					return json;
+				})
+				// if we pass the JSON testing, we should complete the step
+				.then(function(json) {
 					if (tests.checkJSON(data.json)) {
-						UI.fileGrade('pass');
 						steps.completeStep(1);
 					}
-				}
-			);
+				})
 		};
 
 		return {

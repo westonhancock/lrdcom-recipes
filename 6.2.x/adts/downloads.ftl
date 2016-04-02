@@ -4,7 +4,7 @@
 <#include "${templatesPath}/1561886" />
 
 <#if entries?has_content>
-	<div class="block-container justify-center">
+	<div class="block-container justify-start">
 		<#list entries as curEntry>
 			<#assign entry = curEntry />
 			<#assign asset_renderer = entry.getAssetRenderer() />
@@ -19,7 +19,7 @@
 				<#break>
 			</#list>
 
-			<a class="asset-entry cta font-color download-item-container link-wrapper standard-padding" href="${value!}" target="_blank">
+			<a class="asset-entry cta font-color download-item-container link-wrapper" href="${value!}" target="_blank">
 				<#list entry.getCategoryIds() as category_id >
 					<#assign category = asset_category_local_service_util.fetchAssetCategory(category_id) />
 
@@ -42,33 +42,11 @@
 
 	.download-item-container {
 		box-sizing: border-box;
-		flex-basis: 200px;
+		flex-basis: auto;
 		flex-grow: 1;
-		max-width: 20%;
-	}
-
-	@media all and (max-width: 1032px) {
-		.download-item-container {
-			max-width: 25%
-		}
-	}
-
-	@media all and (max-width: 832px) {
-		.download-item-container {
-			max-width: 33%
-		}
-	}
-
-	@media all and (max-width: 632px) {
-		.download-item-container {
-			max-width: 50%
-		}
-	}
-
-	@media all and (max-width: 432px) {
-		.download-item-container {
-			max-width: 100%
-		}
+		margin-bottom: 1em;
+		margin-right: 1em;
+		max-width: 170px;
 	}
 
 	.download-item-container .asset-entry-category {
@@ -88,7 +66,33 @@
 		color: #1c75b9;
 	}
 
+	.osb-www-asset-publisher-portlet .header {
+		padding-left: 1em;
+		padding-right: 1em;
+	}
+
 	#wrapper .download-item-container:hover span.link {
 		color: #f5a11c;
+	}
+
+	@media all and (max-width: 1032px) {
+		.download-item-container {
+			max-width: 23%
+		}
+	}
+	@media all and (max-width: 832px) {
+		.download-item-container {
+			max-width: 30%
+		}
+	}
+	@media all and (max-width: 632px) {
+		.download-item-container {
+			max-width: 50%
+		}
+	}
+	@media all and (max-width: 432px) {
+		.download-item-container {
+			max-width: 100%
+		}
 	}
 </style>
