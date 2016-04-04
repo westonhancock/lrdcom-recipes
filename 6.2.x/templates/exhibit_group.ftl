@@ -1,5 +1,5 @@
 <#if request.lifecycle == "RENDER_PHASE">
-	<div class="align-center block-container exhibit-group justify-center large-padding-vertical" id="article-${.vars['reserved-article-id'].data}">
+	<div class="align-center block-container exhibit-group justify-center section-padding" id="article-${.vars['reserved-article-id'].data}">
 		<#include "${templatesPath}/898140" />
 
 		<#assign number_of_heading_fields = 2 />
