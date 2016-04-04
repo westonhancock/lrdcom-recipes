@@ -11,7 +11,7 @@
 		<path fill="#1C75B9" d="M19 17.3h12v1.5H19zM54 18.8H39.2V4h1.5v13.3H54"/>
 		<path fill="#1C75B9" d="M54.7 60.8H9.3V3.3h31.1l14.4 14.4v43.1zm-43.9-1.5h42.5v-41L39.7 4.8H10.8v54.5z"/>
 		<path fill="#1C75B9" d="M18.3 42.8V28.3h14.6L18.3 42.8zm1.5-13v9.4l9.4-9.4h-9.4zM33.3 42.8V28.3h14.6L33.3 42.8zm1.5-13v9.4l9.4-9.4h-9.4z"/>
-</symbol>
+	</symbol>
 	<symbol viewBox="0 0 64 64" id="ebooksIcon">
 		<title>Ebooks Icon</title>
 		<path fill="#1C75B9" d="M19 38.3h26v1.5H19zM19 30.3h26v1.5H19zM19 42.3h26v1.5H19zM19 34.3h26v1.5H19zM19 26.3h26v1.5H19zM25 22.3h20v1.5H25zM25 18.3h20v1.5H25z"/>
@@ -53,10 +53,11 @@
 <#assign liferay_ui = taglibLiferayHash["/WEB-INF/tld/liferay-ui.tld"] />
 
 <#assign asset_category_local_service_util = objectUtil("com.liferay.portlet.asset.service.AssetCategoryLocalServiceUtil") />
-<#assign dl_file_entry_local_service_util = staticUtil["com.liferay.portlet.documentlibrary.service.DLFileEntryLocalServiceUtil"]>
+<#assign dl_file_entry_local_service_util = staticUtil["com.liferay.portlet.documentlibrary.service.DLFileEntryLocalServiceUtil"] />
 <#assign journal_article_local_service_util = staticUtil["com.liferay.portlet.journal.service.JournalArticleLocalServiceUtil"] />
 
-<#-- <#assign svg_sprite = dl_file_entry_local_service_util.getFileEntry(2420757) /> -->
+<#assign svg_sprite = dl_file_entry_local_service_util.getFileEntry(2420757) />
+
 <div class="block-container justify-center" id="resourcesDisplay">
 	<#list entries as entry>
 		<#assign asset_renderer = entry.getAssetRenderer() />
@@ -67,18 +68,18 @@
 
 		<#if asset_renderer.getClassName() == "com.liferay.portlet.documentlibrary.model.DLFileEntry">
 			<#if category_names?seq_contains("Business Whitepapers")>
-				<#assign svg_id = "#businessWPIcon">
+				<#assign svg_id = "#businessWPIcon" />
 			<#elseif category_names?seq_contains("ebooks")>
-				<#assign svg_id = "#ebooksIcon">
+				<#assign svg_id = "#ebooksIcon" />
 			<#elseif category_names?seq_contains("Migration Guides")>
-				<#assign svg_id = "#migrationGuideIcon">
+				<#assign svg_id = "#migrationGuideIcon" />
 			<#elseif category_names?seq_contains("Technical Whitepapers")>
-				<#assign svg_id = "#technicalWPIcon">
+				<#assign svg_id = "#technicalWPIcon" />
 			<#elseif category_names?seq_contains("Webinars")>
-				<#assign svg_id = "#webinarIcon">
+				<#assign svg_id = "#webinarIcon" />
 			</#if>
 
-			<#assign dl_file_entry = dl_file_entry_local_service_util.fetchDLFileEntryByUuidAndGroupId(asset_renderer.getUuid(), asset_renderer.getGroupId()) >
+			<#assign dl_file_entry = dl_file_entry_local_service_util.fetchDLFileEntryByUuidAndGroupId(asset_renderer.getUuid(), asset_renderer.getGroupId()) />
 
 			<#assign fieldsMap = dl_file_entry.getFieldsMap(dl_file_entry.getFileVersion().getFileVersionId()) />
 
@@ -96,26 +97,24 @@
 			<#-- <#assign view_url = "/resource?folderId=" + dl_file_entry.getFolderId() + "&title=" + stringUtil.replace(dl_file_entry.getTitle(), " ", "+") /> -->
 			<#assign view_url = "/resource/" + dl_file_entry.getFolderId() + "/" + stringUtil.replace(dl_file_entry.getTitle(), " ", "+") />
 		<#elseif asset_renderer.getClassName() == "com.liferay.portlet.journal.model.JournalArticle">
-			<#assign article = journal_article_local_service_util.getLatestArticle(entry.getClassPK()) >
+			<#assign article = journal_article_local_service_util.getLatestArticle(entry.getClassPK()) />
 
 			<#assign article_description = article.getDescription(locale)! />
 
 			<#assign document = saxReaderUtil.read(article.getContent()) />
-			<#assign root_element = document.getRootElement() />
-			<#assign xPath = saxReaderUtil.createXPath("//dynamic-element[@name='featured']/dynamic-content") />
 
-			<#assign structure_field_featured = xPath.booleanValueOf(root_element) />
-			<#assign structure_field_video_id = document.selectSingleNode("//dynamic-element[@name='video_id']/dynamic-content").getText()! />
+			<#assign structure_field_video_id = document.selectSingleNode("//dynamic-element[@name='video_id']/dynamic-content")! />
+			<#assign structure_field_featured = document.selectSingleNode("//dynamic-element[@name='featured']/dynamic-content")! />
 
 			<#if category_names?seq_contains("Case Studies")>
-				<#assign svg_id = "#caseStudyIcon">
+				<#assign svg_id = "#caseStudyIcon" />
 			</#if>
 
-			<#if structure_field_video_id?has_content>
-				<#assign svg_id = "#videoCaseStudyIcon">
+			<#if structure_field_video_id.data?has_content>
+				<#assign svg_id = "#videoCaseStudyIcon" />
 			</#if>
 
-			<#if structure_field_featured>
+			<#if structure_field_featured.data?has_content>
 				<#assign logo_node = document.selectSingleNode("//dynamic-element[@name='logo']/dynamic-content").getText()! />
 			</#if>
 
@@ -127,7 +126,7 @@
 			<div class="asset-entry block resource small-padding">
 				<a class="element-border font-color no-padding text-center w100" href="${view_url}">
 					<div class="resource-wrapper">
-						<#if article_description?has_content && structure_field_featured>
+						<#if article_description?has_content && structure_field_featured.data?has_content>
 							<#assign resource_info = stringUtil.shorten(article_description, 129, "...") />
 						<#elseif article_description?has_content>
 							<#assign resource_info = stringUtil.shorten(asset_renderer.getTitle(locale) + ": " + article_description, 129, "...") />
@@ -139,7 +138,7 @@
 							</#if>
 						</#if>
 
-						<#if structure_field_featured?? && structure_field_featured && logo_node?has_content>
+						<#if structure_field_featured.data?has_content && logo_node?has_content>
 							<img src=${logo_node} />
 						<#else>
 							<svg><use xlink:href=${svg_id}></use></svg>
