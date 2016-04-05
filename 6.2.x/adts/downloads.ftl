@@ -42,11 +42,11 @@
 
 	.download-item-container {
 		box-sizing: border-box;
-		flex-basis: auto;
+		flex-basis: 15%;
 		flex-grow: 1;
 		margin-bottom: 1em;
 		margin-right: 1em;
-		max-width: 170px;
+		max-width: 15%;
 	}
 
 	.download-item-container .asset-entry-category {
@@ -77,22 +77,26 @@
 
 	@media all and (max-width: 1032px) {
 		.download-item-container {
-			max-width: 23%
+			max-width: 23%;
+			flex-basis: 23%;
 		}
 	}
 	@media all and (max-width: 832px) {
 		.download-item-container {
-			max-width: 30%
+			max-width: 30%;
+			flex-basis: 30%;
 		}
 	}
 	@media all and (max-width: 632px) {
 		.download-item-container {
-			max-width: 50%
+			max-width: 45%;
+			flex-basis: 45%;
 		}
 	}
 	@media all and (max-width: 432px) {
 		.download-item-container {
-			max-width: 100%
+			max-width: 100%;
+			flex-basis: 100%;
 		}
 	}
 </style>
