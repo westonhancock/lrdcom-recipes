@@ -10,8 +10,40 @@ var step1 = (function() {
 	);
 
 	var tests = (function() {
+
+		// for our hubspot tests
+		var hubspotTest = (function() {
+			var getContacts = function() {
+
+				var ajax = new XMLHttpRequest();
+
+				ajax.open(
+					'GET',
+					'https://api.hubapi.com/contacts/v1/lists/all/contacts/all?' + 
+					'hapikey=' + config.hubspotAPIKey + 
+					'&count=100' 
+				)
+
+				ajax.send();
+
+				if (ajax.readyState === XMLHttpRequest.DONE) {
+					if (ajax.status === 200) {
+						console.log(ajax.responseText);
+					} else {
+						console.error('There was a problem with the request.');
+					}
+				}
+			}
+
+			return {
+				getContacts: getContacts
+			}
+		})();
+
 		// run tests for csv file
 		var checkCSV = function(csv) {
+			hubspotTest.getContacts();
+
 			var hasCSV = false;
 
 			// run our tests
@@ -116,8 +148,6 @@ var step1 = (function() {
 				})
 				// if there's an error with csv
 				.catch(function(e) {
-					// wrong file type
-					console.error(e);
 					UI.fileGrade('fail', 'Wrong file type. Upload CSV File');
 					data.incompleteStep(1);
 				})
@@ -126,6 +156,8 @@ var step1 = (function() {
 					if (!tests.checkCSV(csv)) {
 						throw "CSV is no good";
 					}
+
+					return csv;
 				})
 				// if file is checked, parse to JSON
 				.then(function(csv) {
@@ -210,13 +242,13 @@ var step1 = (function() {
 				uploadSVGContainer.style.opacity = 0;
 				checkSVGContainer.style.opacity = 0;
 				errorSVGContainer.style.opacity = 1;
-				fileInfoContainer.innerHTML = message;
+				ui.newMessage(message, "error");
 			}
 			else {
 				uploadSVGContainer.style.opacity = 0;
 				checkSVGContainer.style.opacity = 1;
 				errorSVGContainer.style.opacity = 0;
-				fileInfoContainer.innerHTML = '';
+				ui.closeMessage();
 			}
 		};
 

@@ -3,6 +3,7 @@ var ui = (
 
 		var nextBtn = document.querySelector('.steps-navigation .next');
 		var prevBtn = document.querySelector('.steps-navigation .prev');
+		var messageContainer = document.querySelector('.app-messaging');
 
 		// controls navigation controls
 		var navigate = (
@@ -97,8 +98,38 @@ var ui = (
 			}
 		};
 
+		var newMessage = function(message, type, action, callback) {
+			// change message
+			messageContainer.style.display = "block";
+			messageContainer.innerHTML = message;
+
+			if (type === "error") {
+				messageContainer.style.backgroundColor = "#cc0000";
+			}
+
+			// if a message is set to timer
+			var timerMessage = function() {
+				setTimeout(function() {
+					messageContainer.style.display = "none";
+					if (callback) {
+						callback()
+					};
+				}, 5000)
+			}
+
+			if (action === "flash") {
+				timerMessage();
+			}
+		};
+
+		var closeMessage = function() {
+			messageContainer.style.display = "none";
+		}
+
 		return {
-			changeNavigationState: changeNavigationState
+			changeNavigationState: changeNavigationState,
+			newMessage: newMessage
+
 		};
 
 	}

@@ -1,4 +1,5 @@
 html, body {
+	margin: 0;
 	overflow: hidden;
 }
 
@@ -6,6 +7,14 @@ html, body {
 
 #app {
 	height: 70vh;
+	
+	// app messaging section
+	.app-messaging {
+		position: fixed;
+	    padding: 10px;
+	    width: 100%;
+	    z-index: 5;
+	}
 
 	.steps-container {
 		position: relative;

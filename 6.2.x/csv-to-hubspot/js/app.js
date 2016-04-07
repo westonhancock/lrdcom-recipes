@@ -4,6 +4,7 @@ var config = (
 			cycle_duration: 1500,
 			hubspotForm: 'b67bd247-5a86-4a35-a2ca-43552e3d5c21',
 			hubspotPortal: '299703',
+			hubspotAPIKey: 'cb8584d4-f2e9-4b2f-bd5d-1ca9a032bcc2',
 			stepsContainerClass: 'steps-container',
 			uploadContainerClass: 'file-drag',
 			updateConfig: function(key, value) {
@@ -92,6 +93,7 @@ var ui = (
 
 		var nextBtn = document.querySelector('.steps-navigation .next');
 		var prevBtn = document.querySelector('.steps-navigation .prev');
+		var messageContainer = document.querySelector('.app-messaging');
 
 		// controls navigation controls
 		var navigate = (
@@ -186,8 +188,38 @@ var ui = (
 			}
 		};
 
+		var newMessage = function(message, type, action, callback) {
+			// change message
+			messageContainer.style.display = "block";
+			messageContainer.innerHTML = message;
+
+			if (type === "error") {
+				messageContainer.style.backgroundColor = "#cc0000";
+			}
+
+			// if a message is set to timer
+			var timerMessage = function() {
+				setTimeout(function() {
+					messageContainer.style.display = "none";
+					if (callback) {
+						callback()
+					};
+				}, 5000)
+			}
+
+			if (action === "flash") {
+				timerMessage();
+			}
+		};
+
+		var closeMessage = function() {
+			messageContainer.style.display = "none";
+		}
+
 		return {
-			changeNavigationState: changeNavigationState
+			changeNavigationState: changeNavigationState,
+			newMessage: newMessage
+
 		};
 
 	}
@@ -306,8 +338,40 @@ var step1 = (function() {
 	);
 
 	var tests = (function() {
+
+		// for our hubspot tests
+		var hubspotTest = (function() {
+			var getContacts = function() {
+
+				var ajax = new XMLHttpRequest();
+
+				ajax.open(
+					'GET',
+					'https://api.hubapi.com/contacts/v1/lists/all/contacts/all?' + 
+					'hapikey=' + config.hubspotAPIKey + 
+					'&count=100' 
+				)
+
+				ajax.send();
+
+				if (ajax.readyState === XMLHttpRequest.DONE) {
+					if (ajax.status === 200) {
+						console.log(ajax.responseText);
+					} else {
+						console.error('There was a problem with the request.');
+					}
+				}
+			}
+
+			return {
+				getContacts: getContacts
+			}
+		})();
+
 		// run tests for csv file
 		var checkCSV = function(csv) {
+			hubspotTest.getContacts();
+
 			var hasCSV = false;
 
 			// run our tests
@@ -412,8 +476,6 @@ var step1 = (function() {
 				})
 				// if there's an error with csv
 				.catch(function(e) {
-					// wrong file type
-					console.error(e);
 					UI.fileGrade('fail', 'Wrong file type. Upload CSV File');
 					data.incompleteStep(1);
 				})
@@ -422,6 +484,8 @@ var step1 = (function() {
 					if (!tests.checkCSV(csv)) {
 						throw "CSV is no good";
 					}
+
+					return csv;
 				})
 				// if file is checked, parse to JSON
 				.then(function(csv) {
@@ -506,13 +570,13 @@ var step1 = (function() {
 				uploadSVGContainer.style.opacity = 0;
 				checkSVGContainer.style.opacity = 0;
 				errorSVGContainer.style.opacity = 1;
-				fileInfoContainer.innerHTML = message;
+				ui.newMessage(message, "error");
 			}
 			else {
 				uploadSVGContainer.style.opacity = 0;
 				checkSVGContainer.style.opacity = 1;
 				errorSVGContainer.style.opacity = 0;
-				fileInfoContainer.innerHTML = '';
+				ui.closeMessage();
 			}
 		};
 
@@ -781,5 +845,6 @@ var init = (
 
 		// init application state
 		core.changeState('navigation', 'block');
+
 	}
 )(core);
