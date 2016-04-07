@@ -103,6 +103,17 @@
 			zh_CN: '联系电话'
 		},
 
+		press-releases: {
+			de_DE: 'Presse',
+			en_US: 'Press Releases',
+			es_ES: 'Notas de Prensa',
+			fr_FR: 'Communiqués de presse',
+			it_IT: 'Comunicati stampa',
+			ja_JP: 'プレスリリース',
+			pt_BR: 'Press Releases',
+			zh_CN: '新闻发布'
+		},
+
 		project_use_case: {
 			de_DE: 'Anwendungsfall',
 			en_US: 'Project Use Case',
