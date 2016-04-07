@@ -10,18 +10,12 @@
 
 <#include "${templatesPath}/1561886" />
 
+<a class="cta" href="/press-releases">${languageUtil.format(locale, "back-to-x", localize("press-releases", "Press Releases"))}</a>
+
 <#if (title?has_content) >
 	<#assign journal_article_service = serviceLocator.findService("com.liferay.portlet.journal.service.JournalArticleLocalService")>
 
 	<#assign article = journal_article_service.getLatestArticleByUrlTitle(scopeGroupId, title, 0)! >
-
-	<#assign back_url = "/press-releases">
-
-	<#if locale.getLanguage() != "en">
-		<#assign back_url = "/${locale.getLanguage()}/press-releases">
-	</#if>
-
-	<a class="cta" href="${back_url}">${languageUtil.get(locale, "back-to-press-releases")}</a>
 
 	<#if article?? >
 		${journalContentUtil.getContent(scopeGroupId, article.getArticleId(), "", locale, xmlRequest)}
