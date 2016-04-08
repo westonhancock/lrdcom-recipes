@@ -10,35 +10,37 @@
 
 <#include "${templatesPath}/1561886" />
 
-<a class="cta" href="/press-releases">${languageUtil.format(locale, "back-to-x", localize("press-releases", "Press Releases"))}</a>
+<div class="block-container">
+	<a class="cta" href="/press-releases">${languageUtil.format(locale, "back-to-x", localize("press-releases", "Press Releases"))}</a>
 
-<#if (title?has_content) >
-	<#assign journal_article_service = serviceLocator.findService("com.liferay.portlet.journal.service.JournalArticleLocalService")>
+	<#if (title?has_content) >
+		<#assign journal_article_service = serviceLocator.findService("com.liferay.portlet.journal.service.JournalArticleLocalService")>
 
-	<#assign article = journal_article_service.getLatestArticleByUrlTitle(scopeGroupId, title, 0)! >
+		<#assign article = journal_article_service.getLatestArticleByUrlTitle(scopeGroupId, title, 0)! >
 
-	<#if article?? >
-		${journalContentUtil.getContent(scopeGroupId, article.getArticleId(), "", locale, xmlRequest)}
-	<#else>
-		Press Release not found.
+		<#if article?? >
+			${journalContentUtil.getContent(scopeGroupId, article.getArticleId(), "", locale, xmlRequest)}
+		<#else>
+			Press Release not found.
+		</#if>
 	</#if>
-</#if>
 
-<#if article?? && layoutPermission.contains(permissionChecker, layout, "UPDATE")>
-	<#assign current_url = request.attributes.CURRENT_COMPLETE_URL! />
+	<#if article?? && layoutPermission.contains(permissionChecker, layout, "UPDATE")>
+		<#assign current_url = request.attributes.CURRENT_COMPLETE_URL! />
 
-	<#assign edit_url = portletURLFactory.create(http_servlet_request, "15", plid, "0") />
-	<#assign VOID = edit_url.setParameter("p_p_state", "maximized") />
-	<#assign VOID = edit_url.setParameter("p_p_lifecycle", "0") />
-	<#assign VOID = edit_url.setParameter("groupId", "${groupId}") />
-	<#assign VOID = edit_url.setParameter("struts_action", "/journal/edit_article") />
-	<#assign VOID = edit_url.setParameter("redirect", "${current_url}") />
-	<#assign VOID = edit_url.setParameter("articleId", "${article.getArticleId()?string}") />
+		<#assign edit_url = portletURLFactory.create(http_servlet_request, "15", plid, "0") />
+		<#assign VOID = edit_url.setParameter("p_p_state", "maximized") />
+		<#assign VOID = edit_url.setParameter("p_p_lifecycle", "0") />
+		<#assign VOID = edit_url.setParameter("groupId", "${groupId}") />
+		<#assign VOID = edit_url.setParameter("struts_action", "/journal/edit_article") />
+		<#assign VOID = edit_url.setParameter("redirect", "${current_url}") />
+		<#assign VOID = edit_url.setParameter("articleId", "${article.getArticleId()?string}") />
 
-	<span class="lfr-icon-action lfr-icon-action-edit lfr-meta-actions pull-right">
-		<a class="taglib-icon" href="${edit_url}">
-			<img alt="Edit" src="/osb-community-theme/images/spacer.png" style="background-image: url('/osb-community-theme/sprite/images/common/_sprite.png'); background-position: 50% -608px; background-repeat: no-repeat; height: 16px; width: 16px;">
-			<span class="taglib-text ">Edit</span>
-		</a>
-	</span>
-</#if>
+		<span class="lfr-icon-action lfr-icon-action-edit lfr-meta-actions pull-right">
+			<a class="taglib-icon" href="${edit_url}">
+				<img alt="Edit" src="/osb-community-theme/images/spacer.png" style="background-image: url('/osb-community-theme/sprite/images/common/_sprite.png'); background-position: 50% -608px; background-repeat: no-repeat; height: 16px; width: 16px;">
+				<span class="taglib-text ">Edit</span>
+			</a>
+		</span>
+	</#if>
+</div>
