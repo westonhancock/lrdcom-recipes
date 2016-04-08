@@ -87,7 +87,7 @@
 				<#assign dl_title = dl_file_entry.getTitle() />
 				<#assign dl_display_title = field.get("display_title")! />
 
-				<#if dl_display_title?has_content>
+				<#if dl_display_title?has_content && dl_display_title.getValue()?has_content>
 					<#assign dl_title = dl_display_title.getValue() />
 				</#if>
 			</#list>
@@ -126,16 +126,21 @@
 			<div class="asset-entry block resource small-padding">
 				<a class="element-border font-color no-padding text-center w100" href="${view_url}">
 					<div class="resource-wrapper">
-						<#if article_description?has_content && structure_field_featured.data?has_content>
-							<#assign resource_info = stringUtil.shorten(article_description, 129, "...") />
+						<#assign asset_title = asset_renderer.getTitle(locale) />
+
+						<#if dl_title??>
+							<#assign resource_info = dl_title />
 						<#elseif article_description?has_content>
-							<#assign resource_info = stringUtil.shorten(asset_renderer.getTitle(locale) + ": " + article_description, 129, "...") />
-						<#else>
-							<#if dl_title?? && dl_title?has_content>
-								<#assign resource_info = dl_title />
-							<#else>
-								<#assign resource_info = asset_renderer.getTitle(locale) />
+							<#assign character_limit = 129 />
+
+							<#if structure_field_featured.data?has_content>
+								<#assign title_word_count = asset_title?length />
+								<#assign character_limit = character_limit - title_word_count - 2 />
 							</#if>
+
+							<#assign resource_info = stringUtil.shorten(article_description, character_limit, "...") />
+						<#else>
+							<#assign resource_info = "" />
 						</#if>
 
 						<#if structure_field_featured.data?has_content && logo_node?has_content>
@@ -145,6 +150,16 @@
 						</#if>
 
 						<h4 class="asset-entry-title">
+							<#if !dl_title?? && !structure_field_featured.data?has_content>
+								<#assign resource_title = asset_title />
+
+								<#if article_description?has_content>
+									<#assign resource_title = asset_title + ": " />
+								</#if>
+
+								<b>${htmlUtil.escape(resource_title)}</b>
+							</#if>
+
 							${htmlUtil.escape(resource_info)}
 						</h4>
 					</div>
