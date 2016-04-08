@@ -35,7 +35,7 @@
 
 	<#if article??>
 		<div class="block-container">
-			${journal_content_util.getContent(groupId, article.getArticleId()?string, "", locale, xmlRequest)}
+			${journalContentUtil.getContent(groupId, article.getArticleId()?string, "", locale, xmlRequest)}
 
 			<#if layoutPermission.contains(permissionChecker, layout, "UPDATE")>
 				<#assign current_url = request.attributes.CURRENT_COMPLETE_URL! />
