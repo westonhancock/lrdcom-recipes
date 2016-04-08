@@ -1,5 +1,4 @@
 <#assign journal_article_local_service = serviceLocator.findService("com.liferay.portlet.journal.service.JournalArticleLocalService") />
-<#assign journal_content_util = staticUtil["com.liferay.portlet.journalcontent.util.JournalContentUtil"] />
 
 <#assign service_context = staticUtil["com.liferay.portal.service.ServiceContextThreadLocal"].getServiceContext() />
 <#assign http_servlet_request = service_context.getRequest() />
@@ -43,7 +42,7 @@
 
 			<#list block.article_id.siblings as article_id>
 				<#if article_id.data?has_content && journal_article_local_service.hasArticle(groupId, article_id.data)>
-					${journal_content_util.getContent(groupId, article_id.data, "", locale, xmlRequest)!}
+					${journalContentUtil.getContent(groupId, article_id.data, "", locale, xmlRequest)!}
 
 					<#if layoutPermission.contains(permissionChecker, layout, "UPDATE")>
 						<#assign current_url = request.attributes.CURRENT_COMPLETE_URL! />

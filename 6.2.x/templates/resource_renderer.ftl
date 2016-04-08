@@ -1,7 +1,6 @@
 <#assign dl_file_entry_local_service_util = staticUtil["com.liferay.portlet.documentlibrary.service.DLFileEntryLocalServiceUtil"]>
 <#assign dl_file_util = staticUtil["com.liferay.portlet.documentlibrary.util.DLUtil"]>
 <#assign journal_article_local_service_util = staticUtil["com.liferay.portlet.journal.service.JournalArticleLocalServiceUtil"] />
-<#assign journal_content_util = staticUtil["com.liferay.portlet.journalcontent.util.JournalContentUtil"] />
 
 <#assign service_context = objectUtil("com.liferay.portal.service.ServiceContextThreadLocal").getServiceContext() />
 <#assign http_servlet_request = service_context.getRequest() />
@@ -100,12 +99,7 @@
 
 				<#assign embed_asset_id = dl_file_entry.getFileEntryId() />
 
-				<#assign document = saxReaderUtil.read(xmlRequest) />
-				<#assign root_element = document.getRootElement() />
-				<#assign element = root_element.addElement("asset-id") />
-				<#assign element = element.addText(embed_asset_id?string) />
-
-				${journal_content_util.getContent(groupId, hubspot_form_article_id, "", locale, document.asXML())!}
+				<runtime-portlet name="56" instance="${hubspot_form_article_id}" queryString="assetId=${embed_asset_id}" />
 			</div>
 
 			<#if layoutPermission.contains(permissionChecker, layout, "UPDATE")>

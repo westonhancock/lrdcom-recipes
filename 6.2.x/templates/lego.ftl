@@ -1,12 +1,4 @@
 <#if request.lifecycle == "RENDER_PHASE">
-	<#assign journal_article_local_service = serviceLocator.findService("com.liferay.portlet.journal.service.JournalArticleLocalService") />
-	<#assign journal_content_util = staticUtil["com.liferay.portlet.journalcontent.util.JournalContentUtil"] />
-
-	<#assign layout_service = serviceLocator.findService("com.liferay.portal.service.LayoutLocalService") />
-	<#assign theme_display = request["theme-display"] />
-	<#assign plid = theme_display["plid"] />
-	<#assign layout = layout_service.getLayout(plid?number) />
-
 	<div class="lego-article ${article_class.data}" id="article-${.vars['reserved-article-id'].data}">
 		<#list section.siblings as cur_section>
 			<section class="block-container lego-section section-${cur_section_index + 1} ${cur_section.section_class.data}" ${cur_section.data}>
@@ -34,30 +26,8 @@
 
 						<#if cur_block.article_id?? && cur_block.article_id.data?has_content>
 							<#list cur_block.article_id.siblings as article_id>
-								<#if article_id.data?has_content && journal_article_local_service.hasArticle(groupId, article_id.data)>
-									${journal_content_util.getContent(groupId, article_id.data, "", locale, xmlRequest)!}
-
-									<#if layoutPermission.contains(permissionChecker, layout, "UPDATE")>
-										<#assign service_context = staticUtil["com.liferay.portal.service.ServiceContextThreadLocal"].getServiceContext() />
-										<#assign http_servlet_request = service_context.getRequest() />
-
-										<#assign current_url = request.attributes.CURRENT_COMPLETE_URL! />
-
-										<#assign edit_url = portletURLFactory.create(http_servlet_request, "15", theme_display["plid"]?number, "0") />
-										<#assign VOID = edit_url.setParameter("p_p_state", "maximized") />
-										<#assign VOID = edit_url.setParameter("p_p_lifecycle", "0") />
-										<#assign VOID = edit_url.setParameter("groupId", "${groupId}") />
-										<#assign VOID = edit_url.setParameter("struts_action", "/journal/edit_article") />
-										<#assign VOID = edit_url.setParameter("redirect", "${current_url}") />
-										<#assign VOID = edit_url.setParameter("articleId", "${article_id.data}") />
-
-										<span class="lfr-icon-action lfr-icon-action-edit lfr-meta-actions pull-right">
-											<a href="${edit_url}" class="taglib-icon">
-												<img src="/osb-community-theme/images/spacer.png" alt="Edit" style="background-image: url('/osb-community-theme/sprite/images/common/_sprite.png'); background-position: 50% -608px; background-repeat: no-repeat; height: 16px; width: 16px;">
-												<span class="taglib-text ">Edit</span>
-											</a>
-										</span>
-									</#if>
+								<#if article_id.data?has_content>
+									<runtime-portlet name="56" instance="${article_id.data}" />
 								</#if>
 							</#list>
 						</#if>
