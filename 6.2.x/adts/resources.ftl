@@ -65,6 +65,7 @@
 		<#assign category_names = asset_category_local_service_util.getCategoryNames(entry.getClassNameId(), entry.getClassPK()) />
 
 		<#assign article_description = "" />
+		<#assign featured_case_study = false />
 
 		<#if asset_renderer.getClassName() == "com.liferay.portlet.documentlibrary.model.DLFileEntry">
 			<#if category_names?seq_contains("Business Whitepapers")>
@@ -115,7 +116,11 @@
 			</#if>
 
 			<#if structure_field_featured.data?has_content>
-				<#assign logo_node = document.selectSingleNode("//dynamic-element[@name='logo']/dynamic-content").getText()! />
+				<#assign featured_case_study = true />
+			</#if>
+
+			<#if featured_case_study>
+				<#assign case_study_logo = document.selectSingleNode("//dynamic-element[@name='logo']/dynamic-content").getText()! />
 			</#if>
 
 			<#-- <#assign view_url = "/resource?title=" + article.getUrlTitle() /> -->
@@ -125,43 +130,43 @@
 		<#if view_url??>
 			<div class="asset-entry block resource small-padding">
 				<a class="element-border font-color no-padding text-center w100" href="${view_url}">
-					<div class="resource-wrapper">
-						<#assign asset_title = asset_renderer.getTitle(locale) />
+					<#assign asset_title = asset_renderer.getTitle(locale) />
+					<#assign css_class = "" />
 
-						<#if dl_title??>
-							<#assign resource_info = dl_title />
-						<#elseif article_description?has_content>
-							<#assign character_limit = 129 />
+					<#if article_description?has_content>
+						<#assign character_limit = 128 />
 
-							<#if structure_field_featured.data?has_content>
-								<#assign title_word_count = asset_title?length />
-								<#assign character_limit = character_limit - title_word_count - 2 />
-							</#if>
-
-							<#assign resource_info = stringUtil.shorten(article_description, character_limit, "...") />
-						<#else>
-							<#assign resource_info = "" />
+						<#if !featured_case_study>
+							<#assign title_word_count = asset_title?length />
+							<#assign character_limit = character_limit - title_word_count />
+							<#assign css_class = "adjusted" />
 						</#if>
 
-						<#if structure_field_featured.data?has_content && logo_node?has_content>
-							<img src=${logo_node} />
+						<#assign resource_info = stringUtil.shorten(article_description, character_limit, "...") />
+					<#else>
+						<#assign resource_info = "" />
+					</#if>
+
+					<div class="${css_class} resource-wrapper">
+						<#if featured_case_study && case_study_logo?has_content>
+							<img src=${case_study_logo} />
 						<#else>
 							<svg><use xlink:href=${svg_id}></use></svg>
 						</#if>
 
-						<h4 class="asset-entry-title">
-							<#if !dl_title?? && !structure_field_featured.data?has_content>
-								<#assign resource_title = asset_title />
-
-								<#if article_description?has_content>
-									<#assign resource_title = asset_title + ": " />
+						<#if !featured_case_study>
+							<h4 class="asset-entry-title">
+								<#if dl_title??>
+									<b>${htmlUtil.escape(dl_title)}</b>
+								<#else>
+									<b>${htmlUtil.escape(asset_title)}</b>
 								</#if>
+							</h4>
+						</#if>
 
-								<b>${htmlUtil.escape(resource_title)}</b>
-							</#if>
-
-							${htmlUtil.escape(resource_info)}
-						</h4>
+						<#if resource_info?has_content>
+							<p>${htmlUtil.escape(resource_info)}</p>
+						</#if>
 					</div>
 				</a>
 			</div>
@@ -200,6 +205,10 @@
 
 	.resource-wrapper img, .resource-wrapper svg {
 		padding-bottom: 2em;
+	}
+
+	.resource-wrapper.adjusted img, .resource-wrapper.adjusted svg {
+		padding-bottom: 0.75em;
 	}
 
 	.resource-wrapper svg {
