@@ -540,8 +540,15 @@
 </nav>
 
 #if ($button_text.button_url.data != "")
+    #set ($register_classes = "btn")
+	#set ($register_target = "target='_blank'")
+	#set ($button_new_window = $button_text.button_new_window.data.equalsIgnoreCase("true"))
+  	#if (!$button_new_window)
+   		#set ($register_target = " ")
+   		#set ($register_classes = "$register_classes animate-scroll")
+    #end
 <nav class="fade floating-nav register-button" id="fixedRegisterBtn">
-	<a class="btn" href="$button_text.button_url.data" target="_blank">$button_text.data</a>
+	<a class="$register_classes" href="$button_text.button_url.data" $register_target >$button_text.data</a>
 </nav>
 #end
 
@@ -560,7 +567,7 @@
 					</div>
 					#if ($button_text.button_url.data != "")
 					<div class="register-button">
-						<a class="btn" href="$button_text.button_url.data" target="_blank">$button_text.data</a></div>
+						<a class="$register_classes" href="$button_text.button_url.data" $register_target >$button_text.data</a></div>
 					</div>
 					#end
 			</div>

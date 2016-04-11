@@ -18,8 +18,11 @@
 	.heading-container {
 		display: table-cell;
 		text-align: left;
+		vertical-align: middle;
+	}
+	
+	.heading-container.many-sponsors {
 		vertical-align: top;
-		width: 300px;
 	}
 
 	.items-container {
@@ -37,8 +40,7 @@
 		vertical-align: middle;
 	}
 	.sponsor-image-container img {
-		max-width: 170px;
-	
+		width: 170px;
 	}
 
 	.link-sponsor-symp {
@@ -46,26 +48,22 @@
 	}
 
 	.sponsor-type {
-		display: table;
+		display: table-row;
 	}
 
 	.sponsor-heading {
 		color: #414142;
-		font-size: 1.5em;
+		font-size: 2em;
 		font-weight: normal;
 		text-align: left;
+		display: table-cell;
+		vertical-align: middle;
+		height: 70px;
 	}
 
 	.sponsors-wrapper {
 		display: table;
 		margin: 50px auto 150px;
-	}
-
-	@media all and (min-width: 720px) {
-		.sponsor-heading {
-			font-size: 2em;
-			margin: 0.5em 0;
-		}
 	}
 
 	@media all and (max-width: 720px) {
@@ -82,15 +80,14 @@
 
 		.sponsor-heading {
 			display: block;
-			font-size: 2em;
 			font-weight: lighter;
 			text-align: center;
+			height: auto;
 		}
 		.sponsor-image-container {
 			padding: 0;
 		}
 		.sponsor-image-container img {
-			max-width: 174px;
 			padding: 15px 0;
 		}
 
@@ -111,7 +108,7 @@
 </div>
 
 ## Content Template
-#macro (content_template12 $heading $array)
+#macro (content_template12  $heading $array)
 
 	<div class="sponsor-type">
 		<div class="heading-container">
