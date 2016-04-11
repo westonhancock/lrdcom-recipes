@@ -88,7 +88,7 @@
 					<#assign title = dl_file_entry.getTitle() />
 					<#assign display_title = field.get("display_title")! />
 
-					<#if display_title?has_content>
+					<#if display_title?has_content && display_title.getValue()?has_content>
 						<#assign title = display_title.getValue() />
 					</#if>
 				</#list>
