@@ -27,6 +27,67 @@
 		</meta-data>
 	</dynamic-element>
 	<dynamic-element dataType="string" indexType="keyword" localizable="true" name="number_of_fields" readOnly="false" repeatable="false" required="false" showLabel="true" type="text" width="large">
+		<dynamic-element dataType="string" indexType="keyword" localizable="true" name="override_number_of_fields" readOnly="false" repeatable="true" required="false" showLabel="true" type="text" width="large">
+			<dynamic-element dataType="string" indexType="keyword" localizable="true" multiple="false" name="buyer_stage" readOnly="false" repeatable="false" required="false" showLabel="true" type="select" width="">
+				<dynamic-element name="option8182" type="option" value="Awareness">
+					<meta-data locale="en_US">
+						<entry name="label">
+							<![CDATA[Awareness]]>
+						</entry>
+					</meta-data>
+				</dynamic-element>
+				<dynamic-element name="option8183" type="option" value="Education">
+					<meta-data locale="en_US">
+						<entry name="label">
+							<![CDATA[Education]]>
+						</entry>
+					</meta-data>
+				</dynamic-element>
+				<dynamic-element name="option8184" type="option" value="Evaluation">
+					<meta-data locale="en_US">
+						<entry name="label">
+							<![CDATA[Evaluation]]>
+						</entry>
+					</meta-data>
+				</dynamic-element>
+				<dynamic-element name="option8185" type="option" value="Justification">
+					<meta-data locale="en_US">
+						<entry name="label">
+							<![CDATA[Justification]]>
+						</entry>
+					</meta-data>
+				</dynamic-element>
+				<dynamic-element name="option8186" type="option" value="Purchase">
+					<meta-data locale="en_US">
+						<entry name="label">
+							<![CDATA[Purchase]]>
+						</entry>
+					</meta-data>
+				</dynamic-element>
+				<meta-data locale="en_US">
+					<entry name="label">
+						<![CDATA[Buyer Stage]]>
+					</entry>
+					<entry name="predefinedValue">
+						<![CDATA[[""]]]>
+					</entry>
+					<entry name="tip">
+						<![CDATA[]]>
+					</entry>
+				</meta-data>
+			</dynamic-element>
+			<meta-data locale="en_US">
+				<entry name="label">
+					<![CDATA[Override Number of Fields]]>
+				</entry>
+				<entry name="predefinedValue">
+					<![CDATA[]]>
+				</entry>
+				<entry name="tip">
+					<![CDATA[]]>
+				</entry>
+			</meta-data>
+		</dynamic-element>
 		<meta-data locale="en_US">
 			<entry name="label">
 				<![CDATA[Number of Fields]]>
@@ -66,17 +127,73 @@
 		</meta-data>
 	</dynamic-element>
 	<dynamic-element dataType="string" indexType="keyword" localizable="true" multiple="false" name="text_color" readOnly="false" repeatable="false" required="false" showLabel="true" type="select" width="">
-		<dynamic-element name="option7796" type="option" value="">
+		<dynamic-element name="option9054" type="option" value="complementary">
 			<meta-data locale="en_US">
 				<entry name="label">
-					<![CDATA[Normal]]>
+					<![CDATA[Orange (complementary color)]]>
+				</entry>
+			</meta-data>
+		</dynamic-element>
+		<dynamic-element name="option9055" type="option" value="accent">
+			<meta-data locale="en_US">
+				<entry name="label">
+					<![CDATA[Teal (accent color)]]>
+				</entry>
+			</meta-data>
+		</dynamic-element>
+		<dynamic-element name="option9056" type="option" value="primary">
+			<meta-data locale="en_US">
+				<entry name="label">
+					<![CDATA[Blue (primary color)]]>
+				</entry>
+			</meta-data>
+		</dynamic-element>
+		<dynamic-element name="option9057" type="option" value="alt-primary">
+			<meta-data locale="en_US">
+				<entry name="label">
+					<![CDATA[Blue (alternative primary color)]]>
+				</entry>
+			</meta-data>
+		</dynamic-element>
+		<dynamic-element name="option9058" type="option" value="secondary">
+			<meta-data locale="en_US">
+				<entry name="label">
+					<![CDATA[Dark Blue (secondary color)]]>
+				</entry>
+			</meta-data>
+		</dynamic-element>
+		<dynamic-element name="option9059" type="option" value="alt-secondary">
+			<meta-data locale="en_US">
+				<entry name="label">
+					<![CDATA[Dark Blue (alternative secondary color)]]>
+				</entry>
+			</meta-data>
+		</dynamic-element>
+		<dynamic-element name="option9060" type="option" value="element">
+			<meta-data locale="en_US">
+				<entry name="label">
+					<![CDATA[Light Gray (element color)]]>
+				</entry>
+			</meta-data>
+		</dynamic-element>
+		<dynamic-element name="option9061" type="option" value="alt-font">
+			<meta-data locale="en_US">
+				<entry name="label">
+					<![CDATA[Gray (alternative text color)]]>
+				</entry>
+			</meta-data>
+		</dynamic-element>
+		<dynamic-element name="option9062" type="option" value="font">
+			<meta-data locale="en_US">
+				<entry name="label">
+					<![CDATA[Dark Gray (text color)]]>
 				</entry>
 			</meta-data>
 		</dynamic-element>
 		<dynamic-element name="option9063" type="option" value="light">
 			<meta-data locale="en_US">
 				<entry name="label">
-					<![CDATA[Light]]>
+					<![CDATA[White]]>
 				</entry>
 			</meta-data>
 		</dynamic-element>
@@ -85,7 +202,7 @@
 				<![CDATA[Text Color]]>
 			</entry>
 			<entry name="predefinedValue">
-				<![CDATA[[""]]]>
+				<![CDATA[["font"]]]>
 			</entry>
 			<entry name="tip">
 				<![CDATA[]]>
@@ -165,7 +282,7 @@
 				<![CDATA[Button Color]]>
 			</entry>
 			<entry name="predefinedValue">
-				<![CDATA[[""]]]>
+				<![CDATA[["btn-primary"]]]>
 			</entry>
 			<entry name="tip">
 				<![CDATA[]]>

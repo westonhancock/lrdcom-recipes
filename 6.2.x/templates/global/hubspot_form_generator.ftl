@@ -12,15 +12,15 @@
 
 		<#--
 		Testing Hubspot Account
-		-->
 		<#assign hs_account_id = "299703" />
 		<#assign localization_form_id = "72293d1f-6e98-4655-a0f5-e57ac01a7060" />
+		-->
 
 		<#--
 		Production Hubspot Account
+		-->
 		<#assign hs_account_id = "252686" />
 		<#assign localization_form_id = "6e0954fa-8f47-44a7-996d-e47c6f298f05" />
-		-->
 
 		<#attempt>
 			<#assign V = log.error("-----Attempt----") />
@@ -39,8 +39,6 @@
 		<#if ip_info?has_content>
 			<#assign country_from_ip = ip_info.getCountryName()! />
 		</#if>
-
-		<#assign number_of_fields_displayed = getterUtil.getInteger(number_of_fields.data) />
 
 		<#-- Create a state to country map -->
 
@@ -114,7 +112,7 @@
 
 				<#assign void = asset_info.put("asset_folder_id", dl_file_entry.getFolderId()) />
 				<#assign void = asset_info.put("asset_id", asset_id) />
-				<#assign void = asset_info.put("asset_title", dl_file_entry.getTitle()) />
+				<#assign void = asset_info.put("asset_name", dl_file_entry.getTitle()) />
 
 				<#assign dl_file_entry_type_local_service_util = staticUtil["com.liferay.portlet.documentlibrary.service.DLFileEntryTypeLocalServiceUtil"]>
 
@@ -123,7 +121,30 @@
 
 					<#assign void = asset_info.put("asset_type", dl_file_entry_type.getName(locale)) />
 				</#if>
+
+				<#assign fieldsMap = dl_file_entry.getFieldsMap(dl_file_entry.getFileVersion().getFileVersionId()) />
+
+				<#list fieldsMap.values() as field>
+					<#assign title = dl_file_entry.getTitle() />
+					<#assign primary_buyer_stage = field.get("primary_buyer_stage")! />
+
+					<#if primary_buyer_stage?has_content && primary_buyer_stage.getRenderedValue(locale)?has_content>
+						<#assign void = asset_info.put("recent_asset_primary_buyer_stage", primary_buyer_stage.getRenderedValue(locale)) />
+					</#if>
+				</#list>
 			</#if>
+		</#if>
+
+		<#assign number_of_fields_displayed = getterUtil.getInteger(number_of_fields.data) />
+
+		<#if asset_info.getString("recent_asset_primary_buyer_stage")?has_content>
+			<#list number_of_fields.override_number_of_fields.siblings as override>
+				<#if override.buyer_stage.data?has_content && (override.buyer_stage.data == asset_info.getString("recent_asset_primary_buyer_stage"))>
+					<#assign number_of_fields_displayed = getterUtil.getInteger(override.data) />
+
+					<#break>
+				</#if>
+			</#list>
 		</#if>
 
 		<#if hs_form?has_content>
@@ -307,7 +328,7 @@
 							var assetURL = '';
 
 							if (fields['asset_id']) {
-								assetURL = 'documents/${groupId}/'+ fields['asset_folder_id'] + '/' + fields['asset_title'];
+								assetURL = 'documents/${groupId}/'+ fields['asset_folder_id'] + '/' + fields['asset_name'];
 							}
 
 							var redirectURL = '${redirect_url}';
