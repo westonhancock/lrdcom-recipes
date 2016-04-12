@@ -451,8 +451,12 @@
 			##<div> $link_name: $link_href: $link_id: $link_order</div>
 
 	
+			#set ($link_class = "")
+			#if ($link_href.startsWith("#"))
+				#set ($link_class = "animate-scroll")
+			#end
 		<li class="nav-item">
-			<a class="animate-scroll"  href="$link_href" 
+			<a class="$link_class"  href="$link_href" 
 			onClick="ga('send', 'event', 'Navigation Clicks', 'Universal Theme - Scroll Navigation', '$link_name');">
 			$link_name
 			</a>
@@ -468,9 +472,12 @@
 	#set ($link_href = $link_tree.get($link_order).get("link_href"))
 	#set ($link_id = $link_tree.get($link_order).get("link_id"))
 	##<div> $link_name: $link_href: $link_id: $link_order</div>
-
+	#set ($link_class = "")
+			#if ($link_href.startsWith("#"))
+				#set ($link_class = "animate-scroll")
+			#end
 		<li class="nav-item">
-			<a class="animate-scroll" id="$link_id" href="$link_href" 
+			<a class="$link_class" id="$link_id" href="$link_href" 
 				onClick="ga('send', 'event', 'Navigation Clicks', 'Universal Theme - Scroll Navigation', '$link_name');">
 			#if ($link_href == "#wrapper")
 			<svg class="nav-icon" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
@@ -540,8 +547,15 @@
 </nav>
 
 #if ($button_text.button_url.data != "")
+    #set ($register_classes = "btn")
+	#set ($register_target = "target='_blank'")
+	#set ($button_new_window = $button_text.button_new_window.data.equalsIgnoreCase("true"))
+  	#if (!$button_new_window)
+   		#set ($register_target = " ")
+   		#set ($register_classes = "$register_classes animate-scroll")
+    #end
 <nav class="fade floating-nav register-button" id="fixedRegisterBtn">
-	<a class="btn" href="$button_text.button_url.data" target="_blank">$button_text.data</a>
+	<a class="$register_classes" href="$button_text.button_url.data" $register_target >$button_text.data</a>
 </nav>
 #end
 
@@ -560,7 +574,7 @@
 					</div>
 					#if ($button_text.button_url.data != "")
 					<div class="register-button">
-						<a class="btn" href="$button_text.button_url.data" target="_blank">$button_text.data</a></div>
+						<a class="$register_classes" href="$button_text.button_url.data" $register_target >$button_text.data</a></div>
 					</div>
 					#end
 			</div>
