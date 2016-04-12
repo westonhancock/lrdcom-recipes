@@ -138,10 +138,14 @@
 				<#assign form_css = form_css + " form-${text_color.data}"/>
 			</#if>
 
-			<div class="${form_css}">
+			<#if number_of_fields_first_column.data?has_content>
+				<#assign form_css = form_css + " form-multiple block-container no-padding"/>
+			</#if>
+
+			<div>
 				<div id="${article_namespace}msg"></div>
 
-				<form action="https://forms.hubspot.com/uploads/form/v2/${hs_account_id}/${form_id.data}" data-asset-info="${asset_info?html}" data-asset-new-tab="true" id="${article_namespace}fm" method="POST" onsubmit="submitHSForm${article_namespace}('#${article_namespace}fm', this.getAttribute('data-asset-info')); return false;">
+				<form class="${form_css}" action="https://forms.hubspot.com/uploads/form/v2/${hs_account_id}/${form_id.data}" data-asset-info="${asset_info?html}" data-asset-new-tab="true" id="${article_namespace}fm" method="POST" onsubmit="submitHSForm${article_namespace}('#${article_namespace}fm', this.getAttribute('data-asset-info')); return false;">
 					<#assign field_count = 0 />
 					<#assign start = 0 />
 					<#assign end = hs_form_fields.length() - 1 />
