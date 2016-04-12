@@ -56,13 +56,7 @@
 		</meta-data>
 	</dynamic-element>
 	<dynamic-element name="button_text" type="text" index-type="" repeatable="false">
-		<meta-data>
-			<entry name="displayAsTooltip"><![CDATA[false]]></entry>
-			<entry name="required"><![CDATA[false]]></entry>
-			<entry name="instructions"><![CDATA[]]></entry>
-			<entry name="label"><![CDATA[button_text]]></entry>
-			<entry name="predefinedValue"><![CDATA[]]></entry>
-		</meta-data>
+		<dynamic-element name="button_new_window" type="boolean" index-type="" repeatable="false"></dynamic-element>
 		<dynamic-element name="button_url" type="text" index-type="" repeatable="false">
 			<meta-data>
 				<entry name="displayAsTooltip"><![CDATA[false]]></entry>
