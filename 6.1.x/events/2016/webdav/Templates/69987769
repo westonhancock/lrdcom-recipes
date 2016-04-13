@@ -208,6 +208,29 @@ a.android {
     background-position: 0 -72px;
 }
 
+@media(min-width: 1000px) {
+.created-by:hover:before {
+    position: absolute;
+   bottom: 50px;
+    left: 100px;
+    background:  linear-gradient(#0069cc, black);
+    content: " or maybe Eschborn, Germany";
+    padding:  15px;
+    border-radius:  10px;
+}
+
+.created-by:hover:after {
+    position: absolute;
+    bottom: 40px;
+    left: 200px;
+    content: "";
+    border-width: 0 15px 15px 0;
+    border-style: solid;
+    border-color:  transparent black transparent transparent;
+    width: 0;
+}
+}
+
 @media(max-width: 1200px) {
     .footer {
         padding: 50px 20px;
@@ -341,7 +364,14 @@ a.android {
 					S</div>
 			#end
 		</div>
-		<a class="btn" href="$register_button_text.register_url.data" id="earlyBirdButton" target="_blank">$register_button_text.data</a></div>
+		
+		#set ($link_class = "")
+		#if ($register_button_text.register_url.data.startsWith("#"))
+			#set ($link_class = "animate-scroll")
+		#end
+		<a class="btn $link_class " href="$register_button_text.register_url.data" id="earlyBirdButton"
+				#if (!$register_button_text.register_url.data.startsWith("#")) target="_blank" #end >$register_button_text.data</a>
+	</div>
     <div class="content-column footer-responsive-top-container responsive-only">
 		<ul class="aui-w12 content-column responsive-only scroll-nav">
             #foreach($leftItem in $left_section_item.siblings)

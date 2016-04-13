@@ -74,7 +74,7 @@
 	  padding: 10px;
 	}
 	a.twitter-timeline::after {
-	  content: "Please click on the link above or disable tracking protection to see the Twitter feed.  ";
+	  content: "${(twitter_error_message.data)!"Please click on the link above or disable tracking protection to see the Twitter feed.  "}";
 	  padding: 20px;
 	  line-height: 25px;
 	  font-size: 16px;
@@ -108,12 +108,12 @@
 <div class="twitter-container" id="eventsapp">
 	<div class="info-container inline centered">
 		<img class="event-icon" src="/documents/47511614/51179014/events-mobile-app.png" />
-		<h3 class="light">$header_text.data</h3>
+		<h3 class="light">${(header_text.data)!"Download the Liferay Events App"}</h3>
 		
 		<a class="ios" href="https://itunes.apple.com/us/app/liferay-events/id650199231?mt=8">&nbsp;</a>
 		<a class="android" href="https://play.google.com/store/apps/details?id=com.liferay.events.global.mobile&amp;hl=en">&nbsp;</a>
 	</div>
-	<a class="twitter-timeline" data-widget-id="$twitter_widget_id.data" href="$twitter_link.data">$twitter_link_text.data</a>
+	<a class="twitter-timeline" data-widget-id="${twitter_widget_id.data}" href="${twitter_link.data}">${twitter_link_text.data}</a>
 </div>
 <script>
 YUI().use('get', function (Y) {

@@ -211,9 +211,9 @@
     }
 
    .speaker-bio {
-        padding: 20px;
+        padding: 15px;
     }
-
+    
    .speaker-company, .speaker-name, .speaker-title, .sponsor-logo {
         color: $textcolor;
         display: block;
