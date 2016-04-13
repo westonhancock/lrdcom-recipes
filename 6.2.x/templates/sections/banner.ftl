@@ -41,6 +41,11 @@
 	<div class="align-center block-container main-banner-content max-full no-margin w100 ${position.data}">
 		<#if heading.data?has_content || subheading.data?has_content || button_text.data?has_content >
 			<div class="max-med no-margin no-padding">
+
+				<#if SVG_Icon.data?has_content>
+					${SVG_Icon.data}
+				</#if>
+				
 				<#include "${templatesPath}/898140" />
 
 				<#if button_text.data?has_content>

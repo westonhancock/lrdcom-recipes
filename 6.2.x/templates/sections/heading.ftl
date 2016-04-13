@@ -2,7 +2,7 @@
 	<#assign css_class = ""/>
 
 	<#if heading.heading_type.data == "page-heading">
-		<#assign css_class = "block-container page-heading" />
+		<#assign css_class = "block-container no-padding standard-padding-vertical page-heading" />
 		<#assign tag = "h1"/>
 	<#elseif heading.heading_type.data == "section-heading">
 		<#assign css_class = "section-heading" />
