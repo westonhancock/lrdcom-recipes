@@ -45,6 +45,11 @@
 #if ($sectionid && $sectionid.data != "") 
 	#set ($agendaid = $sectionid.data)
 #end
+#set ($fullagendahash = "fullagenda")
+#if ($full_agenda_hash && $full_agenda_hash.data != "") 
+	#set ($fullagendahash  = $full_agenda_hash.data)
+#end
+
 
 #set ($selector_color = "#0067aa")
 
@@ -989,6 +994,7 @@
 </div>
 #end
 
+<div id="$fullagendahash"></div>
  <div id="$agendaid">
  #if ($agendabutton)
  <div class="lego-article" id="article-54196071">
@@ -1665,6 +1671,11 @@ AUI().ready(
 		A.one('.agenda-arrow').on('click', function(e) {
 			this.toggleClass('active');
 		});
+		
+		if (window.location.hash == "#${fullagendahash}") {
+		    A.one('#agendaPop').addClass('class-toggle-active');
+		    A.one('.agenda-arrow').addClass('active');
+		}
 	}
 );
 </script>
