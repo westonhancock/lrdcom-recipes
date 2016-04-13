@@ -210,7 +210,7 @@
 
 			<div class="btn-wrapper">
 				<#list asset.siblings as asset_url>
-					<#if asset_url?has_content>
+					<#if asset_url.data?has_content>
 						<#assign btn_text = localize("case-study", "Case Study") />
 
 						<#if asset_url.button_text?? && asset_url.button_text.data?has_content>
