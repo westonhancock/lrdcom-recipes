@@ -139,43 +139,41 @@
 			</#if>
 
 			<#if number_of_fields_first_column.data?has_content>
-				<#assign form_css = form_css + " form-multiple block-container no-padding"/>
+				<#assign form_css = form_css + " block-container form-multi-col no-padding"/>
 			</#if>
 
-			<div>
-				<div id="${article_namespace}msg"></div>
+			<div id="${article_namespace}msg"></div>
 
-				<form class="${form_css}" action="https://forms.hubspot.com/uploads/form/v2/${hs_account_id}/${form_id.data}" data-asset-info="${asset_info?html}" data-asset-new-tab="true" id="${article_namespace}fm" method="POST" onsubmit="submitHSForm${article_namespace}('#${article_namespace}fm', this.getAttribute('data-asset-info')); return false;">
-					<#assign field_count = 0 />
-					<#assign start = 0 />
-					<#assign end = hs_form_fields.length() - 1 />
-					<#assign range = start..end />
+			<form class="${form_css}" action="https://forms.hubspot.com/uploads/form/v2/${hs_account_id}/${form_id.data}" data-asset-info="${asset_info?html}" data-asset-new-tab="true" id="${article_namespace}fm" method="POST" onsubmit="submitHSForm${article_namespace}('#${article_namespace}fm', this.getAttribute('data-asset-info')); return false;">
+				<#assign field_count = 0 />
+				<#assign start = 0 />
+				<#assign end = hs_form_fields.length() - 1 />
+				<#assign range = start..end />
 
-					<div class="form-col form-col-1">
-						<#list range as i>
-							<#assign item = hs_form_fields.getJSONObject(i) />
+				<div class="form-col form-col-1">
+					<#list range as i>
+						<#assign item = hs_form_fields.getJSONObject(i) />
 
-							<@print_item item=item />
-						</#list>
+						<@print_item item=item />
+					</#list>
 
-						<#if submit_text.data?has_content>
-							<#assign btn_text = localize(submit_text.data, "Submit") />
-						</#if>
+					<#if submit_text.data?has_content>
+						<#assign btn_text = localize(submit_text.data, "Submit") />
+					</#if>
 
-						<#if !btn_text?has_content>
-							<#assign btn_text = hs_form.getSubmitText() />
-						</#if>
+					<#if !btn_text?has_content>
+						<#assign btn_text = hs_form.getSubmitText() />
+					</#if>
 
-						<#if !btn_text?has_content>
-							<#assign btn_text = localize("submit", "Submit") />
-						</#if>
+					<#if !btn_text?has_content>
+						<#assign btn_text = localize("submit", "Submit") />
+					</#if>
 
-						<div class="btn-wrapper">
-							<input class="btn ${button_color.data}" type="submit" value="${btn_text}" />
-						</div>
+					<div class="btn-wrapper">
+						<input class="btn ${button_color.data}" type="submit" value="${btn_text}" />
 					</div>
-				</form>
-			</div>
+				</div>
+			</form>
 
 			<#assign ip_address = request.attributes.OSB_WWW_REMOTE_ADDRESS! />
 
