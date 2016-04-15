@@ -158,7 +158,7 @@
 					</#list>
 
 					<#if submit_text.data?has_content>
-						<#assign btn_text = localize(submit_text.data, "Submit") />
+						<#assign btn_text = localize(submit_text.data, submit_text.data) />
 					</#if>
 
 					<#if !btn_text?has_content>

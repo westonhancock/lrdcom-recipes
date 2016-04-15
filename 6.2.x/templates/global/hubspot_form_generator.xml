@@ -244,7 +244,7 @@
 				<![CDATA[]]>
 			</entry>
 			<entry name="tip">
-				<![CDATA[]]>
+				<![CDATA[You can enter either a langauge key that exists in the Language Keys Global template, or enter your own text and localize in the template.]]>
 			</entry>
 		</meta-data>
 	</dynamic-element>
