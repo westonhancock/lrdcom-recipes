@@ -464,7 +464,13 @@
 							}
 							else {
 								if (node.one("#${article_namespace}_state")) {
-									node.one('select').setAttribute('value', 'null');
+									stateSelect = node.one('select');
+
+									stateSelect.empty();
+
+									stateSelect.setAttribute('value', 'null');
+
+									stateSelect.appendChild('<option value="null"></option>');
 								}
 
 								node.hide()
