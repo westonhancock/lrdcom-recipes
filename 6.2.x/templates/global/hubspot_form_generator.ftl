@@ -424,9 +424,9 @@
 
 							field.empty();
 
-							field.setAttribute('value', '_blank');
+							field.setAttribute('value', 'null');
 
-							field.appendChild('<option value="_blank"></option>');
+							field.appendChild('<option value="null"></option>');
 
 							var stateOptions = stateJSON[value];
 
@@ -464,7 +464,7 @@
 							}
 							else {
 								if (node.one("#${article_namespace}_state")) {
-									node.one('select').setAttribute('value', '_blank');
+									node.one('select').setAttribute('value', 'null');
 								}
 
 								node.hide()
@@ -532,6 +532,12 @@
 		<#assign required = getterUtil.getBoolean(item.getString("required")) />
 
 		<#assign value = item.getString("defaultValue")! />
+
+		<#assign selected_options = item.getJSONArray("selectedOptions")! />
+
+		<#if selected_options?has_content>
+			<#assign value = selected_options.getString(0)! />
+		</#if>
 
 		<#if !hidden && hs_contact_object?? && hs_contact_object.getJSONObject(field_name)??>
 			<#assign hs_value = hs_contact_object.getJSONObject(field_name).getString("value") />
