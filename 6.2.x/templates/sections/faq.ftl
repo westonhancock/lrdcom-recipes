@@ -1,12 +1,12 @@
 <#if request.lifecycle == "RENDER_PHASE">
 	<div class="block-container faq-section" id="article-${.vars['reserved-article-id'].data}">
-		<div class="faq-heading small-padding-horizontal w100">
+		<div class="faq-heading standard-padding w100">
 			<#include "${templatesPath}/898140" />
 			<#assign number_of_heading_fields = 2 />
 		</div>
 
 		<#list question.siblings as cur_question>
-			<div class="question question-${cur_question_index} small-padding-horizontal">
+			<div class="question question-${cur_question_index} standard-padding">
 				<svg class="toggle-icon" height='18px' width='18px'><use xlink:href='#toggleCircle' /></svg>
 
 				<h4 class="class-toggle" data-target-nodes="#article-${.vars['reserved-article-id'].data} .question-${cur_question_index}"><strong
