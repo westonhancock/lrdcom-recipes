@@ -129,6 +129,15 @@
 			</#list>
 		</#if>
 
+		<#assign service_context = objectUtil("com.liferay.portal.service.ServiceContextThreadLocal").getServiceContext() />
+		<#assign http_servlet_request = service_context.getRequest() />
+
+		<#assign vip = paramUtil.getString(http_servlet_request, "vip") />
+
+		<#if vip?has_content>
+			<#assign number_of_fields_displayed = vip?length / 2 />
+		</#if>
+
 		<#if hs_form?has_content>
 			<#assign hs_form_fields = hs_form.getHSFormJSONObject().getJSONArray("fields") />
 
