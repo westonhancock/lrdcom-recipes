@@ -14,7 +14,7 @@
 	</#if>
 	
 	<#if Link_Href.data?has_content>
-		<a href="${Link_Href.data}">${Link_Text.data}</a>
+		<a href="${Link_Href.data}">${Link_Text.data} <svg class="cta-icon" height='10' width='8'><use xlink:href='#caret' /></svg></a>
 	</#if>
 </div>
 
