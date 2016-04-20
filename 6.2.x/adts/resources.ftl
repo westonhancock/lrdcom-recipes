@@ -95,8 +95,8 @@
 
 			<#assign resource_id = dl_file_entry.getFileEntryId() />
 
-			<#-- <#assign view_url = "/resource?folderId=" + dl_file_entry.getFolderId() + "&title=" + stringUtil.replace(dl_file_entry.getTitle(), " ", "+") /> -->
-			<#assign view_url = "/resource/" + dl_file_entry.getFolderId() + "/" + stringUtil.replace(dl_file_entry.getTitle(), " ", "+") />
+			<#assign view_url = "/resource?folderId=" + dl_file_entry.getFolderId() + "&title=" + stringUtil.replace(dl_file_entry.getTitle(), " ", "+") />
+			<#-- <#assign view_url = "/resource/" + dl_file_entry.getFolderId() + "/" + stringUtil.replace(dl_file_entry.getTitle(), " ", "+") /> -->
 		<#elseif asset_renderer.getClassName() == "com.liferay.portlet.journal.model.JournalArticle">
 			<#assign article = journal_article_local_service_util.getLatestArticle(entry.getClassPK()) />
 
@@ -123,8 +123,8 @@
 				<#assign case_study_logo = document.selectSingleNode("//dynamic-element[@name='logo']/dynamic-content").getText()! />
 			</#if>
 
-			<#-- <#assign view_url = "/resource?title=" + article.getUrlTitle() /> -->
-			<#assign view_url = "/resource/case-studies/" + article.getUrlTitle() />
+			<#assign view_url = "/resource?title=" + article.getUrlTitle() />
+			<#-- <#assign view_url = "/resource/case-studies/" + article.getUrlTitle() /> -->
 		</#if>
 
 		<#if view_url??>
@@ -149,7 +149,7 @@
 
 					<div class="${css_class} resource-wrapper">
 						<#if featured_case_study && case_study_logo?has_content>
-							<img src=${case_study_logo} />
+							<img class="lazy-load" data-src="${case_study_logo}" src="../osb-community-theme/images/progress_bar/loading_animation.gif" />
 						<#else>
 							<svg><use xlink:href=${svg_id}></use></svg>
 						</#if>
