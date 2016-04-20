@@ -307,6 +307,8 @@
 							);
 
 							if (leave) {
+								msg.setContent('<div class="portlet-msg-error">${localize("please_complete_required_fields", "Please complete all required fields.")}</div>');
+
 								return;
 							}
 
@@ -620,7 +622,7 @@
 								<#assign selected = "selected" />
 							</#if>
 
-							<option value='${option.getString("value")}' ${selected}>${option.getString("label")}</option>
+							<option value="${option.getString('value')}" ${selected}>${option.getString("label")}</option>
 						</#list>
 					</select>
 
