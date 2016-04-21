@@ -1,0 +1,434 @@
+#set ($backgroundcolor = "#ebebeb")
+#set ($textcolor = "#4d4d4f")
+#set ($speakertoggle = $enable_speaker_toggle.data.equalsIgnoreCase("true"))
+
+## careful editing things here, the css classes are also used in the what's in it for me section (justify template)
+
+#if($speakersizevalue.data && $speakersizevalue.data != "")
+	#set ($speakersize = $speakersizevalue.data)
+#else 
+	#set ($speakersize = "270px")
+#end
+
+<script>
+    (function() {
+        if (navigator.userAgent.indexOf('Trident/7.0') > -1) {
+            var htmlClassList = document.getElementsByTagName('html')[0].classList;
+
+            htmlClassList.add('ie');
+            htmlClassList.add('ie11');
+        }
+    })(this);
+</script>
+
+<style type="text/css">
+ 
+ #if ($speakertoggle) 
+   #speakerToggle {
+        max-height: 320px;
+        overflow: hidden;
+        padding-bottom: 60px;
+        ##blur container positioned absolutely at bottom of this section, therefore relative here 
+        position: relative;
+        transition: max-height ease-in-out 0.75s;
+    }
+
+    #speakerToggle.class-toggle-active {
+        max-height: none;
+    }
+
+    #speakerToggle .blur-container {
+        background-image: linear-gradient(to bottom, rgba(248, 248, 248, 0) 0%, rgba(248, 248, 248, 0) 1%, rgba(255, 255, 255, 0.8) 70%, rgba(255, 255, 255, 0.8) 100%);
+        bottom: 0;
+        display: block;
+        height: 80px;
+        position: absolute;
+        width: 100%;
+    }
+
+    #speakerToggle.class-toggle-active .blur-container {
+        height: 0
+    }
+    
+    .speaker-arrow svg {
+    	margin-left: 7px;
+    	transform: rotate(-90deg);
+    	-ms-transform: rotate(-90deg);
+    	-webkit-transform: rotate(-90deg);
+	}
+
+	.speaker-arrow.active svg {
+   	 	transform: rotate(90deg);
+   	 	-ms-transform: rotate(90deg);
+   	 	-webkit-transform: rotate(90deg);
+	}
+#end
+
+
+## keep fancy stuff for desktop to prevent memory crashes on mobile
+@media (min-width:801px) {
+    .flip-wrapper {
+        -moz-perspective: 800px;
+        -ms-perspective: 800px;
+        -o-perspective: 800px;
+        -webkit-perspective: 800px;
+        perspective: 800px;
+    }
+
+     .flip-item {
+        -moz-transform-style: preserve-3d;
+        -ms-transform-style: preserve-3d;
+        -o-transform-style: preserve-3d;
+        -webkit-transform-style: preserve-3d;
+       
+	}
+     .flip-item.class-toggle-off-click-active {
+        -moz-transform: rotateY(180deg);
+        -ms-transform: rotateY(180deg);
+        -o-transform: rotateY(180deg);
+        -webkit-transform: rotateY(180deg);
+        transform: rotateY(180deg);
+    }
+    
+	.flip-item .flip-side,  .speaker-item .speaker-info {
+        -moz-transform: translate3d(0, 0, 0);
+        -ms-transform: translate3d(0, 0, 0);
+        -o-transform: translate3d(0, 0, 0)
+        -webkit-transform: translate3d(0, 0, 0);
+         transform: translate3d(0, 0, 0);
+         
+        -moz-backface-visibility: hidden;
+        -o-backface-visibility: hidden;
+        -webkit-backface-visibility: hidden;
+        backface-visibility: hidden;
+        -ms-backface-visibility: visible;
+     }
+        
+    .flip-item .back-side {
+        -moz-transform: rotateY(-180deg);
+        -ms-transform: rotateY(-180deg);
+        -o-transform: rotateY(-180deg);
+        -webkit-transform: rotateY(-180deg);
+        transform: rotateY(-180deg);
+    }
+
+     .flip-item:hover, .speaker-item .speaker-info {
+        -moz-transition: all 0.4s ease-in-out;
+        -ms-transition: all 0.4s ease-in-out;
+        -o-transition: all 0.4s ease-in-out;
+        -webkit-transition: all 0.4s ease-in-out;
+        transition: all 0.4s ease-in-out;
+        
+  
+    }
+        
+     .speaker-item .speaker-info {
+        -moz-transform: translate(100%, 100%);
+        -ms-transform: translate(100%, 100%);
+        -o-transform: translate(100%, 100%);
+        -webkit-transform: translate(100%, 100%); 
+        transform: translate(100%, 100%);
+    }
+    .speaker-item:hover .speaker-info {
+        -moz-transform: translate(0, 0);
+        -ms-transform: translate(0, 0);
+        -o-transform: translate(0, 0);
+        -webkit-transform: translate(0, 0);
+        transform: translate(0, 0);
+    }
+    
+    .speaker-info:before {
+        -moz-transform: rotate(45deg);
+        -ms-transform: rotate(45deg);
+        -o-transform: rotate(45deg);
+        -webkit-transform: rotate(45deg); 
+        transform: rotate(45deg);
+     }
+}
+@media (max-width:800px) {
+ 	.speaker-item .speaker-info {
+    	 display: none;
+	}
+  
+  	.flip-item .back-side {
+  		display: none;
+ 	}
+ 	
+	.class-toggle-off-click-active.flip-item .back-side {
+        display: block;
+	}
+}
+
+
+
+   .speaker-wrapper {
+        padding: 40px 0 10px;
+        text-align: center;
+    }
+
+   .speaker-item-wrapper {
+        display: inline-block;
+        height: $speakersize;
+        margin: 0 15px 15px 0;
+        overflow: hidden;
+        width: $speakersize;
+    }
+
+
+	.flip-item { 
+	     transition: .6s;
+	     -webkit-transition: .6s;
+	     -moz-transition: .6s;
+	     -o-transition: .6s;
+	}
+	
+	.flip-wrapper {
+	 	position: relative;
+	 }
+	 
+	 .speaker-item {
+		height: 100%;
+		text-align: left;
+		width: 100%;
+	}
+
+   .speaker-item.class-toggle-off-click {
+        cursor: pointer;
+    }
+    
+    .speaker-item, .speaker-item .front-side {
+        background-position: 0;
+        background-size: 100%;
+        background-repeat: no-repeat;
+    }
+
+
+    .flip-item .flip-side,  .speaker-item .speaker-info {
+        bottom: 0;
+        left: 0;
+        max-height: $speakersize;
+        max-width: $speakersize;
+        overflow: hidden;
+        position: absolute;
+        right: 0;
+        top: 0;  
+    }
+
+    .speaker-item .speaker-info, .speaker-item .speaker-bio {
+        background-color: $backgroundcolor;
+        color: $textcolor;
+    }
+
+    .speaker-item .speaker-info {
+    	padding: 5%;
+    }
+
+    .speaker-info .speaker-name {
+        font-size: 1.5em;
+        font-weight: 100;
+    }
+
+     .speaker-info:before {     
+        background: $backgroundcolor;
+        display: inline-block;
+        height: 200%;
+        left: -53%;
+        pointer-events: none;
+        position: absolute;
+        top: 0;
+        width: 230%;
+        z-index: -1;
+    }
+
+   .speaker-info .sponsor-logo {
+        height: auto;
+        margin: auto;
+        padding-top: 10px;
+        width: 200px;
+    }
+
+   .speaker-bio {
+        padding: 15px;
+    }
+    
+   .speaker-company, .speaker-name, .speaker-title, .sponsor-logo {
+        color: $textcolor;
+        display: block;
+        font-size: 1em;
+        text-align: center;
+    }
+
+
+
+/* ---------- Browser Specific ---------- */
+
+    .ie .speaker-item .front-side {
+        height: $speakersize;
+        position: relative;
+    }
+
+    .ie .flip-item .back-side {
+        display: none;
+        z-index: -1;
+    }
+
+    .ie .class-toggle-off-click-active.flip-item .back-side {
+        display: block;
+        z-index: auto;
+    }
+    
+    .safari .flip-item.class-toggle-off-click-active {
+   		 -webkit-transform: rotateY(0deg);
+	}
+
+	.safari .flip-item:hover, .safari .speaker-item .speaker-info {
+ 	   -webkit-transition: none;
+	}
+
+	.safari .class-toggle-off-click-active.flip-item .back-side {
+  	  -webkit-transform: rotateY(0deg);
+	}
+</style>
+
+## Get DDL Records
+#set ($ddl_records_local_service = $serviceLocator.findService("com.liferay.portlet.dynamicdatalists.service.DDLRecordLocalService"))
+#set ($record_set_id = $getterUtil.getLong($record_set_id.data))
+#set ($records = $ddl_records_local_service.getRecords($record_set_id))
+
+#set($speaker_records = $portal.getClass().forName("java.util.TreeMap").newInstance())
+
+#foreach ($record in $records)
+    #set ($record = $record.record)
+    #set ($speaker_bio = $record.getFieldValue("speaker_bio"))
+    #set ($speaker_company = $record.getFieldValue("speaker_company"))
+    #set ($speaker_image = $record.getFieldValue("speaker_image"))
+    #set ($speaker_keynote = $record.getFieldValue("speaker_keynote"))
+    #set ($speaker_name = $record.getFieldValue("speaker_name"))
+    #set ($speaker_title = $record.getFieldValue("speaker_title"))
+	#set ($speaker_order = $record.getFieldValue("speakerorder"))    
+    #set ($sponsor_logo = $record.getFieldValue("sponsor_logo"))
+
+    #set ($speaker_image_uuid = "")
+    #set ($sponsor_logo_uuid = "")
+
+    #if ($validator.isNotNull($speaker_image))
+        #set ($speaker_json_object = $jsonFactoryUtil.createJSONObject($speaker_image))
+        #set ($speaker_image_uuid = $speaker_json_object.getString("uuid"))
+    #end
+
+    #if ($validator.isNotNull($sponsor_logo))
+        #set ($sponsor_json_object = $jsonFactoryUtil.createJSONObject($sponsor_logo))
+        #set ($sponsor_logo_uuid = $sponsor_json_object.getString("uuid"))
+    #end
+
+    #set($speaker_record = $portal.getClass().forName("java.util.TreeMap").newInstance())
+
+    #set ($void = $speaker_record.put("speaker_bio", $speaker_bio))
+    #set ($void = $speaker_record.put("speaker_company", $speaker_company))
+    #set ($void = $speaker_record.put("speaker_image", $speaker_image))
+    #set ($void = $speaker_record.put("speaker_image_groupid", $record.getGroupId()))
+    #set ($void = $speaker_record.put("speaker_image_uuid", $speaker_image_uuid))
+    #set ($void = $speaker_record.put("speaker_keynote", $speaker_keynote))
+    #set ($void = $speaker_record.put("speaker_name", $speaker_name))
+    #set ($void = $speaker_record.put("speaker_title", $speaker_title))
+
+    #set ($void = $speaker_record.put("sponsor_image", $sponsor_image))
+    #set ($void = $speaker_record.put("sponsor_logo", $sponsor_logo))
+    #set ($void = $speaker_record.put("sponsor_logo_uuid", $sponsor_logo_uuid))
+
+    #if ($record.getStatus() == "0")
+        #set ($void = $speaker_records.put($speaker_order, $speaker_record))
+    #end
+#end
+
+
+#if ($speakertoggle)
+<div class="speaker-pop-up" id="speakerToggle">
+
+#end
+<div class="$speakercssclass default-max-width speaker-wrapper" id="$sectionid.data">
+    #foreach($speaker in $speaker_records)
+        #set ($speaker_bio = $speaker.get("speaker_bio"))
+        #set ($speaker_company = $speaker.get("speaker_company"))
+        #set ($speaker_image = $speaker.get("speaker_image"))
+        #set ($speaker_image_groupid = $speaker.get("speaker_image_groupid"))
+        #set ($speaker_image_uuid = $speaker.get("speaker_image_uuid"))
+        #set ($speaker_keynote = $speaker.get("speaker_keynote"))
+        #set ($speaker_name = $speaker.get("speaker_name"))
+        #set ($speaker_title = $speaker.get("speaker_title"))
+
+        #set ($sponsor_logo = $speaker.get("sponsor_logo"))
+        #set ($sponsor_logo_uuid = $speaker.get("sponsor_logo_uuid"))
+
+        #set ($speaker_item_css_class = "flip-item speaker-item speaker-$velocityCount")
+
+        #if ($speaker_bio != "")
+            #set ($speaker_item_css_class = "$speaker_item_css_class trigger class-toggle-off-click")
+        #end
+
+        <div class="flip-wrapper speaker-item-wrapper">
+            #if ($speaker_image != "")
+                #set ($image_src = "/documents/$speaker_image_groupid/${speaker_image_uuid}?width=250")
+            #else
+                #set ($image_src = "/documents/24222655/33896529/2014-LPSF-Benelux-Default.png/94ff4361-cf48-4c1d-b528-bd4807b8d9c2")
+            #end
+            <div class="$speaker_item_css_class" onclick="ga('send', 'event', '$speakerClickEventCategory.data', 'Speaker Profile Clicks', '$htmlUtil.escape($speaker_name)');" style="background-image: url($image_src);">
+
+                <div class="flip-side front-side" style="background-image: url($image_src);">
+                    <div class="speaker-info">
+                        #if ($sponsor_logo !="")
+                            #set ($logo_src ="/documents/$speaker_image_groupid/$sponsor_logo_uuid")
+
+                            <img alt="$htmlUtil.escape($speaker_company) logo" class="sponsor-logo" src="$logo_src" />
+                        #end
+
+                        <h3 class="speaker-name">
+                            $speaker_name
+                        </h3>
+
+                        <span class="speaker-title">$speaker_title</span>
+                        <span class="speaker-company">$speaker_company</span>
+                    </div>
+                </div>
+
+                <div class="back-side flip-side speaker-bio">
+                    $speaker_bio
+                </div>
+            </div>
+        </div>
+    #end
+</div>
+
+#if ($speakertoggle)
+
+
+	<div class="blur-container">
+		&nbsp;
+    </div>
+
+</div>
+
+<p class="centered">
+	<a class="class-toggle animate-scroll speaker-arrow" data-target-node="#speakerToggle" href="#$sectionid.data"> 
+	<svg enable-background="new 0 0 15 30" height="30px" id="Layer_1" version="1.1" viewbox="0 0 15 30" width="15px" x="0px"
+	 xml:space="preserve" xmlns="http://www.w3.org/2000/svg" 
+	 xmlns:xlink="http://www.w3.org/1999/xlink" y="0px"> 
+	 <polyline fill="none" points="14.5,29 0.5,15 14.5,1 " stroke="#909295" stroke-miterlimit="10">
+	 </polyline> 
+	 </svg>
+	 </a>
+</p>
+
+<script>
+AUI().ready(
+	'node',
+	function(A) {
+	
+		A.one('.speaker-arrow').on('click', function(e) {
+			this.toggleClass('active');
+		});
+	}
+);
+</script>
+
+#end
