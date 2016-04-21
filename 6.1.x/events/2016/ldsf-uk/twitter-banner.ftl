@@ -113,7 +113,7 @@
 		<a class="ios" href="https://itunes.apple.com/us/app/liferay-events/id650199231?mt=8">&nbsp;</a>
 		<a class="android" href="https://play.google.com/store/apps/details?id=com.liferay.events.global.mobile&amp;hl=en">&nbsp;</a>
 	</div>
-	<a class="twitter-timeline" data-widget-id="${twitter_widget_id.data}" href="${twitter_link.data}">${twitter_link_text.data}</a>
+	<a class="twitter-timeline" data-widget-id="${twitter_widget_id.data}" href="${twitter_link.data}" target="_blank">${twitter_link_text.data}</a>
 </div>
 <script>
 YUI().use('get', function (Y) {

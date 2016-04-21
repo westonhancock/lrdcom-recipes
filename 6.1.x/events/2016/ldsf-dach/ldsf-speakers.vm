@@ -329,7 +329,7 @@
 
         <div class="flip-wrapper speaker-item-wrapper">
             #if ($speaker_image != "")
-                #set ($image_src = "/documents/$speaker_image_groupid/$speaker_image_uuid")
+                #set ($image_src = "/documents/$speaker_image_groupid/${speaker_image_uuid}?width=250")
             #else
                 #set ($image_src = "/documents/24222655/33896529/2014-LPSF-Benelux-Default.png/94ff4361-cf48-4c1d-b528-bd4807b8d9c2")
             #end
