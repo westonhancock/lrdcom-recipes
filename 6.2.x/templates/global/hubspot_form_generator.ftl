@@ -312,12 +312,6 @@
 								return;
 							}
 
-							var fieldsString = '';
-
-							for(field in fields) {
-								fieldsString = fieldsString + field + ':;:' + fields[field] + ':;:';
-							}
-
 							var guid = '${form_id.data}';
 
 							var ipAddress = '${ip_address}';
@@ -343,8 +337,8 @@
 								window.open(assetURL, '_blank');
 							}
 
-							if (fields['recent_asset_primary_buyers_stage']) {
-								var assetPrimaryBuyersStage = fields['recent_asset_primary_buyers_stage'];
+							if (fields['recent_asset_primary_buyer_stage']) {
+								var assetPrimaryBuyersStage = fields['recent_asset_primary_buyer_stage'];
 
 								if (assetPrimaryBuyersStage == 'Awareness') {
 									var trackEventId = '000000245927';
@@ -372,6 +366,14 @@
 								catch (error) {
 									console.log('_hsq error caught');
 								}
+							}
+
+							fields['browser_info'] = '${http_servlet_request.getHeader("User-Agent")}';
+
+							var fieldsString = '';
+
+							for(field in fields) {
+								fieldsString = fieldsString + field + ':;:' + fields[field] + ':;:';
 							}
 
 							A.io.request(
