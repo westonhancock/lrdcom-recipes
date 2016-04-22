@@ -160,12 +160,8 @@ a.android {
     padding: 7px 10px 7px 5px;
 }
 
-
 .social li a:hover {
-    background-color: -webkit-linear-gradient(45deg,transparent 50%,#df8f1d 0),#f1a31e left top;
-    background: -o-linear-gradient(45deg,transparent 50%,#df8f1d 0),#f1a31e left top;
-    background: -moz-linear-gradient(45deg,transparent 50%,#df8f1d 0),#f1a31e left top;
-    background: linear-gradient(45deg,transparent 50%,#df8f1d 0),#f1a31e left top;
+        background: #198aca;
 }
 
 .social li a:before {
