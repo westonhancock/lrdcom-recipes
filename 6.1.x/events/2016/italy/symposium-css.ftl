@@ -14,11 +14,6 @@
 </#list>
 
 
-.♡ {
-    max-height: 100%;
-    max-width: 100%
-}
-
 .max-960 {
     margin: 0 auto;
     max-width: 960px
@@ -186,22 +181,18 @@ h3 {
 	text-transform: uppercase;
 }
 
-#navigation.dynamic-navigation .child-menu .nav-item.first {
-	float: left;
-	margin: 19px 30px;
-}
-
-#navigation.dynamic-navigation .child-menu .nav-item.first a {
+#navigation .parent-title {
 	background: url(/documents/47511614/51179014/symposium-icon.svg) no-repeat center;
 	height: 48px;
 	width: 48px;
 	text-indent: 100%;
 	white-space: nowrap;
 	overflow: hidden;
-	margin: 0;
+	margin: 19px 30px;
 	padding: 0;
+	display: inline-block;
+	vertical-align: middle;
 }
-
 
 .normal {
 	font-weight: normal;
@@ -229,50 +220,43 @@ h3 {
 
 .social li a:hover {
         background: #198aca;
-    }
+}
 
-    .text-left {
-        text-align: left;
-    }
+.text-left {
+    text-align: left;
+}
 
-    .white-text-color {
-        color: #FFF;
-    }
+.white-text-color {
+    color: #FFF;
+}
 
-    #banner .max-full {
-        max-width: 100%;
-    }
+#banner .max-full {
+    max-width: 100%;
+}
 
-    #earlyBirdButton {
-        background: #198aca;
-    }
+#earlyBirdButton {
+    background: #198aca;
+}
 
-    #navigation .parent-title {
-        display: none;
-    }
 
-    #navigation.dynamic-navigation .child-menu {
-        background-color: #00537d;
-        float: none;
-        z-index: 50;
-    }
 
-    #navigation.dynamic-navigation .child-menu li {
-        margin: 15px .5%;
-        vertical-align: middle;
-    }
+#navigation.dynamic-navigation  {
+    background-color: #00537d;
+    float: none;
+    z-index: 50;
+}
 
-    #navigation.dynamic-navigation .child-menu li a {
-        color: #FFF;
-        font-size: 1.25em;
-        font-weight: normal;
-    }
+#navigation.dynamic-navigation .child-menu li a {
+    color: #FFF;
+    font-size: 1.25em;
+    font-weight: normal;
+}
 
-    #navigation.dynamic-navigation .child-menu li.selected a {
-        font-weight: bold;
-        margin: 0 5px;
-        padding: 15px 10px;
-    }
+#navigation.dynamic-navigation .child-menu li.selected a {
+    font-weight: bold;
+    margin: 0 5px;
+    padding: 15px 10px;
+}
 
 @media(max-width: 780px) {
     .footer .logo {
