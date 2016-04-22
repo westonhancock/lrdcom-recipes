@@ -1,0 +1,189 @@
+<style type="text/css">
+p {
+font-size: 1.25em;
+}
+
+a.underline {
+  text-decoration: underline;
+}
+
+h3 {
+    color: #414142;
+}
+
+.bigf {
+    font-size: 16px;
+}
+
+.bold {
+    font-weight: bold;
+}
+
+.countdown-timer.dark-red-font, .light-red-font, .countdown-values.light-red-font {
+    color: #198aca;
+}
+
+.dynamic_data_list_display h1.header-title {
+    display: none;
+}
+
+.footer .logo {
+    margin: 0 0 15px 15%;
+    width: 100%;
+}
+
+.footer .top-container .left-nav {
+    float: left;
+    width: 35%;
+}
+
+.inline {
+    display: inline-block;
+}
+
+.letter-spacing {
+	letter-spacing: 1px;
+}
+
+.lighter {
+	font-weight: lighter;
+}
+
+.main-text-color {
+    color: #198aca;
+}
+
+.max-full {
+    margin: 0 auto;
+    max-width: 690px;
+}
+
+.max-960 {
+    margin: 0 auto;
+    max-width: 960px;
+}
+
+#navigation.dynamic-navigation .child-menu .nav-item.last {
+	background: url('/documents/47511614/51179014/register-button-bg.svg') no-repeat center;
+	height: 48px;
+	margin: 20px;
+	text-align: center;
+	width: 160px;
+}
+
+#navigation.dynamic-navigation .child-menu .nav-item.last a {
+	font-weight: bold;
+	padding: 10px;
+	text-transform: uppercase;
+}
+
+#navigation.dynamic-navigation .child-menu .nav-item.first {
+	float: left;
+	margin: 19px 30px;
+}
+
+#navigation.dynamic-navigation .child-menu .nav-item.first a {
+	background: url(/documents/47511614/51179014/symposium-icon.svg) no-repeat center;
+	height: 48px;
+	width: 48px;
+	text-indent: 100%;
+	white-space: nowrap;
+	overflow: hidden;
+	margin: 0;
+	padding: 0;
+}
+
+
+.normal {
+	font-weight: normal;
+}
+
+.paragraph-header {
+    margin-bottom: 0;
+}
+
+.portlet-borderless-container {
+    min-height: 0;
+}
+
+#main-content.full-screen-layout .aui-w50 .portlet-boundary, .portlet-nested-portlets .aui-w50 .max-960 {
+	max-width: 100%;
+}
+
+.responsive .content-column .content-column-content, .responsive .content-column .portlet-column-content, .responsive .portlet-column .content-column-content, .responsive .portlet-column .portlet-column-content {
+    padding: 0 !important;
+}
+
+.uppercase {
+    text-transform: uppercase;
+}
+
+.social li a:hover {
+        background: #198aca;
+    }
+
+    .text-left {
+        text-align: left;
+    }
+
+    .white-text-color {
+        color: #FFF;
+    }
+
+    #banner .max-full {
+        max-width: 100%;
+    }
+
+    #earlyBirdButton {
+        background: #198aca;
+    }
+
+    #navigation .parent-title {
+        display: none;
+    }
+
+    #navigation.dynamic-navigation .child-menu {
+        background-color: #00537d;
+        float: none;
+        z-index: 50;
+    }
+
+    #navigation.dynamic-navigation .child-menu li {
+        margin: 15px .5%;
+        vertical-align: middle;
+    }
+
+    #navigation.dynamic-navigation .child-menu li a {
+        color: #FFF;
+        font-size: 1.25em;
+        font-weight: normal;
+    }
+
+    #navigation.dynamic-navigation .child-menu li.selected a {
+        font-weight: bold;
+        margin: 0 5px;
+        padding: 15px 10px;
+    }
+
+@media(max-width: 780px) {
+    .footer .logo {
+        margin: 0;
+        text-align: center;
+    }
+
+    .footer .top-container .left-nav {
+        margin: 0;
+        width: 50%;
+    }
+}
+
+
+/*   firefox styles   */
+
+.firefox .bent-border-container {
+    display: none !important;
+}
+
+.firefox #earlyBirdButtonContainer, .firefox .register-button {
+    max-width: 100% !important;
+}</style>

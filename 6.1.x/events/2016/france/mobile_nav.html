@@ -1,0 +1,143 @@
+<style type="text/css">
+nav#navigation.sticky {
+	height: 88px;
+}
+
+nav#navigation.sticky ul{
+	position: fixed;
+	top: 0;
+	width: 100%;
+	z-index: 16;
+}
+
+@media (max-width: 1010px) {
+    nav.responsive-only {
+        background-color: #00537D;
+        height: 40px;
+        position: fixed;
+        top: 0;
+        width: 100%;
+        z-index: 15;
+    }
+
+    nav.responsive-only #navigationToggle {
+        background-image: url(/documents/14/48124953/hamburger.png);
+        cursor: pointer;
+        display: inline-block;
+        height: 18px;
+        position: relative;
+        left: 90%;
+        top: 10px;
+        width: 20px;
+    }
+
+    nav.responsive-only .register-button {
+        bottom: -17px;
+        display: block;
+        float: right;
+        position: relative;
+        right: 20px;
+    }
+
+    nav.responsive-only .register-button a {
+        padding: 8px 25px;
+    }
+
+    nav#navigation {
+        display: none;
+    }
+
+    #responsiveNav {
+        background-color: #00537d;
+        max-height: initial!important;
+        position: fixed;
+        top: 35px;
+        width: 100%;
+    }
+
+    #responsiveNav ul {
+        list-style: none;
+        margin: 0;
+        max-height: 0;
+        overflow: hidden;
+        -ms-transition: max-height .3s ease-in-out;
+        -o-transition: max-height .3s ease-in-out;
+        -moz-transition: max-height .3s ease-in-out;
+        -webkit-transition: max-height .3s ease-in-out;
+        transition: max-height .3s ease-in-out;
+    }
+
+    #responsiveNav.class-toggle-active ul {
+          max-height: 420px;
+    }
+
+    #responsiveNav ul li {
+        padding: 10px 5%;
+        font-size: 14px;
+    }
+
+    #responsiveNav ul a {
+        color: #FFF;
+    }
+
+    .responsive-only {
+        display: block !important;
+    }
+}</style>
+<nav class="responsive-only">
+	<div class="class-toggle" data-target-node="#responsiveNav" id="navigationToggle">
+		&nbsp;</div>
+	<div class="responsive-content-height" id="responsiveNav">
+		<ul>
+			<li>
+				<a href="/web/events2016/france/home">Home</a></li>
+			<li>
+				<a href="/web/events2016/france/liferay">Liferay</a></li>
+			<li>
+				<a href="/web/events2016/france/about">Présentation</a></li>
+			<li>
+				<a href="/web/events2016/france/agenda">Agenda</a></li>
+			<li>
+				<a href="/web/events2016/france/speakers">Intervenants</a></li>
+			<li>
+				<a href="/web/events2016/france/sponsors">Sponsors</a></li>
+			<li>
+				<a href="/web/events2016/france/venue">Infos pratiques</a></li>
+			<li>
+				<a href="/web/events2016/france/register">Inscription</a></li>
+		</ul>
+	</div>
+</nav>
+<script>
+	AUI().use(
+		'node',
+		function(A) {
+			var WIN = A.getWin();
+
+			var nav = A.one('nav#navigation');
+			var startPosition;
+
+			var fixNav = function() {
+				var currentScrollPos = WIN.get('docScrollY');
+
+				if (currentScrollPos > startPosition) {
+					if(!nav.hasClass('sticky')) {
+						nav.addClass('sticky');
+					}
+				} else {
+					if(nav.hasClass('sticky')) {
+						nav.removeClass('sticky');
+					}
+				}
+			};
+
+			A.on('load', function() {
+				startPosition = nav.getY();
+				fixNav
+			});
+
+			A.on('resize', fixNav);
+			A.on('scroll', fixNav);
+		}
+	);
+</script>
