@@ -1,0 +1,24 @@
+#set ($registerid = "register")
+#if ($sectionid && $sectionid.data != "") 
+	#set ($registerid = $sectionid.data)
+#end
+
+<style>
+.event-brite-container{
+      margin: 20px 0;
+}
+.iframe-wrapper {
+	width:100%; 
+	text-align:left; 
+	padding-top: 120px;
+	background: url(/osb-community-theme/images/progress_bar/loading_animation.gif) no-repeat center center;
+}
+</style>
+
+<div class="event-brite-container" id="$registerid">
+    <div class="iframe-wrapper">
+        <iframe allowtransparency="true" frameborder="0" height="1000" hspace="0" marginheight="5" marginwidth="5" scrolling="auto" src="//eventbrite.com/tickets-external?eid=${eventid.data}&amp;ref=etckt" vspace="0" style="width: 100%; height: ${formheight.data}"></iframe>
+        <div style="font-family:Helvetica, Arial; font-size:10px; padding:5px 0 5px; margin:2px; width:100%; text-align:left;">
+            <a class="powered-by-eb" href="http://www.eventbrite.com/r/etckt" style="color: #dddddd; text-decoration: none;" target="_blank">Powered by Eventbrite</a></div>
+    </div>
+</div>
