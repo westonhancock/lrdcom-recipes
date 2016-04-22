@@ -167,32 +167,7 @@ h3 {
     max-width: 960px;
 }
 
-#navigation.dynamic-navigation .child-menu .nav-item.last {
-	background: url('/documents/47511614/51179014/register-button-bg.svg') no-repeat center;
-	height: 48px;
-	margin: 20px;
-	text-align: center;
-	width: 160px;
-}
 
-#navigation.dynamic-navigation .child-menu .nav-item.last a {
-	font-weight: bold;
-	padding: 10px;
-	text-transform: uppercase;
-}
-
-#navigation .parent-title {
-	background: url(/documents/47511614/51179014/symposium-icon.svg) no-repeat center;
-	height: 48px;
-	width: 48px;
-	text-indent: 100%;
-	white-space: nowrap;
-	overflow: hidden;
-	margin: 19px 30px;
-	padding: 0;
-	display: inline-block;
-	vertical-align: middle;
-}
 
 .normal {
 	font-weight: normal;
@@ -238,9 +213,18 @@ h3 {
     background: #198aca;
 }
 
+<#-- get rid of parent link... to get rid of this adjust theme -->
+ #navigation .parent-title {
+        display: none;
+}
+    
 
+#navigation.dynamic-navigation .child-menu li {
+    margin: 15px .5%;
+    vertical-align: middle;
+}
 
-#navigation.dynamic-navigation  {
+#navigation.dynamic-navigation .child-menu  {
     background-color: #00537d;
     float: none;
     z-index: 50;
@@ -254,8 +238,6 @@ h3 {
 
 #navigation.dynamic-navigation .child-menu li.selected a {
     font-weight: bold;
-    margin: 0 5px;
-    padding: 15px 10px;
 }
 
 @media(max-width: 780px) {
@@ -294,9 +276,50 @@ nav#navigation.sticky ul{
 	z-index: 16;
 }
 
+@media (min-width: 1011px) {
+
+	#navigation.dynamic-navigation .child-menu li.selected a {
+   	 	margin: 0 5px;
+    	padding: 15px 10px;
+	}
+
+	#navigation.dynamic-navigation .child-menu .nav-item.last {
+		background: url('/documents/47511614/51179014/register-button-bg.svg') no-repeat center;
+		height: 48px;
+		margin: 20px;
+		text-align: center;
+		width: 160px;
+	}
+	
+	#navigation.dynamic-navigation .child-menu .nav-item.last a {
+		font-weight: bold;
+		padding: 10px;
+		text-transform: uppercase;
+	}
+	
+	#navigation.dynamic-navigation .child-menu .nav-item.first {
+		float: left;
+		margin: 19px 30px;
+	}
+	
+	#navigation.dynamic-navigation .child-menu .nav-item.first a {
+		background: url(/documents/47511614/51179014/symposium-icon.svg) no-repeat center;
+		height: 48px;
+		width: 48px;
+		text-indent: 100%;
+		white-space: nowrap;
+		overflow: hidden;
+		margin: 0;
+		padding: 0;
+	}
+}
 @media (max-width: 1010px) {
-    nav.responsive-only {
-        background-color: #00537D;
+
+	#banner {
+		margin-top: 40px;
+	}
+    nav#navigation {
+        background: #00537D no-repeat url(/documents/14/48124953/hamburger.png) right 10px center;
         height: 40px;
         position: fixed;
         top: 0;
@@ -304,6 +327,10 @@ nav#navigation.sticky ul{
         z-index: 15;
     }
 
+	nav#navigation a {
+		padding: 0;
+	}
+	
     nav.responsive-only #navigationToggle {
         background-image: url(/documents/14/48124953/hamburger.png);
         cursor: pointer;
@@ -327,10 +354,6 @@ nav#navigation.sticky ul{
         padding: 8px 25px;
     }
 
-    nav#navigation {
-        display: none;
-    }
-
     #responsiveNav {
         background-color: #00537d;
         max-height: initial!important;
@@ -339,7 +362,7 @@ nav#navigation.sticky ul{
         width: 100%;
     }
 
-    #responsiveNav ul {
+    #navigation ul {
         list-style: none;
         margin: 0;
         max-height: 0;
@@ -349,23 +372,22 @@ nav#navigation.sticky ul{
         -moz-transition: max-height .3s ease-in-out;
         -webkit-transition: max-height .3s ease-in-out;
         transition: max-height .3s ease-in-out;
+        
+        <#--- do we need all this -->
+        margin-top: 40px;
+   	 	position: fixed;
+    	text-align: left;
+    	width: 100%
     }
 
-    #responsiveNav.class-toggle-active ul {
-          max-height: 420px;
+    #navigation[data-state=open] ul {
+          max-height: 100%;
     }
 
-    #responsiveNav ul li {
+    #navigation ul li {
+    	display: block;
         padding: 10px 5%;
         font-size: 14px;
-    }
-
-    #responsiveNav ul a {
-        color: #FFF;
-    }
-
-    .responsive-only {
-        display: block !important;
     }
 }
 		
