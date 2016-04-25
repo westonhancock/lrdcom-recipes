@@ -1,0 +1,294 @@
+
+<root available-locales="en_US" default-locale="en_US">
+	<dynamic-element fieldNamespace="ddm" indexType="keyword" localizable="true" name="general_class_info" readOnly="false" repeatable="false" required="false" showLabel="true" type="ddm-separator" width="">
+		<dynamic-element dataType="string" indexType="keyword" localizable="true" name="class_title" readOnly="false" repeatable="false" required="false" showLabel="true" type="textarea" width="small">
+			<meta-data locale="en_US">
+				<entry name="label">
+					<![CDATA[Class Title]]>
+				</entry>
+				<entry name="predefinedValue">
+					<![CDATA[]]>
+				</entry>
+				<entry name="tip">
+					<![CDATA[]]>
+				</entry>
+			</meta-data>
+		</dynamic-element>
+		<dynamic-element dataType="string" indexType="keyword" localizable="true" name="class_quick_description" readOnly="false" repeatable="false" required="false" showLabel="true" type="textarea" width="small">
+			<meta-data locale="en_US">
+				<entry name="label">
+					<![CDATA[Class Quick Description]]>
+				</entry>
+				<entry name="predefinedValue">
+					<![CDATA[]]>
+				</entry>
+				<entry name="tip">
+					<![CDATA[]]>
+				</entry>
+			</meta-data>
+		</dynamic-element>
+		<dynamic-element dataType="document-library" fieldNamespace="ddm" indexType="keyword" localizable="true" name="course_pdf" readOnly="false" repeatable="false" required="false" showLabel="true" type="ddm-documentlibrary" width="">
+			<meta-data locale="en_US">
+				<entry name="label">
+					<![CDATA[Course PDF]]>
+				</entry>
+				<entry name="predefinedValue">
+					<![CDATA[]]>
+				</entry>
+				<entry name="tip">
+					<![CDATA[]]>
+				</entry>
+			</meta-data>
+		</dynamic-element>
+		<dynamic-element dataType="string" indexType="keyword" localizable="true" name="course_svg" readOnly="false" repeatable="false" required="false" showLabel="true" type="textarea" width="small">
+			<meta-data locale="en_US">
+				<entry name="label">
+					<![CDATA[Course SVG]]>
+				</entry>
+				<entry name="predefinedValue">
+					<![CDATA[]]>
+				</entry>
+				<entry name="tip">
+					<![CDATA[]]>
+				</entry>
+			</meta-data>
+		</dynamic-element>
+		<dynamic-element dataType="string" indexType="keyword" localizable="true" name="length_of_course" readOnly="false" repeatable="false" required="false" showLabel="true" type="textarea" width="small">
+			<meta-data locale="en_US">
+				<entry name="label">
+					<![CDATA[Length of Course]]>
+				</entry>
+				<entry name="predefinedValue">
+					<![CDATA[]]>
+				</entry>
+				<entry name="tip">
+					<![CDATA[]]>
+				</entry>
+			</meta-data>
+		</dynamic-element>
+		<dynamic-element dataType="string" indexType="keyword" localizable="true" name="class_formats" readOnly="false" repeatable="false" required="false" showLabel="true" type="textarea" width="small">
+			<meta-data locale="en_US">
+				<entry name="label">
+					<![CDATA[Class Formats]]>
+				</entry>
+				<entry name="predefinedValue">
+					<![CDATA[]]>
+				</entry>
+				<entry name="tip">
+					<![CDATA[]]>
+				</entry>
+			</meta-data>
+		</dynamic-element>
+		<dynamic-element dataType="string" indexType="keyword" localizable="true" name="liferay_version" readOnly="false" repeatable="false" required="false" showLabel="true" type="textarea" width="small">
+			<meta-data locale="en_US">
+				<entry name="label">
+					<![CDATA[Liferay Version]]>
+				</entry>
+				<entry name="predefinedValue">
+					<![CDATA[]]>
+				</entry>
+				<entry name="tip">
+					<![CDATA[]]>
+				</entry>
+			</meta-data>
+		</dynamic-element>
+		<dynamic-element dataType="string" indexType="keyword" localizable="true" name="class_disclaimer" readOnly="false" repeatable="false" required="false" showLabel="true" type="textarea" width="small">
+			<meta-data locale="en_US">
+				<entry name="label">
+					<![CDATA[Class Disclaimer]]>
+				</entry>
+				<entry name="predefinedValue">
+					<![CDATA[]]>
+				</entry>
+				<entry name="tip">
+					<![CDATA[]]>
+				</entry>
+			</meta-data>
+		</dynamic-element>
+		<meta-data locale="en_US">
+			<entry name="label">
+				<![CDATA[General Class Info]]>
+			</entry>
+			<entry name="predefinedValue">
+				<![CDATA[]]>
+			</entry>
+			<entry name="tip">
+				<![CDATA[]]>
+			</entry>
+			<entry name="style">
+				<![CDATA[]]>
+			</entry>
+		</meta-data>
+	</dynamic-element>
+	<dynamic-element fieldNamespace="ddm" indexType="keyword" localizable="true" name="class_details" readOnly="false" repeatable="false" required="false" showLabel="true" type="ddm-separator" width="">
+		<dynamic-element fieldNamespace="ddm" indexType="keyword" localizable="true" name="feature_point" readOnly="false" repeatable="true" required="false" showLabel="true" type="ddm-separator" width="">
+			<dynamic-element dataType="string" indexType="keyword" localizable="true" name="point_title" readOnly="false" repeatable="false" required="false" showLabel="true" type="textarea" width="small">
+				<meta-data locale="en_US">
+					<entry name="label">
+						<![CDATA[Point Title]]>
+					</entry>
+					<entry name="predefinedValue">
+						<![CDATA[]]>
+					</entry>
+					<entry name="tip">
+						<![CDATA[]]>
+					</entry>
+				</meta-data>
+			</dynamic-element>
+			<dynamic-element dataType="string" indexType="keyword" localizable="true" name="point_description" readOnly="false" repeatable="false" required="false" showLabel="true" type="textarea" width="small">
+				<meta-data locale="en_US">
+					<entry name="label">
+						<![CDATA[Point Description]]>
+					</entry>
+					<entry name="predefinedValue">
+						<![CDATA[]]>
+					</entry>
+					<entry name="tip">
+						<![CDATA[]]>
+					</entry>
+				</meta-data>
+			</dynamic-element>
+			<meta-data locale="en_US">
+				<entry name="label">
+					<![CDATA[Feature Point]]>
+				</entry>
+				<entry name="predefinedValue">
+					<![CDATA[]]>
+				</entry>
+				<entry name="tip">
+					<![CDATA[]]>
+				</entry>
+				<entry name="style">
+					<![CDATA[]]>
+				</entry>
+			</meta-data>
+		</dynamic-element>
+		<dynamic-element dataType="string" indexType="keyword" localizable="true" name="laptop_requirements" readOnly="false" repeatable="false" required="false" showLabel="true" type="textarea" width="small">
+			<meta-data locale="en_US">
+				<entry name="label">
+					<![CDATA[Laptop Requirements]]>
+				</entry>
+				<entry name="predefinedValue">
+					<![CDATA[]]>
+				</entry>
+				<entry name="tip">
+					<![CDATA[]]>
+				</entry>
+			</meta-data>
+		</dynamic-element>
+		<dynamic-element dataType="string" indexType="keyword" localizable="true" name="laptop_disclaimer" readOnly="false" repeatable="false" required="false" showLabel="true" type="textarea" width="small">
+			<meta-data locale="en_US">
+				<entry name="label">
+					<![CDATA[Laptop Disclaimer]]>
+				</entry>
+				<entry name="predefinedValue">
+					<![CDATA[]]>
+				</entry>
+				<entry name="tip">
+					<![CDATA[]]>
+				</entry>
+			</meta-data>
+		</dynamic-element>
+		<dynamic-element fieldNamespace="ddm" indexType="keyword" localizable="true" name="target_positions" readOnly="false" repeatable="false" required="false" showLabel="true" type="ddm-separator" width="">
+			<dynamic-element dataType="string" indexType="keyword" localizable="true" name="position" readOnly="false" repeatable="true" required="false" showLabel="true" type="text" width="small">
+				<meta-data locale="en_US">
+					<entry name="label">
+						<![CDATA[Position]]>
+					</entry>
+					<entry name="predefinedValue">
+						<![CDATA[]]>
+					</entry>
+					<entry name="tip">
+						<![CDATA[]]>
+					</entry>
+				</meta-data>
+			</dynamic-element>
+			<meta-data locale="en_US">
+				<entry name="label">
+					<![CDATA[Positions This Class is Best For]]>
+				</entry>
+				<entry name="predefinedValue">
+					<![CDATA[]]>
+				</entry>
+				<entry name="tip">
+					<![CDATA[]]>
+				</entry>
+				<entry name="style">
+					<![CDATA[]]>
+				</entry>
+			</meta-data>
+		</dynamic-element>
+		<dynamic-element dataType="string" indexType="keyword" localizable="true" name="quote_article_id" readOnly="false" repeatable="false" required="false" showLabel="true" type="text" width="small">
+			<meta-data locale="en_US">
+				<entry name="label">
+					<![CDATA[Quote Article ID]]>
+				</entry>
+				<entry name="predefinedValue">
+					<![CDATA[]]>
+				</entry>
+				<entry name="tip">
+					<![CDATA[]]>
+				</entry>
+			</meta-data>
+		</dynamic-element>
+		<meta-data locale="en_US">
+			<entry name="label">
+				<![CDATA[Class Details]]>
+			</entry>
+			<entry name="predefinedValue">
+				<![CDATA[]]>
+			</entry>
+			<entry name="tip">
+				<![CDATA[]]>
+			</entry>
+			<entry name="style">
+				<![CDATA[]]>
+			</entry>
+		</meta-data>
+	</dynamic-element>
+	<dynamic-element fieldNamespace="ddm" indexType="keyword" localizable="true" name="class_agenda" readOnly="false" repeatable="false" required="false" showLabel="true" type="ddm-separator" width="">
+		<dynamic-element fieldNamespace="ddm" indexType="keyword" localizable="true" name="day" readOnly="false" repeatable="true" required="false" showLabel="true" type="ddm-separator" width="">
+			<dynamic-element dataType="string" indexType="keyword" localizable="true" name="agenda_item" readOnly="false" repeatable="true" required="false" showLabel="true" type="text" width="small">
+				<meta-data locale="en_US">
+					<entry name="label">
+						<![CDATA[Agenda Item]]>
+					</entry>
+					<entry name="predefinedValue">
+						<![CDATA[]]>
+					</entry>
+					<entry name="tip">
+						<![CDATA[]]>
+					</entry>
+				</meta-data>
+			</dynamic-element>
+			<meta-data locale="en_US">
+				<entry name="label">
+					<![CDATA[Day]]>
+				</entry>
+				<entry name="predefinedValue">
+					<![CDATA[]]>
+				</entry>
+				<entry name="tip">
+					<![CDATA[]]>
+				</entry>
+				<entry name="style">
+					<![CDATA[]]>
+				</entry>
+			</meta-data>
+		</dynamic-element>
+		<meta-data locale="en_US">
+			<entry name="label">
+				<![CDATA[Class Agenda]]>
+			</entry>
+			<entry name="predefinedValue">
+				<![CDATA[]]>
+			</entry>
+			<entry name="tip">
+				<![CDATA[]]>
+			</entry>
+			<entry name="style">
+				<![CDATA[]]>
+			</entry>
+		</meta-data>
+	</dynamic-element>
+</root>
