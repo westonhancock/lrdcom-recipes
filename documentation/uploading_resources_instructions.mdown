@@ -36,7 +36,7 @@
       4. Click `Add` > `Case Study`
         1. Title resource as **_Company Name_**.
         2. Fill in all applicable fields
-        3. Do not add any categories _(this will be done back on the article level...see step “v”)_
+        3. Do not add any categories _(this will be done back on the article level...see step “5. g.”)_
         4. Click `Publish`
     5. Upload any assets available for the case study _(ie. company logo, videos, screenshots)_
       1. Click on the `Select` button on the field you want to add the asset to
@@ -49,10 +49,13 @@
         1. Title resource to include **_Company Name_** _(ie. Autozone Logo)_.
         2. Do not add any categories
         3. Click `Publish`
-    6. Back on the article edit screen, click `Categorization` _(in the right navigation)_ and categorize as follows:
+    6. Back on the article edit screen, in the `Content` section _(in the right navigation)_ if there are multiple assets associated with the Case Study, provide the `Button Text` for each `Asset`:
+      * Case Study EN, Case Study FR, etc.
+      * Presentation
+    7. Back on the article edit screen, click `Categorization` _(in the right navigation)_ and categorize as follows:
       * Case Type
       * Category List Filter = `Resources`
       * Industry Sector
       * Location
       * Resource Type = `Case Studies`
-    7. Click `Publish`
+    8. Click `Publish`
