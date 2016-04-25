@@ -99,8 +99,8 @@
 	</#list>
 </div>
 
-<div class="text-center">
-	<a href="${general_class_info.course_pdf.data}" class="btn btn-accent">Download Course PDF</a>
+<div class="text-center standard-padding-horizontal">
+	<a class="btn btn-accent" href="${general_class_info.course_pdf.data}">Download Course PDF</a>
 </div>
 
 <style>
