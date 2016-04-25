@@ -1,13 +1,11 @@
 ##Uploading Resources##
 
-1. Go to https://webteam.liferay.com
+1. Go to https://www.liferay.com
 2. Login _(in side menu)_
-  * Username: your.name@liferay.com.broken
-  * Password: test
   * If you do not see the toolbars or edit controls let [Ryan Schuhler](mailto:ryan.schuhler@liferay.com) know and he can check your permissions.
 3. Go to Control Panel by either:
   * Clicking `Admin` > `Content`
-  * Or going to [https://webteam.liferay.com/group/control_panel](https://webteam.liferay.com/group/control_panel)
+  * Or going to [https://www.liferay.com/group/control_panel](https://www.liferay.com/group/control_panel)
 4. Uploading Resources _(excluding case studies)_
   1. In Control Panel, go to `Documents and Media` > `RESOURCES`
   2. Go into folder for your Resource Type
@@ -27,7 +25,7 @@
   2. Create new case study article by clicking `Add` > `Case Study`
     1. Title article as **_Company Name_**.
       * Note that the title will be used to create the url _(ie “Autozone” url will be “/resources/case-studies/autozone”)_
-    2. Fill in all applicable fields _(copying content from current case studies https://www.liferay.com/products/liferay-portal/stories)_
+    2. Fill in all applicable fields _(if applicable, copy content from current case studies https://www.liferay.com/products/liferay-portal/stories)_
     3. Use the repeatable fields of `Subheading` and `Summary Paragraph` to add all content from case study to page
     4. Upload PDF of case study by going to the `Asset` Field and clicking `Select`
       1. Click on `RESOURCES` > `CASE STUDIES`
