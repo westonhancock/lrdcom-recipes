@@ -1,0 +1,60 @@
+.events-section a.btn {
+        background: #FFF;
+        border: 1px solid #f49b45;
+        color: #f49b45;
+        cursor: pointer;
+        padding: 5px 15px;
+        text-decoration: none;
+        -webkit-border-radius: 2px;
+        -moz-border-radius: 2px;
+        -ms-border-radius: 2px;
+        -o-border-radius: 2px;
+        border-radius: 2px;
+    }
+
+.events-section a.btn:hover {
+        background-color: #f49b45;
+        color: #FFF;
+}
+
+.events-section {
+    border-bottom: 1px solid #e3e4e5;
+    padding-bottom: 80px;
+}
+
+.section-heading {
+    font-weight: lighter;
+    color: #06a;
+    margin-top: 0;
+    padding-top: 60px;
+    text-align: center;
+}
+
+.events-section p {
+    font-size: 1.25em;
+    margin-bottom: 0;
+}
+
+.events-section .block-2, .events-section .block-3, .events-section .block-4, .events-section .block-5 {
+    text-align: left;
+    padding: 10px 10px 50px 10px;
+    vertical-align: top;
+    width: auto;
+    max-width: 300px;
+    margin: 0 auto;
+    flex: 1 0 auto;
+}
+
+.events-section .loc-name {
+    margin-bottom: 20px;
+}
+
+
+.events-section .lego-section{
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.events-section .block-1 {
+    flex: 0 0 100%;
+}
