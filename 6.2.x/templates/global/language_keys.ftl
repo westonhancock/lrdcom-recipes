@@ -4,6 +4,10 @@
 			en_US: 'Back'
 		},
 
+		best_for: {
+			en_US: 'Best For'
+		},
+
 		company: {
 			de_DE: 'Unternehmen',
 			en_US: 'Company',
