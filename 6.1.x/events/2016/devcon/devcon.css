@@ -1,0 +1,73 @@
+.top-banner-container .left-img, .top-banner-container .right-img {
+		background: url('/documents/47511614/49230168/Squares-Heading.png/0453b861-d454-4dcd-b11d-fac7458e242c') no-repeat;
+		background-size: cover;
+		content: '';
+		max-width: 320px;
+		min-height: 410px;
+		width: 25%;
+	}
+	.top-banner-container .left-img {
+		background-position: bottom right;
+		left: 0px;
+		position: absolute;
+		top: 0px;
+	}
+
+	.top-banner-container .right-img {
+		background-position: top left;
+		right: 0px;
+		position: absolute;
+		top: 0px;
+	}
+
+	.top-banner-container .location {
+		color: #2BBBB0;
+		font-size: 1.75em;
+	}
+
+	.top-banner-container .middle-content {
+		margin: 63px auto;
+	}
+
+	.top-banner-container .middle-content img {
+		width: 90%;
+	}
+
+	.top-banner-container .left-img, .top-banner-container .right-img, .top-banner-container .middle-content {
+		display: inline-block;
+	}
+
+	.top-banner-container .title {
+		font-size: 7em;
+		letter-spacing: 10px;
+	}
+
+	.top-banner-container .subtitle {
+		font-size: 1.5em;
+		font-family: Georgia;
+		margin: -20px 0 20px;
+	}
+
+@media(max-width: 1200px){
+.top-banner-container .left-img, .top-banner-container .right-img {
+		width: 10%;
+	}
+}
+
+@media(max-width: 720px){
+.top-banner-container .left-img, .top-banner-container .right-img {
+		display: none;
+	}
+}
+
+@media(max-width: 540px) {
+	.top-banner-container .title {
+		font-size: 4em;
+	}
+}
+
+@media(max-width: 340px) {
+	.top-banner-container .title {
+		font-size: 3em;
+	}
+}
