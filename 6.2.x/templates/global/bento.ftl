@@ -17,9 +17,9 @@
 		<#list block.media.siblings?reverse as cur_media>
 			<#if cur_media.video_type.data?has_content>
 				<#assign video_info = video_info + "<source src='" + cur_media.data + "' type='" + cur_media.video_type.data + "'>" />
-			<#else>
-				<#assign video_image_info = video_image_info + "<img src='" + cur_media.data + "' >" />
+			<#elseif cur_media.data?has_content>
 				<#assign image_info = image_info + "background-image: url(" + cur_media.data + ");" />
+				<#assign video_image_info = video_image_info + "<img src='" + cur_media.data + "' >" />
 			</#if>
 		</#list>
 
