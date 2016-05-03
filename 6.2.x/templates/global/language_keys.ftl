@@ -159,6 +159,10 @@
 			zh_CN: '省份 *'
 		},
 
+		submit: {
+			en_US: 'Submit'
+		},
+
 		tel: {
 			de_DE: 'Tel',
 			en_US: 'Tel',
