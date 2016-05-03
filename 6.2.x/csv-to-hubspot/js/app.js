@@ -301,6 +301,36 @@ var core = (
 
 	}
 )(data, config, ui);
+var hubspot = (function() {
+
+	var hubspotFormID = config.hubspotPortal || '';
+	var portalID = config.hubspotPortal || '';
+
+	var sendToHubspot = function(url, paramObj) {
+		var ajax = new XMLHttpRequest();
+		var queryParameters = "";
+
+		if (paramObj) {
+			for (var key in paramObj) {
+				if (paramObj.hasOwnProperty(key)) {
+					queryParameters = queryParameters + "&" + key + "=" + paramObj[key];
+				}
+			}	
+		}
+
+		ajax.open(
+			'POST', 
+			url + '/' + portalID + '/' + hubspotFormID + queryParameters
+		);
+
+		ajax.send();
+	}
+
+	return {
+		sendToHubspot: sendToHubspot
+	}
+
+})(config);
 var steps = (function() {
 
 	var completeStep = function(step) {
@@ -339,38 +369,37 @@ var step1 = (function() {
 
 	var tests = (function() {
 
-		// for our hubspot tests
-		var hubspotTest = (function() {
-			var getContacts = function() {
+		// var hubspotTest = (function() {
+		// 	var getContacts = function() {
 
-				var ajax = new XMLHttpRequest();
+		// 		var ajax = new XMLHttpRequest();
 
-				ajax.open(
-					'GET',
-					'https://api.hubapi.com/contacts/v1/lists/all/contacts/all?' + 
-					'hapikey=' + config.hubspotAPIKey + 
-					'&count=100' 
-				)
+		// 		ajax.open(
+		// 			'GET',
+		// 			'https://api.hubapi.com/contacts/v1/lists/all/contacts/all?' + 
+		// 			'hapikey=' + config.hubspotAPIKey + 
+		// 			'&count=100' 
+		// 		)
 
-				ajax.send();
+		// 		ajax.send();
 
-				if (ajax.readyState === XMLHttpRequest.DONE) {
-					if (ajax.status === 200) {
-						console.log(ajax.responseText);
-					} else {
-						console.error('There was a problem with the request.');
-					}
-				}
-			}
+		// 		if (ajax.readyState === XMLHttpRequest.DONE) {
+		// 			if (ajax.status === 200) {
+		// 				console.log(ajax.responseText);
+		// 			} else {
+		// 				console.error('There was a problem with the request.');
+		// 			}
+		// 		}
+		// 	}
 
-			return {
-				getContacts: getContacts
-			}
-		})();
+		// 	return {
+		// 		getContacts: getContacts
+		// 	}
+		// })();
 
 		// run tests for csv file
 		var checkCSV = function(csv) {
-			hubspotTest.getContacts();
+			
 
 			var hasCSV = false;
 
@@ -585,7 +614,7 @@ var step1 = (function() {
 			fileGrade: fileGrade
 		};
 	})(util);
-})(steps, step1Data);
+})(hubspot, steps, step1Data);
 var step2 = (
 	function() {
 		steps.initStep(
@@ -690,23 +719,6 @@ var step3 = (function() {
 
 	var util = (
 		function() {
-			var sendToHubspot = function(entry) {
-				var ajax = new XMLHttpRequest();
-
-				ajax.open(
-					'POST',
-					'https://forms.hubspot.com/uploads/form/v2/' +
-					core.config.hubspotPortal + '/' + core.config.hubspotForm +
-					'?email=' + entry["Email Address"] +
-					'&recent_interaction=' + entry["Interaction"] +
-					'&recent_interaction_detail=' + entry["Interaction Detail"] +
-					'&recent_interaction_date=' + entry["Interaction Date"] +
-					'&recent_interaction_type=' + data.interactionType +
-					'&recent_interaction_campaign=' + data.campaign
-				);
-
-				ajax.send();
-			};
 
 			var initUploader = function() {
 				var entries = data.json;
@@ -725,8 +737,16 @@ var step3 = (function() {
 					setTimeout(
 						function() {
 
-							// 1) upload to hubspot
-							sendToHubspot(entries[i]);
+							var entry = entries[i];
+
+							hubspot.sendToHubspot('https://forms.hubspot.com/uploads/form/v2/', {
+								email: entry["Email Address"],
+								recent_interaction: entry["Interaction"],
+								recent_interaction_detail: entry["Interaction Detail"],
+								recent_interaction_date: entry["Interaction Date"],
+								recent_interaction_type: data.interactionType,
+								recent_interaction_campaign: data.campaign
+							});
 
 							// 2) update UI
 							ui.updateProgress(entries[i], i, noOfEntries);
@@ -839,12 +859,11 @@ var step3 = (function() {
 			updateProgress: updateProgress
 		};
 	})();
-})(steps);
+})(hubspot, steps);
 var init = (
 	function() {
 
 		// init application state
 		core.changeState('navigation', 'block');
-
 	}
 )(core);

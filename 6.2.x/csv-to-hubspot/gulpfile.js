@@ -28,6 +28,9 @@ gulp.task(
 				'src/ui.js',
 				'src/core.js',
 
+				// our utils
+				'src/modules/hubspot.js',
+
 				// steps modules and its children
 				'src/modules/steps/controller.js',
 				'src/modules/steps/step1/data.js',
@@ -140,6 +143,13 @@ gulp.task(
 
 		gulp.watch(
 			'src/modules/steps/step3/controller.js',
+			[
+				'scripts'
+			]
+		);
+
+		gulp.watch(
+			'src/modules/*.js',
 			[
 				'scripts'
 			]

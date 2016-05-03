@@ -3,6 +3,5 @@ var init = (
 
 		// init application state
 		core.changeState('navigation', 'block');
-
 	}
 )(core);
