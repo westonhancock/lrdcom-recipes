@@ -170,6 +170,17 @@
 			zh_CN: '电话'
 		},
 
+		thank_you: {
+			de_DE: 'Danke',
+			en_US: 'Thank you',
+			es_ES: 'Gracias',
+			fr_FR: 'Merci',
+			it_IT: 'Grazie',
+			ja_JP: 'ありがとうございました',
+			pt_BR: 'Obrigado',
+			zh_CN: '谢谢'
+		},
+
 		x-is-required: {
 			en_US: '{0} is required',
 			zh_CN: 'China requires {0}'
