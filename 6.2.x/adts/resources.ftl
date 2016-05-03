@@ -149,7 +149,7 @@
 
 					<div class="${css_class} resource-wrapper">
 						<#if featured_case_study && case_study_logo?has_content>
-							<img class="lazy-load" data-src="${case_study_logo}" src="../osb-community-theme/images/progress_bar/loading_animation.gif" />
+							<img src="${case_study_logo}" />
 						<#else>
 							<svg><use xlink:href=${svg_id}></use></svg>
 						</#if>
@@ -232,5 +232,10 @@
 		.resource {
 			max-width: 100%;
 		}
+	}
+
+	.ie11 .resource-wrapper img {
+		height: 64px;
+		width: 226px;
 	}
 </style>
