@@ -74,6 +74,11 @@
 			zh_CN: '名'
 		},
 
+		i_work_for_a_development_firm_agency_or_partner: {
+			de_DE: 'Ich arbeite für ein Unternehmen, das Software entwickelt, für eine Agentur bzw. einen Partner',
+			en_US: 'I work for a development firm, agency, or partner'
+		},
+
 		job_role__c: {
 			de_DE: 'Funktionsbezeichnung',
 			en_US: 'Job Role',
