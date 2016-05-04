@@ -12,11 +12,6 @@
 		width: 100%;
 	}
 
-	.carousel sup {
-		font-size: 0.3em;
-		top: -1.5em;
-	}
-
 	.btn-wrapper {
 		margin-top: 1.5em;
 	}
@@ -28,6 +23,11 @@
 		transform: translateX(50%);
 		-ms-transform: translateX(50%);
 		-webkit-transform: translateX(50%);
+	}
+
+	.carousel sup {
+		font-size: 0.3em;
+		top: -1.5em;
 	}
 
 	.carousel-banner img {
@@ -131,6 +131,10 @@
 		border-bottom: 1px solid #1C75B9;
 		font-size: 3em;
 		line-height: 1.5em;
+	}
+
+	.ie11 .case-study-body {
+		display: table;
 	}
 </style>
 
