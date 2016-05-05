@@ -29,7 +29,7 @@ var hubspot = (function() {
 			url + '/' + hubspotPortalID + '/' + hubspotFormID + queryParameters
 		);
 
-		ajax.send();
+		// ajax.send();
 	}
 
 	return {
