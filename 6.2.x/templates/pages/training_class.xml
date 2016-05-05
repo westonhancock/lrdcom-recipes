@@ -1,0 +1,111 @@
+
+<root available-locales="en_US" default-locale="en_US">
+	<dynamic-element dataType="string" indexType="" localizable="false" name="class_section_heading" readOnly="false" repeatable="false" required="false" showLabel="true" type="text" width="medium">
+		<meta-data locale="en_US">
+			<entry name="label">
+				<![CDATA[Heading]]>
+			</entry>
+			<entry name="predefinedValue">
+				<![CDATA[Upcoming Classes]]>
+			</entry>
+			<entry name="tip">
+				<![CDATA[]]>
+			</entry>
+		</meta-data>
+	</dynamic-element>
+	<dynamic-element dataType="string" indexType="" localizable="false" name="course_id" readOnly="false" repeatable="false" required="false" showLabel="true" type="text" width="small">
+		<meta-data locale="en_US">
+			<entry name="label">
+				<![CDATA[Course ID]]>
+			</entry>
+			<entry name="predefinedValue">
+				<![CDATA[]]>
+			</entry>
+			<entry name="tip">
+				<![CDATA[Filter upcoming classes by a single training course.]]>
+			</entry>
+		</meta-data>
+	</dynamic-element>
+	<dynamic-element dataType="string" indexType="keyword" localizable="false" multiple="false" name="number_of_classes" readOnly="false" repeatable="false" required="false" showLabel="true" type="select" width="">
+		<dynamic-element name="option7152" type="option" value="0">
+			<meta-data locale="en_US">
+				<entry name="label">
+					<![CDATA[0]]>
+				</entry>
+			</meta-data>
+		</dynamic-element>
+		<dynamic-element name="option7153" type="option" value="1">
+			<meta-data locale="en_US">
+				<entry name="label">
+					<![CDATA[1]]>
+				</entry>
+			</meta-data>
+		</dynamic-element>
+		<dynamic-element name="option5984" type="option" value="2">
+			<meta-data locale="en_US">
+				<entry name="label">
+					<![CDATA[2]]>
+				</entry>
+			</meta-data>
+		</dynamic-element>
+		<dynamic-element name="option7154" type="option" value="3">
+			<meta-data locale="en_US">
+				<entry name="label">
+					<![CDATA[3]]>
+				</entry>
+			</meta-data>
+		</dynamic-element>
+		<dynamic-element name="option5985" type="option" value="4">
+			<meta-data locale="en_US">
+				<entry name="label">
+					<![CDATA[4]]>
+				</entry>
+			</meta-data>
+		</dynamic-element>
+		<dynamic-element name="option7155" type="option" value="5">
+			<meta-data locale="en_US">
+				<entry name="label">
+					<![CDATA[5]]>
+				</entry>
+			</meta-data>
+		</dynamic-element>
+		<meta-data locale="en_US">
+			<entry name="label">
+				<![CDATA[Number of Classes]]>
+			</entry>
+			<entry name="predefinedValue">
+				<![CDATA[[""]]]>
+			</entry>
+			<entry name="tip">
+				<![CDATA["0" displays all upcoming classes.]]>
+			</entry>
+		</meta-data>
+	</dynamic-element>
+	<dynamic-element dataType="string" indexType="" localizable="false" multiple="false" name="display_style" readOnly="false" repeatable="false" required="false" showLabel="true" type="select" width="">
+		<dynamic-element name="option6842" type="option" value="1">
+			<meta-data locale="en_US">
+				<entry name="label">
+					<![CDATA[Event List]]>
+				</entry>
+			</meta-data>
+		</dynamic-element>
+		<dynamic-element name="option6843" type="option" value="2">
+			<meta-data locale="en_US">
+				<entry name="label">
+					<![CDATA[Event Block]]>
+				</entry>
+			</meta-data>
+		</dynamic-element>
+		<meta-data locale="en_US">
+			<entry name="label">
+				<![CDATA[Display Style]]>
+			</entry>
+			<entry name="predefinedValue">
+				<![CDATA[["1"]]]>
+			</entry>
+			<entry name="tip">
+				<![CDATA[]]>
+			</entry>
+		</meta-data>
+	</dynamic-element>
+</root>
