@@ -819,7 +819,8 @@ var step3 = (function() {
 								recent_interaction_detail: entry["Interaction Detail"],
 								recent_interaction_date: entry["Interaction Date"],
 								recent_interaction_type: entry["Interaction Type"],
-								recent_interaction_campaign: data.campaign
+								recent_interaction_campaign: data.campaign,
+								sfdcCampaignId: data.campaign
 							});
 
 							// 2) update UI
