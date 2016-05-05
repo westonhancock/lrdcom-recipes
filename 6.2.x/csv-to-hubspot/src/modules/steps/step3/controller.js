@@ -41,12 +41,12 @@ var step3 = (function() {
 
 							var entry = entries[i];
 
-							hubspot.sendToHubspot('https://forms.hubspot.com/uploads/form/v2/', {
+							hubspot.sendToHubspot('https://forms.hubspot.com/uploads/form/v2', {
 								email: entry["Email Address"],
 								recent_interaction: entry["Interaction"],
 								recent_interaction_detail: entry["Interaction Detail"],
 								recent_interaction_date: entry["Interaction Date"],
-								recent_interaction_type: data.interactionType,
+								recent_interaction_type: entry["Interaction Type"],
 								recent_interaction_campaign: data.campaign
 							});
 
@@ -77,7 +77,6 @@ var step3 = (function() {
 	)();
 
 	var ui = (function() {
-
 		var entriesLeftDescription = document.querySelector('.entries-left > .value');
 		var pageSubitle = document.querySelector('.step3 .page-description');
 		var pageTitle = document.querySelector('.step3 h1');
@@ -152,6 +151,7 @@ var step3 = (function() {
 
 		var doneUploading = function() {
 			progressBarDescription.innerHTML = '';
+			progressBar.addClass('complete');
 			pageTitle.innerHTML = 'We\'re done, skipper!';
 			pageSubitle.innerHTML = 'Form data successfully uploaded to <a href="https://app.hubspot.com/forms/' + config.hubspotPortal + '/' + config.hubspotForm + '/submissions" target="_blank">Hubspot.</a>';
 		};

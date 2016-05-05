@@ -1,23 +1,32 @@
 var hubspot = (function() {
 
-	var hubspotFormID = config.hubspotPortal || '';
-	var portalID = config.hubspotPortal || '';
+	var hubspotFormID = config.hubspotFormID || '';
+	var hubspotPortalID = config.hubspotPortalID || '';
 
 	var sendToHubspot = function(url, paramObj) {
 		var ajax = new XMLHttpRequest();
 		var queryParameters = "";
+		var counter = 0;
 
 		if (paramObj) {
+			
 			for (var key in paramObj) {
 				if (paramObj.hasOwnProperty(key)) {
-					queryParameters = queryParameters + "&" + key + "=" + paramObj[key];
+					let firstParameterPrefix = "&"
+
+					if (counter == 0) {
+						firstParameterPrefix = "?";
+					}
+
+					counter++;
+					queryParameters = queryParameters + firstParameterPrefix + key + "=" + paramObj[key];
 				}
 			}	
 		}
 
 		ajax.open(
 			'POST', 
-			url + '/' + portalID + '/' + hubspotFormID + queryParameters
+			url + '/' + hubspotPortalID + '/' + hubspotFormID + queryParameters
 		);
 
 		ajax.send();

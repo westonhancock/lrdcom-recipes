@@ -11,34 +11,6 @@ var step1 = (function() {
 
 	var tests = (function() {
 
-		// var hubspotTest = (function() {
-		// 	var getContacts = function() {
-
-		// 		var ajax = new XMLHttpRequest();
-
-		// 		ajax.open(
-		// 			'GET',
-		// 			'https://api.hubapi.com/contacts/v1/lists/all/contacts/all?' + 
-		// 			'hapikey=' + config.hubspotAPIKey + 
-		// 			'&count=100' 
-		// 		)
-
-		// 		ajax.send();
-
-		// 		if (ajax.readyState === XMLHttpRequest.DONE) {
-		// 			if (ajax.status === 200) {
-		// 				console.log(ajax.responseText);
-		// 			} else {
-		// 				console.error('There was a problem with the request.');
-		// 			}
-		// 		}
-		// 	}
-
-		// 	return {
-		// 		getContacts: getContacts
-		// 	}
-		// })();
-
 		// run tests for csv file
 		var checkCSV = function(csv) {
 			

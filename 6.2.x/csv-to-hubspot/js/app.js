@@ -2,8 +2,8 @@ var config = (
 	function() {
 		return {
 			cycle_duration: 1500,
-			hubspotForm: 'b67bd247-5a86-4a35-a2ca-43552e3d5c21',
-			hubspotPortal: '299703',
+			hubspotFormID: 'b67bd247-5a86-4a35-a2ca-43552e3d5c21',
+			hubspotPortalID: '299703',
 			hubspotAPIKey: 'cb8584d4-f2e9-4b2f-bd5d-1ca9a032bcc2',
 			stepsContainerClass: 'steps-container',
 			uploadContainerClass: 'file-drag',
@@ -303,24 +303,33 @@ var core = (
 )(data, config, ui);
 var hubspot = (function() {
 
-	var hubspotFormID = config.hubspotPortal || '';
-	var portalID = config.hubspotPortal || '';
+	var hubspotFormID = config.hubspotFormID || '';
+	var hubspotPortalID = config.hubspotPortalID || '';
 
 	var sendToHubspot = function(url, paramObj) {
 		var ajax = new XMLHttpRequest();
 		var queryParameters = "";
+		var counter = 0;
 
 		if (paramObj) {
+			
 			for (var key in paramObj) {
 				if (paramObj.hasOwnProperty(key)) {
-					queryParameters = queryParameters + "&" + key + "=" + paramObj[key];
+					let firstParameterPrefix = "&"
+
+					if (counter == 0) {
+						firstParameterPrefix = "?";
+					}
+
+					counter++;
+					queryParameters = queryParameters + firstParameterPrefix + key + "=" + paramObj[key];
 				}
 			}	
 		}
 
 		ajax.open(
 			'POST', 
-			url + '/' + portalID + '/' + hubspotFormID + queryParameters
+			url + '/' + hubspotPortalID + '/' + hubspotFormID + queryParameters
 		);
 
 		ajax.send();
@@ -331,6 +340,117 @@ var hubspot = (function() {
 	}
 
 })(config);
+(function() {
+    Array.prototype.CSSClassIndexOf = Array.prototype.indexOf || function(item) {
+        var length = this.length;
+        for (var i = 0; i < length; i++)
+            if (this[i] === item) return i;
+        return -1;
+    };
+    var cl = ("classList" in document.createElement("a"));
+    var p = Element.prototype;
+    
+    if (cl) {
+        if (!p.hasClass)
+            p.hasClass = function(c) {
+                var e = Array.prototype.slice.call(this.classList);
+                c = c.split(' ');
+                for (var i = 0; i < c.length; i++)
+                    if (!this.classList.contains(c[i]))
+                        return false;
+                return true;
+            };
+        if (!p.addClass)
+            p.addClass = function(c) {
+                c = c.split(' ');
+                for (var i = 0; i < c.length; i++)
+                    if (!this.hasClass(c[i]))
+                        this.classList.add(c[i]);
+                return this;
+            };
+        if (!p.removeClass)
+            p.removeClass = function(c) {
+                var e = this.className.split(' ');
+                c = c.split(' ');
+                for (var i = 0; i < c.length; i++)
+                    if (this.hasClass(c[i]))
+                        this.classList.remove(c[i]);
+                return this;
+            };
+        if (!p.toggleClass)
+            p.toggleClass = function(c) {
+                c = c.split(' ');
+                for (var i = 0; i < c.length; i++)
+                    this.classList.toggle(c[i]);
+                return this;
+            };
+    } else {
+        if (!p.hasClass)
+            p.hasClass = function(c) {
+                var e = this.className.split(' ');
+                c = c.split(' ');
+                for (var i = 0; i < c.length; i++)
+                    if (e.CSSClassIndexOf(c[i]) === -1)
+                        return false;
+                return true;
+            };
+        if (!p.addClass)
+            p.addClass = function(c) {
+                c = c.split(' ');
+                for (var i = 0; i < c.length; i++)
+                    if (!this.hasClass(c[i]))
+                        this.className = this.className !== '' ? (this.className + ' ' + c[i]) : c[i];
+                return this;
+            };
+        if (!p.removeClass)
+            p.removeClass = function(c) {
+                var e = this.className.split(' ');
+                c = c.split(' ');
+                for (var i = 0; i < c.length; i++)
+                    if (this.hasClass(c[i]))
+                        e.splice(e.CSSClassIndexOf(c[i]), 1);
+                this.className = e.join(' ');
+                return this;
+            };
+        if (!p.toggleClass)
+            p.toggleClass = function(c) {
+                c = c.split(' ');
+                for (var i = 0; i < c.length; i++)
+                    if (this.hasClass(c[i]))
+                        this.removeClass(c[i]);
+                    else
+                        this.addClass(c[i]);
+                return this;
+            };
+    }
+    var pl = NodeList.prototype;
+    if (!pl.hasClass)
+        pl.hasClass = function(c, all) {
+            if (all === undefined) all = true;
+            for (var i = this.length - 1; i >= 0; --i) {
+                var hc = this[i].hasClass(c);
+                if (all && !hc) return false;
+                if (!all && hc) return true;
+            }
+            return true;
+        };
+    if (!pl.addClass)
+        pl.addClass = function(c) {
+            for (var i = 0; i < this.length; ++i)
+                this[i].addClass(c);
+        };
+    if (!pl.removeClass)
+        pl.removeClass = function(c) {
+            for (var i = 0; i < this.length; ++i)
+                this[i].removeClass(c);
+        };
+    if (!pl.toggleClass)
+        pl.toggleClass = function(c) {
+            for (var i = 0; i < this.length; ++i)
+                this[i].toggleClass(c);
+        };
+})();
+
 var steps = (function() {
 
 	var completeStep = function(step) {
@@ -368,34 +488,6 @@ var step1 = (function() {
 	);
 
 	var tests = (function() {
-
-		// var hubspotTest = (function() {
-		// 	var getContacts = function() {
-
-		// 		var ajax = new XMLHttpRequest();
-
-		// 		ajax.open(
-		// 			'GET',
-		// 			'https://api.hubapi.com/contacts/v1/lists/all/contacts/all?' + 
-		// 			'hapikey=' + config.hubspotAPIKey + 
-		// 			'&count=100' 
-		// 		)
-
-		// 		ajax.send();
-
-		// 		if (ajax.readyState === XMLHttpRequest.DONE) {
-		// 			if (ajax.status === 200) {
-		// 				console.log(ajax.responseText);
-		// 			} else {
-		// 				console.error('There was a problem with the request.');
-		// 			}
-		// 		}
-		// 	}
-
-		// 	return {
-		// 		getContacts: getContacts
-		// 	}
-		// })();
 
 		// run tests for csv file
 		var checkCSV = function(csv) {
@@ -619,7 +711,7 @@ var step2 = (
 	function() {
 		steps.initStep(
 			{
-				html: '<div class="page step2" data-step="2">\n	<div class="centered">\n		<h2>Step 2</h2>\n		<p>Tell me about the event and campaign.</p>\n		<form>\n			<div class="form-group">\n				<label>Recent Interaction Type</label>\n				\n				<select id="interaction-type">\n					<option disabled="disabled" selected="selected">Select an Interaction</option>\n					<option value="event-community">Event - Community</option>\n					<option value="event-industry">Event - Industry</option>\n					<option value="event-lr-conference">Event - LR Conference</option>\n					<option value="event-partner-event">Event - Partner Event</option>\n					<option value="event-roadshow">Event - Roadshow</option>\n					<option value="event-user-group">Event - User Group</option>\n					<option value="event-webinar">Event - Webinar</option>\n					<option value="marketplace">Marketplace</option>\n					<option value="personal-relationship">Personal Relationship</option>\n					<option value="purchased-list">Purchased List</option>\n					<option value="sdr">SDR</option>\n				</select>\n			</div>\n			<div class="form-group">\n				<label>Campaign</label>	\n				<input class="form-control" id="campaign-id" type="text"/>\n			</div>\n			<div class="form-group">\n				<label>Form ID</label>	\n				<input class="form-control" id="form-id" value="b67bd247-5a86-4a35-a2ca-43552e3d5c21" type="text"/>\n			</div>\n		</form>\n		\n	</div>\n</div>',
+				html: '<div class="page step2" data-step="2">\n	<div class="centered">\n		<h2>Step 2</h2>\n		<p>Tell me about the event and campaign.</p>\n		<form>\n			<div class="form-group">\n				<label>Campaign</label>	\n				<input class="form-control" id="campaign-id" type="text"/>\n			</div>\n		</form>\n		\n	</div>\n</div>',
 				onComplete: function() {
 					core.ui.changeNavigationState('begin');
 				},
@@ -632,7 +724,7 @@ var step2 = (
 		var tests = (
 			function() {
 				var validateAll = function() {
-					var allAnswers = [data.interactionType, data.campaign, core.config.hubspotForm];
+					var allAnswers = [data.campaign];
 					var errors = 0;
 
 					for (var x = 0; x < allAnswers.length; x++) {
@@ -664,28 +756,10 @@ var step2 = (
 						var formID = document.querySelector('#form-id');
 						var interactionType = document.querySelector('#interaction-type');
 
-						interactionType.addEventListener(
-							'change',
-							function(e) {
-								core.data.updateData('interactionType', interactionType.options[interactionType.selectedIndex].text);
-								tests.validateAll();
-							},
-							false
-						);
-
 						campaign.addEventListener(
 							'keyup',
 							function() {
 								core.data.updateData('campaign', campaign.value);
-								tests.validateAll();
-							},
-							false
-						);
-
-						formID.addEventListener(
-							'keyup',
-							function() {
-								core.config.updateConfig('hubspotForm', formID.value);
 								tests.validateAll();
 							},
 							false
@@ -739,12 +813,12 @@ var step3 = (function() {
 
 							var entry = entries[i];
 
-							hubspot.sendToHubspot('https://forms.hubspot.com/uploads/form/v2/', {
+							hubspot.sendToHubspot('https://forms.hubspot.com/uploads/form/v2', {
 								email: entry["Email Address"],
 								recent_interaction: entry["Interaction"],
 								recent_interaction_detail: entry["Interaction Detail"],
 								recent_interaction_date: entry["Interaction Date"],
-								recent_interaction_type: data.interactionType,
+								recent_interaction_type: entry["Interaction Type"],
 								recent_interaction_campaign: data.campaign
 							});
 
@@ -775,7 +849,6 @@ var step3 = (function() {
 	)();
 
 	var ui = (function() {
-
 		var entriesLeftDescription = document.querySelector('.entries-left > .value');
 		var pageSubitle = document.querySelector('.step3 .page-description');
 		var pageTitle = document.querySelector('.step3 h1');
@@ -850,6 +923,7 @@ var step3 = (function() {
 
 		var doneUploading = function() {
 			progressBarDescription.innerHTML = '';
+			progressBar.addClass('complete');
 			pageTitle.innerHTML = 'We\'re done, skipper!';
 			pageSubitle.innerHTML = 'Form data successfully uploaded to <a href="https://app.hubspot.com/forms/' + config.hubspotPortal + '/' + config.hubspotForm + '/submissions" target="_blank">Hubspot.</a>';
 		};
@@ -865,5 +939,19 @@ var init = (
 
 		// init application state
 		core.changeState('navigation', 'block');
-	}
+
+
+		var ajax = new XMLHttpRequest();
+		ajax.open('GET',
+			'https://api.hubapi.com/contacts/v1/lists/all/contacts/all?hapikey=cb8584d4-f2e9-4b2f-bd5d-1ca9a032bcc2');
+		ajax.send();
+		ajax.onreadystatechange = function() {
+			 if (ajax.readyState === 4) {
+			    if (ajax.status === 200) 
+			      console.log(ajax.responseText); // 'This is the returned text.'
+			    } else {
+			      console.log('Error: ' + ajax.status); // An error occurred during the request.
+			    }
+			  }
+		}
 )(core);

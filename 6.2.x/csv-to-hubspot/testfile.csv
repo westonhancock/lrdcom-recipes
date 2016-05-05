@@ -1,5 +1,5 @@
-Email Address,Interaction,Interaction Detail,Interaction Date
-woohoo.chan@liferay.com,touch,verytouchy,2016-03-01
-phil.chan@liferay.com,touch,verytouchy,2016-03-01
-another.email@liferay.com,touch,verytouchy,2016-03-01
-yet.another.email@liferay.com,touch,verytouchy,2016-03-01
+Email Address,Interaction,Interaction Detail,Interaction Type,Interaction Date
+woohoo.chan@liferay.com,touch,verytouchy,interaction type,2016-03-01
+phil.chan@liferay.com,touch,verytouchy,interaction type,2016-03-01
+another.email@liferay.com,touch,verytouchy,interaction type,2016-03-01
+yet.another.email@liferay.com,touch,verytouchy,interaction type,2016-03-01
