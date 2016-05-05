@@ -41,6 +41,10 @@
 		color: #f1aa49;
 	}
 
+	.cards.blue h2 {
+		color: #1d76b9;
+	}
+
 	.cards.green .card:hover {
 		border: 1px solid #1f7f44;
 	}
@@ -63,6 +67,14 @@
 
 	.cards.red .card h5 {
 		color: #911f2d;
+	}
+
+	.cards.blue .card:hover {
+		border: 1px solid #1d76b9;
+	}
+
+	.cards.blue .card h5 {
+		color: #1d76b9;
 	}
 
 	.card {
