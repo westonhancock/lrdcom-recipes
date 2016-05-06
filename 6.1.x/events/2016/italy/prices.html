@@ -1,0 +1,131 @@
+<style type="text/css">
+.bent-border-container {
+		float: right;
+		left: 2px;
+		position: relative;
+		top: -2px;
+	}
+
+	.bent-border-container .lower-triangle {
+		border-bottom: 14px solid #198aca;
+		border-left: 14px solid #198aca;
+		border-right: 14px solid transparent;
+		border-top: 14px solid transparent;
+		position: relative;
+		right: 1px;
+		top: 2px;
+  		z-index: 2;
+	}
+
+	.bent-border-container .lower-triangle, .bent-border-container .upper-triangle {
+		height: 0;
+		width: 0;
+	}
+
+	.bent-border-container .upper-triangle {
+		float: right;
+		border-bottom: 15px solid #FFF;
+		border-left: 15px solid #FFF;
+		border-right: 15px solid #198ACA;
+		border-top: 15px solid #198ACA;
+	}
+
+	.corner-container {
+		border: 2px solid #FFF;
+		display: inline-block;
+		margin: 20px 1.5%;
+		width: 29%;
+	}
+
+	.corner-container .title {
+		margin-top: 30px;
+	}
+
+	.corner-container  h2.bottom {
+		margin: 32px 0 0;
+	}
+
+	.corner-container  h2.top {
+		margin: 20px 0 0;
+	}
+
+	.corner-container .price-subtext.top {
+		margin-bottom: 32px;
+	}
+
+	.expired .bent-border-container .upper-triangle {
+		float: right;
+		border-bottom: 15px solid #AFB9B2;
+		border-left: 15px solid #AFB9B2;
+		border-right: 15px solid #FFF;
+		border-top: 15px solid #FFF;
+	}
+
+	.expired.corner-container {
+		border-color: #AFB9B2;
+		color: #AFB9B2;
+	}
+
+	.expired.corner-container .separator {
+		border-color: #AFB9B2;
+	}
+
+	.expired .main-text-color {
+		color: #AFB9B2;
+	}
+
+@media(max-width: 680px) {
+	.corner-container {
+		display: block;
+		margin: 20px auto;
+		width: 80%;
+	}
+}</style>
+<div class="corner-container centered">
+	<div class="bent-border-container">
+		<div class="upper-triangle">
+			&nbsp;</div>
+		<div class="lower-triangle">
+			&nbsp;</div>
+	</div>
+	<div class="uppercase bold bigf title">
+		early bird</div>
+	<div>
+		(scade 23 Ott.)</div>
+	<h2 class="top white-text-color">
+		149€</h2>
+	<div class="price-subtext top">
+		IVA esclusa</div>
+</div>
+<div class="corner-container centered">
+	<div class="bent-border-container">
+		<div class="upper-triangle">
+			&nbsp;</div>
+		<div class="lower-triangle">
+			&nbsp;</div>
+	</div>
+	<div class="uppercase bold bigf title">
+		standard</div>
+	<div>
+		(scade 6 Nov.)</div>
+	<h2 class="top white-text-color">
+		184€</h2>
+	<div class="price-subtext top">
+		IVA esclusa</div>
+</div>
+<div class="corner-container centered">
+	<div class="bent-border-container">
+		<div class="upper-triangle">
+			&nbsp;</div>
+		<div class="lower-triangle">
+			&nbsp;</div>
+	</div>
+	<div class="uppercase bold bigf title">
+		On-Site</div>
+	<div>
+		(dal 7 Nov.)</div>
+	<h2 class="top white-text-color">
+		239€</h2>
+	<div class="price-subtext top">
+		IVA esclusa</div>
+</div>
