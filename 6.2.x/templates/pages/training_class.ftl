@@ -8,7 +8,7 @@
 
 <#assign request_url = request_url + "?startDate=" + .now?long />
 
-<#assign css_padding_class = ""/>
+<#assign css_padding_class = "standard-padding"/>
 
 <#if number_of_classes.data == "0">
 	<#assign css_padding_class = "no-padding"/>
@@ -22,16 +22,16 @@
 	<div class="standard-padding-vertical" id="${randomNamespace}trainingEvents"></div>
 
 	<#if number_of_classes.data != "0">
-		<#assign css_class = "cta font-color font-weight-bold link"/>
+		<#assign css_class = "cta font-color link"/>
 
-		<#if display_style.data == "2">
+		<#if display_style.data == "event_block">
 			<#assign css_class = "btn btn-complementary"/>
 		</#if>
 
 		<a href="/services/training/schedule" class="${css_class}">
 			${languageUtil.get(locale, "see-full-schedule", "See Full Schedule")}
 
-			<#if display_style.data == "1">
+			<#if display_style.data == "event_list">
 				<svg class="cta-icon" height="10" width="8"><use xlink:href="#caret" /></svg>
 			</#if>
 		</a>
@@ -40,8 +40,7 @@
 
 <style>
 .training-class-container {
-	float: left;
-	padding: 5% 0 0 3%;
+	box-sizing: border-box;
 }
 
 .training-class-container td {
@@ -58,10 +57,6 @@
 	padding-top: .5em;
 }
 
-.training-class-container .training-class .title {
-	width: 90%;
-}
-
 .training-class-container .training-class .date:before,
 .training-class-container .training-class .location:before {
 	content: " ";
@@ -71,131 +66,142 @@
 	width: 14px;
 }
 
-.training-class-container .training-class .register:after {
-	content: " ";
-	display: inline-block;
-	height: 14px;
-	position: relative;
-	top: 3px;
-	width: 9px;
-}
-
 .training-class-container .training-class .date:before {
-	background: url(//web.liferay.com/documents/14/8441624/calendar-sm.png) no-repeat center;
+	background: url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxNiIgaGVpZ2h0PSIxNiIgdmlld0JveD0iMCAwIDE2IDE2Ij48cGF0aCBmaWxsPSJub25lIiBzdHJva2U9IiMxQzc1QjkiIHN0cm9rZS1taXRlcmxpbWl0PSIxMCIgZD0iTTIuOSAzLjRoOS44djEwLjdIMi45ek01LjkgMi4xdjUuM005LjcgMi4xdjUuM00xMi43IDYuMUgyLjkiLz48L3N2Zz4K") no-repeat center;
 }
 
 .training-class-container .training-class .location:before {
-	background: url(//web.liferay.com/documents/14/8441624/location-sm.png) no-repeat center;
+	background: url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxNiIgaGVpZ2h0PSIxNiIgdmlld0JveD0iMCAwIDE2IDE2Ij48ZyBmaWxsPSJub25lIiBzdHJva2U9IiMxQzc1QjkiIHN0cm9rZS1taXRlcmxpbWl0PSIxMCI+PHBhdGggZD0iTTExLjQgOC45TDggMTQgNC40IDguNiIvPjxjaXJjbGUgY3g9IjgiIGN5PSI2LjIiIHI9IjQuMiIvPjxjaXJjbGUgY3g9IjgiIGN5PSI2LjIiIHI9IjEuOCIvPjwvZz48L3N2Zz4=") no-repeat center;
 }
 </style>
 
 <script type="text/javascript">
-	var ${randomNamespace}trainingEventsTable;
+	AUI().ready(
+		'aui-base', 'aui-io-request', 'datatype-date',
+		function(A) {
+			var trainingEventsTable;
 
-	var ${randomNamespace}trainingEvents = document.getElementById('${randomNamespace}trainingEvents');
+			var trainingEvents = A.one('#' + '${randomNamespace}trainingEvents');
 
-	function ${randomNamespace}displayTrainingEvents() {
-		var count = ${number_of_classes.data};
+			var displayTrainingDate = function(date) {
+				var date = A.DataType.Date.parse(date);
 
-		if ((${number_of_classes.data} == "0") || (${number_of_classes.data} > ${randomNamespace}trainingEventsTable.length)) {
-			count = ${randomNamespace}trainingEventsTable.length;
-		}
+				var displayFormat = {
+					format: '%B %d, %Y'
+				};
 
-		var html = '';
+				return A.DataType.Date.format(date, displayFormat);
+			};
 
-		if (${display_style.data} == "1") {
-			html = '<table><tr class="header-row">';
+			var displayTrainignEvents = function() {
+				var courseCount = ${number_of_classes.data};
 
-			if (${number_of_classes.data} == "0") {
-				html += '<th class="location text-left">Event</th>';
-			}
+				var displayAllClasses = false;
 
-			html += '<th class="col-1 date first-col text-left">Date</th>' +
-					'<th class="location text-left">Location</th>';
-
-			if (${number_of_classes.data} == "0") {
-				html += '<th class="location text-left">Language</th>';
-			}
-
-			html += '<th>&nbsp;</th></tr>';
-
-			var buttonText = '${languageUtil.get(locale, "reserve-your-spot", "Reserve Your Spot")}';
-
-			if (count > 5) {
-				buttonText = '${languageUtil.get(locale, "register", "Register")}';
-			}
-
-			for (i = 0; i < count; i++) {
-				html += '<tr>';
-
-				if (${number_of_classes.data} == "0") {
-					html += '<td class="event">' + ${randomNamespace}trainingEventsTable[i].trainingCourse +'</td>';
+				if (${number_of_classes.data} == 0) {
+					displayAllClasses = true;
 				}
 
-				html += '<td class="date">' + ${randomNamespace}trainingEventsTable[i].startDate +'</td>' +
-					'<td class="location">' + ${randomNamespace}trainingEventsTable[i].trainingLocation + '</td>';
-
-				if (${number_of_classes.data} == "0") {
-					html += '<td class="location">' + ${randomNamespace}trainingEventsTable[i].language + '</td>';
+				if (displayAllClasses || (courseCount > trainingEventsTable.length)) {
+					courseCount = trainingEventsTable.length;
 				}
 
-				html += '<td class="registration"><a href="' + ${randomNamespace}trainingEventsTable[i].enrollmentURL  +
-						'" class="btn btn-complementary" target="_blank">' + buttonText + '</a></td></tr>';
-			}
+				var html = '';
 
-			html += ('</table>');
-		}
-		else {
-			for (i = 0; i < count; i++) {
-				html += '<div class="block small-padding-vertical training-class">' +
-					'<div class="font-weight-bold title">' +
-						${randomNamespace}trainingEventsTable[i].trainingCourse +
-					'</div>' +
-					'<div class="date">' +
-						${randomNamespace}trainingEventsTable[i].startDate +
-					'</div>' +
-					'<div class="location">' +
-						 ${randomNamespace}trainingEventsTable[i].trainingLocation +
-					'</div>' +
-					'<div class="registration"><a href="' + ${randomNamespace}trainingEventsTable[i].enrollmentURL + '" class="cta font-color font-weight-bold register" target="_blank">' +
-						'${languageUtil.get(locale, "register", "Register")}' +
-						'&nbsp;<svg class="cta-icon" height="10" width="8"><use xlink:href="#caret" /></svg></a></div>' +
-				'</div>';
-			}
-		}
+				if ('${display_style.data}' == 'event_list') {
+					html = '<table><tr class="header-row">';
 
-		${randomNamespace}trainingEvents.innerHTML = html;
-	}
+					if (displayAllClasses) {
+						html += '<th class="location text-left">Event</th>';
+					}
 
-	function ${randomNamespace}getTrainingEvents() {
-		AUI().use(
-			"aui-base", "aui-io-plugin", "aui-io-request",
-			function (A) {
-				A.io.request(
-					'${request_url}',
-					{
-						data: {},
-						dataType: "json",
-						on: {
-							success: function (event, id, obj) {
-								var responseData = this.get("responseData");
+					html += '<th class="col-1 date first-col text-left">Date</th>' +
+							'<th class="location text-left">Location</th>';
 
-								${randomNamespace}trainingEventsTable = responseData.trainingEvents || [];
-								${randomNamespace}displayTrainingEvents();
-							},
-							failure: function (event, id, obj) {
-								console.log("fail: " + JSON.stringify(event));
-							}
+					if (displayAllClasses) {
+						html += '<th class="location text-left">Language</th>';
+					}
+
+					html += '<th>&nbsp;</th></tr>';
+
+					var buttonText = '${languageUtil.get(locale, "reserve-your-spot", "Reserve Your Spot")}';
+
+					if (courseCount > 5) {
+						buttonText = '${languageUtil.get(locale, "register", "Register")}';
+					}
+
+					for (i = 0; i < courseCount; i++) {
+						html += '<tr>';
+
+						if (displayAllClasses) {
+							html += '<td class="event">' + trainingEventsTable[i].trainingCourse +'</td>';
+						}
+
+						html += '<td class="date">' + displayTrainingDate(trainingEventsTable[i].startDate) +'</td>' +
+							'<td class="location">' + trainingEventsTable[i].trainingLocation + '</td>';
+
+						if (displayAllClasses) {
+							html += '<td class="location">' + trainingEventsTable[i].language + '</td>';
+						}
+
+						var enrollmentURL = trainingEventsTable[i].enrollmentURL;
+
+						if (!enrollmentURL) {
+							enrollmentURL = 'https://web.liferay.com/services/training/enroll';
+						}
+
+						html += '<td class="registration"><a href="' + enrollmentURL  +
+								'" class="btn btn-complementary" target="_blank">' + buttonText + '</a></td></tr>';
+					}
+
+					html += ('</table>');
+				}
+				else {
+					for (i = 0; i < courseCount; i++) {
+						var enrollmentURL = trainingEventsTable[i].enrollmentURL;
+
+						if (!enrollmentURL) {
+							enrollmentURL = 'https://web.liferay.com/services/training/enroll';
+						}
+
+						html += '<div class="block small-padding training-class">' +
+							'<div class="title">' +
+								trainingEventsTable[i].trainingCourse +
+							'</div>' +
+							'<div class="date">' +
+								displayTrainingDate(trainingEventsTable[i].startDate) +
+							'</div>' +
+							'<div class="location">' +
+								trainingEventsTable[i].trainingLocation +
+							'</div>' +
+							'<div class="registration"><a href="' + enrollmentURL + '" class="cta font-color register" target="_blank">' +
+								'${languageUtil.get(locale, "register", "Register")}' +
+								'&nbsp;<svg class="cta-icon" height="10" width="8"><use xlink:href="#caret" /></svg></a></div>' +
+						'</div>';
+					}
+				}
+
+				trainingEvents.appendChild(html);
+			};
+
+			A.io.request(
+				'${request_url}',
+				{
+					data: {},
+					dataType: "json",
+					on: {
+						success: function (event, id, obj) {
+							var responseData = this.get("responseData");
+
+							trainingEventsTable = responseData.trainingEvents || [];
+							displayTrainignEvents();
+						},
+						failure: function (event, id, obj) {
+							console.log('course retrieval fail');
 						}
 					}
-				);
-			}
-		);
-	}
-
-	AUI().ready(
-		function() {
-			${randomNamespace}getTrainingEvents();
+				}
+			);
 		}
 	);
 </script>
