@@ -15,7 +15,8 @@ function fetchDDLParams(datasheetname, url){
      url: url,
      datasheetname: datasheetname
    };
-   if (datasheet == null) {
+   
+   if (datasheet === null) {
      datasheet = ss.insertSheet(datasheetname);
    }
    Logger.log(url);
@@ -31,12 +32,17 @@ function fetchDDLParams(datasheetname, url){
      Logger.log("found " + records.length + " records");
      result.records = records.length;
      
-     var headerProps;
-     
+     // do first scan to get all header properties
+     var headerPropsObj = {};
+     var record;
      for (var i = 0; i < records.length; i++) {
-         var record = records[i].dynamicElements;
-         
-         if (i == 0) headerProps = createHeader(datasheet, record); 
+        record = records[i].dynamicElements;
+        populateHeader(record, headerPropsObj);
+     }
+     var headerProps = createHeader(datasheet, headerPropsObj);
+     
+     for (i = 0; i < records.length; i++) {
+          record = records[i].dynamicElements;
          addRow(datasheet, headerProps, record, i);
     }
     // do a little formatting
@@ -49,7 +55,7 @@ function fetchDDLParams(datasheetname, url){
     new Error("Response code: " + response.getResponseCode() + " while trying to access url: " + url);
    }
 
-return result;
+  return result;
 }
 
 function addRow(sheet, props, record, rowno) {
@@ -58,28 +64,31 @@ function addRow(sheet, props, record, rowno) {
     var myvalue  = record[props[i]];
     rowData[0].push(myvalue);
   }
-  
-  //var range = sheet.getRange(rowno+2,1, 1, props.length);
-  //range.setValues(rowData);
   sheet.appendRow(rowData[0]);
 }
 
-function createHeader(sheet, record) {
+function populateHeader( record, header) {
+  if (header === null) { header = {}; }
+  for (var property in record) {
+        if (record.hasOwnProperty(property)) {
+          header[property] = true;
+        }
+   }  
+  return header;
+}
+
+function createHeader(sheet, headerPropsObj) {
   
   sheet.clearContents();
    
   var props = [[]];
   
-  for (var property in record) {
-        if (record.hasOwnProperty(property)) {
-          Logger.log( property + ": " + record[property]);
+  for (var property in headerPropsObj) {
+        if (headerPropsObj.hasOwnProperty(property)) {
+          Logger.log( "found property: " + property);
           props[0].push(property);
         }
    }  
-  
-  // var range = sheet.getRange(1,1, 1, props[0].length);
-  //range.setValues(props);
-  
   sheet.appendRow(props[0]);
   return props[0];
 }
