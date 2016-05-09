@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <base target="_top">
+    <title>DDLFetch</title>
+  </head>
+  <body>
+    
+<style>
+.hidden {
+transition: opacity 1s;
+opacity: 0;
+}
+.centered {
+position: absolute;
+left: 50%;
+top: 50%;
+transform: translate(-50%,-50%);
+}
+.loading {
+opacity: 1;
+padding: 25px;
+text-align: center;
+width: 120px;
+z-index: 2;
+color: white;
+height: 120px;
+background: black url(https://www.liferay.com/osb-community-theme/images/progress_bar/loading_animation.gif) no-repeat center center;
+}
+
+.message {
+opacity: 1;
+z-index: 2;
+background: black;
+color: white;
+padding: 25px;
+}
+
+body, input {
+ font-size: 20px;
+ font-family: arial;
+ padding: 5px;
+}
+label, input[type=button] {
+display: block;
+margin: 20px 0 10px 0;
+}
+
+input[type=button] {
+    width: 150px;
+    background: #ececec;
+}
+
+</style>
+<div id=spinner class="hidden centered">Loading...</div>
+<div id=message class="hidden centered"></div>
+<label for=server>Liferay Server: </label><input type="text" size=25 id=server value="https://www.liferay.com">
+<label for=recordset>DDL Recordset Id:</label> <input type="text" size=15 id=recordset value="36416693">
+<label for=sheet>Sheetname:</label><input type ="text" size=20 id=sheet value=Data>
+
+<input type=button value="Fetch" id="fetch" />
+<script>
+
+document.getElementById("fetch").addEventListener("click", function(event) {
+var skinny = "/api/jsonws/skinny-web.skinny/get-skinny-ddl-records/ddl-record-set-id/";
+
+var server = document.getElementById("server").value;
+var recordset = document.getElementById("recordset").value;
+var sheetname = document.getElementById("sheet").value;
+document.querySelector("#spinner").classList.add("loading");
+
+var removeLoading = function() {
+document.querySelector("#spinner").classList.remove("loading");
+
+};
+
+var message = document.querySelector("#message");
+
+var removeMessage = function() {
+     message.innerHTML = "";
+     message.classList.remove("message");
+}
+var showMessage = function(textmessage) {
+message.innerHTML = textmessage;
+message.classList.add("message");
+
+}
+
+var onSuccess = function(result) {
+removeLoading();
+showMessage(result.records + " records were fetched into sheet " + result.datasheetname);
+window.setTimeout(removeMessage, 2000);
+
+};
+var onFailure = function(error) {
+//showMessage("Error fetching records: " + error);
+showMessage("An error occurred while fetching records!");
+
+
+window.setTimeout(removeMessage, 10000);
+removeLoading();
+};
+
+
+var url = server + skinny + recordset;
+console.log(url);
+var response = google.script.run.withSuccessHandler(onSuccess)
+  .withFailureHandler(onFailure)
+  .fetchDDLParams(sheetname, url);
+console.log("called fechddlparams with url " + url);
+});
+
+
+
+</script>
+  </body>
+</html>
+
+
