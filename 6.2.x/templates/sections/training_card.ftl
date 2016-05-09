@@ -25,6 +25,10 @@
 		margin: .25em 0;
 	}
 
+	.cards svg {
+		max-width: 100%;
+	}
+
 	.cards .portlet-column-content.empty {
 		padding: 0;
 	}
@@ -49,12 +53,20 @@
 		border: 1px solid #1f7f44;
 	}
 
+	.cards.green .card svg .st0 {
+		fill: #1f7f44;
+	}
+
 	.cards.green .card h5 {
 		color: #1f7f44;
 	}
 
 	.cards.orange .card:hover {
 		border: 1px solid #f1aa49;
+	}
+
+	.cards.orange .card svg .st0 {
+		fill: #f1aa49;
 	}
 
 	.cards.orange .card h5 {
@@ -65,12 +77,20 @@
 		border: 1px solid #911f2d;
 	}
 
+	.cards.red .card svg .st0 {
+		fill: #911f2d;
+	}
+
 	.cards.red .card h5 {
 		color: #911f2d;
 	}
 
 	.cards.blue .card:hover {
 		border: 1px solid #1d76b9;
+	}
+
+	.cards.blue .card svg .st0 {
+		fill: #1d76b9;
 	}
 
 	.cards.blue .card h5 {
