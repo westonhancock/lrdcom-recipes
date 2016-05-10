@@ -1,21 +1,21 @@
-<div class="card block-container no-padding align-center justify-center">
-	<div class="icon standard-padding">
-		<#if svg_icon.data?has_content>
-			${svg_icon.data}
-		</#if>
+<a href="${cta_link.data}">
+	<div class="card block-container no-padding align-center justify-center ${card_class.data}">
+		<div class="icon standard-padding">
+			<#if svg_icon.data?has_content>
+				${svg_icon.data}
+			</#if>
+		</div>
+		<div class="content small-padding">
+			<#if card_title.data?has_content || card_content.data?has_content>
+				<h5>${card_title.data}</h5>
+					<p>${card_content.data}</p>
+				<div class="cta">
+					${cta_text.data}
+				</div>
+			</#if>
+		</div>
 	</div>
-	<div class="content small-padding">
-		<#if card_title.data?has_content || card_content.data?has_content>
-			<h5>${card_title.data}</h5>
-			<a href="${cta_link.data}">
-				<p>${card_content.data}</p>
-			</a>
-			<div class="cta">
-				<a href="${cta_link.data}">${cta_text.data}</a>	
-			</div>
-		</#if>
-	</div>
-</div>
+</a>
 
 <#-- should be abstracted to theme -->
 <#-- need variables for colors -->
@@ -23,6 +23,14 @@
 	.cards h2 {
 		border-bottom: 1px solid #CCC;
 		margin: .25em 0;
+	}
+
+	.cards a {
+		color: inherit;
+	}
+
+	.cards a:hover {
+		text-decoration: none;
 	}
 
 	.cards svg {
@@ -110,14 +118,6 @@
 	.card:hover {
 		padding-bottom: 15px;
 		transition: all .2s ease-in-out;
-	}
-
-	.card a {
-		color: inherit;
-	}
-
-	.card a:hover {
-		text-decoration: none;
 	}
 
 	.card .cta {

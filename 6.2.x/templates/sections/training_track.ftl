@@ -1,7 +1,7 @@
-<div class="track standard-padding block-container align-center justify-space-around ${Color.data}">
+<div class="track standard-padding block-container align-center justify-space-around ${Color.data} ${track_class.data}">
 	<#if SVG_Icon.data?has_content>
 		<figure class="small-padding">
-			${SVG_Icon.data}
+			${SVG_Icon.data}	
 		</figure>
 	</#if>
 
@@ -12,9 +12,9 @@
 	<#if Description.data?has_content>
 		<p>${Description.data}</p>
 	</#if>
-
+	
 	<#if Link_Href.data?has_content>
-		<a href="${Link_Href.data}">${Link_Text.data} <svg class="cta-icon" height='10' width='8'><use xlink:href='#caret' /></svg></a>
+		<a href="${Link_Href.data}" class="cta">${Link_Text.data} <svg class="cta-icon" height="10" width="8"><use xlink:href="#caret" /></svg></a>
 	</#if>
 </div>
 
@@ -40,7 +40,7 @@
 	}
 
 	.track.red h3 {
-		color: ##911f2d;
+		color: #911f2d;
 	}
 
 	.track.green:hover {
@@ -59,3 +59,22 @@
 		color: #f1aa49;
 	}
 </style>
+
+<script>
+AUI().use(
+	'aui-dialog', 'aui-base',
+	function(A) {
+		A.one('.track.${Color.data}').delegate(
+			'click',
+			function(el) {
+				el.preventDefault();
+
+				if ('${Link_Href.data}' != '') {
+                    window.location.href='${Link_Href.data}';
+				}
+			},
+			".track"
+		);
+	}
+);
+</script>
