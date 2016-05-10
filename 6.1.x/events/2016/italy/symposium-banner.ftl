@@ -1,4 +1,4 @@
-<div class="lego-article top-banner" id="article-70154558"> 
+<div class="lego-article main-top-banner" id="article-70154558"> 
 	<div class="lego-article-content max-960"> 
 		<div class="aui-helper-clearfix lego-section section-1" > 
 			<div class="aui-w100 block-1 content-column lego-block" > 
