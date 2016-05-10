@@ -13,9 +13,6 @@
           </#if>
 </#list>
 
-.test {
- -moz-border-image: asd;
- }
  
  
 .max-960 {
