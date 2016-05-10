@@ -192,6 +192,7 @@
 
 		x-is-required: {
 			en_US: '{0} is required',
+			ja_JP: '{0} は必須です',
 			zh_CN: 'China requires {0}'
 		},
 
