@@ -148,10 +148,10 @@ function addDDLRecordsParams(server, groupId, recordSetId, displayIndex, datashe
    };
    cmdArray.push({ "/ddlrecord/add-record" : record});
     
-   // Utilities.base64Encode(user + ':' + password)
-  
+   
+  var auth =  Utilities.base64Encode("test@liferay.com" + ':' + "test");
   var headers = {
-    "Authorization" : "Basic " + "YWxsZW4uemllZ2VuZnVzQGxpZmVyYXkuY29tOmxpZmVyYXkxMjNQYXNz"
+    "Authorization" : "Basic " + auth
   };
 
   var params = {
