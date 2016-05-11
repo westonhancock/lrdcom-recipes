@@ -31,6 +31,10 @@
 		margin-top: 1em;
 	}
 
+	.track figure {
+		max-height: 80px;
+	}
+
 	.track:hover {
 		cursor: pointer;
 	}
