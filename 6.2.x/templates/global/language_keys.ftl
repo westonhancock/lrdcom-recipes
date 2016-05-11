@@ -5,7 +5,7 @@
 		},
 
 		best_for: {
-			en_US: 'Best For'
+			en_US: 'Best For:'
 		},
 
 		company: {
