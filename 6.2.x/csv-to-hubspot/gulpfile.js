@@ -31,6 +31,7 @@ gulp.task(
 				// our utils
 				'src/modules/hubspot.js',
 				'src/modules/classUtil.js',
+				'src/modules/utils.js',
 
 				// steps modules and its children
 				'src/modules/steps/controller.js',

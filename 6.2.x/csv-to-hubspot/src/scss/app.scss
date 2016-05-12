@@ -3,6 +3,10 @@ html, body {
 	overflow: hidden;
 }
 
+.campaign-list-table {
+	display: none;
+}
+
 @import 'typography';
 
 #app {
@@ -15,6 +19,8 @@ html, body {
 	    width: 100%;
 	    z-index: 5;
 	}
+
+	
 
 	.steps-container {
 		position: relative;
