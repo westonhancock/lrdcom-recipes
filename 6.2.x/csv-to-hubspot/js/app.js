@@ -2,8 +2,8 @@ var config = (
 	function() {
 		return {
 			cycle_duration: 1500,
-			hubspotFormID: 'b67bd247-5a86-4a35-a2ca-43552e3d5c21',
-			hubspotPortalID: '299703',
+			hubspotFormID: '231dd439-b782-4e95-9cee-776e9a29d3f2',
+			hubspotPortalID: '252686',
 			hubspotAPIKey: 'cb8584d4-f2e9-4b2f-bd5d-1ca9a032bcc2',
 			stepsContainerClass: 'steps-container',
 			uploadContainerClass: 'file-drag',
@@ -926,7 +926,7 @@ var step3 = (function() {
 			progressBarDescription.innerHTML = '';
 			progressBar.addClass('complete');
 			pageTitle.innerHTML = 'We\'re done, skipper!';
-			pageSubitle.innerHTML = 'Form data successfully uploaded to <a href="https://app.hubspot.com/forms/' + config.hubspotPortal + '/' + config.hubspotForm + '/submissions" target="_blank">Hubspot.</a>';
+			pageSubitle.innerHTML = 'Form data successfully uploaded to <a href="https://app.hubspot.com/forms/' + config.hubspotPortalID + '/' + config.hubspotFormID + '/submissions" target="_blank">Hubspot.</a> Or you can <a onclick="location.reload();" href="#">Submit another form</a>';
 		};
 
 		return {
@@ -940,19 +940,5 @@ var init = (
 
 		// init application state
 		core.changeState('navigation', 'block');
-
-
-		var ajax = new XMLHttpRequest();
-		ajax.open('GET',
-			'https://api.hubapi.com/contacts/v1/lists/all/contacts/all?hapikey=cb8584d4-f2e9-4b2f-bd5d-1ca9a032bcc2');
-		ajax.send();
-		ajax.onreadystatechange = function() {
-			 if (ajax.readyState === 4) {
-			    if (ajax.status === 200) 
-			      console.log(ajax.responseText); // 'This is the returned text.'
-			    } else {
-			      console.log('Error: ' + ajax.status); // An error occurred during the request.
-			    }
-			  }
-		}
+	}
 )(core);

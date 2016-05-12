@@ -154,7 +154,7 @@ var step3 = (function() {
 			progressBarDescription.innerHTML = '';
 			progressBar.addClass('complete');
 			pageTitle.innerHTML = 'We\'re done, skipper!';
-			pageSubitle.innerHTML = 'Form data successfully uploaded to <a href="https://app.hubspot.com/forms/' + config.hubspotPortal + '/' + config.hubspotForm + '/submissions" target="_blank">Hubspot.</a> Or you can <a onclick="location.reload();" href="#">Submit another form</a>';
+			pageSubitle.innerHTML = 'Form data successfully uploaded to <a href="https://app.hubspot.com/forms/' + config.hubspotPortalID + '/' + config.hubspotFormID + '/submissions" target="_blank">Hubspot.</a> Or you can <a onclick="location.reload();" href="#">Submit another form</a>';
 		};
 
 		return {
