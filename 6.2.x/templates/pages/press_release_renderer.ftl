@@ -6,26 +6,28 @@
 <#assign layout_service = serviceLocator.findService("com.liferay.portal.service.LayoutLocalService") />
 <#assign layout = layout_service.getLayout(plid)! />
 
-<#assign title = paramUtil.getString(http_servlet_request, "title") />
+<#assign title = paramUtil.getString(http_servlet_request, "title", "") />
 
 <#include "${templatesPath}/1561886" />
 
-<div class="block-container">
+<div class="press-release">
 	<a class="cta" href="/press-releases">${languageUtil.format(locale, "back-to-x", localize("press-releases", "Press Releases"))}</a>
 
-	<#if (title?has_content) >
-		<#assign journal_article_service = serviceLocator.findService("com.liferay.portlet.journal.service.JournalArticleLocalService")>
+	<#assign journal_article_service = serviceLocator.findService("com.liferay.portlet.journal.service.JournalArticleLocalService")>
 
-		<#assign article = journal_article_service.getLatestArticleByUrlTitle(scopeGroupId, title, 0)! >
+	<#assign article = journal_article_service.fetchLatestArticleByUrlTitle(scopeGroupId, title, 0)!"">
 
-		<#if article?? >
+	<div class="block-container no-padding">
+		<#if article?has_content>
 			${journalContentUtil.getContent(scopeGroupId, article.getArticleId(), "", locale, xmlRequest)}
 		<#else>
-			Press Release not found.
+			<p class="standard-padding-vertical">
+				Press Release not found.
+			</p>
 		</#if>
-	</#if>
+	</div>
 
-	<#if article?? && layoutPermission.contains(permissionChecker, layout, "UPDATE")>
+	<#if article?has_content && layoutPermission.contains(permissionChecker, layout, "UPDATE")>
 		<#assign current_url = request.attributes.CURRENT_COMPLETE_URL! />
 
 		<#assign edit_url = portletURLFactory.create(http_servlet_request, "15", plid, "0") />
