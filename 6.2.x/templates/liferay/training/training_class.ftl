@@ -6,8 +6,13 @@
 	<#assign request_url = request_url + "?trainingCourseId=" + course_id.data + "&" />
 </#if>
 
-<#assign request_url = request_url + "?startDate=" + .now?long />
+<#assign is_online_course = "&online=false"/>
 
+<#if online_course.data == "true">
+	<#assign is_online_course = "&online=true"/>
+</#if>
+
+<#assign request_url = request_url + "?startDate=" + .now?long + is_online_course />
 <#assign css_padding_class = "standard-padding"/>
 
 <#if number_of_classes.data == "0">
@@ -57,8 +62,8 @@
 	padding-top: .5em;
 }
 
-.training-class-container .training-class .date:before,
-.training-class-container .training-class .location:before {
+.training-class-container .date:before,
+.training-class-container .location:before {
 	content: " ";
 	display: inline-block;
 	height: 14px;
@@ -66,11 +71,11 @@
 	width: 14px;
 }
 
-.training-class-container .training-class .date:before {
+.training-class-container .date:before {
 	background: url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxNiIgaGVpZ2h0PSIxNiIgdmlld0JveD0iMCAwIDE2IDE2Ij48cGF0aCBmaWxsPSJub25lIiBzdHJva2U9IiMxQzc1QjkiIHN0cm9rZS1taXRlcmxpbWl0PSIxMCIgZD0iTTIuOSAzLjRoOS44djEwLjdIMi45ek01LjkgMi4xdjUuM005LjcgMi4xdjUuM00xMi43IDYuMUgyLjkiLz48L3N2Zz4K") no-repeat center;
 }
 
-.training-class-container .training-class .location:before {
+.training-class-container .location:before {
 	background: url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxNiIgaGVpZ2h0PSIxNiIgdmlld0JveD0iMCAwIDE2IDE2Ij48ZyBmaWxsPSJub25lIiBzdHJva2U9IiMxQzc1QjkiIHN0cm9rZS1taXRlcmxpbWl0PSIxMCI+PHBhdGggZD0iTTExLjQgOC45TDggMTQgNC40IDguNiIvPjxjaXJjbGUgY3g9IjgiIGN5PSI2LjIiIHI9IjQuMiIvPjxjaXJjbGUgY3g9IjgiIGN5PSI2LjIiIHI9IjEuOCIvPjwvZz48L3N2Zz4=") no-repeat center;
 }
 </style>
@@ -112,14 +117,14 @@
 					html = '<table><tr class="header-row">';
 
 					if (displayAllClasses) {
-						html += '<th class="location text-left">Event</th>';
+						html += '<th class="text-left">Event</th>';
 					}
 
-					html += '<th class="col-1 date first-col text-left">Date</th>' +
+					html += '<th class="date text-left">Date</th>' +
 							'<th class="location text-left">Location</th>';
 
 					if (displayAllClasses) {
-						html += '<th class="location text-left">Language</th>';
+						html += '<th class="text-left">Language</th>';
 					}
 
 					html += '<th>&nbsp;</th></tr>';
@@ -131,17 +136,17 @@
 					}
 
 					for (i = 0; i < courseCount; i++) {
-						html += '<tr>';
+						html += '<tr class="schedule-detail">';
 
 						if (displayAllClasses) {
-							html += '<td class="event">' + trainingEventsTable[i].trainingCourse +'</td>';
+							html += '<td>' + trainingEventsTable[i].trainingCourse +'</td>';
 						}
 
-						html += '<td class="date">' + displayTrainingDate(trainingEventsTable[i].startDate) +'</td>' +
-							'<td class="location">' + trainingEventsTable[i].trainingLocation + '</td>';
+						html += '<td>' + displayTrainingDate(trainingEventsTable[i].startDate) +'</td>' +
+							'<td>' + trainingEventsTable[i].trainingLocation + '</td>';
 
 						if (displayAllClasses) {
-							html += '<td class="location">' + trainingEventsTable[i].language + '</td>';
+							html += '<td>' + trainingEventsTable[i].language + '</td>';
 						}
 
 						var enrollmentURL = trainingEventsTable[i].enrollmentURL;
@@ -188,16 +193,16 @@
 				'${request_url}',
 				{
 					data: {},
-					dataType: "json",
+					dataType: 'json',
 					on: {
 						success: function (event, id, obj) {
-							var responseData = this.get("responseData");
+							var responseData = this.get('responseData');
 
 							trainingEventsTable = responseData.trainingEvents || [];
 							displayTrainignEvents();
 						},
 						failure: function (event, id, obj) {
-							console.log('course retrieval fail');
+							console.log('parse error');
 						}
 					}
 				}

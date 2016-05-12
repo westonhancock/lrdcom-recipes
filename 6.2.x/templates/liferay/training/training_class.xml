@@ -108,4 +108,17 @@
 			</entry>
 		</meta-data>
 	</dynamic-element>
+	<dynamic-element dataType="boolean" indexType="keyword" localizable="true" name="online_course" readOnly="false" repeatable="false" required="false" showLabel="true" type="checkbox" width="">
+		<meta-data locale="en_US">
+			<entry name="label">
+				<![CDATA[Online Course]]>
+			</entry>
+			<entry name="predefinedValue">
+				<![CDATA[false]]>
+			</entry>
+			<entry name="tip">
+				<![CDATA[]]>
+			</entry>
+		</meta-data>
+	</dynamic-element>
 </root>
