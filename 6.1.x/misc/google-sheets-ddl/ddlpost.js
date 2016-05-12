@@ -1,9 +1,6 @@
 // Handle timestamps as well as dates? right now we are stripping times...
 // can ddls have timestamps?
 
-
-// blank dates cause major chaos in start_date end_Date fields...what should value be?!!!
-
 // handle exceptions {"exception":"com.liferay.portlet.dynamicdatamapping.StorageFieldRequiredException"}
 
 function addDDLRecordsParams(server, groupId, recordSetId, displayIndex, datasheetname, base64auth, userid) {
@@ -67,24 +64,24 @@ function addDDLRecordsParams(server, groupId, recordSetId, displayIndex, datashe
                         columnValue = new Date(Date.UTC(columnValue.getYear(), columnValue.getMonth(), columnValue.getDate()));
                     }
                     Logger.log(header[j] + " (before): " + columnValue.valueOf());
+                    columnValue = columnValue.valueOf();
                 }
-
-                fieldMap[header[j]] = columnValue;
+                fieldMap[header[j]] = JSON.stringify(columnValue);
+                
             }
         }
 
         var record = {
-            "groupId": groupId,
-     
-            "displayIndex": displayIndex,
-            "serviceContext.userId": userid,
+            "groupId":   ""+groupId,
+            "displayIndex":  ""+displayIndex,
+            "serviceContext.userId":  ""+userid,
             "fieldsMap": fieldMap
         };
         
         if(mode == "ADD") {
-            record.recordSetId =  recordSetId;
+            record.recordSetId =  ""+recordSetId;
         } else {
-            record.recordId = recordId;
+            record.recordId = ""+recordId;
             record.mergeFields = true;
             
         }
@@ -94,32 +91,20 @@ function addDDLRecordsParams(server, groupId, recordSetId, displayIndex, datashe
             "Authorization": "Basic " + base64auth
         };
 
+
+    
         var params = {
-            "method": "GET",
-            "headers": headers
+            "method": "POST",
+            "headers": headers,
+            "payload": record
         };
+        
 
-        var url = server +  ((mode == "ADD") ? "/api/secure/jsonws/ddlrecord/add-record?" : "/api/secure/jsonws/ddlrecord/update-record?");
-         
+     
 
-        var toJSON = Date.prototype.toJSON;
-        // Dates are converted to strings with toJSON by stringify. we want the primitive value though
-        Date.prototype.toJSON = function()
-        {
-            return this.valueOf();
-        };
-
-
-        for (var property in record) {
-            if (record.hasOwnProperty(property)) {
-
-                url += property + "=" + encodeURIComponent(JSON.stringify(record[property])) + "&";
-            }
-        }
-        //reset tojSON
-       Date.prototype.toJSON = toJSON;
-
-        url = url.substring(0, url.length - 1);
+        var url = server +  ((mode == "ADD") ? "/api/secure/jsonws/ddlrecord/add-record" : "/api/secure/jsonws/ddlrecord/update-record");
+        
+ 
         Logger.log("url: " + url);
 
         var response = UrlFetchApp.fetch(url, params);
