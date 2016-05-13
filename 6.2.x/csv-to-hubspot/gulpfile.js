@@ -3,6 +3,7 @@ var concat = require('gulp-concat');
 var gulp = require('gulp');
 var htmlToJs = require('gulp-html-to-js');
 var sass = require('gulp-ruby-sass');
+var fileinclude = require('gulp-file-include');
 
 // Compile SASS
 gulp.task(
@@ -109,6 +110,20 @@ gulp.task(
 	]
 );
 
+// build our application index.vm
+gulp.task(
+	'fileinclude', 
+	function() {
+	  gulp.src(['src/index.vm'])
+	    .pipe(fileinclude({
+	      prefix: '@@',
+	      basepath: '@file'
+	    }
+	))
+	    .pipe(gulp.dest('./'));
+	}
+);
+
 // Watch for changes
 gulp.task(
 	'watch',
@@ -118,49 +133,56 @@ gulp.task(
 		gulp.watch(
 			'src/*.js',
 			[
-				'scripts'
+				'scripts',
+				'fileinclude'
 			]
 		);
 
 		gulp.watch(
 			'src/modules/steps/step1/data.js',
 			[
-				'scripts'
+				'scripts',
+				'fileinclude'
 			]
 		);
 
 		gulp.watch(
 			'src/modules/steps/step1/controller.js',
 			[
-				'scripts'
+				'scripts',
+				'fileinclude'
 			]
 		);
 
 		gulp.watch(
 			'src/modules/steps/step2/controller.js',
 			[
-				'scripts'
+				'scripts',
+				'fileinclude'
 			]
 		);
 
 		gulp.watch(
 			'src/modules/steps/step3/controller.js',
 			[
-				'scripts'
+				'scripts',
+				'fileinclude'
 			]
 		);
 
 		gulp.watch(
 			'src/modules/*.js',
 			[
-				'scripts'
+				'scripts',
+				'fileinclude'
 			]
 		);
 
 		gulp.watch(
 			'src/modules/steps/*.js',
 			[
-				'scripts'
+				'scripts',
+				'fileinclude'
 			]
 		);
 
@@ -196,4 +218,4 @@ gulp.task(
 );
 
 // Default Task
-gulp.task('default', ['compile:views', 'scripts', 'sass', 'watch']);
+gulp.task('default', ['compile:views', 'scripts', 'sass', 'fileinclude', 'watch']);
