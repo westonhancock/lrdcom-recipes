@@ -15,7 +15,9 @@ gulp.task(
 			{
 				style: 'compressed'
 			}
-		).pipe(concat('app.css')).pipe(gulp.dest('css'));
+		)
+		.pipe(concat('app.css'))
+		.pipe(gulp.dest('css'));
 	}
 );
 
