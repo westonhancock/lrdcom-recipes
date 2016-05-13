@@ -18,7 +18,7 @@ Moving to the right will have files increasing in dependency.
 ### Build (When you need to make changes)
 *Gulp is set to listen for all file changes, so any saves you make on any file will automatically be compiled, making development easier*
 
-We are using Gulp (http://gulpjs.com/) (See gulpfile.js) for the build. We use Gulp to concatenate and minify the CSS/JS as well as to turn our application views into JS. Because load order is important in JS, the load order specified in the Gulpfile is important.
+We are using Gulp (http://gulpjs.com/) (See gulpfile.js) for the build. We use Gulp to concatenate and minify the CSS/JS as well as to turn our application views into JS. 
 
 If you want to make changes, all the source files are in `/src` and the compiled files are on the root (don't edit these) `/js`, `/css`.
 
@@ -29,25 +29,4 @@ gulp
 ```
 
 ### Loading onto Liferay
-1. **Move CSS/JS:** After Gulp compiles, the `/js` and `/css` folder will have the compiled and production-ready code. Copy and paste that over to the respective web content holding the web content holding the application view.
-2. **Move View:** Copy and paste over the contents of `index.html` (our application view) into the same web content.
-
-### If you change the view...
-If you want to change the HTML for any of the steps, just know it's pretty gnarly because we're not leveraging a templating engine (handlebars.js please?). Here's how to do it:
-
-1. **Compile the view:**
-In each of the steps, `view.html` has the html that you can edit. When you make a change, it will compile into `view.js`. You copy and paste the line with the stringified js into its respective controller (e.g. if you're compiling view in step1, go to step1/controller.js).
-
-2. **Open up the respective controller.js:**
-
-Note that the steps instatiation is at the top:
-```
-    steps.initStep(
-        {
-            html: <INSERT VIEW FROM VIEW.JS HERE>
-        }
-    );
-```
-
-**2. Insert the view:**
-Insert the compiled view into the html property. That way, the application can render the HTML into the appropriate section.
+1. Move contents of index.vm in root folder to the Interaction Tool template.
