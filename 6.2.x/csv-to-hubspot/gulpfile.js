@@ -4,6 +4,7 @@ var gulp = require('gulp');
 var htmlToJs = require('gulp-html-to-js');
 var sass = require('gulp-ruby-sass');
 var fileinclude = require('gulp-file-include');
+var runSequence = require('run-sequence');
 
 // Compile SASS
 gulp.task(
@@ -24,24 +25,24 @@ gulp.task(
 		return gulp.src(
 			[
 				// core files
-				'src/config.js',
-				'src/data.js',
-				'src/ui.js',
-				'src/core.js',
+				'src/js/config.js',
+				'src/js/data.js',
+				'src/js/ui.js',
+				'src/js/core.js',
 
 				// our utils
-				'src/modules/hubspot.js',
-				'src/modules/classUtil.js',
-				'src/modules/utils.js',
+				'src/js/modules/hubspot.js',
+				'src/js/modules/classUtil.js',
+				'src/js/modules/utils.js',
 
 				// steps modules and its children
-				'src/modules/steps/controller.js',
-				'src/modules/steps/step1/data.js',
-				'src/modules/steps/step1/controller.js',
-				'src/modules/steps/step2/controller.js',
-				'src/modules/steps/step3/controller.js',
+				'src/js/modules/steps/controller.js',
+				'src/js/modules/steps/step1/data.js',
+				'src/js/modules/steps/step1/controller.js',
+				'src/js/modules/steps/step2/controller.js',
+				'src/js/modules/steps/step3/controller.js',
 
-				'src/init.js'
+				'src/js/init.js'
 			]
 		).pipe(concat('app.js')).pipe(gulp.dest('js'));
 	}
@@ -52,7 +53,7 @@ gulp.task(
 	'step1:view',
 	function() {
 		return gulp.src(
-			'src/modules/steps/step1/*.html'
+			'src/js/modules/steps/step1/*.html'
 		).pipe(
 			htmlToJs(
 				{
@@ -60,7 +61,7 @@ gulp.task(
 				}
 			)
 		).pipe(
-			gulp.dest('src/modules/steps/step1')
+			gulp.dest('src/js/modules/steps/step1')
 		);
 	}
 );
@@ -70,7 +71,7 @@ gulp.task(
 	'step2:view',
 	function() {
 		return gulp.src(
-			'src/modules/steps/step2/*.html'
+			'src/js/modules/steps/step2/*.html'
 		).pipe(
 			htmlToJs(
 				{
@@ -78,7 +79,7 @@ gulp.task(
 				}
 			)
 		).pipe(
-			gulp.dest('src/modules/steps/step2')
+			gulp.dest('src/js/modules/steps/step2')
 		);
 	}
 );
@@ -88,7 +89,7 @@ gulp.task(
 	'step3:view',
 	function() {
 		return gulp.src(
-			'src/modules/steps/step3/*.html'
+			'src/js/modules/steps/step3/*.html'
 			).pipe(
 			htmlToJs(
 				{
@@ -96,7 +97,7 @@ gulp.task(
 				}
 			)
 		).pipe(
-			gulp.dest('src/modules/steps/step3')
+			gulp.dest('src/js/modules/steps/step3')
 		);
 	}
 );
@@ -131,77 +132,15 @@ gulp.task(
 
 		// Watch .js files
 		gulp.watch(
-			'src/*.js',
-			[
-				'scripts',
-				'fileinclude'
-			]
+			'src/js/**/*.js',
+			function() {
+				runSequence('scripts', 'fileinclude')
+			}
 		);
 
+		// watch .html files
 		gulp.watch(
-			'src/modules/steps/step1/data.js',
-			[
-				'scripts',
-				'fileinclude'
-			]
-		);
-
-		gulp.watch(
-			'src/modules/steps/step1/controller.js',
-			[
-				'scripts',
-				'fileinclude'
-			]
-		);
-
-		gulp.watch(
-			'src/modules/steps/step2/controller.js',
-			[
-				'scripts',
-				'fileinclude'
-			]
-		);
-
-		gulp.watch(
-			'src/modules/steps/step3/controller.js',
-			[
-				'scripts',
-				'fileinclude'
-			]
-		);
-
-		gulp.watch(
-			'src/modules/*.js',
-			[
-				'scripts',
-				'fileinclude'
-			]
-		);
-
-		gulp.watch(
-			'src/modules/steps/*.js',
-			[
-				'scripts',
-				'fileinclude'
-			]
-		);
-
-		gulp.watch(
-			'src/modules/steps/step1/view.html',
-			[
-				'compile:views'
-			]
-		);
-
-		gulp.watch(
-			'src/modules/steps/step2/view.html',
-			[
-				'compile:views'
-			]
-		);
-
-		gulp.watch(
-			'src/modules/steps/step3/view.html',
+			'src/js/**/*.html',
 			[
 				'compile:views'
 			]
@@ -210,9 +149,9 @@ gulp.task(
 		// Watch .scss files
 		gulp.watch(
 			'src/scss/*.scss',
-			[
-				'sass'
-			]
+			function() {
+				runSequence('sass', 'fileinclude')
+			}
 		);
 	}
 );
