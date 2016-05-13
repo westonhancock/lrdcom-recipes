@@ -13,3 +13,5 @@ var config = (
 		};
 	}
 )();
+
+var module = {};

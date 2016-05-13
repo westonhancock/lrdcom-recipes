@@ -35,6 +35,11 @@ gulp.task(
 				'src/js/modules/classUtil.js',
 				'src/js/modules/utils.js',
 
+				// step views
+				'src/js/modules/steps/step1/view.js',
+				'src/js/modules/steps/step2/view.js',
+				'src/js/modules/steps/step3/view.js',
+
 				// steps modules and its children
 				'src/js/modules/steps/controller.js',
 				'src/js/modules/steps/step1/data.js',
@@ -57,7 +62,8 @@ gulp.task(
 		).pipe(
 			htmlToJs(
 				{
-					concat: 'view.js'
+					concat: 'view.js',
+					global: 'step1view'
 				}
 			)
 		).pipe(
@@ -75,7 +81,8 @@ gulp.task(
 		).pipe(
 			htmlToJs(
 				{
-					concat: 'view.js'
+					concat: 'view.js',
+					global: 'step2view'
 				}
 			)
 		).pipe(
@@ -93,7 +100,8 @@ gulp.task(
 			).pipe(
 			htmlToJs(
 				{
-					concat: 'view.js'
+					concat: 'view.js',
+					global: 'step3view'
 				}
 			)
 		).pipe(
@@ -157,4 +165,8 @@ gulp.task(
 );
 
 // Default Task
-gulp.task('default', ['compile:views', 'scripts', 'sass', 'fileinclude', 'watch']);
+gulp.task('default',	
+	function() {
+		runSequence('compile:views', 'scripts', 'sass', 'fileinclude', 'watch')
+	}
+);
