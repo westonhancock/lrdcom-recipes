@@ -1,6 +1,6 @@
 html, body {
 	margin: 0;
-	overflow: hidden;
+	overflow-x: hidden;
 }
 
 .campaign-list-table {
@@ -10,7 +10,7 @@ html, body {
 @import 'typography';
 
 #app {
-	height: 70vh;
+	height: 750px;
 	
 	// app messaging section
 	.app-messaging {
@@ -19,8 +19,6 @@ html, body {
 	    width: 100%;
 	    z-index: 5;
 	}
-
-	
 
 	.steps-container {
 		position: relative;
