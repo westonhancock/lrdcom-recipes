@@ -10,7 +10,7 @@
 
 <#include "${templatesPath}/1561886" />
 
-<div class="press-release">
+<div class="press-release-display">
 	<a class="cta" href="/press-releases">${languageUtil.format(locale, "back-to-x", localize("press-releases", "Press Releases"))}</a>
 
 	<#assign journal_article_service = serviceLocator.findService("com.liferay.portlet.journal.service.JournalArticleLocalService")>
