@@ -761,33 +761,10 @@ var step2 = (
 				onLoad: function() {
 					core.ui.changeNavigationState('block');
 					ui.renderDropdown();
+					steps.completeStep(2);
 				}
 			}
 		);
-
-		var tests = (
-			function() {
-				var validateAll = function() {
-					var allAnswers = [data.campaign];
-					var errors = 0;
-
-					for (var x = 0; x < allAnswers.length; x++) {
-						if (!allAnswers[x]) {
-							errors++;
-						}
-					}
-
-					if (errors === 0) {
-						steps.completeStep(2);
-						return true;
-					}
-				};
-
-				return {
-					validateAll: validateAll
-				};
-			}
-		)();
 
 		// UI for our step
 		var ui = (
@@ -804,7 +781,6 @@ var step2 = (
 							'change',
 							function(e) {
 								core.data.updateData('campaign', campaignDropDown.options[campaignDropDown.selectedIndex].value);
-								tests.validateAll();
 							},
 							false
 						);
@@ -820,7 +796,7 @@ var step2 = (
 
 				for (var p = 0; p < campaignData.length + 1; p++) {
 					if (p == 0) {
-						dropdownHTML = '<option selected="true" disabled="disabled">- Select a Campaign -</option>';
+						dropdownHTML = '<option selected="true" value="">No Campaign</option>';
 					} else {
 						dropdownHTML += '<option value="' + campaignData[p - 1]["campaignid"] + '">' + campaignData[p - 1]["campaignname"] + '</option>';	
 					}
