@@ -1,0 +1,122 @@
+
+<root available-locales="en_US" default-locale="en_US">
+	<dynamic-element dataType="string" indexType="keyword" localizable="true" name="card_title" readOnly="false" repeatable="false" required="false" showLabel="true" type="text" width="small">
+		<meta-data locale="en_US">
+			<entry name="label">
+				<![CDATA[Card Title]]>
+			</entry>
+			<entry name="predefinedValue">
+				<![CDATA[]]>
+			</entry>
+			<entry name="tip">
+				<![CDATA[]]>
+			</entry>
+		</meta-data>
+	</dynamic-element>
+	<dynamic-element dataType="html" fieldNamespace="ddm" indexType="keyword" localizable="true" name="svg_icon" readOnly="false" repeatable="false" required="false" showLabel="true" type="ddm-text-html" width="large">
+		<meta-data locale="en_US">
+			<entry name="label">
+				<![CDATA[SVG Icon]]>
+			</entry>
+			<entry name="predefinedValue">
+				<![CDATA[]]>
+			</entry>
+			<entry name="tip">
+				<![CDATA[]]>
+			</entry>
+		</meta-data>
+	</dynamic-element>
+	<dynamic-element dataType="string" indexType="keyword" localizable="true" name="card_content" readOnly="false" repeatable="false" required="false" showLabel="true" type="textarea" width="large">
+		<meta-data locale="en_US">
+			<entry name="label">
+				<![CDATA[Card Content]]>
+			</entry>
+			<entry name="predefinedValue">
+				<![CDATA[]]>
+			</entry>
+			<entry name="tip">
+				<![CDATA[]]>
+			</entry>
+		</meta-data>
+	</dynamic-element>
+	<dynamic-element dataType="string" indexType="keyword" localizable="true" name="card_class" readOnly="false" repeatable="false" required="false" showLabel="true" type="textarea" width="medium">
+		<meta-data locale="en_US">
+			<entry name="label">
+				<![CDATA[Card Class]]>
+			</entry>
+			<entry name="predefinedValue">
+				<![CDATA[]]>
+			</entry>
+			<entry name="tip">
+				<![CDATA[]]>
+			</entry>
+		</meta-data>
+	</dynamic-element>
+	<dynamic-element dataType="string" indexType="keyword" localizable="true" name="cta_link" readOnly="false" repeatable="false" required="false" showLabel="true" type="text" width="small">
+		<meta-data locale="en_US">
+			<entry name="label">
+				<![CDATA[CTA Link]]>
+			</entry>
+			<entry name="predefinedValue">
+				<![CDATA[]]>
+			</entry>
+			<entry name="tip">
+				<![CDATA[]]>
+			</entry>
+		</meta-data>
+	</dynamic-element>
+	<dynamic-element dataType="string" indexType="keyword" localizable="true" name="cta_text" readOnly="false" repeatable="false" required="false" showLabel="true" type="text" width="small">
+		<meta-data locale="en_US">
+			<entry name="label">
+				<![CDATA[CTA Text]]>
+			</entry>
+			<entry name="predefinedValue">
+				<![CDATA[]]>
+			</entry>
+			<entry name="tip">
+				<![CDATA[]]>
+			</entry>
+		</meta-data>
+	</dynamic-element>
+	<dynamic-element dataType="string" indexType="" localizable="false" multiple="false" name="card_color" readOnly="false" repeatable="false" required="false" showLabel="true" type="select" width="">
+		<dynamic-element name="option6699" type="option" value="#005B96">
+			<meta-data locale="en_US">
+				<entry name="label">
+					<![CDATA[blue]]>
+				</entry>
+			</meta-data>
+		</dynamic-element>
+		<dynamic-element name="option6700" type="option" value="#1f7f44">
+			<meta-data locale="en_US">
+				<entry name="label">
+					<![CDATA[green]]>
+				</entry>
+			</meta-data>
+		</dynamic-element>
+		<dynamic-element name="option6701" type="option" value="#f1aa49">
+			<meta-data locale="en_US">
+				<entry name="label">
+					<![CDATA[orange]]>
+				</entry>
+			</meta-data>
+		</dynamic-element>
+		<dynamic-element name="option6702" type="option" value="#911f2d">
+			<meta-data locale="en_US">
+				<entry name="label">
+					<![CDATA[red]]>
+				</entry>
+			</meta-data>
+		</dynamic-element>
+		<meta-data locale="en_US">
+			<entry name="label">
+				<![CDATA[Card Color]]>
+			</entry>
+			<entry name="predefinedValue">
+				<![CDATA[[""]]]>
+			</entry>
+			<entry name="tip">
+				<![CDATA[]]>
+			</entry>
+		</meta-data>
+	</dynamic-element>
+</root>
