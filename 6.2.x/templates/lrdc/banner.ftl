@@ -1,6 +1,12 @@
 <#assign service_context = objectUtil("com.liferay.portal.service.ServiceContextThreadLocal").getServiceContext() />
 <#assign http_servlet_request = service_context.getRequest() />
 
+<#assign layout_service = serviceLocator.findService("com.liferay.portal.service.LayoutLocalService") />
+<#assign theme_display = request["theme-display"] />
+<#assign plid = theme_display["plid"] />
+<#assign layout = layout_service.getLayout(plid?number) />
+<#assign hasUpdatePermissons = layoutPermission.contains(permissionChecker, layout, "UPDATE")/>
+
 <#assign max_height = "768px" />
 
 <#if height.data?has_content>
@@ -52,7 +58,18 @@
 					<div class="${button_alignment.data}">
 						<#list button_text.siblings as button>
 							<#if button.data?has_content && button.button_link.data?has_content>
-								<a class="btn btn-${button.button_color.data}" href="${button.button_link.data}">${button.data}</a>
+								<#assign button_css_class = "btn btn-" + button.button_color.data />
+								<#assign button_attrs = "" />
+
+								<#if hasUpdatePermissons>
+									<#assign button_css_class = button_css_class + " live-edit" />
+									<#assign button_attrs = button_attrs + "
+										data-article-id='${.vars[\"reserved-article-id\"].data}'
+										data-level-path='${button.name}::${button_index}'
+									" />
+								</#if>
+
+								<a class="${button_css_class}" href="${button.button_link.data}" ${button_attrs}>${button.data}</a>
 							</#if>
 						</#list>
 					</div>

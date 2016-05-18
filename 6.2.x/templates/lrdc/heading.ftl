@@ -1,45 +1,58 @@
-<#if request.lifecycle == "RENDER_PHASE">
-	<#assign css_class = ""/>
+<#assign layout_service = serviceLocator.findService("com.liferay.portal.service.LayoutLocalService") />
+<#assign theme_display = request["theme-display"] />
+<#assign plid = theme_display["plid"] />
+<#assign layout = layout_service.getLayout(plid?number) />
+<#assign hasUpdatePermissons = layoutPermission.contains(permissionChecker, layout, "UPDATE")/>
 
-	<#if heading.heading_type.data == "page-heading">
-		<#assign css_class = "block-container no-padding standard-padding-vertical page-heading" />
-		<#assign tag = "h1"/>
-	<#elseif heading.heading_type.data == "section-heading">
-		<#assign css_class = "section-heading" />
-		<#assign tag = "h2" />
-	<#else>
-		<#assign tag = heading.heading_type.data />
-	</#if>
+<#assign css_class = ""/>
 
-	<#if heading.data?has_content || subheading.data?has_content>
-		<div class="${css_class} ${heading.heading_alignment.data}" id="heading-${.vars['reserved-article-id'].data}">
-			<#if heading.data?has_content>
-				<${tag}
-					class="live-edit ${heading.heading_color.data}"
-					data-article-id='${.vars["reserved-article-id"].data}'
-					data-field-name="${heading.name}"
-					data-level-path="0"
-					data-namespace='${request["portlet-namespace"]}'
-					data-resource-url='${request["resource-url"]}'
-				>
-					${heading.data}
-				</${tag}>
+<#if heading.heading_type.data == "page-heading">
+	<#assign css_class = "block-container no-padding standard-padding-vertical page-heading" />
+	<#assign tag = "h1"/>
+<#elseif heading.heading_type.data == "section-heading">
+	<#assign css_class = "section-heading" />
+	<#assign tag = "h2" />
+<#else>
+	<#assign tag = heading.heading_type.data />
+</#if>
+
+<#if heading.data?has_content || subheading.data?has_content>
+	<div class="${css_class} ${heading.heading_alignment.data}" id="heading-${.vars['reserved-article-id'].data}">
+		<#if heading.data?has_content>
+			<#assign heading_css_class = heading.heading_color.data />
+			<#assign heading_attrs = "" />
+
+			<#if hasUpdatePermissons>
+				<#assign heading_css_class = heading_css_class + " live-edit" />
+				<#assign heading_attrs = heading_attrs + "
+					data-article-id='${.vars[\"reserved-article-id\"].data}'
+					data-level-path='${heading.name}::0'
+				" />
 			</#if>
 
-			<#if subheading.data?has_content>
-				<p
-					class="live-edit ${subheading.subheading_color.data} ${subheading.subheading_alignment.data}"
-					data-article-id='${.vars["reserved-article-id"].data}'
-					data-field-name="${subheading.name}"
-					data-level-path="0"
-					data-namespace='${request["portlet-namespace"]}'
-					data-resource-url='${request["resource-url"]}'
-				>
-					${subheading.data}
-				</p>
+			<${tag} class="${heading_css_class}" ${heading_attrs}>
+				${heading.data}
+			</${tag}>
+		</#if>
+
+		<#if subheading.data?has_content>
+			<#assign subheading_css_class = subheading.subheading_color.data + " " + subheading.subheading_alignment.data />
+			<#assign subheading_attrs = "" />
+
+			<#if hasUpdatePermissons>
+				<#assign subheading_css_class = subheading_css_class + " live-edit" />
+				<#assign subheading_attrs = subheading_attrs + "
+					data-article-id='${.vars[\"reserved-article-id\"].data}'
+					data-level-path='${subheading.name}::0'
+				" />
 			</#if>
-		</div>
-	</#if>
-<#elseif request.lifecycle == "RESOURCE_PHASE">
-	<#include "${templatesPath}/885932" />
+
+			<p
+				class="${subheading_css_class}"
+				${subheading_attrs}
+			>
+				${subheading.data}
+			</p>
+		</#if>
+	</div>
 </#if>
