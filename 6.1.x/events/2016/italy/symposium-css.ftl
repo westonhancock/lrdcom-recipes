@@ -102,7 +102,9 @@
 
 <#--  --------------------------------------------    basic styles ------------------------------------------------------------------ -->
 
-
+.mobile-padding {
+    padding: 0 20px;
+}
 
 p {
 font-size: 1.25em;
@@ -313,6 +315,10 @@ h3 {
 }
 @media (max-width: 1010px) {
 
+    div.lego-element {
+        background-attachment: scroll;
+        
+    }
     #banner {
         margin-top: 40px;
     }
@@ -388,4 +394,6 @@ h3 {
         font-size: 14px;
     }
 }
-        
+
+${(extra_css.data)!" "}
+  
