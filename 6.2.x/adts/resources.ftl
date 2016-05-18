@@ -95,7 +95,7 @@
 
 			<#assign resource_id = dl_file_entry.getFileEntryId() />
 
-			<#assign view_url = "/resource?folderId=" + dl_file_entry.getFolderId() + "&title=" + stringUtil.replace(dl_file_entry.getTitle(), " ", "+") />
+			<#assign view_url = "/resource?folderId=" + dl_file_entry.getFolderId() + "&title=" + stringUtil.replace(httpUtil.encodeURL(dl_file_entry.getTitle()), " ", "+") />
 			<#-- <#assign view_url = "/resource/" + dl_file_entry.getFolderId() + "/" + stringUtil.replace(dl_file_entry.getTitle(), " ", "+") /> -->
 		<#elseif asset_renderer.getClassName() == "com.liferay.portlet.journal.model.JournalArticle">
 			<#assign article = journal_article_local_service_util.getLatestArticle(entry.getClassPK()) />
