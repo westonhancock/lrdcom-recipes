@@ -1,0 +1,89 @@
+[name] Banner
+[category]
+[location] liferay
+[example]
+
+[name]: Bento
+[category]
+[location] global
+[example]
+
+[name] Case Study
+[category]
+[location] liferay
+[example] https://www.liferay.com/resource?title=autozone
+
+[name] Class
+[category]
+[location] liferay/training
+[example]
+
+[name] Exhibit Group
+[category]
+[location] liferay
+[example]
+
+[name] FAQ
+[category]
+[location] liferay
+[example]
+
+[name] Heading
+[category]
+[location] liferay
+[example]
+
+[name] Hubspot Form Generator
+[category]
+[location] global
+[example] https://www.liferay.com/request-a-demo
+
+[name] Language Keys
+[category]
+[location] global
+[example]
+
+[name] Lego
+[category]
+[location] global
+[example]
+
+[name] Office
+[category]
+[location] liferay
+[example] https://www.liferay.com/contact-us
+
+[name] Press Release
+[category]
+[location] liferay
+[example]
+
+[name] Quote Section
+[category]
+[location] liferay
+[example] https://www.liferay.com/solutions/intranets
+
+[name] Resource Renderer
+[category]
+[location] liferay
+[example] https://www.liferay.com/resource?folderId=1645493&title=Open+vs+Closed+Source
+
+[name] Select Download Button
+[category]
+[location] liferay
+[example]
+
+[name] Training Card
+[category]
+[location] liferay/training
+[example] https://www.liferay.com/de/services/training/topics
+
+[name] Training Class
+[category]
+[location] liferay/training
+[example]
+
+[name] Training Track
+[category]
+[location] liferay/training
+[example]
