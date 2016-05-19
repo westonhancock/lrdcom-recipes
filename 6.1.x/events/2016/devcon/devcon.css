@@ -1,21 +1,105 @@
 .top-banner-container {
   background: url(/documents/67510365/74348488/Devcon-Mobile-Banner-1.jpg/60281214-b5a0-48bc-90fb-5a68fa21a0a5?t=1463656085000) repeat no-repeat center bottom;
   text-align: center;
-  padding-bottom: 150px;
+  padding-bottom: 100px;
+  background-size: auto 100px;
 }
 
 .top-banner-container img {
-  margin: 70px 0;
-  width: 100%;
-  box-sizing: border-box;
-  padding: 0 20px;
+  margin: 45px 0;
+  width: 90%;
   max-height: 200px;
 }
 
+.dynamic-navigation {
+	background: #093d5a ;
+	height: 50px;
+    position: fixed;
+    top: 0;
+    width: 100%;
+}
+
+#navigation li {
+	text-transform: uppercase;
+	margin: 7px 10px;	
+}
+
+.dynamic-navigation .parent-title {
+	background: url(/documents/14/48124953/hamburger.png) no-repeat left 15px center;
+    display: block;
+    height: 100%;
+	width: 100px;
+}
+
+#navigation .parent-title a {
+	display: none;
+}
+
+#navigation li a {
+	color: white;
+}
+
+@media(max-width:1199px) {	
+	.top-banner-container {
+		/* make room for fixed nav */
+		margin-top: 50px;
+	}
+	#navigation .child-menu {
+		max-height: 0;
+		transition: max-height .3s ease-in-out;
+		overflow: hidden;
+		width: 100%;
+		background: #093d5a;
+	}
+	
+	#navigation li.last {
+		position: absolute;
+		top: 0;
+		right: 10px;		
+		
+	}
+	#navigation ul {
+		text-align: left;
+	}
+	#navigation li {
+        display: block;
+        padding: 0;
+        font-size: 14px;
+    }
+	#navigation li.last a{
+		background: #1678a9;
+	}
+	
+	#navigation[data-state=open] .child-menu {
+          max-height: 600px;
+    }
+}
 @media(min-width:1200px) {
+	
+    nav#navigation.sticky {
+        position: fixed;
+    }
+	
+	.dynamic-navigation .parent-title {
+		display: none;
+	}
+	#navigation li.last a{
+		color: #6D6E71;
+		background: white;
+		padding: 5px 20px;
+	}
+	.dynamic-navigation {
+		position: static;
+		background: #074d77;
+	}
 	.top-banner-container {
 		background: url(/documents/67510365/74348488/Devcon+Banner_cropped.jpg/a6b6ded5-1723-44c4-94c5-d13a829aab7f?t=1463656093000) no-repeat right top;
 		padding-bottom: 0;
+	}
+	
+	/* bigger margins on desktop image so we see whole banner on right hand side*/
+	.top-banner-container img {
+	  margin: 100px 0;
 	}
 }
 
