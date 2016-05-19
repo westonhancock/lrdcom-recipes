@@ -39,6 +39,7 @@
 	color: white;
 }
 
+
 @media(max-width:1199px) {	
 	.top-banner-container {
 		/* make room for fixed nav */
@@ -76,6 +77,11 @@
 }
 @media(min-width:1200px) {
 	
+	/* give more room to video */
+	#video .engage-container {
+		margin: 100px 0;
+	}
+	
     nav#navigation.sticky {
         position: fixed;
     }
@@ -103,7 +109,10 @@
 	}
 }
 
-
+/* override standard mobile padding of 15px that leads to white borders */
+#main-content.full-screen-layout .portlet-dropzone {
+    padding: 0 !important;
+}
 
 
 
