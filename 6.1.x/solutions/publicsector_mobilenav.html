@@ -1,0 +1,114 @@
+<style type="text/css">
+.under-850-only {
+	display: none;
+}
+@media all and (min-width: 850px) {
+a.btn {
+  font-size: 1.5em;
+}
+}
+@media all and (max-width: 850px) {
+	#banner.transparent #navigation a {
+		color: #6D6E71;
+	}
+
+	#banner.transparent .logo {
+		display: none;
+	}
+
+	#dockbar, #heading, .lfr-hudcrumbs {
+		display: none;
+	}
+
+	#mobileBanner {
+		background: #FFF url(/documents/35606059/0/nav_logo.png/7e7928a1-cd1d-43ba-9413-15bb94e20778) no-repeat center center;
+		height: 60px;
+		left: 0;
+		position: fixed;
+		right: 0;
+		top: 0;
+		z-index: 100;
+	}
+
+	#mobileBanner, .display-nav #mobileBanner, #navigation, .display-nav #navigation, #navigationToggle {
+		-webkit-transition: bottom .6s ease-out;
+		-moz-transition: bottom .6s ease-out;
+		-o-transition: bottom .6s ease-out;
+		transition: bottom .6s ease-out;
+		-webkit-transition-property: bottom,bottom;
+		-moz-transition-property: bottom,bottom;
+		-o-transition-property: bottom,bottom;
+		transition-property: bottom,bottom;
+	}
+
+	#navigation li {
+		display: block;
+	}
+
+	.display-nav #navigation {
+		background: #FFF;
+		display: block;
+		left: 0;
+		position: fixed;
+		right: 0;
+		top: 50px;
+	}
+
+	#navigation {
+		display: none;
+	}
+
+	#navigation a {
+		color: #6D6E71;
+		text-align: left;
+	}
+
+	#banner #navigation ul {
+		background: transparent;
+	}
+
+	#wrapper {
+		left: 0;
+		right: 0;
+		position: relative;
+	}
+
+	#navigationToggle {
+		background: url(/documents/35606059/0/hamburger.jpg/10f399ef-4ef5-42f8-b677-567466db3f09) center no-repeat;
+		background-size: 100%;
+		cursor: pointer;
+		height: 60px;
+		position: absolute;
+		right: 0;
+		top: 0;
+		width: 60px;
+	}
+
+	.under-850-only {
+		display: block;
+	}
+}</style>
+<div id="mobileBanner">
+	<div class="under-850-only" id="navigationToggle">
+		&nbsp;</div>
+</div>
+<script>
+AUI().ready(
+	'node-event-delegate',
+	function(A) {
+		A.one('#navigationToggle').on(
+			'click',
+			function(event) {
+				A.one('#wrapper').toggleClass('display-nav');
+			}
+		);
+
+		A.all('.animate-scroll').on(
+			'click',
+			function(event) {
+				A.one('#wrapper').removeClass('display-nav');
+			}
+		);
+	}
+);
+</script>

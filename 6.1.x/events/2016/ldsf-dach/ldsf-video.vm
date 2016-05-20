@@ -250,13 +250,13 @@
 
 <div id="$sectionid.data">
    <div id="aboutStartNav">
-        <div class="engage-section">
+        <div class="engage-section ">
         	#if ($headerpos == "top")
         	<h2 class="centered title light">$header.data</h2>
             #end
             <div class="engage-container">
-                <div class="video-swap ">
-                    <svg title="Play Video" class="video-wrapper" data-embed="$video_id.data" version="1.1"  
+                <div class=" video-swap video-wrapper"  data-embed="$video_id.data"  id="video">
+                    <svg title="Play Video" version="1.1"  
                     	 xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" 
                   		 x="0px" y="0px" width="393px" height="234px" viewBox="0 0 393 234" enable-background="new 0 0 393 234"
           				 xml:space="preserve">
@@ -489,6 +489,10 @@
                     event.stopPropagation();
 
                     copyToPopUp(event.currentTarget);
+                    
+                    if (window.ga) {
+		                ga('send', 'event', 'Navigation Clicks', 'Video Navigation', event.currentTarget.getAttribute('data-embed'));
+                    }
                 }
             );
 
@@ -498,6 +502,11 @@
                     positionPopUp(videoPopUp);
                 }
             );
+            
+            var hashTarget = document.querySelector(".video-wrapper[data-embed]:target");
+            if (hashTarget != null) {
+                hashTarget.click();
+            }
         }
     );
 </script>
