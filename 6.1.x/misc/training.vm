@@ -1,0 +1,191 @@
+<div class="training-services training-contact-form">
+    <div class="aui-w33 content-column">
+        <h1>
+            $form_heading.data
+        </h1>
+
+        <h3>
+            $form_content.data
+        </h3>
+    </div>
+
+    <div class="aui-w50 content-column lrdcom-form-container">
+        <div class="lrdcom-form">
+            <script charset="utf-8" type="text/javascript" src="//js.hsforms.net/forms/v2.js"></script>
+            <script>
+            hbspt.forms.create({
+                css: '',
+                portalId: '252686',
+                formId: '$hubspot_form_id.data',
+                target: '.training-contact-form .lrdcom-form'
+            });
+
+            // Listener to avoid race condition with hubspot form
+            var listener = window.setInterval(
+                function() {
+                    AUI().use(
+                        'aui-base', 'io-form',
+                        function(A) {
+                            var lrdcomForm = A.one(".lrdcom-form form");
+
+                            if (lrdcomForm) {
+
+                                // Submission handling that will
+                                // 1) Swap the form to a thank you message
+
+                                lrdcomForm.on(
+                                    'submit',
+                                    function(el) {
+                                        el.preventDefault();
+
+                                        var form = el.currentTarget;
+
+                                        // Since this is ghetto name submit, we have to make sure it obeys
+                                        // hubspot required rules before we swap to the thank you message
+                                        var isNotValidated = false;
+
+                                        form.all("input").each(function(input) {
+                                            if (input.hasAttribute("required") && input.get("value") == "") {
+                                                isNotValidated = true;
+                                            }
+                                        });
+
+
+                                        if (!isNotValidated) {
+                                            form.submit();
+
+                                            A.one(".lrdcom-form-container").addClass("thank-you-active");
+                                        }
+                                    }
+                                );
+
+                                // Clear listener when hubspot form is detected.
+                                clearInterval(listener);
+                            }
+
+                        }
+                    );
+                },
+            100);
+            </script>
+        </div>
+
+        <div class="thank-you-message">
+            $thank_you_message.data
+        </div>
+    </div>
+</div>
+
+<style>
+.training-contact-form {
+    background-image: url(//web.liferay.com/documents/14/8441624/contact-form-bg+1.jpg/1281b9b7-68c3-4888-9899-703518ad8971?t=1441922321000?t=1441922321000?t=1441922321580);
+    background-position: center center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    padding: 6em 0 2em 5.5em;
+}
+
+.training-contact-form .lrdcom-form .hs-form label {
+    display: none;
+}
+
+.training-contact-form .lrdcom-form .hs-form .hs-error-msgs label {
+    display: block;
+}
+
+.training-contact-form .lrdcom-form .hs-form .hs_submit input[type="submit"] {
+    -webkit-border-radius: 2px;
+    -moz-border-radius: 2px;
+    -ms-border-radius: 2px;
+    -o-border-radius: 2px;
+    border-radius: 2px;
+    background: none;
+    border: 1px solid #f49b45;
+    color: #f49b45;
+    cursor: pointer;
+    display: inline-block;
+    font-size: 15px
+    font-weight: normal;
+    height: auto;
+    line-height: 1.5em;
+    padding: 5px 15px;
+    padding: 5px 20px;
+    text-align: center;
+    text-decoration: none;
+    vertical-align: top;
+}
+
+.training-contact-form .lrdcom-form .hs-form .hs-form-field input,
+.training-contact-form .lrdcom-form .hs-form .hs-form-field textarea {
+    box-sizing: border-box;
+    background: none;
+    border: 1px solid #474A4B;
+    outline: none;
+    padding: 5px 8px;
+    width: 270px;
+}
+
+.training-contact-form .lrdcom-form .hs-form .hs-form-field select {
+    box-sizing: border-box;
+    background-color: transparent;
+    background: url(//web.liferay.com/documents/14/43429917/arrow_down_selected.svg/98ec462b-e825-425b-9f20-b869c1fafb9f) no-repeat right;
+    border: 1px solid #474A4B;
+    color: #474A4B;
+    max-width: none !important;
+    outline: none;
+    padding: 5px 8px;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    -webkit-border-radius: 3px;
+    -moz-border-radius: 3px;
+    -ms-border-radius: 3px;
+    -o-border-radius: 3px;
+    border-radius: 3px;
+    width: 270px;
+}
+
+.training-contact-form .lrdcom-form .hs-form .hs-form-field textarea {
+    left: 290px;
+    position: absolute;
+    top: 0;
+    height: 100%;
+}
+
+.training-contact-form .lrdcom-form .hs-form .hs_submit input[type="submit"] {
+    left: 290px;
+    position: absolute;
+}
+
+.lrdcom-form-container {
+    -webkit-transform-style: preserve-3d;
+    -ms-transform-style: preserve-3d;
+    transform-style: preserve-3d;
+}
+
+.training-services .thank-you-active .lrdcom-form,
+.training-services .thank-you-message {
+    -webkit-transform: rotateX(90deg);
+    -ms-transform: rotateX(90deg);
+    transform: rotateX(90deg);
+
+    -webkit-transition: all 0.5s ease-in-out;
+    transition: all 0.5s ease-in-out;
+}
+.training-services .thank-you-active .thank-you-message,
+.training-services .lrdcom-form {
+    -webkit-transform: rotateX(0deg);
+    -ms-transform: rotateX(0deg);
+    transform: rotateX(0deg);
+
+    -webkit-transition: all 0.5s ease-in-out;
+    transition: all 0.5s ease-in-out;
+}
+
+.training-contact-form .content-column, .training-contact-form .portlet-column {
+    float: none;
+    display: inline-block;
+    vertical-align: top;
+}
+
+</style>

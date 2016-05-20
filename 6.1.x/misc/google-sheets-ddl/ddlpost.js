@@ -1,6 +1,8 @@
 // Handle timestamps as well as dates? right now we are stripping times...
 // can ddls have timestamps?
+// blank dates cause major chaos in start_date end_Date fields...what should value be?!!!
 
+// what is the logic to POST stringify stuff?  very sensitive...
 // handle exceptions {"exception":"com.liferay.portlet.dynamicdatamapping.StorageFieldRequiredException"}
 
 function addDDLRecordsParams(server, groupId, recordSetId, displayIndex, datasheetname, base64auth, userid) {
