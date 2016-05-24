@@ -31,6 +31,7 @@
     
     .speaker-container .speaker-title {
         min-height: 22px;
+        font-size: 15px;
     }
 
     .speaker-image-container .top-right-triangle {
@@ -308,16 +309,23 @@ z-index: auto;
         	#speaker_template7("$header.data", $highlight_sorted)
         </div>
     #end
+    
+    #if ($validator.isNotNull($show_regular_speakers) && $show_regular_speakers.data == "true")
+        #if ($featured_sorted.size() > 0)
+            <div class="featured-container">
+                #speaker_template7("$regular_speakers_header.data", $featured_sorted)
+            </div>
+        #end
+    #end
 </div>
 
-
-
-
-<div class=speakers-button-container>
-    <a class="main-text-color normal" href="$speaker_link_href.data">
-    	$speaker_link_text.data
-    </a>
-</div>
+ #if ($validator.isNotNull($show_speaker_button) && $show_speaker_button.data == "true")
+    <div class="speakers-button-container">
+        <a class="main-text-color normal" href="$speaker_link_href.data">
+            $speaker_link_text.data
+        </a>
+    </div>
+#end
 
 <script>
 AUI().ready(
