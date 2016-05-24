@@ -51,7 +51,6 @@ var data = (
 
 				currentStep.completed = false;
 			},
-			interactionType: undefined,
 			json: undefined,
 			loadStep: function(step) {
 				var currentStep = this.allSteps[step - 1];
