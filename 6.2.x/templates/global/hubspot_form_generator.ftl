@@ -4,7 +4,9 @@
 <#assign logFactory = objectUtil("com.liferay.portal.kernel.log.LogFactoryUtil") />
 <#assign log = logFactory.getLog("com.liferay.portal.kernel.search.SearchEngineUtil") />
 
-<#if request.lifecycle == 'RENDER_PHASE'>
+<#assign portalURL = "https://" + getterUtil.getString (request['theme-display']['portal-url']) />
+
+<#if (request.lifecycle == 'RENDER_PHASE') && hs_form_local_service??>
 	<div class="${article_class.data}">
 		<#include "${templatesPath}/1561886" />
 
@@ -321,7 +323,7 @@
 							var assetURL = '';
 
 							if (fields['asset_id']) {
-								assetURL = 'documents/${groupId}/'+ fields['asset_folder_id'] + '/' + fields['asset_name'];
+								assetURL = '${portalURL}/documents/${groupId}/'+ fields['asset_folder_id'] + '/' + fields['asset_name'];
 							}
 
 							var redirectURL = '${redirect_url}';
