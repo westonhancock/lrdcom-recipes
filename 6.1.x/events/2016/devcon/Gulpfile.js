@@ -14,31 +14,23 @@ gulp.task('default', function () {
         ;
 });
 
-
-
 gulp.task("sprite", function () {
-
-   
     var config = {
         log: "debug",
-     
         mode: {
             symbol: {
-             inline: true
+                inline: true
             },
             dest: "out"
         }
     };
-  
 
     gulp.src('**/*.svg', { cwd: 'images' })
         .pipe(svgSprite(config))
         .pipe(gulp.dest('out'))
-        .on("end", function() {
-              gulp.src('out/symbol/svg/sprite.symbol.svg')
-        .pipe(rename("devconsprite.svg"))
-        .pipe(gulp.dest('.'));
+        .on("end", function () {
+            gulp.src('out/symbol/svg/sprite.symbol.svg')
+                .pipe(rename("devconsprite.svg"))
+                .pipe(gulp.dest('.'));
         });
-        
-  
 });
