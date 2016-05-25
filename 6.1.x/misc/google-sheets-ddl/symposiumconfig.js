@@ -19,7 +19,7 @@ function setupConfig() {
 
 function fetchExistingData() {
     var configObject = setupConfig();
-    ["speakers", "speakerslastyear"].forEach(function (value) {
+    ["speakers", "speakerslastyear", "sponsors", "agenda", "agendalastyear"].forEach(function (value) {
 
         if (configObject && configObject[value]) {
 
@@ -39,12 +39,24 @@ function onOpen() {
         .addItem('Add Speakers', 'addSpeakers')
     
         .addItem('Fetch Data', 'fetchExistingData')
+        .addItem("Add Sponsors", "addSponsors")
+             .addItem("Add Agenda", "addAgenda")
         .addToUi();
+}
+
+function addAgenda() {
+      var configObject = setupConfig();
+      addRecords("agenda");
 }
 
 function addSpeakers() {
       var configObject = setupConfig();
       addRecords("speakers");
+}
+
+function addSponsors() {
+      var configObject = setupConfig();
+      addRecords("sponsors");
 }
 
 
