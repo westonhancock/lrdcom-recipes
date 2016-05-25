@@ -74,11 +74,12 @@
 	#navigation[data-state=open] .child-menu {
           max-height: 600px;
     }
+	
 }
 @media(min-width:1200px) {
 	
 	/* give more room to video */
-	#video .engage-container {
+	.engage-container {
 		margin: 100px 0;
 	}
 	
@@ -116,4 +117,61 @@
 
 
 
+/* quote section */
+.lego-quote .lego-article-content {
+    max-width: 100%;
+}
+
+.quote-section, .quote-header {
+  text-align: center;
+  margin-top: 50px;
+}
+.quote-section {
+   display: flex;
+    flex-flow: row wrap;
+}
+
+.quote-header h2 {
+  color: #074d77;
+
+}
+.quote-section > div {
+	
+  height: 400px;
+  color: white;
+  flex: 0 0 50%;
+  box-sizing: border-box;
+padding: 50px 45px;
+  align-items: center;
+  display: flex;
+  justify-content: center
+}
+
+.quote-section .quote {
+    font-size: 200%;
+    line-height: 120%;
+}
+
+.quote-section .attribution {
+	font-size: 150%;
+}
+
+.quote-section .block-1 {
+  background: url(https://web.liferay.com/documents/67510365/74348488/Quote-Box-1.jpg);
+  background-size: cover;
+}
+
+.quote-section .block-2 {
+  background: #1ebcb0;
+
+}
+.quote-section .block-3 {
+  background: #074d77;
+
+}
+.quote-section .block-4 {
+   background: url(https://web.liferay.com/documents/67510365/74348488/Quote-Box-2.jpg);
+    background-size: cover;
+
+}
 
