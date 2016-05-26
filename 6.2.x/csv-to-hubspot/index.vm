@@ -464,23 +464,19 @@ var CSV = (function() {
 			var obj = {};
 
 			for (var j = 0; j < headers.length; j++) {
-				console.log(headers[j])
-				console.log(j);
-				if (j == 4) {
-					obj["Interaction Detail"] = currentline[j];
-				}
+				var currentHeader = headers[j];
+				var currentLine = currentline[j];
 
-				else {
-					obj[headers[j]] = currentline[j];
-				}
-				
-				console.log(obj);
+				// data integrity by removing special characters
+				currentHeader = currentHeader.replace(/[^a-zA-Z ]/g, "");
+				currentLine = currentLine.replace(/[^a-zA-Z ]/g, "")
+
+				obj[currentHeader] = currentLine;
 			}
 
 			result.push(obj);
 		}
 
-		core.publisher.fire('JSONcreated', result);
 		return result;
 	};
 
@@ -532,7 +528,6 @@ var CSV = (function() {
 	// run tests for csv file
 	var checkCSV = function(csv) {
 		
-
 		var hasCSV = false;
 
 		// run our tests
