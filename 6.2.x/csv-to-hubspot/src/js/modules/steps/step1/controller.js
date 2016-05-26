@@ -9,107 +9,12 @@ var step1 = (function() {
 		}
 	);
 
-	var tests = (function() {
-
-		// run tests for csv file
-		var checkCSV = function(csv) {
-			
-
-			var hasCSV = false;
-
-			// run our tests
-			if (csv) {
-				hasCSV = true;
-			}
-
-			return hasCSV;
-		};
-
-		var checkJSON = function(json) {
-			// run tests for json file
-			if (json) {
-				return true;
-			}
-		};
-
-		return {
-			checkCSV: checkCSV,
-			checkJSON: checkJSON
-		};
-	})();
-
-	var util = (function() {
-		// convert csv to JSON object
-		var csvToJSON = function(csv) {
-			var lines = csv.split('\n');
-			var result = [];
-
-			var headers = lines[0].split(',');
-
-			for (var i = 1; i < lines.length; i++) {
-				var currentline = lines[i].split(',');
-				var obj = {};
-
-				for (var j = 0; j < headers.length; j++) {
-					obj[headers[j]] = currentline[j];
-				}
-
-				result.push(obj);
-			}
-
-			core.publisher.fire('JSONcreated', result);
-			return result;
-		};
-
-		var getFileType = function(filename) {
-			var parts = filename.split('/');
-
-			return parts[parts.length - 1];
-		};
-
-		// read file in browser
-		var readFile = function(file) {
-
-			return new Promise(function(resolve, reject) {
-				var textType = 'csv';
-				var windowsTextType = 'vnd.ms-excel';
-				var fileType = getFileType(file.type);
-
-				if (fileType === textType || fileType === windowsTextType) {
-					var reader = new FileReader();
-					var content = reader.readAsText(file);
-
-					step1Data.csvDone = false;
-
-					reader.onload = function() {
-						resolve(reader.result);
-					}
-				}
-				else {
-					reject(Error('Wrong File Type'));
-				}
-			});
-		};
-
-		// get information file
-		var GetFileInformation = function(JSON) {
-			var entries = 0;
-
-			for (var key in JSON) {
-				if (JSON.hasOwnProperty(key)) {
-					entries++;
-				}
-			}
-
-			return {
-				entries: entries
-			};
-		};
-
+	var controller = (function() {
+		
 		// higher order function to manage the processing
 		var processFile = function(file) {
 
-			readFile(file)
+			CSV.readFile(file)
 
 				// when file is done being read, test csv
 				.then(function(csv) {
@@ -124,7 +29,7 @@ var step1 = (function() {
 				})
 				// additional tests on csv
 				.then(function(csv) {
-					if (!tests.checkCSV(csv)) {
+					if (!CSV.checkCSV(csv)) {
 						throw "CSV is no good";
 					}
 
@@ -133,7 +38,7 @@ var step1 = (function() {
 				// if file is checked, parse to JSON
 				.then(function(csv) {
 					if (csv) {
-						var json = csvToJSON(csv);
+						var json = CSV.csvToJSON(csv);
 
 						data.updateData('json', json);
 					}
@@ -142,7 +47,7 @@ var step1 = (function() {
 				})
 				// if we pass the JSON testing, we should complete the step
 				.then(function(json) {
-					if (tests.checkJSON(data.json)) {
+					if (CSV.checkJSON(data.json)) {
 						steps.completeStep(1);
 					}
 				})
@@ -174,7 +79,7 @@ var step1 = (function() {
 				fileDragHover(e);
 				var files = e.dataTransfer.files;
 
-				util.processFile(files[0]);
+				controller.processFile(files[0]);
 				fileChanged(files[0].name);
 			}
 
@@ -227,5 +132,5 @@ var step1 = (function() {
 			fileChanged: fileChanged,
 			fileGrade: fileGrade
 		};
-	})(util);
-})(hubspot, steps, step1Data);
+	})(controller);
+})(CSV, hubspot, steps, step1Data);
