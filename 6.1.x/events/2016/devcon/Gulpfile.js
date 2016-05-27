@@ -1,18 +1,32 @@
 var gulp = require('gulp');
 var svgmin = require('gulp-svgmin');
 var rename = require("gulp-rename");
-
-
 var ext_replace = require('gulp-ext-replace');
-
-
-
 var svgSprite = require('gulp-svg-sprite');
+
+var winston = require("winston");
+var logger = new winston.Logger({
+    level: 'debug',
+    transports: [
+        new (winston.transports.Console)(),
+        new (winston.transports.File)({
+            name: 'debug-file',
+            filename: 'logs/debug.log',
+            level: 'debug'
+        }),
+        new (winston.transports.File)({
+            name: 'silly-file',
+            filename: 'logs/trace.log',
+            level: 'silly'
+        })
+    ]
+});
+
 
 var syncdir = "/Users/allenziegenfus/Documents/liferay-sync61/Events 2016/DEVCON";
 var paths = {
     scripts: ['client/js/**/*.coffee', '!client/external/**/*.coffee'],
-    pug: ['*.pug', '*.html', '*.css']
+    pug: ['src/*.pug', '*.html', '*.css']
 };
 
 var browserSync = require('browser-sync').create();
@@ -21,21 +35,23 @@ var browserSync = require('browser-sync').create();
 gulp.task('browser-sync', function () {
     browserSync.init({
         server: {
-            baseDir: "./"
+            baseDir: "build/"
         }
     });
-    gulp.watch("index.html").on('change', browserSync.reload);
+    gulp.watch("build/index.html").on('change', browserSync.reload);
 
 });
 
-var pug = require('gulp-pug');
 
-gulp.task('pug', function buildHTML() {
-    return gulp.src('*.pug')
+
+gulp.task('pug', ["sprite", "css"], function buildHTML() {
+    logger.info("Running templates");
+    var pug = require('gulp-pug');
+    return gulp.src('src/*.pug')
         .pipe(pug({
             // Your options in here. 
         }))
-        .pipe(gulp.dest("."));
+        .pipe(gulp.dest("build"));
 });
 
 gulp.task('watch', function () {
@@ -45,15 +61,18 @@ gulp.task('watch', function () {
 
 gulp.task('live-dev', ['pug', 'watch', 'browser-sync']);
 
-gulp.task('default', function () {
+gulp.task('svgmin', function () {
     return gulp.src('images/*.svg')
         .pipe(svgmin())
-        .pipe(gulp.dest('imagesout'))
+        .pipe(gulp.dest('build'))
         .pipe(gulp.dest(syncdir))
         ;
 });
 
-gulp.task("sprite", function () {
+
+
+
+gulp.task("sprite", function (cb) {
     var config = {
         log: "debug",
         mode: {
@@ -64,23 +83,25 @@ gulp.task("sprite", function () {
         }
     };
 
+    logger.info("Creating SVG sprite");
     gulp.src('**/*.svg', { cwd: 'images' })
         .pipe(svgSprite(config))
-        .pipe(gulp.dest('out'))
+        .pipe(gulp.dest('build'))
         .on("end", function () {
-            gulp.src('out/symbol/svg/sprite.symbol.svg')
+            logger.info("Renaming Sprite File");
+            gulp.src('build/symbol/svg/sprite.symbol.svg')
                 .pipe(rename("devconsprite.svg"))
-                .pipe(gulp.dest('.'));
+                .pipe(gulp.dest('build'))
+                .on("end", cb);
         });
+    
 });
 
 
 
-gulp.task('css', function () {
+gulp.task('css', function (cb) {
     var postcss = require('gulp-postcss');
     var gulpStylelint = require('gulp-stylelint');
-
-
     return gulp.src('src/**/*.scss')
         .pipe(postcss([require('autoprefixer'), require('precss')]))
         .pipe(ext_replace(".css"))
@@ -88,6 +109,7 @@ gulp.task('css', function () {
              {formatter: 'string', console: true}
            ]}))*/
         .pipe(gulp.dest('build/'));
+        
 });
 
 
@@ -104,22 +126,15 @@ gulp.task('images', function () {
 });
 
 
-gulp.task('update', function () {
+gulp.task('update', ["pug"], function () {
     var biggulp = require("./biggulp.js");
     var fs = require("fs");
     var config = JSON.parse(fs.readFileSync('./config.json'));
-
-    var article = {
-        groupId: "67510365",
-        articleId: "74650618",
-        defaultLocale: "de_DE",
-        locales: [{
-            locale: "de_DE",
-            filename: "test/test.html"
-        }, {
-            locale: "en_US", 
-            filename: "test/test.html"
-        }]
-    };
-    biggulp.updateArticle(config, article);
+    var articleConfig = JSON.parse(fs.readFileSync('./articleconfig.json'));
+    
+    articleConfig.forEach(function(article) {  
+        biggulp.updateStaticArticleContent(config, article); 
+    });
 });
+
+gulp.task('default', ["sprite", "css", "pug"]);

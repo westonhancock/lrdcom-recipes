@@ -1,0 +1,20 @@
+[{
+        "groupId": "67510365",
+        "articleId": "74655872",
+        "defaultLocale": "en_US",
+        "locales": [
+        {
+            "locale": "en_US",
+            "filename": "build/banner.html"
+        }]
+},
+{
+        "groupId": "67510365",
+        "articleId": "74655884",
+        "defaultLocale": "en_US",
+        "locales": [{
+            "locale": "en_US",
+            "filename": "build/devcon.css"
+        }]
+}
+]

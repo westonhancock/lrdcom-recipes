@@ -1,3 +1,5 @@
+$darkblue: #093d5a;
+
 .top-banner-container {
   background: url(/documents/67510365/74348488/Devcon-Mobile-Banner-1.jpg/60281214-b5a0-48bc-90fb-5a68fa21a0a5?t=1463656085000) repeat no-repeat center bottom;
   text-align: center;
@@ -12,7 +14,7 @@
 }
 
 .dynamic-navigation {
-	background: #093d5a ;
+	background: $darkblue;
 	height: 50px;
     position: fixed;
     top: 0;
@@ -50,7 +52,7 @@
 		transition: max-height .3s ease-in-out;
 		overflow: hidden;
 		width: 100%;
-		background: #093d5a;
+		background: $darkblue;
 	}
 	
 	#navigation li.last {

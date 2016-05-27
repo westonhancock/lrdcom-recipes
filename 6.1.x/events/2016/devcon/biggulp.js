@@ -98,7 +98,7 @@ function post_liferay(config, api, payload, callback) {
 
 module.exports = {
 
-    updateArticle: function (config, article) {
+    updateStaticArticleContent: function (config, article) {
 
         // need to get version info first...
 
