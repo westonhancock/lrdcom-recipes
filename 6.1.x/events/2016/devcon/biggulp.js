@@ -21,6 +21,42 @@ var logger = new winston.Logger({
     ]
 });
 
+function invoke_liferay(config, api, payload, callback) {
+    var cmdArray = [];
+    var myCmd = {};
+    myCmd[api] = payload;
+    cmdArray.push(
+       myCmd
+    );
+    var postrequest = {
+        json: true,
+        url: config.server + "/api/secure/jsonws/invoke",
+        body: cmdArray,
+        headers: { "Authorization": "Basic " + config.base64auth }
+    };
+    logger.info("POST Request: ", postrequest);
+
+    request.post(postrequest, function (err, httpResponse, body) {
+     
+        logger.silly("httpResponse: ", httpResponse);
+        logger.debug("body: " + body);
+
+        if (err || (httpResponse && httpResponse.statusCode && (httpResponse.statusCode != 200))) {
+            logger.error("An error seems to have occurred. Response Code " + httpResponse.statusCode, body);
+            var errorobj = {
+                statusCode: httpResponse.statusCode,
+                body: body
+            };
+            throw errorobj;
+        }
+        else {
+            if (body && body.exception) {
+                logger.error("An exception occurred: " + body.exception);
+                throw body.exception;
+            } else { callback(body) }
+        }
+    });
+}
 function post_liferay(config, api, payload, callback) {
 
     var postrequest = {
@@ -37,80 +73,70 @@ function post_liferay(config, api, payload, callback) {
         if (err || (httpResponse && httpResponse.statusCode && (httpResponse.statusCode != 200))) {
             logger.error("An error seems to have occurred. Response Code " + httpResponse.statusCode, body);
             var errorobj = {
-                httpResponse.statusCode,
-                body
+                statusCode: httpResponse.statusCode,
+                body: body
             };
             throw errorobj;
         }
         else {
-            callback(body);     }
+
+            var response = JSON.parse(body);
+            if (response && response.exception) {
+                logger.error("An exception occurred: " + response.exception);
+                throw response.exception;
+            } else { callback(body) }
+
+
+        }
     });
 }
 
 module.exports = {
 
-    updateArticle: function (config, articleLookup) {
+    updateArticle: function (config, article) {
 
         // need to get version info first...
-        var locale = "de_DE";
-        var articleFile = fs.readFileSync(locale + "_" + articleLookup.filename).toString();
 
+        var staticContent = [];
+        var allLocales = [];
+        article.locales.forEach(function (locale) {
+            allLocales.push(locale.locale);
+            var articleFile = fs.readFileSync(locale.filename).toString();
+            staticContent.push({
+                _: articleFile,
+                $: {
+                    "language-id": locale.locale
+                }
+            });
+        });
+        var availableLocales = allLocales.join(",");
         // make function for composing file names
         var obj = {
             root: {
                 $: {
-                    "available-locales": locale, "default-locale": locale
+                    "available-locales": availableLocales, "default-locale": article.defaultLocale
                 },
-                "static-content": [{
-                    _: articleFile,
-                    $: {
-                        "language-id": locale
-                    }
-                }]
+                "static-content": staticContent
             }
         };
 
         var xml2js = require("xml2js");
         var builder = new xml2js.Builder({ cdata: true, xmldec: { version: "1.0" } });
         var xml = builder.buildObject(obj);
-        fs.writeFile("out.xml", xml);
-        updateArticle(config, articleLookup, 1.0, xml);
+        logger.silly(xml);
 
-        function updateArticle(myConfig, myArticle, version, content) {
+        invoke_liferay(config, "/journalarticle/update-article", {
+            "groupId": article.groupId,
+            "articleId": article.articleId,
+            "version": 1.0,
+            "content": xml,
+            "serviceContext.scopeGroupId": article.groupId
 
-            var postrequest = {
-                url: myConfig.server + "/api/secure/jsonws/journalarticle/update-article",
-                form: {
-                    "groupId": myArticle.groupId,
-                    "articleId": myArticle.articleId,
-                    "version": version,
-                    "content": content,
-                    "serviceContext.scopeGroupId": myArticle.groupId
-                },
-                headers: { "Authorization": "Basic " + myConfig.base64auth }
-            };
-            logger.info(postrequest);
-
-            request.post(postrequest, function (err, httpResponse, body) {
-
-                logger.silly("httpResponse: ", httpResponse);
-                logger.debug("body: " + body);
-
-                if (httpResponse && httpResponse.statusCode && (httpResponse.statusCode != 200)) {
-                    logger.error("An error seems to have occurred");
-                    logger.silly("httpResponse: ", httpResponse);
-                    logger.debug("body: " + body);
-                }
-                else {
-                    var response = JSON.parse(body);
-                    logger.info("body: " + response.content);
-                }
-            });
-        }
+        }, function (jsonresponse) {
+            logger.info("body: " + jsonresponse.content);
+        });
     },
-    post_liferay: function () {
-        var jsonpath = "/api/secure/jsonws/";
-    },
+
 
     legacy: function () {
         var gulp = require("gulp");
