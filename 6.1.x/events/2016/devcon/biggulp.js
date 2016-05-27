@@ -21,18 +21,18 @@ var logger = new winston.Logger({
     ]
 });
 
-function invoke_liferay_api (config, api, payload, callback) {
-      var cmdArray = [];
+function invoke_liferay_api(config, api, payload, callback) {
+    var cmdArray = [];
     var myCmd = {};
     myCmd[api] = payload;
     cmdArray.push(
-       myCmd
+        myCmd
     );
     invoke_liferay(config, cmdArray, callback);
 }
 
 function invoke_liferay(config, body, callback) {
-  
+
     var postrequest = {
         json: true,
         url: config.server + "/api/secure/jsonws/invoke",
@@ -42,7 +42,7 @@ function invoke_liferay(config, body, callback) {
     logger.info("POST Request: ", postrequest);
 
     request.post(postrequest, function (err, httpResponse, body) {
-     
+
         logger.silly("httpResponse: ", httpResponse);
         logger.debug("body: " + body);
 
@@ -129,24 +129,25 @@ module.exports = {
         var builder = new xml2js.Builder({ cdata: true, xmldec: { version: "1.0" } });
         var xml = builder.buildObject(obj);
         logger.silly(xml);
-
-        
+       
+       // nest call to get latest version #
         var cmd = {
-            
-            "/journalarticle/update-article": {
-                
-             
-            "groupId": article.groupId,
-            "articleId": article.articleId,
-            "version": 1.0,
-            "content": xml,
-            "serviceContext.scopeGroupId": article.groupId
+            "$article = /journalarticle/get-article": {
+                "groupId": article.groupId,
+                "articleId": article.articleId,
+                "$update = /journalarticle/update-article": {
+                    "@version": "$article.version",
+                    "groupId": article.groupId,
+                    "articleId": article.articleId,
+                    "content": xml,
+                    "serviceContext.scopeGroupId": article.groupId
+                }
             }
         };
-        invoke_liferay(config, cmd
-        , function (jsonresponse) {
-            logger.info("body: " + jsonresponse.content);
-        });
+        invoke_liferay(config, cmd,
+            function (jsonresponse) {
+                logger.info("body: " + jsonresponse.content);
+            });
     },
 
 
