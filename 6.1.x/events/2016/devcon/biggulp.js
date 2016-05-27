@@ -21,17 +21,22 @@ var logger = new winston.Logger({
     ]
 });
 
-function invoke_liferay(config, api, payload, callback) {
-    var cmdArray = [];
+function invoke_liferay_api (config, api, payload, callback) {
+      var cmdArray = [];
     var myCmd = {};
     myCmd[api] = payload;
     cmdArray.push(
        myCmd
     );
+    invoke_liferay(config, cmdArray, callback);
+}
+
+function invoke_liferay(config, body, callback) {
+  
     var postrequest = {
         json: true,
         url: config.server + "/api/secure/jsonws/invoke",
-        body: cmdArray,
+        body: body,
         headers: { "Authorization": "Basic " + config.base64auth }
     };
     logger.info("POST Request: ", postrequest);
@@ -125,7 +130,7 @@ module.exports = {
         var xml = builder.buildObject(obj);
         logger.silly(xml);
 
-        invoke_liferay(config, "/journalarticle/update-article", {
+        invoke_liferay_api(config, "/journalarticle/update-article", {
             "groupId": article.groupId,
             "articleId": article.articleId,
             "version": 1.0,
