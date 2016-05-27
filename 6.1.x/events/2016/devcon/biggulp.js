@@ -130,14 +130,21 @@ module.exports = {
         var xml = builder.buildObject(obj);
         logger.silly(xml);
 
-        invoke_liferay_api(config, "/journalarticle/update-article", {
+        
+        var cmd = {
+            
+            "/journalarticle/update-article": {
+                
+             
             "groupId": article.groupId,
             "articleId": article.articleId,
             "version": 1.0,
             "content": xml,
             "serviceContext.scopeGroupId": article.groupId
-
-        }, function (jsonresponse) {
+            }
+        };
+        invoke_liferay(config, cmd
+        , function (jsonresponse) {
             logger.info("body: " + jsonresponse.content);
         });
     },
