@@ -1,0 +1,115 @@
+<style type="text/css">
+.phone-container, .eventapp-title {
+    text-align: center;
+}
+.eventapp-title h2 {
+    color: #FFF;
+    font-weight: lighter;
+
+}
+.phone {
+    display: inline-block;
+    height: 500px;
+    max-width: 480px;
+    width: 45%;
+}
+
+.phone img {
+    max-width: 280px;
+    width: 80%;
+}
+
+.phone-container a {
+    display: block;
+    height: 55px;
+    margin: 0 auto;
+    width: 180px;
+}
+
+.parallax-group {
+    height: 500px;
+    overflow: hidden;
+    background: -webkit-linear-gradient(60deg,transparent 55%, #0067aa 0), #00558e left top;
+    background: -o-linear-gradient(60deg,transparent 55%, #0067aa 0), #00558e left top;
+    background: -moz-linear-gradient(60deg,transparent 55%, #0067aa 0), #00558e left top;
+    background: linear-gradient(60deg,transparent 55%, #0067aa 0), #00558e left top;
+    position: relative;
+}
+
+.parallax-layer {
+    position: absolute;
+    top: 50%;
+    width: 100%;
+}
+
+.spacer {
+    height: 1000px;
+}
+
+@media (max-width: 640px) {
+    .parallax-group {
+        padding-bottom: 80%;
+        height: 0;
+    }
+}</style>
+<script>
+AUI().ready(
+    function(A) {
+        var WIN = A.getWin();
+        var winHeight = WIN.get('innerHeight');
+
+        var setParallax = function(node, parent) {
+            var max = node.attr('data-parallax-max');
+            var min = node.attr('data-parallax-min');
+            var rate = node.attr('data-parallax-rate');
+
+            A.on(
+                'scroll',
+                function() {
+                    var currentScrollPos = WIN.get('docScrollY');
+
+                    var parentY = parent.getY();
+                    var parentHeight = parent.get('clientHeight');
+
+                    var translateMin = parentHeight * min * -1;
+                    var translateMax = (translateMin - node.get('clientHeight')) * max;
+
+                    var translateY = (parentY - currentScrollPos - (winHeight * .6)) * rate;
+
+                    if (translateY > translateMin) {
+                        node.setStyle('transform', 'translate3d(0,' + translateMin + 'px, 0)');
+                    }
+                    else if (translateY < translateMax) {
+                        node.setStyle('transform', 'translate3d(0,' + translateMax + 'px, 0)');
+                    }
+                    else {
+                        node.setStyle('transform', 'translate3d(0,' + translateY + 'px, 0)');
+                    }
+                }
+            );
+        };
+
+        A.all('.parallax-layer').each(
+            function(node) {
+                setParallax(node, node.ancestor('.parallax-group'));
+            }
+        );
+    }
+);
+</script>
+<div class="parallax" id="eventsapp">
+	<div class="parallax-group" id="group1">
+		<div class="parallax-layer" data-parallax-max="1" data-parallax-min=".1" data-parallax-rate="1.5">
+			<div class="eventapp-title">
+				<h2>
+					Liferay Events App</h2>
+			</div>
+			<div class="phone-container">
+				<div class="apple phone">
+					<img src="/documents/47511614/49384334/iphone6.png/946079f8-62a7-44fd-8b0f-a7b91d17ee09" /> <a class="ios" href="https://itunes.apple.com/us/app/liferay-events/id650199231?mt=8">&nbsp;</a></div>
+				<div class="android phone">
+					<img src="/documents/47511614/49384334/android.png/335e2882-e8f2-42ad-bc6f-77ceebf02199?" /> <a class="android" href="https://play.google.com/store/apps/details?id=com.liferay.events.global.mobile&amp;hl=en">&nbsp;</a></div>
+			</div>
+		</div>
+	</div>
+</div>

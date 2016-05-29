@@ -16,5 +16,25 @@
             "locale": "en_US",
             "filename": "build/devcon.css"
         }]
+},
+{
+        "groupId": "67510365",
+        "articleId": "74666847",
+        "defaultLocale": "de_DE",
+        "locales": [{
+            "locale": "de_DE",
+            "filename": "src/eventsapp.html"
+        }]
+},
+{
+        "groupId": "67510365",
+        "articleId": "74670370",
+        "defaultLocale": "de_DE",
+        "locales": [{
+            "locale": "de_DE",
+            "filename": "src/cfp-tabs.html"
+        }]
 }
 ]
+
+
