@@ -1,0 +1,14 @@
+doctype html
+html(lang="en")
+  head
+    script
+        include ../build/all.min.js
+    style
+        include ../build/all.css    
+        include ../build/devcon.css
+    title="Fun with Devcon"
+    <meta content="minimum-scale=1.0, width=device-width" name="viewport">
+  body.yui3-skin-sam
+    include ../src/banner.pug
+    include ../build/cfp.html
+    include ../src/cfp-tabs.html

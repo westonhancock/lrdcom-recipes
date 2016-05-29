@@ -9,7 +9,9 @@
   "devDependencies": {
     "autoprefixer": "^6.3.6",
     "browser-sync": "^2.12.8",
+    "cssunminifier": "0.0.2",
     "gulp": "^3.9.1",
+    "gulp-concat": "^2.6.0",
     "gulp-ext-replace": "^0.3.0",
     "gulp-imageoptim": "^1.0.4",
     "gulp-inject": "^4.1.0",

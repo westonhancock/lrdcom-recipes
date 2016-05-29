@@ -3,6 +3,7 @@ var svgmin = require('gulp-svgmin');
 var rename = require("gulp-rename");
 var ext_replace = require('gulp-ext-replace');
 var svgSprite = require('gulp-svg-sprite');
+var concat = require("gulp-concat");
 
 var winston = require("winston");
 var logger = new winston.Logger({
@@ -25,8 +26,13 @@ var logger = new winston.Logger({
 
 var syncdir = "/Users/allenziegenfus/Documents/liferay-sync61/Events 2016/DEVCON";
 var paths = {
-    scripts: ['client/js/**/*.coffee', '!client/external/**/*.coffee'],
-    pug: ['src/*.pug', '*.html', '*.css']
+    scripts: ['src/liferay/**/*.js'],
+    liferaycss: ['src/liferay/**/*.css'],
+    pug: ['src/*.pug'],
+    css: ['src/*.scss'],
+    svg: ['images/*.svg'],
+    html: ['src/*.html']
+    
 };
 
 var browserSync = require('browser-sync').create();
@@ -44,19 +50,44 @@ gulp.task('browser-sync', function () {
 
 
 
-gulp.task('pug', ["sprite", "css"], function buildHTML() {
+gulp.task('pug', ["liferaycss","scripts","sprite", "css"], function buildHTML() {
     logger.info("Running templates");
     var pug = require('gulp-pug');
-    return gulp.src('src/*.pug')
+    return gulp.src(paths.pug)
         .pipe(pug({
             // Your options in here. 
         }))
         .pipe(gulp.dest("build"));
 });
 
+gulp.task('clean', function() {
+  var del = require('del');
+  // You can use multiple globbing patterns as you would with `gulp.src`
+  return del(['build']);
+});
+
+gulp.task('scripts', function() {
+  // Minify and copy all JavaScript (except vendor scripts)
+  // with sourcemaps all the way down
+  return gulp.src(paths.scripts)
+      .pipe(concat('all.min.js'))
+     .pipe(gulp.dest('build/'));
+});
+
+gulp.task('liferaycss', function() {
+  // Minify and copy all JavaScript (except vendor scripts)
+  // with sourcemaps all the way down
+  return gulp.src(paths.liferaycss)
+      .pipe(concat('all.css'))
+     .pipe(gulp.dest('build/'));
+});
+
 gulp.task('watch', function () {
     gulp.watch(paths.pug, ['pug']);
-
+     gulp.watch(paths.css, ['css', 'pug']);
+     gulp.watch(paths.svg, ['pug']);
+       gulp.watch(paths.html, ['pug']);
+     gulp.watch(paths.scripts, ['scripts', 'pug']);
 });
 
 gulp.task('live-dev', ['pug', 'watch', 'browser-sync']);
@@ -138,3 +169,22 @@ gulp.task('update', ["pug"], function () {
 });
 
 gulp.task('default', ["sprite", "css", "pug"]);
+gulp.task('get-content', function () {
+    var biggulp = require("./biggulp.js");
+    var fs = require("fs");
+    var config = JSON.parse(fs.readFileSync('./config.json'));
+    //var articleConfig = JSON.parse(fs.readFileSync('./articleconfig.json'));
+    
+    var articleConfig = [
+        {
+        "groupId": "67510365",
+        "articleId": "74591624",
+        "urlTitle": "devcon-call-for-papers-web-events2016-devcon"
+        }];   
+    articleConfig.forEach(function(article) { 
+        biggulp.viewArticleContent(config, article, "en_US");
+      //  biggulp.getDisplayArticleByTitle(config, article); 
+       // biggulp.getArticle(config, article);
+       // biggulp.getArticleContent(config, article, "en_US"); 
+    });
+});

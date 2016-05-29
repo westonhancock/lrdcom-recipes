@@ -1,5 +1,7 @@
 //TODO: secure password storage
 // clean up base64auth files
+// TODO: read http://blog.modulus.io/node.js-tutorial-how-to-use-request-module
+
 
 var fs = require('fs');
 var request = require("request");
@@ -46,7 +48,10 @@ function invoke_liferay(config, body, callback) {
         logger.silly("httpResponse: ", httpResponse);
         logger.debug("body: " + body);
 
-        if (err || (httpResponse && httpResponse.statusCode && (httpResponse.statusCode != 200))) {
+        if (err){
+            logger.error(err);
+            throw err;
+        } else if (httpResponse && httpResponse.statusCode && (httpResponse.statusCode != 200)) {
             logger.error("An error seems to have occurred. Response Code " + httpResponse.statusCode, body);
             var errorobj = {
                 statusCode: httpResponse.statusCode,
@@ -75,7 +80,10 @@ function post_liferay(config, api, payload, callback) {
         logger.silly("httpResponse: ", httpResponse);
         logger.debug("body: " + body);
 
-        if (err || (httpResponse && httpResponse.statusCode && (httpResponse.statusCode != 200))) {
+        if (err){
+            logger.error(err);
+            throw err;
+        } else if (httpResponse && httpResponse.statusCode && (httpResponse.statusCode != 200)) {
             logger.error("An error seems to have occurred. Response Code " + httpResponse.statusCode, body);
             var errorobj = {
                 statusCode: httpResponse.statusCode,
@@ -96,8 +104,224 @@ function post_liferay(config, api, payload, callback) {
     });
 }
 
-module.exports = {
+function getArticle(config, article, cb) {
+    var cmd = {
+        "/journalarticle/get-article": {
+            "groupId": article.groupId,
+            "articleId": article.articleId
+        }
+    };
+    invoke_liferay(config, cmd,
+        function (jsonresponse) {
+            logger.info("body: " + jsonresponse.content);
+            cb(jsonresponse);
+        });
+}
+	var ThemeDisplay= {
+				getCDNDynamicResourcesHost: function() {
+					return "https://cdn.lfrs.sl/web.liferay.com";
+				},
+				getCDNBaseURL: function() {
+					return "https://cdn.lfrs.sl/web.liferay.com";
+				},
+				getCDNHost: function() {
+					return "https://cdn.lfrs.sl/web.liferay.com";
+				},
+				getCompanyId: function() {
+					return "1";
+				},
+				getCompanyGroupId: function() {
+					return "8431626";
+				},
+				getUserId: function() {
+					return "5";
+				},
 
+				
+
+				getDoAsUserIdEncoded: function() {
+					return "";
+				},
+				getPlid: function() {
+					return "73285537";
+				},
+
+				
+					getLayoutId: function() {
+						return "1583";
+					},
+					getLayoutURL: function() {
+						return "https://web.liferay.com/sign-in";
+					},
+					isPrivateLayout: function() {
+						return "false";
+					},
+					getParentLayoutId: function() {
+						return "0";
+					},
+				
+
+				getScopeGroupId: function() {
+					return "14";
+				},
+				getScopeGroupIdOrLiveGroupId: function() {
+					return "14";
+				},
+				getParentGroupId: function() {
+					return "14";
+				},
+				isImpersonated: function() {
+					return false;
+				},
+				isSignedIn: function() {
+					return false;
+				},
+				getDefaultLanguageId: function() {
+					return "en_US";
+				},
+				getLanguageId: function() {
+					return "en_US";
+				},
+				isAddSessionIdToURL: function() {
+					return false;
+				},
+				isFreeformLayout: function() {
+					return false;
+				},
+				isStateExclusive: function() {
+					return false;
+				},
+				isStateMaximized: function() {
+					return false;
+				},
+				isStatePopUp: function() {
+					return false;
+				},
+				getPathContext: function() {
+					return "";
+				},
+				getPathImage: function() {
+					return "https://cdn.lfrs.sl/web.liferay.com/image";
+				},
+				getPathJavaScript: function() {
+					return "/html/js";
+				},
+				getPathMain: function() {
+					return "/c";
+				},
+				getPathThemeImages: function() {
+					return "https://cdn.lfrs.sl/web.liferay.com/osb-community-theme/images";
+				},
+				getPathThemeRoot: function() {
+					return "/osb-community-theme/";
+				},
+				getURLControlPanel: function() {
+					return "/group/control_panel?doAsGroupId=14&refererPlid=73285537";
+				},
+				getURLHome: function() {
+					return "https://web.liferay.comwww.liferay.com";
+				},
+				getSessionId: function() {
+					
+						
+						
+							return "";
+						
+					
+				},
+				getPortletSetupShowBordersDefault: function() {
+					return false;
+				}
+			};
+
+		
+
+module.exports = {
+    viewArticleContent: function (config, article, languageid) {
+        getArticle(config, article, function (jsonresponse) {
+            //  https://web.liferay.com/de/c/journal/view_article_content?cmd=preview&groupId=67510365&articleId=74591624&version=1.2&languageId=de_DE&type=general&structureId=73728595&templateId=73728597
+            //  https://web.liferay.com/de/c/journal/view_article_content?cmd=preview&groupId=67510365&articleId=74591624&version=1.2&languageId=de_DE&type=general&structureId=73728595&templateId=73728597
+            //  https://web.liferay.com/de/c/journal/view_article_content?cmd=preview&groupId=67510365&articleId=74591624&version=1.2&languageId=en_US&type=general&structureId=73728595&templateId=73728597
+            var getrequest = {
+                url: config.server + "/de/c/journal/view_article_content",
+                qs: {
+                    //cmd: "preview",
+                    groupId: article.groupId,
+                    articleId: article.articleId,
+                    version: jsonresponse.version,
+                    languageId: languageid,
+                    type: "general",
+                    structureId: jsonresponse.structureId,
+                    templateId: jsonresponse.templateId
+                },
+                headers: { "Authorization": "Basic " + config.base64auth }
+            };
+            logger.info(getrequest);
+
+            request.get(getrequest, function (err, httpResponse, body) {
+              //  logger.silly("httpResponse: ", httpResponse);
+              //  logger.debug("body: " + body);
+
+                if (err) {
+                //    logger.error(err);
+                } else if (httpResponse && httpResponse.statusCode && (httpResponse.statusCode != 200)) {
+                    logger.error("An error seems to have occurred. Response Code " + httpResponse.statusCode);
+                    var errorobj = {
+                        statusCode: httpResponse.statusCode,
+                        body: body
+                    };
+                    throw errorobj;
+                }
+                else {
+
+                    var startBody = body.indexOf("<body>");
+                    var endBody = body.indexOf("</body>");
+                    
+                    var creamynougatcenter = body.substr(startBody+6, endBody-startBody-6 );
+                    logger.info(creamynougatcenter);
+
+                }
+            });
+
+
+        });
+
+
+    },
+    getDisplayArticleByTitle: function (config, article) {
+
+        var cmd = {
+            "/journalarticle/get-display-article-by-url-title": {
+                "groupId": article.groupId,
+                "urlTitle": article.urlTitle,
+            }
+        };
+        invoke_liferay(config, cmd,
+            function (jsonresponse) {
+                logger.info("body: " + jsonresponse.content);
+            });
+    },
+    getArticle: getArticle,
+
+    getArticleContent: function (config, article, locale) {
+        var cmd = {
+            "/journalarticle/get-article-content": {
+                "groupId": article.groupId,
+                "articleId": article.articleId,
+                "languageId": locale,
+                "themeDisplay": ThemeDisplay /*{
+                    companyId: 1,
+                    companyGroupId: 8431626,
+                    scopeGroupeId: article.groupId,
+                    siteGroupId: article.groupId
+                }*/
+            }
+        };
+        invoke_liferay(config, cmd,
+            function (jsonresponse) {
+                logger.info("body: " + jsonresponse.content);
+            });
+    },
     updateStaticArticleContent: function (config, article) {
 
         // need to get version info first...
@@ -129,8 +353,8 @@ module.exports = {
         var builder = new xml2js.Builder({ cdata: true, xmldec: { version: "1.0" } });
         var xml = builder.buildObject(obj);
         logger.silly(xml);
-       
-       // nest call to get latest version #
+
+        // nest call to get latest version #
         var cmd = {
             "$article = /journalarticle/get-article": {
                 "groupId": article.groupId,

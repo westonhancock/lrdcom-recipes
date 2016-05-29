@@ -177,3 +177,66 @@ padding: 50px 45px;
 
 }
 
+
+table.lfr-table {
+	counter-reset: section;
+}
+@define-extend counter-format {
+   
+}
+
+@define-mixin counter $increment $reset {
+   font-size: 40px;
+   background: linear-gradient(red, blue);
+   color: white;
+	 display: block;
+   counter-increment: $(increment);  
+	 @if $(reset) != null {
+	 	counter-reset: $(reset);
+	 }
+
+	 }
+
+table.lfr-table li[dataname=lego_section_attr]:before {
+	 content: "SECTION " counter(section) " ";
+	 @mixin counter section block;
+}
+table.lfr-table li[dataname=lego_block_attr]:before {
+	 content: "SECTION " counter(section) " BLOCK " counter(block) " ";
+	 	 @mixin counter block element;
+}
+
+table.lfr-table li[dataname=lego_element_attr]:before {
+	 content: "SECTION " counter(section) " BLOCK " counter(block) " ELEMENT " counter(element) " ";
+	 @mixin counter element null;
+}
+
+table.lfr-table textarea {
+	height: 30px !important;
+}
+table.lfr-table .journal-article-component-container,
+table.lfr-table .journal-article-field-label,
+table.lfr-table .journal-article-localized-checkbox {
+	display: inline-block !important;
+}
+table.lfr-table 
+.taglib-form-navigator .form-section .aui-field-input {
+	width: 100px !important;
+}
+table.lfr-table 
+.taglib-form-navigator .form-section .aui-field-input[name*=title] {
+	width: 100% !important;
+	
+}
+
+
+
+
+
+
+
+
+.yui3-skin-sam .yui3-widget-mask {
+    background-color: #223460;
+    opacity: 0.9;
+}

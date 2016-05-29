@@ -1,0 +1,131 @@
+<style type="text/css">
+    .blue-background {
+        background-color: #1277a7;
+    }
+    
+    .inline {
+        display: inline-block;
+    }
+
+    .twitter-container {
+        background-color: #35A6CD;
+        padding: 60px 0;
+        text-align: center;
+    }
+
+    .twitter-container .icon-container {
+        color: #FFF;
+        margin: 0 30px;
+        text-align: left;
+        vertical-align: top;
+    }
+
+    .twitter-container .icon-container img {
+        margin-bottom: 30px;
+    }
+
+    .twitter-container .icon-container span {
+        font-size: 20px;
+        font-weight: normal;
+        margin-left: 10px;
+        position: relative;
+        top: 3px;
+        vertical-align: top;
+    }
+
+    .twitter-handles {
+        background-color: #FFF;
+        border: 3px solid #E3E6E8;
+        margin-bottom: 30px;
+        max-width: 280px;
+        text-align: left;
+        vertical-align: top;
+        width: 100%;
+    }
+
+    .twitter-handles a:last-child {
+        border-bottom: 0;
+    }
+
+    .twitter-handles .title, .twitter-handles .twitter-handle-container {
+        border-bottom: 1px solid #E3E6E8;
+    }
+
+    .twitter-handles .title {
+        font-size: 20px;
+        padding: 10px;
+    }
+
+    .twitter-handle-container {
+        display: block;
+        padding: 15px 0;
+    }
+
+    .twitter-handle-container img {
+        float: left;
+        padding: 0 15px;
+    }
+
+    .twitter-handle-container .at-handle {
+        font-size: 20px;
+    }
+
+    .twitter-handle-container .name{
+        color: #4C4C4E;
+        font-size: 18px;
+        font-weight: bold;
+    }
+
+    .twitter-handle-container .handle {
+        color: #D2D2D2;
+        font-size: 15px;
+        line-height: 10px;
+        margin-bottom: 10px;
+    }
+
+    .twitter-timeline.twitter-timeline-rendered {
+        display: inline-block !important;
+        margin: 0 30px !important;
+        max-width: 520px !important;
+        width: 100% !important;
+    }
+
+    @media(max-width: 600px) {
+
+        .twitter-timeline.twitter-timeline-rendered {
+            margin: 0 !important;
+            width: 90% !important;
+        }
+    }
+</style>
+
+<div class="twitter-container">
+    <div class="icon-container inline">
+        <img src="$event_icon.data"/><br/>
+        #foreach ($icon in $left_icon.siblings)
+            <img class="blue-background" src="$icon.data"/> <span>$icon.icon_text.data</span><br/>
+        #end
+    </div>
+    <div class="twitter-handles inline">
+        <div class="title normal">
+            Follow Liferay
+        </div>
+        #foreach ($twitter in $twitter_link.siblings)
+            <a class="twitter-handle-container" href="$twitter.data" target="_blank">
+                <img src="$twitter.twitter_image.data" />
+                <span class="name">
+                    $twitter.twitter_name.data
+                </span><br/>
+                <span class="handle normal">
+                    <span class="at-handle">@</span>$twitter.twitter_handle.data
+                </span>
+            </a>
+        #end
+    </div>
+    <a class="twitter-timeline" data-widget-id="484393999285764096" href="https://twitter.com/hashtag/LRDevcon">#LRDevcon Tweets
+    </a>
+</div>
+
+<script>
+!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+"://platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");
+</script>
