@@ -202,8 +202,8 @@ gulp.task('get-content', function () {
     var fs = require("fs");
     var config = JSON.parse(fs.readFileSync('./config.json'));
     //var articleConfig = JSON.parse(fs.readFileSync('./articleconfig.json'));
-    
-    var articleConfig = [
+    var articleConfig = JSON.parse(fs.readFileSync('./article-lookup-config.json'));
+    /*var articleConfig = [
         {
         "groupId": "67510365",
         "articleId": "74591624",
@@ -214,7 +214,7 @@ gulp.task('get-content', function () {
         "groupId": "39527293",
         "articleId": "39575459",
         "urlTitle": "devcon-call-for-papers-web-events2014-devcon"
-        }];   
+        }]; */  
     articleConfig.forEach(function(article) { 
         biggulp.viewArticleContent(config, article, "en_US");
       //  biggulp.getDisplayArticleByTitle(config, article); 

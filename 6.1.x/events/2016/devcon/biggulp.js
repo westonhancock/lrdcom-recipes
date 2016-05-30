@@ -10,7 +10,6 @@ var logger = new winston.Logger({
     level: 'debug',
     transports: [
         new (winston.transports.Console)({
-            
             level: "info"
         }),
         new (winston.transports.File)({
@@ -116,7 +115,7 @@ function getArticle(config, article, cb) {
     };
     invoke_liferay(config, cmd,
         function (jsonresponse) {
-            logger.info("body: " + jsonresponse.content);
+            logger.debug("body: " + jsonresponse.content);
             cb(jsonresponse);
         });
 }
@@ -259,7 +258,7 @@ module.exports = {
                 },
                 headers: { "Authorization": "Basic " + config.base64auth }
             };
-            logger.info(getrequest);
+            logger.debug(getrequest);
 
             request.get(getrequest, function (err, httpResponse, body) {
               //  logger.silly("httpResponse: ", httpResponse);
@@ -281,7 +280,9 @@ module.exports = {
                     var endBody = body.indexOf("</body>");
                     
                     var creamynougatcenter = body.substr(startBody+6, endBody-startBody-6 );
-                    logger.info(creamynougatcenter);
+                    logger.debug(creamynougatcenter);
+                    logger.info("Writing article file: ", article);
+                    fs.writeFile(article.filename, creamynougatcenter);
 
                 }
             });

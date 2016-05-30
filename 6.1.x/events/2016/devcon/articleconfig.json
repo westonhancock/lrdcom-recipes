@@ -19,51 +19,6 @@
 },
 {
         "groupId": "67510365",
-        "articleId": "74666847",
-        "defaultLocale": "de_DE",
-        "locales": [{
-            "locale": "de_DE",
-            "filename": "src/eventsapp.html"
-        }]
-},
-{
-        "groupId": "67510365",
-        "articleId": "74670370",
-        "defaultLocale": "de_DE",
-        "locales": [{
-            "locale": "de_DE",
-            "filename": "build/cfp-tabs.html"
-        }]
-},
-{
-        "groupId": "67510365",
-        "articleId": "74739278",
-        "defaultLocale": "de_DE",
-        "locales": [{
-            "locale": "de_DE",
-            "filename": "src/cfp-info.html"
-        }]
-},
-{
-        "groupId": "67510365",
-        "articleId": "74739289",
-        "defaultLocale": "de_DE",
-        "locales": [{
-            "locale": "de_DE",
-            "filename": "src/cfp-categories.html"
-        }]
-},
-{
-        "groupId": "67510365",
-        "articleId": "74739303",
-        "defaultLocale": "de_DE",
-        "locales": [{
-            "locale": "de_DE",
-            "filename": "src/cfp-submit.html"
-        }]
-},
-{
-        "groupId": "67510365",
         "articleId": "74393728",
         "defaultLocale": "de_DE",
         "locales": [{
