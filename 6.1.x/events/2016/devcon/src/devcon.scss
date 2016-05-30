@@ -1,7 +1,8 @@
 $darkblue: #093d5a;
 
+
 .top-banner-container {
-  background: url(/documents/67510365/74348488/Devcon-Mobile-Banner-1.jpg/60281214-b5a0-48bc-90fb-5a68fa21a0a5?t=1463656085000) repeat no-repeat center bottom;
+  background: url($main-image-dir/Devcon-Mobile-Banner-1.jpg) repeat no-repeat center bottom;
   text-align: center;
   padding-bottom: 100px;
   background-size: auto 100px;
@@ -102,7 +103,7 @@ $darkblue: #093d5a;
 		background: #074d77;
 	}
 	.top-banner-container {
-		background: url(/documents/67510365/74348488/Devcon+Banner_cropped.jpg/a6b6ded5-1723-44c4-94c5-d13a829aab7f?t=1463656093000) no-repeat right top;
+		background: url("$main-image-dir/Devcon Banner_cropped.jpg") no-repeat right top;
 		padding-bottom: 0;
 	}
 	
@@ -176,6 +177,48 @@ padding: 50px 45px;
     background-size: cover;
 
 }
+
+
+/* call for papers -----------------*/
+
+#cfppanel {
+	position: fixed;
+}
+#cfppanel .yui3-tabview-panel {
+	overflow-y: auto;
+	height: 100%;
+	background: #FFF;
+}
+#cfppanel .yui3-tabview-list {
+	background: black;
+	border: none;
+	display: flex;
+	flex-flow: row nowrap;
+	flex: 1 0 auto;
+}
+#cfppanel .yui3-tab-selected .yui3-tab-label, #cfppanel .yui3-tab:hover .yui3-tab-label {
+	border-bottom: 2px solid #3c64ad;
+	font-weight: normal;
+
+}
+#cfppanel .yui3-tab-label {
+		background: black;
+	border: none;
+		text-align: center;
+  text-transform: uppercase;
+	  font-size: 1.5em;
+  font-weight: lighter;
+	 color: #FFF;
+	 margin: 0.75em;
+	 	padding: 0 0.3em;
+}
+
+#cfppanel h3 {
+    color: black;
+}
+/*----------------------------------*/
+
+
 
 
 table.lfr-table {
