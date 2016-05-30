@@ -25,7 +25,9 @@
 }
 
 .dynamic-navigation .parent-title {
-	background: url(/documents/14/48124953/hamburger.png) no-repeat left 15px center;
+	
+	background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABUAAAASCAYAAAC0EpUuAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAyRpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuMy1jMDExIDY2LjE0NTY2MSwgMjAxMi8wMi8wNi0xNDo1NjoyNyAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvIiB4bWxuczp4bXBNTT0iaHR0cDovL25zLmFkb2JlLmNvbS94YXAvMS4wL21tLyIgeG1sbnM6c3RSZWY9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9zVHlwZS9SZXNvdXJjZVJlZiMiIHhtcDpDcmVhdG9yVG9vbD0iQWRvYmUgUGhvdG9zaG9wIENTNiAoTWFjaW50b3NoKSIgeG1wTU06SW5zdGFuY2VJRD0ieG1wLmlpZDozRTMzNTFGODlEQjYxMUU0QjVCM0UzMzQ2Q0E1NDYzRCIgeG1wTU06RG9jdW1lbnRJRD0ieG1wLmRpZDozRTMzNTFGOTlEQjYxMUU0QjVCM0UzMzQ2Q0E1NDYzRCI+IDx4bXBNTTpEZXJpdmVkRnJvbSBzdFJlZjppbnN0YW5jZUlEPSJ4bXAuaWlkOkE4ODNCOEZGOURBRjExRTRCNUIzRTMzNDZDQTU0NjNEIiBzdFJlZjpkb2N1bWVudElEPSJ4bXAuZGlkOkE4ODNCOTAwOURBRjExRTRCNUIzRTMzNDZDQTU0NjNEIi8+IDwvcmRmOkRlc2NyaXB0aW9uPiA8L3JkZjpSREY+IDwveDp4bXBtZXRhPiA8P3hwYWNrZXQgZW5kPSJyIj8+wjcd6gAAAGVJREFUeNpi/P//vyADA4MLA3XAeyDewwg09B2QIchAPVDBRGUDQUCQCepkaoL3IO8rARnGVDQUHKYM1AZMDDQALEBME++P8CRFk2w6dJJUKJWTVCfI0FVDwvsgQ89S2cx7AAEGABUPJYW122oWAAAAAElFTkSuQmCC) 
+	no-repeat left 15px center;
     display: block;
     height: 100%;
 	width: 100px;
@@ -157,7 +159,7 @@ padding: 50px 45px;
 }
 
 .quote-section .block-1 {
-  background: url(https://web.liferay.com/documents/67510365/74348488/Quote-Box-1.jpg);
+  background: url(/images//Quote-Box-1.jpg);
   background-size: cover;
 }
 
@@ -170,7 +172,7 @@ padding: 50px 45px;
 
 }
 .quote-section .block-4 {
-   background: url(https://web.liferay.com/documents/67510365/74348488/Quote-Box-2.jpg);
+   background: url(/images//Quote-Box-2.jpg);
     background-size: cover;
 
 }
@@ -225,6 +227,10 @@ flex: 1 0 auto;
 #cfppanel h3 {
     color: black;
 }
+
+ #main-content.full-screen-layout #cfppanel  .portlet-boundary {
+	 max-width: none;
+ }
 
 .close-popup-content {
   background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAcZJREFUeNqslksoRFEcxmeMR5FIyIIkSSgSkbcikrKQlI2SUrKysLBQysZCWVoNRUmTKGKpJKWQZKkkpEgiydv1/fluTtOd+5i5t35155z/+X3dO+dxPZqmeUA7GOS9G4hvFcTKj2zwCr7BgAvyNvCm/V1DeuMwGySkPwJ5K3ihyw+8aucIO75AXxjyZvBMxxzwSXtw0SgLPkGvA3mjIl/Q5UYBwpgS0mNDXq/Il1R5qABhXAnpNpHXgifWBoLlZgHCBAd+gC6D/mrwyJplEGPksXr8SQpk2nUq7ZXggX2/8z2Uw84fOKWEdIByRb5uJrcbIExT+K68800ruZMAL1jU/q8DEGdnrN2AYnCrBMhqbXEroEiRb4FZ3svcb4o0oADcULgN4vm6/EpIQ7gB+eCaoh2QoPRFcb/RQ+qcBuSBKwp2QaJBjazaedbIzKqxG5ALLjlwDySZPKVPmV2yqqusAnLABQfsW8jVkADHyAKsCBUgJ9s5Cw9BsoPtOpr7kR5SFhyQBc5YcARSwjhwZFWv0HEPSvWATHDKjmOQGsGRKSFrdN2BEg+noFwnIM2FQ19CNvS1Iw2FXETpLn62yD41AzJ+BBgAUxU01oimE8UAAAAASUVORK5CYII=) no-repeat;
@@ -290,7 +296,7 @@ table.lfr-table li[dataname=lego_element_attr]:before {
 	 counter-increment: element;
 }
 
-table.lfr-table textarea {
+table.lfr-table textarea:not(.cke_source) {
 	height: 30px !important;
 }
 table.lfr-table .journal-article-component-container, table.lfr-table .journal-article-field-label, table.lfr-table .journal-article-localized-checkbox {

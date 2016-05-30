@@ -51,11 +51,11 @@ AUI().use('panel', function (A) {
 	var panel = new A.Panel({
 		srcNode: '#cfptabs',
 		
-		zIndex: 100,
+		zIndex: 250,
 		id: "cfppanel",
 		centered: true,
 		modal: true,
-		visible: true,
+		visible: false,
 		render: true,
 		/* no buttons or header */
 		buttons: [],

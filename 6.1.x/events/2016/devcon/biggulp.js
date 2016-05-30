@@ -9,7 +9,10 @@ var winston = require("winston");
 var logger = new winston.Logger({
     level: 'debug',
     transports: [
-        new (winston.transports.Console)(),
+        new (winston.transports.Console)({
+            
+            level: "info"
+        }),
         new (winston.transports.File)({
             name: 'debug-file',
             filename: 'logs/debug.log',
@@ -41,7 +44,7 @@ function invoke_liferay(config, body, callback) {
         body: body,
         headers: { "Authorization": "Basic " + config.base64auth }
     };
-    logger.info("POST Request: ", postrequest);
+    logger.debug("POST Request: ", postrequest);
 
     request.post(postrequest, function (err, httpResponse, body) {
 
@@ -309,12 +312,14 @@ module.exports = {
                 "groupId": article.groupId,
                 "articleId": article.articleId,
                 "languageId": locale,
-                "themeDisplay": ThemeDisplay /*{
-                    companyId: 1,
-                    companyGroupId: 8431626,
-                    scopeGroupeId: article.groupId,
-                    siteGroupId: article.groupId
-                }*/
+                "themeDisplay":  {
+                     class: "com.liferay.portal.theme.ThemeDisplay",            
+                    _companyId: 1,
+                    _companyGroupId: 8431626,
+                    _scopeGroupeId: article.groupId,
+                    _siteGroupId: article.groupId
+                    
+                }
             }
         };
         invoke_liferay(config, cmd,
@@ -325,7 +330,7 @@ module.exports = {
     updateStaticArticleContent: function (config, article) {
 
         // need to get version info first...
-
+        logger.info("Updating article: ", article);
         var staticContent = [];
         var allLocales = [];
         article.locales.forEach(function (locale) {
@@ -370,7 +375,7 @@ module.exports = {
         };
         invoke_liferay(config, cmd,
             function (jsonresponse) {
-                logger.info("body: " + jsonresponse.content);
+                logger.debug("body: " + jsonresponse.content);
             });
     },
 

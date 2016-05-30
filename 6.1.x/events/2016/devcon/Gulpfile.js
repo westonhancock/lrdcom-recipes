@@ -43,7 +43,7 @@ var paths = {
     css: ['src/*.scss'],
     svg: ['images/*.svg'],
     html: ['src/*.html'],
-    js: ['src/*.js']
+    js: ['src/js/*.js']
     
 };
 
@@ -60,14 +60,21 @@ gulp.task('browser-sync', function () {
 
 });
 
-
+gulp.task("js", function() {
+    
+    var inject= require("gulp-inject-string");
+   gulp.src(paths.js)
+   .pipe(concat('alldevcon.js'))
+   .pipe(inject.prepend("<script>"))
+   .pipe(inject.append("</script>"))
+   .pipe(gulp.dest("build"));
+});
 
 gulp.task('pug', ["liferaycss","scripts","sprite", "css"], function buildHTML() {
     logger.info("Running templates");
     var pug = require('gulp-pug');
     return gulp.src(paths.pug)
-        .pipe(pug({
-            // Your options in here. 
+        .pipe(pug({ locals: environment
         }))
         .pipe(gulp.dest("build"));
 });
@@ -118,7 +125,7 @@ gulp.task('svgmin', function () {
 
 gulp.task("sprite", function (cb) {
     var config = {
-        log: "debug",
+        log: "info",
         mode: {
             symbol: {
                 inline: true
@@ -178,7 +185,7 @@ gulp.task('images', function () {
 });
 
 
-gulp.task('update', ["pug"], function () {
+gulp.task('update', ["js", "pug"], function () {
     var biggulp = require("./biggulp.js");
     var fs = require("fs");
     var config = JSON.parse(fs.readFileSync('./config.json'));
@@ -202,10 +209,16 @@ gulp.task('get-content', function () {
         "articleId": "74591624",
         "urlTitle": "devcon-call-for-papers-web-events2016-devcon"
         }];   
+          articleConfig = [
+        {
+        "groupId": "39527293",
+        "articleId": "39575459",
+        "urlTitle": "devcon-call-for-papers-web-events2014-devcon"
+        }];   
     articleConfig.forEach(function(article) { 
         biggulp.viewArticleContent(config, article, "en_US");
       //  biggulp.getDisplayArticleByTitle(config, article); 
        // biggulp.getArticle(config, article);
-       // biggulp.getArticleContent(config, article, "en_US"); 
+    //    biggulp.getArticleContent(config, article, "en_US"); 
     });
 });
