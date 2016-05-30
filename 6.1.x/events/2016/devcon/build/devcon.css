@@ -1,5 +1,5 @@
 .top-banner-container {
-  background: url(/documents/67510365/74348488/Devcon-Mobile-Banner-1.jpg/60281214-b5a0-48bc-90fb-5a68fa21a0a5?t=1463656085000) repeat no-repeat center bottom;
+  background: url(/images//Devcon-Mobile-Banner-1.jpg) repeat no-repeat center bottom;
   text-align: center;
   padding-bottom: 100px;
   background-size: auto 100px;
@@ -47,7 +47,6 @@
 	}
 	#navigation .child-menu {
 		max-height: 0;
-		-webkit-transition: max-height .3s ease-in-out;
 		transition: max-height .3s ease-in-out;
 		overflow: hidden;
 		width: 100%;
@@ -101,7 +100,7 @@
 		background: #074d77;
 	}
 	.top-banner-container {
-		background: url(/documents/67510365/74348488/Devcon+Banner_cropped.jpg/a6b6ded5-1723-44c4-94c5-d13a829aab7f?t=1463656093000) no-repeat right top;
+		background: url("/images//Devcon Banner_cropped.jpg") no-repeat right top;
 		padding-bottom: 0;
 	}
 	
@@ -128,11 +127,8 @@
   margin-top: 50px;
 }
 .quote-section {
-   display: -webkit-box;
-   display: -ms-flexbox;
    display: flex;
-    -ms-flex-flow: row wrap;
-        flex-flow: row wrap;
+    flex-flow: row wrap;
 }
 
 .quote-header h2 {
@@ -143,20 +139,12 @@
 	
   height: 400px;
   color: white;
-  -webkit-box-flex: 0;
-      -ms-flex: 0 0 50%;
-          flex: 0 0 50%;
+  flex: 0 0 50%;
   box-sizing: border-box;
 padding: 50px 45px;
-  -webkit-box-align: center;
-      -ms-flex-align: center;
-          align-items: center;
-  display: -webkit-box;
-  display: -ms-flexbox;
+  align-items: center;
   display: flex;
-  -webkit-box-pack: center;
-      -ms-flex-pack: center;
-          justify-content: center
+  justify-content: center
 }
 
 .quote-section .quote {
@@ -188,6 +176,88 @@ padding: 50px 45px;
 }
 
 
+/* call for papers -----------------*/
+
+#cfppanel {
+	position: fixed;
+	width: 80vw;
+	height: 80vh;
+}
+#cfptabs {
+	box-sizing: border-box;
+    height: 100%;
+}
+#cfppanel .yui3-tabview-panel {
+	overflow-y: auto;
+	height: 100%;
+	background: #fff;
+}
+#cfppanel .yui3-tab-panel {
+	padding: 20px;
+}
+#cfppanel .yui3-tabview-list {
+	background: black;
+	border: none;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+#cfppanel .yui3-tabview-list li {
+flex: 1 0 auto;
+}
+
+#cfppanel .yui3-tab-selected .yui3-tab-label, #cfppanel .yui3-tab:hover .yui3-tab-label {
+	border-bottom: 2px solid #3c64ad;
+	font-weight: normal;
+}
+#cfppanel .yui3-tab-label {
+		background: black;
+	border: none;
+		text-align: center;
+  text-transform: uppercase;
+	  font-size: 1.5em;
+  font-weight: lighter;
+	 color: #FFF;
+	 margin: 0.75em;
+	 	padding: 0 0.3em;
+}
+
+#cfppanel h3 {
+    color: black;
+}
+
+.close-popup-content {
+  background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAcZJREFUeNqslksoRFEcxmeMR5FIyIIkSSgSkbcikrKQlI2SUrKysLBQysZCWVoNRUmTKGKpJKWQZKkkpEgiydv1/fluTtOd+5i5t35155z/+X3dO+dxPZqmeUA7GOS9G4hvFcTKj2zwCr7BgAvyNvCm/V1DeuMwGySkPwJ5K3ihyw+8aucIO75AXxjyZvBMxxzwSXtw0SgLPkGvA3mjIl/Q5UYBwpgS0mNDXq/Il1R5qABhXAnpNpHXgifWBoLlZgHCBAd+gC6D/mrwyJplEGPksXr8SQpk2nUq7ZXggX2/8z2Uw84fOKWEdIByRb5uJrcbIExT+K68800ruZMAL1jU/q8DEGdnrN2AYnCrBMhqbXEroEiRb4FZ3svcb4o0oADcULgN4vm6/EpIQ7gB+eCaoh2QoPRFcb/RQ+qcBuSBKwp2QaJBjazaedbIzKqxG5ALLjlwDySZPKVPmV2yqqusAnLABQfsW8jVkADHyAKsCBUgJ9s5Cw9BsoPtOpr7kR5SFhyQBc5YcARSwjhwZFWv0HEPSvWATHDKjmOQGsGRKSFrdN2BEg+noFwnIM2FQ19CNvS1Iw2FXETpLn62yD41AzJ+BBgAUxU01oimE8UAAAAASUVORK5CYII=) no-repeat;
+	background-size: 100%;
+	cursor: pointer;
+	flex: 0 0 auto;
+	order: 4;
+	width: 24px;
+	height: 24px;
+  margin-right: 10px;
+	float: right;
+}
+@media(max-width:720px) {
+	#cfppanel .yui3-tab-label {
+	  font-size: 0.75em;
+		margin: 0.75 0;
+		padding: 0;
+}
+#cfppanel {
+	width: 100%;
+	height: 100%;
+}
+.close-popup-content {
+	width: 20px;
+	height: 20px;
+	margin-top: 5px;
+}
+}
+/*----------------------------------*/
+
+
+
+
 table.lfr-table {
 	counter-reset: section;
 }
@@ -195,7 +265,6 @@ table.lfr-table {
 table.lfr-table li[dataname=lego_section_attr]:before {
 	 content: "SECTION " counter(section) " ";
 	 font-size: 40px;
-	 background: -webkit-linear-gradient(red, blue);
 	 background: linear-gradient(red, blue);
 	 color: white;
 	 display: block;
@@ -205,7 +274,6 @@ table.lfr-table li[dataname=lego_section_attr]:before {
 table.lfr-table li[dataname=lego_block_attr]:before {
 	 content: "SECTION " counter(section) " BLOCK " counter(block) " ";
 	 	 font-size: 40px;
-	 	 background: -webkit-linear-gradient(red, blue);
 	 	 background: linear-gradient(red, blue);
 	 	 color: white;
 	 	 display: block;
@@ -214,10 +282,8 @@ table.lfr-table li[dataname=lego_block_attr]:before {
 }
 
 table.lfr-table li[dataname=lego_element_attr]:before {
-	 content: "SECTION " counter(section) " BLOCK " counter(block) " -moz-ELEMENT " counter(element) " ";
 	 content: "SECTION " counter(section) " BLOCK " counter(block) " ELEMENT " counter(element) " ";
 	 font-size: 40px;
-	 background: -webkit-linear-gradient(red, blue);
 	 background: linear-gradient(red, blue);
 	 color: white;
 	 display: block;

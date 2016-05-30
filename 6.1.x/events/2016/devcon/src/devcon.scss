@@ -183,23 +183,35 @@ padding: 50px 45px;
 
 #cfppanel {
 	position: fixed;
+	width: 80vw;
+	height: 80vh;
+}
+#cfptabs {
+	box-sizing: border-box;
+    height: 100%;
 }
 #cfppanel .yui3-tabview-panel {
 	overflow-y: auto;
 	height: 100%;
-	background: #FFF;
+	background: #fff;
+}
+#cfppanel .yui3-tab-panel {
+	padding: 20px;
 }
 #cfppanel .yui3-tabview-list {
 	background: black;
 	border: none;
 	display: flex;
-	flex-flow: row nowrap;
-	flex: 1 0 auto;
+	justify-content: center;
+	align-items: center;
 }
+#cfppanel .yui3-tabview-list li {
+flex: 1 0 auto;
+}
+
 #cfppanel .yui3-tab-selected .yui3-tab-label, #cfppanel .yui3-tab:hover .yui3-tab-label {
 	border-bottom: 2px solid #3c64ad;
 	font-weight: normal;
-
 }
 #cfppanel .yui3-tab-label {
 		background: black;
@@ -215,6 +227,34 @@ padding: 50px 45px;
 
 #cfppanel h3 {
     color: black;
+}
+
+.close-popup-content {
+  background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAcZJREFUeNqslksoRFEcxmeMR5FIyIIkSSgSkbcikrKQlI2SUrKysLBQysZCWVoNRUmTKGKpJKWQZKkkpEgiydv1/fluTtOd+5i5t35155z/+X3dO+dxPZqmeUA7GOS9G4hvFcTKj2zwCr7BgAvyNvCm/V1DeuMwGySkPwJ5K3ihyw+8aucIO75AXxjyZvBMxxzwSXtw0SgLPkGvA3mjIl/Q5UYBwpgS0mNDXq/Il1R5qABhXAnpNpHXgifWBoLlZgHCBAd+gC6D/mrwyJplEGPksXr8SQpk2nUq7ZXggX2/8z2Uw84fOKWEdIByRb5uJrcbIExT+K68800ruZMAL1jU/q8DEGdnrN2AYnCrBMhqbXEroEiRb4FZ3svcb4o0oADcULgN4vm6/EpIQ7gB+eCaoh2QoPRFcb/RQ+qcBuSBKwp2QaJBjazaedbIzKqxG5ALLjlwDySZPKVPmV2yqqusAnLABQfsW8jVkADHyAKsCBUgJ9s5Cw9BsoPtOpr7kR5SFhyQBc5YcARSwjhwZFWv0HEPSvWATHDKjmOQGsGRKSFrdN2BEg+noFwnIM2FQ19CNvS1Iw2FXETpLn62yD41AzJ+BBgAUxU01oimE8UAAAAASUVORK5CYII=) no-repeat;
+	background-size: 100%;
+	cursor: pointer;
+	flex: 0 0 auto;
+	order: 4;
+	width: 24px;
+	height: 24px;
+  margin-right: 10px;
+	float: right;
+}
+@media(max-width:720px) {
+	#cfppanel .yui3-tab-label {
+	  font-size: 0.75em;
+		margin: 0.75 0;
+		padding: 0;
+}
+#cfppanel {
+	width: 100%;
+	height: 100%;
+}
+.close-popup-content {
+	width: 20px;
+	height: 20px;
+	margin-top: 5px;
+}
 }
 /*----------------------------------*/
 

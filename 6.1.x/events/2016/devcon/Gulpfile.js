@@ -22,7 +22,18 @@ var logger = new winston.Logger({
         })
     ]
 });
+var fs = require("fs");
+var config = JSON.parse(fs.readFileSync('./config.json'));
+var environment = config.environment.prod;
 
+gulp.task("dev", function () {
+    
+   environment = config.environment.dev; 
+   logger.info("environment changed to: " ,  environment);
+});
+
+
+ 
 
 var syncdir = "/Users/allenziegenfus/Documents/liferay-sync61/Events 2016/DEVCON";
 var paths = {
@@ -31,7 +42,8 @@ var paths = {
     pug: ['src/*.pug'],
     css: ['src/*.scss'],
     svg: ['images/*.svg'],
-    html: ['src/*.html']
+    html: ['src/*.html'],
+    js: ['src/*.js']
     
 };
 
@@ -88,9 +100,10 @@ gulp.task('watch', function () {
      gulp.watch(paths.svg, ['pug']);
        gulp.watch(paths.html, ['pug']);
      gulp.watch(paths.scripts, ['scripts', 'pug']);
+     gulp.watch(paths.js, ['pug']);
 });
 
-gulp.task('live-dev', ['pug', 'watch', 'browser-sync']);
+gulp.task('live-dev', ['dev', 'pug', 'watch', 'browser-sync']);
 
 gulp.task('svgmin', function () {
     return gulp.src('images/*.svg')
@@ -133,8 +146,16 @@ gulp.task("sprite", function (cb) {
 gulp.task('css', function (cb) {
     var postcss = require('gulp-postcss');
     var gulpStylelint = require('gulp-stylelint');
+    var fs = require('fs');
+    logger.info("environment: ",  environment);
+
     return gulp.src('src/**/*.scss')
-        .pipe(postcss([require('autoprefixer'), require('precss')]))
+        .pipe(postcss([ 
+        require('precss'),
+         require('postcss-advanced-variables')({   variables: 
+        environment
+     })
+        ]))
         .pipe(ext_replace(".css"))
         /*       .pipe(gulpStylelint({   reporters: [
              {formatter: 'string', console: true}

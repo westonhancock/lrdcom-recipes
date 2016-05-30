@@ -1,0 +1,57 @@
+body {
+    color: #4C4C4E;
+    font: 100 15px/1.5 source-sans-pro, Arial, Helvetica, sans-serif;
+}
+
+a {
+    color: #6D6E71;
+}
+
+a:hover, .nav-item.selected a {
+    color: #186498;
+}
+
+h1 {
+    color: #404040;
+    font-size: 3em;
+}
+
+h2 {
+    color: #404040;
+    font-size: 2.5em;
+}
+
+h3 {
+    color: #919697;
+    font-size: 1.5em;
+}
+
+#main-content, #main-content.full-screen-layout .portlet-boundary, .max-full {
+    max-width: 960px;
+}
+
+.max-large {
+    max-width: 800px;
+}
+
+.max-medium {
+    max-width: 600px;
+}
+
+.max-small {
+    max-width: 400px;
+}
+
+@media all and (min-width: 720px) and (max-width: 960px) {
+    .responsive .portlet-column.portlet-column-first .portlet-column-content {
+        padding-left: 10px;
+    }
+
+    .responsive .portlet-column.portlet-column-last .portlet-column-content {
+        padding-right: 10px;
+    }
+
+    .responsive .portlet-column.portlet-column-only .portlet-column-content {
+        padding: 0 10px;
+    }
+}
