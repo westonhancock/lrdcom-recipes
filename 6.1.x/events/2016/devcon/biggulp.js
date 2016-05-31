@@ -35,6 +35,12 @@ function invoke_liferay_api(config, api, payload, callback) {
     invoke_liferay(config, cmdArray, callback);
 }
 
+/**
+ * invoke_liferay with post request
+ * @param {{server: string, base64auth: string}} config - config object with server name and base 64 authentication . 
+ * @param {string} body - post body 
+ * @param {function} callback - callback when post completes.
+ */
 function invoke_liferay(config, body, callback) {
 
     var postrequest = {
@@ -70,7 +76,6 @@ function invoke_liferay(config, body, callback) {
     });
 }
 function post_liferay(config, api, payload, callback) {
-
     var postrequest = {
         url: config.server + "/api/secure/jsonws" + api,
         form: payload,
@@ -105,7 +110,6 @@ function post_liferay(config, api, payload, callback) {
         }
     });
 }
-
 function getArticle(config, article, cb) {
     var cmd = {
         "/journalarticle/get-article": {
@@ -113,6 +117,7 @@ function getArticle(config, article, cb) {
             "articleId": article.articleId
         }
     };
+    
     invoke_liferay(config, cmd,
         function (jsonresponse) {
             logger.debug("body: " + jsonresponse.content);
@@ -259,7 +264,6 @@ module.exports = {
                 headers: { "Authorization": "Basic " + config.base64auth }
             };
             logger.debug(getrequest);
-
             request.get(getrequest, function (err, httpResponse, body) {
               //  logger.silly("httpResponse: ", httpResponse);
               //  logger.debug("body: " + body);

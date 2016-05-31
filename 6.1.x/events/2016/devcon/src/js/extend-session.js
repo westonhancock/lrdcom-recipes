@@ -3,4 +3,4 @@ function ping() {
     this.img.src = "/c/portal/extend_session?cachebreaker=" + new Date().getTime();
 }
 
-window.setInterval(function () { ping() }, 600000);
+window.setInterval(function () { ping(); }, 600000);

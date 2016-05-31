@@ -10,6 +10,7 @@
         "articleId": "74591624",
         "urlTitle": "devcon-call-for-papers-web-events2016-devcon"
         }];   
+   
     articleConfig.forEach(function(article) { 
         biggulp.viewArticleContent(config, article, "en_US");
       //  biggulp.getDisplayArticleByTitle(config, article); 

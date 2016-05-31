@@ -54,7 +54,8 @@ gulp.task('browser-sync', function () {
     browserSync.init({
         server: {
             baseDir: "build/"
-        }
+        },
+        plugins: ["browser-sync-logger"]
     });
     gulp.watch("build/index.html").on('change', browserSync.reload);
 
@@ -159,6 +160,7 @@ gulp.task('css', function (cb) {
     return gulp.src('src/**/*.scss')
         .pipe(postcss([ 
         require('precss'),
+        require("css-mqpacker"),
          require('postcss-advanced-variables')({   variables: 
         environment
      })
@@ -215,6 +217,7 @@ gulp.task('get-content', function () {
         "articleId": "39575459",
         "urlTitle": "devcon-call-for-papers-web-events2014-devcon"
         }]; */  
+    
     articleConfig.forEach(function(article) { 
         biggulp.viewArticleContent(config, article, "en_US");
       //  biggulp.getDisplayArticleByTitle(config, article); 

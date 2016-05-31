@@ -9,6 +9,8 @@
   "devDependencies": {
     "autoprefixer": "^6.3.6",
     "browser-sync": "^2.12.8",
+    "browser-sync-logger": "^1.0.3",
+    "css-mqpacker": "^5.0.1",
     "cssunminifier": "0.0.2",
     "gulp": "^3.9.1",
     "gulp-concat": "^2.6.0",
