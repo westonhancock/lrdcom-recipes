@@ -44,7 +44,7 @@ var CSV = (function() {
 		var fileMatches = 0;
 		var acceptableFileTypes = [
 			"text/csv",
-			"vnd.ms-excel"
+			"application/vnd.ms-excel"
 		]
 
 		// test acceptable file types
@@ -57,7 +57,7 @@ var CSV = (function() {
 		if (fileMatches > 0) {
 			return true;
 		} else {
-			return "Not a CSV File";
+			return "Not a CSV File. File is " + file.type;
 		}
 	}
 
