@@ -20,24 +20,25 @@ var CSV = (function() {
 			errorMessage: "Not a CSV File"
 		});
 
-		csvJSONtests.newProcess({
-			action: function(data) {
-				return data;
-			},
-			tests: [
-				checkCSVFormatting
-			],
-			errorMessage: "CSV not formatted properly"
-		});
-
-		// step 2 (incomplete): let browser read the file as string
+		// step 2: let browser read the file as string and test formatting
 		csvJSONtests.newProcess({
 			action: readFile,
 			mode: "async",
 			tests: [
 				checkCSVFormatting
 			],
-			errorMessage: "Error with CSV text"
+			errorMessage: "CSV Improperly Formatted"
+		});
+
+		// step 3: test 
+		csvJSONtests.newProcess({
+			action: function(data) {
+				return data;
+			},
+			tests: [
+				emptyCSVFields
+			],
+			errorMessage: "CSV File missing entries"
 		});
 
 		// step 3 (incomplete): turn string into JSON
@@ -73,7 +74,27 @@ var CSV = (function() {
 	}
 
 	var checkCSVFormatting = function(csv) {
-		return true;
+		var pattern = new RegExp(/[~`!#$%\^&*+=\\[\]\\';/{}|\\":<>\?]/)
+		var res = pattern.test(csv);
+
+		if (res) {
+			return false;
+		}
+		else {
+			return true;
+		}
+	}
+
+	var emptyCSVFields = function(csv) {
+		var pattern = new RegExp(",,");
+		var res = pattern.test(csv);
+
+		if (res) {
+			return false;
+		}
+		else {
+			return true;
+		}
 	}
 
 	// convert csv to JSON object
