@@ -128,8 +128,8 @@ var ui = (
 
 		return {
 			changeNavigationState: changeNavigationState,
-			newMessage: newMessage
-
+			newMessage: newMessage,
+			closeMessage: closeMessage
 		};
 
 	}

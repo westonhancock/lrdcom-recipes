@@ -219,8 +219,8 @@ var ui = (
 
 		return {
 			changeNavigationState: changeNavigationState,
-			newMessage: newMessage
-
+			newMessage: newMessage,
+			closeMessage: closeMessage
 		};
 
 	}
@@ -769,6 +769,7 @@ var step1 = (function() {
 			processer.onEnd = function() {
 				if (processer.pass === true) {
 					steps.completeStep(1);
+					UI.fileGrade('pass');
 					data.updateData('json', processer.data);
 				}
 				
