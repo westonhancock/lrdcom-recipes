@@ -33,9 +33,7 @@ gulp.task(
 				'src/js/core.js',
 
 				// our utils
-				'src/js/modules/hubspot.js',
-				'src/js/modules/classUtil.js',
-				'src/js/modules/utils.js',
+				'src/js/modules/*.js',
 
 				// step views
 				'src/js/modules/steps/step1/view.js',

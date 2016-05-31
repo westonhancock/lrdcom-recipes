@@ -302,45 +302,6 @@ var core = (
 
 	}
 )(data, config, ui);
-var hubspot = (function() {
-
-	var hubspotFormID = config.hubspotFormID || '';
-	var hubspotPortalID = config.hubspotPortalID || '';
-
-	var sendToHubspot = function(url, paramObj) {
-		var ajax = new XMLHttpRequest();
-		var queryParameters = "";
-		var counter = 0;
-
-		if (paramObj) {
-			
-			for (var key in paramObj) {
-				if (paramObj.hasOwnProperty(key)) {
-					let firstParameterPrefix = "&"
-
-					if (counter == 0) {
-						firstParameterPrefix = "?";
-					}
-
-					counter++;
-					queryParameters = queryParameters + firstParameterPrefix + key + "=" + paramObj[key];
-				}
-			}	
-		}
-
-		ajax.open(
-			'POST', 
-			url + '/' + hubspotPortalID + '/' + hubspotFormID + queryParameters
-		);
-
-		ajax.send();
-	}
-
-	return {
-		sendToHubspot: sendToHubspot
-	}
-
-})(config);
 (function() {
     Array.prototype.CSSClassIndexOf = Array.prototype.indexOf || function(item) {
         var length = this.length;
@@ -452,33 +413,191 @@ var hubspot = (function() {
         };
 })();
 
-var UTILS = (function() {
-	// Converts an HTML table to JS object
-	var tableToJson = function(table) {
-		var data = [];
+// module with functionalities for handling CSV's
+var CSV = (function() {
 
-		var headers = [];
-		for (var i=0; i<table.rows[0].cells.length; i++) {
-			headers[i] = table.rows[0].cells[i].innerHTML.toLowerCase().replace(/ /gi,'');
-		}
-		
-		for (var i=1; i<table.rows.length; i++) {
-			var tableRow = table.rows[i];
-			var rowData = {};
+	// convert csv to JSON object
+	var csvToJSON = function(csv) {
+		var lines = csv.split('\n');
+		var result = [];
 
-			for (var j=0; j<tableRow.cells.length; j++) {
-				rowData[ headers[j] ] = tableRow.cells[j].innerHTML;
+		var headers = lines[0].split(',');
+
+		for (var i = 1; i < lines.length; i++) {
+			var currentline = lines[i].split(',');
+			var obj = {};
+
+			for (var j = 0; j < headers.length; j++) {
+				var currentHeader = headers[j];
+				var currentLine = currentline[j];
+
+				// data integrity by removing special characters
+				currentHeader = currentHeader.replace(/[^a-zA-Z ]/g, "");
+				currentLine = currentLine.replace(/[^a-zA-Z ]/g, "")
+
+				obj[currentHeader] = currentLine;
 			}
 
-			data.push(rowData);
-		}       
+			result.push(obj);
+		}
 
-		return data;
+		return result;
+	};
+
+	var getFileType = function(filename) {
+		var parts = filename.split('/');
+
+		return parts[parts.length - 1];
+	};
+
+	// read file in browser
+	var readFile = function(file) {
+
+		return new Promise(function(resolve, reject) {
+			var textType = 'csv';
+			var windowsTextType = 'vnd.ms-excel';
+			var fileType = getFileType(file.type);
+
+			if (fileType === textType || fileType === windowsTextType) {
+				var reader = new FileReader();
+				var content = reader.readAsText(file);
+
+				step1Data.csvDone = false;
+
+				reader.onload = function() {
+					resolve(reader.result);
+				}
+			}
+			else {
+				reject(Error('Wrong File Type'));
+			}
+		});
+	};
+
+	// get information file
+	var getFileInformation = function(JSON) {
+		var entries = 0;
+
+		for (var key in JSON) {
+			if (JSON.hasOwnProperty(key)) {
+				entries++;
+			}
+		}
+
+		return {
+			entries: entries
+		};
+	};
+
+	// run tests for csv file
+	var checkCSV = function(csv) {
+		
+		var hasCSV = false;
+
+		// run our tests
+		if (csv) {
+			hasCSV = true;
+		}
+
+		return hasCSV;
+	};
+
+	var checkJSON = function(json) {
+		// run tests for json file
+		if (json) {
+			return true;
+		}
+	};
+
+	return {
+		csvToJSON: csvToJSON,
+		getFileType: getFileType,
+		readFile: readFile,
+		getFileInformation: getFileInformation,
+		checkCSV: checkCSV,
+		checkJSON: checkJSON
+	}
+})();
+var hubspot = (function() {
+
+	var hubspotFormID = config.hubspotFormID || '';
+	var hubspotPortalID = config.hubspotPortalID || '';
+
+	var sendToHubspot = function(url, paramObj) {
+		var ajax = new XMLHttpRequest();
+		var queryParameters = "";
+		var counter = 0;
+
+		if (paramObj) {
+			
+			for (var key in paramObj) {
+				if (paramObj.hasOwnProperty(key)) {
+					let firstParameterPrefix = "&"
+
+					if (counter == 0) {
+						firstParameterPrefix = "?";
+					}
+
+					counter++;
+					queryParameters = queryParameters + firstParameterPrefix + key + "=" + paramObj[key];
+				}
+			}	
+		}
+
+		ajax.open(
+			'POST', 
+			url + '/' + hubspotPortalID + '/' + hubspotFormID + queryParameters
+		);
+
+		ajax.send();
 	}
 
 	return {
-		tableToJson: tableToJson
+		sendToHubspot: sendToHubspot
 	}
+
+})(config);
+var UTILS = (function() {
+    // Converts an HTML table to JS object
+    var tableToJson = function(table) {
+        var data = [];
+
+        var headers = [];
+        for (var i = 0; i < table.rows[0].cells.length; i++) {
+            headers[i] = table.rows[0].cells[i].innerHTML.toLowerCase().replace(/ /gi, '');
+        }
+
+        for (var i = 1; i < table.rows.length; i++) {
+            var tableRow = table.rows[i];
+            var rowData = {};
+
+            for (var j = 0; j < tableRow.cells.length; j++) {
+                rowData[headers[j]] = tableRow.cells[j].innerHTML;
+            }
+
+            data.push(rowData);
+        }
+
+        return data;
+    }
+
+    // adds object key renaming method to Objects object
+    Object.prototype.renameProperty = function(oldName, newName) {
+        // Do nothing if the names are the same
+        if (oldName == newName) {
+            return this;
+        }
+        // Check for the old property name to avoid a ReferenceError in strict mode.
+        if (this.hasOwnProperty(oldName)) {
+            this[newName] = this[oldName];
+            delete this[oldName];
+        }
+        return this;
+    };
+
+    return {
+        tableToJson: tableToJson
+    }
 })();
 
 'use strict';
@@ -529,107 +648,12 @@ var step1 = (function() {
 		}
 	);
 
-	var tests = (function() {
-
-		// run tests for csv file
-		var checkCSV = function(csv) {
-			
-
-			var hasCSV = false;
-
-			// run our tests
-			if (csv) {
-				hasCSV = true;
-			}
-
-			return hasCSV;
-		};
-
-		var checkJSON = function(json) {
-			// run tests for json file
-			if (json) {
-				return true;
-			}
-		};
-
-		return {
-			checkCSV: checkCSV,
-			checkJSON: checkJSON
-		};
-	})();
-
-	var util = (function() {
-		// convert csv to JSON object
-		var csvToJSON = function(csv) {
-			var lines = csv.split('\n');
-			var result = [];
-
-			var headers = lines[0].split(',');
-
-			for (var i = 1; i < lines.length; i++) {
-				var currentline = lines[i].split(',');
-				var obj = {};
-
-				for (var j = 0; j < headers.length; j++) {
-					obj[headers[j]] = currentline[j];
-				}
-
-				result.push(obj);
-			}
-
-			core.publisher.fire('JSONcreated', result);
-			return result;
-		};
-
-		var getFileType = function(filename) {
-			var parts = filename.split('/');
-
-			return parts[parts.length - 1];
-		};
-
-		// read file in browser
-		var readFile = function(file) {
-
-			return new Promise(function(resolve, reject) {
-				var textType = 'csv';
-				var windowsTextType = 'vnd.ms-excel';
-				var fileType = getFileType(file.type);
-
-				if (fileType === textType || fileType === windowsTextType) {
-					var reader = new FileReader();
-					var content = reader.readAsText(file);
-
-					step1Data.csvDone = false;
-
-					reader.onload = function() {
-						resolve(reader.result);
-					}
-				}
-				else {
-					reject(Error('Wrong File Type'));
-				}
-			});
-		};
-
-		// get information file
-		var GetFileInformation = function(JSON) {
-			var entries = 0;
-
-			for (var key in JSON) {
-				if (JSON.hasOwnProperty(key)) {
-					entries++;
-				}
-			}
-
-			return {
-				entries: entries
-			};
-		};
-
+	var controller = (function() {
+		
 		// higher order function to manage the processing
 		var processFile = function(file) {
 
-			readFile(file)
+			CSV.readFile(file)
 
 				// when file is done being read, test csv
 				.then(function(csv) {
@@ -644,7 +668,7 @@ var step1 = (function() {
 				})
 				// additional tests on csv
 				.then(function(csv) {
-					if (!tests.checkCSV(csv)) {
+					if (!CSV.checkCSV(csv)) {
 						throw "CSV is no good";
 					}
 
@@ -653,7 +677,7 @@ var step1 = (function() {
 				// if file is checked, parse to JSON
 				.then(function(csv) {
 					if (csv) {
-						var json = csvToJSON(csv);
+						var json = CSV.csvToJSON(csv);
 
 						data.updateData('json', json);
 					}
@@ -662,7 +686,7 @@ var step1 = (function() {
 				})
 				// if we pass the JSON testing, we should complete the step
 				.then(function(json) {
-					if (tests.checkJSON(data.json)) {
+					if (CSV.checkJSON(data.json)) {
 						steps.completeStep(1);
 					}
 				})
@@ -694,7 +718,7 @@ var step1 = (function() {
 				fileDragHover(e);
 				var files = e.dataTransfer.files;
 
-				util.processFile(files[0]);
+				controller.processFile(files[0]);
 				fileChanged(files[0].name);
 			}
 
@@ -747,8 +771,8 @@ var step1 = (function() {
 			fileChanged: fileChanged,
 			fileGrade: fileGrade
 		};
-	})(util);
-})(hubspot, steps, step1Data);
+	})(controller);
+})(CSV, hubspot, steps, step1Data);
 var step2 = (
 	function() {
 		steps.initStep(
