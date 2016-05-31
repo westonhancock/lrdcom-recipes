@@ -41,6 +41,10 @@
 			zh_CN: '部门'
 		},
 
+		download: {
+			zh_CN: '下载'
+		},
+
 		email: {
 			de_DE: 'E-Mail',
 			en_US: 'Email',
