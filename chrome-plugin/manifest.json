@@ -1,0 +1,30 @@
+{
+  "manifest_version": 2,
+
+  "name": "Liferay Article Ids",
+  "description": "This extension shows article ids for Liferay web content",
+  "version": "1.0",
+
+  "browser_action": {
+    "default_icon": "liferay.png",
+    "default_popup": "popup.html"
+  },
+   "background": {
+    "scripts": ["background.js"]
+  },
+  /*
+"content_scripts": [
+    {
+      "matches": ["http://www.liferay.com/*", "https://www.liferay.com/*"],
+      "js": ["webcontent.js"]
+    }
+  ],
+  */
+  "permissions": [
+  	"webRequest",
+  	"webRequestBlocking",
+    "activeTab",
+    "http://www.liferay.com/*",
+    "https://www.liferay.com/*"
+  ]
+}

@@ -1,0 +1,31 @@
+[{
+        "groupId": "67510365",
+        "articleId": "74655872",
+        "defaultLocale": "en_US",
+        "locales": [
+        {
+            "locale": "en_US",
+            "filename": "build/banner.html"
+        }]
+},
+{
+        "groupId": "67510365",
+        "articleId": "74655884",
+        "defaultLocale": "en_US",
+        "locales": [{
+            "locale": "en_US",
+            "filename": "build/devcon.css"
+        }]
+},
+{
+        "groupId": "67510365",
+        "articleId": "74393728",
+        "defaultLocale": "de_DE",
+        "locales": [{
+            "locale": "de_DE",
+            "filename": "build/alldevcon.js"
+        }]
+}
+]
+
+

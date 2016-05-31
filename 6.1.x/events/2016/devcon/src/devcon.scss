@@ -1,0 +1,573 @@
+$darkblue: #024D77;
+$blue: #1477A8;
+$green: #2BBCB1;
+$lightblue: #B6E0EA;
+$darkdark: #0A3D59;
+$white: #fff;
+
+@custom-media --small-viewport (max-width: 720px);
+@custom-media --big-viewport (min-width: 721px);
+
+.top-banner-container {
+	background: url($main-image-dir/Devcon-Mobile-Banner-1.jpg) repeat no-repeat center bottom;
+ 	text-align: center;
+  	padding-bottom: 100px;
+  	background-size: auto 100px;
+}
+
+.top-banner-container svg {
+  	margin: 45px 0;
+ 	width: 90%;
+ 	max-height: 200px;
+}
+
+.dynamic-navigation {
+	background: $darkblue;
+	height: 55px;
+ 	position: fixed;
+	top: 0;
+	width: 100%;
+}
+
+#navigation li {
+	text-transform: uppercase;
+	margin: 10px 10px;	
+}
+
+.dynamic-navigation .parent-title {
+	background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABUAAAASCAYAAAC0EpUuAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAyRpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuMy1jMDExIDY2LjE0NTY2MSwgMjAxMi8wMi8wNi0xNDo1NjoyNyAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvIiB4bWxuczp4bXBNTT0iaHR0cDovL25zLmFkb2JlLmNvbS94YXAvMS4wL21tLyIgeG1sbnM6c3RSZWY9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9zVHlwZS9SZXNvdXJjZVJlZiMiIHhtcDpDcmVhdG9yVG9vbD0iQWRvYmUgUGhvdG9zaG9wIENTNiAoTWFjaW50b3NoKSIgeG1wTU06SW5zdGFuY2VJRD0ieG1wLmlpZDozRTMzNTFGODlEQjYxMUU0QjVCM0UzMzQ2Q0E1NDYzRCIgeG1wTU06RG9jdW1lbnRJRD0ieG1wLmRpZDozRTMzNTFGOTlEQjYxMUU0QjVCM0UzMzQ2Q0E1NDYzRCI+IDx4bXBNTTpEZXJpdmVkRnJvbSBzdFJlZjppbnN0YW5jZUlEPSJ4bXAuaWlkOkE4ODNCOEZGOURBRjExRTRCNUIzRTMzNDZDQTU0NjNEIiBzdFJlZjpkb2N1bWVudElEPSJ4bXAuZGlkOkE4ODNCOTAwOURBRjExRTRCNUIzRTMzNDZDQTU0NjNEIi8+IDwvcmRmOkRlc2NyaXB0aW9uPiA8L3JkZjpSREY+IDwveDp4bXBtZXRhPiA8P3hwYWNrZXQgZW5kPSJyIj8+wjcd6gAAAGVJREFUeNpi/P//vyADA4MLA3XAeyDewwg09B2QIchAPVDBRGUDQUCQCepkaoL3IO8rARnGVDQUHKYM1AZMDDQALEBME++P8CRFk2w6dJJUKJWTVCfI0FVDwvsgQ89S2cx7AAEGABUPJYW122oWAAAAAElFTkSuQmCC) 
+	no-repeat left 15px center;
+	display: block;
+	height: 100%;
+	width: 100px;
+}
+
+#navigation .parent-title a {
+	display: none;
+}
+
+#navigation li a {
+	color: $white;
+}
+
+@media(max-width:1199px) {	
+	
+	.top-banner-container {
+		/* make room for fixed nav */
+		margin-top: 50px;
+	}
+	
+	#navigation .child-menu {
+		max-height: 0;
+		transition: max-height .3s ease-in-out;
+		overflow: hidden;
+		width: 100%;
+		background: $darkblue;
+	}
+	
+	#navigation li.last {
+		position: absolute;
+		top: 0;
+		right: 10px;			
+	}
+	
+	#navigation ul {
+		text-align: left;
+	}
+	
+	#navigation li {
+		display: block;
+		padding: 0;
+		font-size: 14px;
+	}
+	
+	#navigation li.last a{
+		background: $blue;
+	}
+	
+	#navigation[data-state=open] .child-menu {
+          max-height: 600px;
+  }
+}
+@media(min-width:1200px) {
+	
+	/* give more room to video */
+	.engage-container {
+		margin: 100px 0;
+	}
+	
+	nav#navigation.sticky {
+		position: fixed;
+	}
+
+	.dynamic-navigation .parent-title {
+		display: none;
+	}
+	
+	#navigation li.last a{
+		color: #6D6E71;
+		background: $white;
+		padding: 5px 20px;
+	}
+	
+	.dynamic-navigation {
+		height: 60px;
+		position: static;
+		border:  solid 3px $darkblue;
+		background: linear-gradient(90deg, $green 8%, $darkdark 0, $darkdark 8.3%, $blue 0);
+	}
+	
+	.top-banner-container {
+		background: url("$main-image-dir/Devcon Banner_cropped.jpg") no-repeat right top;
+		background-size: auto 400px;
+		padding-bottom: 0;
+	}
+	
+	/* bigger margins on desktop image so we see whole banner on right hand side*/
+	.top-banner-container svg {
+	  margin: 90px 0;
+		height: 200px;
+	}
+}
+
+/* override standard mobile padding of 15px that leads to white borders */
+#main-content.full-screen-layout .portlet-dropzone {
+    padding: 0 !important;
+}
+
+.lego-article svg {
+	width: 70px;
+	height: 70px;
+	
+	  @media (--small-viewport) {
+		width: 60px;
+		height: 60px;  
+	  }
+}
+
+.lego-section {
+	text-align: center;
+	
+	h2 {
+		color: $darkblue;
+		margin: 10px 0;
+		 @media (--small-viewport) {
+  			font-size: 180%;
+ 		 }
+	}
+}
+.lego-section:first-child {
+	padding-top: 50px;
+		 @media (--small-viewport) {
+  			padding-top: 30px;
+ 		 }
+	
+}
+
+.btn {
+	cursor: pointer;
+	background: $blue;
+	color: $white;
+	padding: 15px 40px;
+	font-size: 120%;
+	display: inline-block;
+	margin: 20px 0;
+	
+	&:hover {
+		background: $darkblue;
+		color: white;
+	}
+}
+
+/* quote section ---------------------------------*/
+.lego-quote .lego-article-content {
+    max-width: 100%;
+}
+
+.quote-section { 
+	display: flex;
+  	flex-flow: row wrap;
+  
+	> div {
+ 		min-height: 400px;
+  		color: $white;
+  		box-sizing: border-box;
+  		padding: 50px 45px;
+  		align-items: center;
+  		display: flex;
+  		justify-content: center;
+		  
+		  @media (--small-viewport) {
+ 				padding: 20px 10px;
+				 min-height: initial;
+		  }
+	}
+	
+	.quote {
+  		font-size: 200%;
+  		line-height: 120%;
+		  
+		 @media (--small-viewport) {
+			font-size: 125%;
+		}
+	}
+	
+	.attribution {
+		font-size: 150%;
+		 @media (--small-viewport) {
+ 				font-size: 100%;
+		  }
+	}
+	
+	 .block-1 {
+ 	 	background: url($main-image-dir/Quote-Box-1.jpg) no-repeat center center;
+  		background-size: cover;
+		  	 @media (--small-viewport) {
+ 				background-size: cover;
+		  }
+	}
+	
+	.block-2 {
+  		background: $green;
+	}
+	
+ 	.block-3 {
+  		background: $blue;
+		   @media (--small-viewport) {
+ 			background: url($main-image-dir/Quote-Box-2.jpg) no-repeat;
+  			background-size: cover;
+		  }
+	}
+
+	.block-4 {
+  		background: url($main-image-dir/Quote-Box-2.jpg) no-repeat;
+  		background-size: cover;
+		   @media (--small-viewport) {
+ 				background: $blue;
+		  }
+	}
+}
+
+
+
+/* agenda ---------------------------*/
+
+.agenda-section {
+	.lego-block {
+		margin: 30px 0;
+		vertical-align: top;	
+	}
+	 .block-1 p {
+		width: 300px;
+		margin: 0 auto;
+		font-size: 100%;
+	}
+
+	p {
+		font-size: 180%;
+	}
+
+	.aui-w33 {
+		width: 30%;
+	}
+}
+/* call for papers -----------------*/
+
+.call-for-papers {
+	background: $lightblue;
+	
+	.lego-block {	
+		max-width: 720px;
+	}
+	
+	@media (--big-viewport) { 
+		p {
+			font-size: 150%;
+			}
+	}
+}
+
+#cfppanel {
+	position: fixed;
+	width: 80vw;
+	height: 80vh;
+}
+#cfptabs {
+	box-sizing: border-box;
+    height: 100%;
+}
+#cfppanel .yui3-tabview-panel {
+	overflow-y: auto;
+	height: 100%;
+	background: $white;
+}
+#cfppanel .yui3-tab-panel {
+	padding: 20px;
+}
+#cfppanel .yui3-tabview-list {
+	background: black;
+	border: none;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+#cfppanel .yui3-tabview-list li {
+flex: 1 0 auto;
+}
+
+#cfppanel .yui3-tab-selected .yui3-tab-label, #cfppanel .yui3-tab:hover .yui3-tab-label {
+	border-bottom: 2px solid #3c64ad;
+	font-weight: normal;
+}
+#cfppanel .yui3-tab-label {
+		background: black;
+	border: none;
+		text-align: center;
+  text-transform: uppercase;
+	  font-size: 1.5em;
+  font-weight: lighter;
+	 color: #FFF;
+	 margin: 0.75em;
+	 	padding: 0 0.3em;
+}
+
+#cfppanel h3 {
+    color: black;
+}
+
+ #main-content.full-screen-layout #cfppanel  .portlet-boundary {
+	 max-width: none;
+ }
+
+.close-popup-content {
+  background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAcZJREFUeNqslksoRFEcxmeMR5FIyIIkSSgSkbcikrKQlI2SUrKysLBQysZCWVoNRUmTKGKpJKWQZKkkpEgiydv1/fluTtOd+5i5t35155z/+X3dO+dxPZqmeUA7GOS9G4hvFcTKj2zwCr7BgAvyNvCm/V1DeuMwGySkPwJ5K3ihyw+8aucIO75AXxjyZvBMxxzwSXtw0SgLPkGvA3mjIl/Q5UYBwpgS0mNDXq/Il1R5qABhXAnpNpHXgifWBoLlZgHCBAd+gC6D/mrwyJplEGPksXr8SQpk2nUq7ZXggX2/8z2Uw84fOKWEdIByRb5uJrcbIExT+K68800ruZMAL1jU/q8DEGdnrN2AYnCrBMhqbXEroEiRb4FZ3svcb4o0oADcULgN4vm6/EpIQ7gB+eCaoh2QoPRFcb/RQ+qcBuSBKwp2QaJBjazaedbIzKqxG5ALLjlwDySZPKVPmV2yqqusAnLABQfsW8jVkADHyAKsCBUgJ9s5Cw9BsoPtOpr7kR5SFhyQBc5YcARSwjhwZFWv0HEPSvWATHDKjmOQGsGRKSFrdN2BEg+noFwnIM2FQ19CNvS1Iw2FXETpLn62yD41AzJ+BBgAUxU01oimE8UAAAAASUVORK5CYII=) no-repeat;
+	background-size: 100%;
+	cursor: pointer;
+	flex: 0 0 auto;
+	order: 4;
+	width: 24px;
+	height: 24px;
+  margin-right: 10px;
+	float: right;
+}
+
+@media (--small-viewport) {
+	#cfppanel .yui3-tab-label {
+	  font-size: 0.75em;
+		margin: 0.75 0;
+		padding: 0;
+}
+#cfppanel {
+	width: 100%;
+	height: 100%;
+}
+.close-popup-content {
+	width: 20px;
+	height: 20px;
+	margin-top: 5px;
+}
+}
+
+
+/* unconference ---------------------*/
+
+.unconference {
+	background: url($main-image-dir/Unconference-Banner.jpg) no-repeat top center;
+	background-size: cover;
+	color: white;
+	min-height: 400px;
+	@media (--big-viewport) {
+		background-attachment: fixed;
+		
+	
+	}
+	
+	.lego-block {
+		max-width: 720px;
+	}
+	p {
+		@media (--big-viewport) {
+			font-size: 150%;
+		}
+	}
+	h2 {
+		color: white;
+	}
+}
+
+/* prices ---------------------------*/
+
+.prices {
+	.section-2 {
+		margin: 0 auto;
+		max-width: 690px;
+		
+		.lego-block {
+			min-height: 200px;
+			vertical-align: top;
+			width: 28%;
+			border: 3px solid $darkdark;
+			margin: 10px;
+			> div {
+				/* have to override !important mobile padding rule */
+				padding: 0 !important;
+			}
+			
+			@media (--small-viewport) {
+				/* have to override normal mobile 100% rule that are *so* important */
+    			display: inline-block !important;
+				width: 35% !important;	
+				min-height: 180px;
+			}
+			
+		}
+		.block-1, .block-2, .block-3 {
+			background: $blue;
+		}
+		.block-4, .block-5, .block-6 {
+			background: $darkblue;
+		}
+	}
+	.ticket-type, .price-expires {
+		color: $blue;
+		background: white;
+		margin: 0;
+		@media (--small-viewport) {
+			font-size: 80%;		
+		}
+	}
+	.ticket-type {
+		padding: 20px 0 0 0;
+	
+	}
+	.price-expires {
+		padding: 0 0 20px 0;
+	}
+	.price-header {
+		padding-top: 10px;
+	}
+
+	.price-header, .price {
+		color: white;
+		margin: 0;
+		font-weight: normal;
+	}
+	.discount-block {
+		h3,h2,p {
+			color: white;
+			font-weight: normal;
+		}
+		background: $green;
+		
+		.discount-header {
+			margin: 20px 0 0 0;
+			@media (--small-viewport) {
+				font-size: 80%;		
+			}
+		}
+	}
+	.btn {
+		background: $darkblue;
+		&:hover {
+			background: $darkdark;
+		}
+	}
+
+
+}
+/* venue ----------------------------*/
+
+.venue {
+	
+	background: url($main-image-dir/Venue-Banner.jpg) no-repeat top center;
+	background-size: cover;
+	color: white;
+	min-height: 400px;
+	@media (--big-viewport) {
+		background-attachment: fixed;
+		.btn {
+			margin: 50px;
+		}
+		
+	}
+	.lego-block {
+		max-width: 720px;
+	}
+	p {
+		line-height: 15px;
+		@media (--big-viewport) {
+			font-size: 120%;		
+		}
+	}
+	h2,h3 {
+		color: white;
+	}
+}
+
+
+
+/*----------------------------------*/
+
+
+
+
+table.lfr-table {
+	counter-reset: section;
+	margin-left: 30px;
+}
+
+
+@define-mixin counter $increment, $reset {
+   font-size: 40px;
+   background: linear-gradient($lightblue, $blue);
+   color: white;
+	 display: block;
+   counter-increment: $(increment);  
+	 @if $(reset) != null {
+	 	counter-reset: $(reset);
+	 }
+
+	 }
+
+table.lfr-table li[dataname=lego_section_attr]:before {
+	 content: "SECTION " counter(section) " ";
+	 @mixin counter section, block;
+}
+table.lfr-table li[dataname=lego_block_attr]:before {
+	 content: "SECTION " counter(section) " BLOCK " counter(block) " ";
+	 	 @mixin counter block, element;
+}
+
+table.lfr-table li[dataname=lego_element_attr]:before {
+	 content: "SECTION " counter(section) " BLOCK " counter(block) " ELEMENT " counter(element) " ";
+	 @mixin counter element, null;
+}
+
+/*
+table.lfr-table textarea:not(.cke_source) {
+	height: 50px !important;
+}
+*/
+
+
+table.lfr-table .journal-article-component-container,
+table.lfr-table .journal-article-field-label,
+table.lfr-table .journal-article-localized-checkbox {
+	display: inline-block !important;
+}
+/*
+table.lfr-table 
+.taglib-form-navigator .form-section .aui-field-input {
+	width: 100px !important;
+}*/
+table.lfr-table 
+.taglib-form-navigator .form-section .aui-field-input[name*=title] {
+	width: 100% !important;
+	max-width: initial !important;
+	
+}
+
+.yui3-skin-sam .yui3-widget-mask {
+    background-color: #223460;
+    opacity: 0.9;
+}

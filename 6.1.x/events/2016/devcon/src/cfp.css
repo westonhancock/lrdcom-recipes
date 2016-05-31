@@ -1,0 +1,302 @@
+
+
+#article-69933638{
+  background: #00537d;
+  cursor: pointer;
+  padding: 60px 0;
+ height: 257px;
+}
+
+#article-69933638:hover {
+  background: #3d64ad;
+  padding: 60px 0;
+}
+
+.cfp {
+  text-align: center;
+}
+
+.cfp h3 {
+  color: #FFF;
+  text-transform: initial;
+}
+
+.cfp h3 .lwr {
+  font-size: 18px;
+}
+
+.close-popup-content {
+  background: url('/documents/14/43237314/x-close.png/fb100dfc-157b-43df-8ce1-5a8c8a873c3d') no-repeat;
+  cursor: pointer;
+  height: 24px;
+  top: 27px;
+  position: absolute;
+  right: 0;
+  width: 24px;
+  z-index: 5;
+}
+.ddl-form-portlet {
+  background: ;
+}
+
+.ddl-form-portlet p {
+  color: #929797;
+  font-size: 1.34em;
+}
+
+.ddl-form-portlet p:nth-child(2) {
+  margin: 1em 0;
+}
+
+.ddl-form-portlet .aui-button-input, .ddl-form-portlet .aui-button-input:focus, .ddl-form-portlet .portlet-msg-success a.btn, .ddl-form-portlet .portlet-msg-success a.btn:focus {
+  background: #FFF;
+  border: 1px solid #198aca;
+  border-radius: 0;
+  color: #198aca;
+  font-weight: normal;
+  padding: 7px 15px;
+  text-shadow: none;
+}
+
+.ddl-form-portlet .aui-button-input:hover, .ddl-form-portlet .portlet-msg-success a.btn:hover {
+  background: #198aca;
+  border: 1px solid #198aca;
+  color: #FFF;
+}
+
+.ddl-form-portlet .aui-choice-label {
+  color: #929797;
+}
+
+.ddl-form-portlet .aui-choice-label .aui-label-required {
+  display: none;
+}
+
+.ddl-form-portlet .aui-fieldset {
+  margin: 0 auto;
+  max-width: 690px;
+}
+
+.ddl-form-portlet .aui-fieldset .aui-field-content, .ddl-form-portlet .aui-field-row, .ddl-form-portlet .aui-button-holder, .ddl-form-portlet .aui-field-wrapper-content {
+  margin: 10px 1px;
+}
+
+.ddl-form-portlet .aui-fieldset-content .aui-field-input {
+  background: #FFF;
+}
+
+.ddl-form-portlet .aui-fieldset-content .aui-field-label {
+  color: #929797;
+}
+
+.ddl-form-portlet .aui-field-label, .ddl-form-portlet .aui-field-label-inline-label {
+  font-weight: normal;
+}
+
+.ddl-form-portlet .aui-fieldset-content .aui-field-wrapper-content:nth-child(2) .aui-fieldset {
+  float: left;
+  padding-bottom: 60px;
+  width: 38%;
+}
+
+.ddl-form-portlet .aui-fieldset-content .aui-field-wrapper-content:nth-child(3) .aui-fieldset {
+  float: right;
+  padding-bottom: 60px;
+  width: 58%;
+}
+
+.ddl-form-portlet .aui-fieldset-content .aui-field-wrapper-content:nth-child(5) .aui-fieldset {
+  float: left;
+  width: 38%;
+}
+
+.ddl-form-portlet .aui-fieldset-content .aui-field-wrapper-content:nth-child(6) .aui-fieldset {
+  float: right;
+  width: 58%;
+}
+
+.ddl-form-portlet .aui-field-wrapper-content .aui-w25, .ddl-form-portlet .aui-field-wrapper .aui-w25 {
+  width: 100% !important;
+}
+
+.ddl-form-portlet .portlet-msg-success {
+  background: #FFF;
+  border: 0;
+  color: #929797;
+  margin: 0;
+}
+
+.ddl-form-portlet .portlet-msg-success p {
+  font-weight: 100;
+}
+
+.ddl-form-portlet .portlet-msg-success h2 {
+  color: #929798;
+  margin-top: 0;
+  font-size: 2em;
+  font-weight: normal;
+  text-align: center;
+}
+
+.ddl-form-portlet .thank-you-submit p {
+  font-size: 1.25em;
+  font-weight: lighter;
+  text-align: center;
+}
+
+.form-col {
+    margin: 0 auto;
+    max-width: 980px;
+    text-align: center;
+  }
+
+  .form-col div.aui-field {
+    display: inline-block;
+    float: left;
+    padding: 1%;
+    width: 23%;
+  }
+
+  .form-col .btn-wrapper {
+    float: left;
+    padding: 1%;
+    width: 23%;
+  }
+
+  .form-col .btn-wrapper input {
+    background: transparent;
+    border: 1px solid #FFF;
+    border-radius: 0;
+    color: #FFF;
+    font-size: 13px;
+    padding: 8px 23px;
+    text-shadow: none;
+  }
+
+  .form-col .btn-wrapper input:hover {
+    background: #FFF;
+    border: 1px solid #F7BF21;
+    color: #F7BF21;
+  }
+
+.tab-content {
+  background-color: #FFF;
+  height: 80vh;
+  overflow-y: auto;
+  padding: 25px;
+  text-align: left;
+}
+
+.tab-content h3 {
+  color: #4C4C4E;
+  font-weight: normal;
+}
+
+.tab-nav {
+  background: transparent;
+  border: 0;
+  margin-bottom: 20px;
+  padding: 0;
+}
+
+.tab-nav .tab {
+  background: transparent;
+  border: 0;
+  text-align: center;
+  text-transform: uppercase;
+}
+
+.tab-nav .aui-tab-active .aui-tab-content, .tab-nav .aui-tab-content:hover {
+  border-bottom: 2px solid #3C64AD;
+  font-weight: normal;
+  -moz-box-shadow: initial;
+  -webkit-box-shadow: initial;
+  box-shadow: initial;
+}
+
+.tab-nav .aui-tab-active .aui-tab-content:hover {
+  background: none;
+}
+
+.tab-nav .aui-tab-content {
+  background: transparent;
+  border: 0;
+  font-size: 1.5em;
+  font-weight: lighter;
+}
+
+.tab-nav .aui-tab-content a {
+  color: #FFF;
+  font-style: normal;
+  font-weight: lighter;
+  text-shadow: none;
+}
+
+.tab-nav .aui-tab-active .aui-tab-content a, .tab-nav .aui-tab-content:hover a {
+  font-size: 21px;
+  font-weight: normal;
+}
+
+.tab-nav .aui-tab-label, .aui-tab-label a {
+  width: 160px;
+}
+#cfpPopUp.class-toggle-carousel-tab-2-active #tabContent .main-content-1,
+#cfpPopUp.class-toggle-carousel-tab-3-active #tabContent .main-content-1,
+#cfpPopUp.class-toggle-carousel-tab-1-active #tabContent .main-content-2,
+#cfpPopUp.class-toggle-carousel-tab-3-active #tabContent .main-content-2,
+#cfpPopUp.class-toggle-carousel-tab-1-active #tabContent .main-content-3,
+#cfpPopUp.class-toggle-carousel-tab-2-active #tabContent .main-content-3
+ {
+	display: none;
+}
+
+#cfpPopUp.class-toggle-carousel-tab-2-active #tabContent .main-content-2, #cfpPopUp.class-toggle-carousel-tab-3-active #tabContent .main-content-3 {
+display: block;
+}
+
+.main-content-2, .main-content-3 {
+display: none;
+}
+
+
+@media(max-width: 480px) {
+  .close-popup-content {
+    left: 90%;
+    position: absolute;
+    top: 5px;
+  }
+}
+
+
+
+720px {
+.tab-content {
+  background-color: #FFF;
+  height: 50vh;
+  overflow-y: auto;
+  padding: 25px;
+  text-align: left;
+}
+
+#article-69933638{
+  height: initial;
+}
+
+}
+
+
+640px {
+    
+    .tab-nav .aui-tab-content a {
+		font-size: 14px;
+	}
+
+	.tab-nav .aui-tab-active .aui-tab-content a, .tab-nav .aui-tab-content:hover a {
+		font-size: 13px;
+	}
+
+	.tab-nav .aui-tab-label, .aui-tab-label a {
+		width: 80px;
+	}
+    
+}

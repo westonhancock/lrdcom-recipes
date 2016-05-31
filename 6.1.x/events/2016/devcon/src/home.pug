@@ -1,0 +1,29 @@
+doctype html
+html(lang="en" class="responsive")
+  head
+    script
+        include ../build/all.min.js
+    style
+        include ../src/font.css  
+        include ../build/all.css
+        include ../src/theme.css    
+        include ../build/devcon.css
+    title="Fun with Devcon"
+    <meta content="minimum-scale=1.0, width=device-width" name="viewport">
+  body.yui3-skin-sam
+    include ../src/banner.pug
+    include ../src/nav.html
+    include ../build/devcon-video.html
+    include ../build/whyattend.html
+    include ../build/agenda.html
+    include ../build/cfp.html
+    include ../src/cfp-tabs.pug
+    include ../build/unconference.html
+    include ../build/prices.html
+    include ../build/twitter.html
+    include ../build/venue.html
+    include ../src/eventsapp.html
+    include ../build/sponsors.html
+    include ../build/footer.html
+    script
+        include ../src/js/devcon.js

@@ -1,0 +1,73 @@
+<div id=cfgPopUp>
+	<div data-target-node="#cfgPopUp" class="close-popup-content class-toggle">&nbsp;</div>
+	<ul class="tab-nav aui-tabview-list aui-widget-hd" id="list">
+		<li class="tab tab-1 aui-w33 yui3-widget aui-component aui-tab aui-state-default aui-state-active aui-tab-active aui-state-hover">
+			<span class="aui-tab-content class-toggle-carousel" data-toggle-type="carousel" data-target-node="#cfpPopUp" data-target-class="tab-1-active">
+		<div class="tab-content-container">
+					<a class="tab-label"><span>information</span></a>
+</div>
+</span>
+</li>
+<li class="tab tab-2 aui-w33 yui3-widget aui-component aui-tab aui-state-default">
+	<span class="aui-tab-content class-toggle-carousel" data-toggle-type="carousel" data-target-node="#cfpPopUp" data-target-class="tab-2-active">
+			<div class="tab-content-container">
+				<a class="tab-label"><span>categories</span></a>
+	</div>
+	</span>
+</li>
+<li class="tab tab-3 aui-w33 yui3-widget aui-component aui-tab aui-state-default">
+	<span class="aui-tab-content class-toggle-carousel" data-toggle-type="carousel" data-target-node="#cfpPopUp" data-target-class="tab-3-active">
+				<div class="tab-content-container">
+					<a class="tab-label"><span>submit</span></a>
+	</div>
+	</span>
+</li>
+</ul>
+</div>
+<div id=cfptabs>
+	asda asdasd adsas
+</div>
+<script>
+	AUI().use( 'tabview', function(Y) {
+    var tabview = new Y.TabView({
+        children: [{
+            label: 'information',
+            content: '<p>sds content</p>'
+        }, {
+            label: 'bar',
+            content: '<p>bar content</p>'
+        }, {
+            label: 'baz',
+            content: '<p>baz content</p>'
+        }]
+    });
+	   tabview.render("#cfptabs");
+	});
+	
+	YUI().use( 'panel', function(Y) {
+  
+	var panel = new Y.Panel({
+    srcNode      : '#cfptabs',
+    headerContent: 'Add A New Product',
+   width        : "80%",
+    zIndex       : 5,
+    centered     : true,
+    modal        : true,
+    visible      : false,
+    render       : true,
+	hideOn: [
+            {
+                     eventName: 'clickoutside'
+            }]
+});
+
+  var openBtn = Y.one('.call-for-papers .btn');
+
+    openBtn.on('click', function (e) {
+        panel.show();
+    });
+	
+	
+ 
+});
+</script>

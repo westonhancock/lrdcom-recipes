@@ -1,0 +1,28 @@
+-
+    var mytabs = [
+        {name: "cfp-info",label: "Information"},
+        {name: "cfp-categories",label: "Categories"},
+        {name: "cfp-submit",label:"Submit"}
+    ]
+    
+#cfptabs
+    ul
+        each val, index in mytabs
+            li
+                a(href= val.name) #{val.label}
+        div.close-popup-content
+    div
+        if prod
+            #cfp-info
+                <runtime-portlet instance="1abcdef" name="56" querystring=""> </runtime-portlet>
+            #cfp-categories
+                <runtime-portlet instance="2abcdef" name="56" querystring=""> </runtime-portlet>
+            #cfp-submit
+                <runtime-portlet instance="3abcdef" name="56" querystring=""> </runtime-portlet>
+        else
+            #cfp-info
+                include ../src/cfp-info.html
+            #cfp-categories
+                include ../src/cfp-categories.html
+            #cfp-submit
+                include ../src/cfp-submit.html     
