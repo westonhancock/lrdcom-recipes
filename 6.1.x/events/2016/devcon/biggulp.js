@@ -6,11 +6,27 @@
 var fs = require('fs');
 var request = require("request");
 var winston = require("winston");
+
+function  formatDate  (d) {
+                if (typeof d === 'number') d = new Date(d);
+                if (!(d instanceof Date)) return d;
+                function pad(n) { return n < 10 ? '0' + n : n; }
+                return ("[" + pad(d.getHours()) + ":"+ pad(d.getMinutes()) + ":"+ pad(d.getSeconds()) + "]");
+            }
 var logger = new winston.Logger({
     level: 'debug',
     transports: [
         new (winston.transports.Console)({
-            level: "info"
+            level: "info",
+            timestamp: function () {
+                return formatDate(Date.now());
+            },
+           
+            formatter: function (options) {
+                // Return string will be passed to logger.
+            return options.timestamp() +' '+ options.level.toUpperCase() +' '+ (undefined !== options.message ? options.message : '') +
+          (options.meta && Object.keys(options.meta).length ? ' '+ JSON.stringify(options.meta) : '' );
+           }
         }),
         new (winston.transports.File)({
             name: 'debug-file',
@@ -56,7 +72,7 @@ function invoke_liferay(config, body, callback) {
         logger.silly("httpResponse: ", httpResponse);
         logger.debug("body: " + body);
 
-        if (err){
+        if (err) {
             logger.error(err);
             throw err;
         } else if (httpResponse && httpResponse.statusCode && (httpResponse.statusCode != 200)) {
@@ -87,7 +103,7 @@ function post_liferay(config, api, payload, callback) {
         logger.silly("httpResponse: ", httpResponse);
         logger.debug("body: " + body);
 
-        if (err){
+        if (err) {
             logger.error(err);
             throw err;
         } else if (httpResponse && httpResponse.statusCode && (httpResponse.statusCode != 200)) {
@@ -117,131 +133,131 @@ function getArticle(config, article, cb) {
             "articleId": article.articleId
         }
     };
-    
+
     invoke_liferay(config, cmd,
         function (jsonresponse) {
             logger.debug("body: " + jsonresponse.content);
             cb(jsonresponse);
         });
 }
-	var ThemeDisplay= {
-				getCDNDynamicResourcesHost: function() {
-					return "https://cdn.lfrs.sl/web.liferay.com";
+var ThemeDisplay = {
+				getCDNDynamicResourcesHost: function () {
+        return "https://cdn.lfrs.sl/web.liferay.com";
 				},
-				getCDNBaseURL: function() {
-					return "https://cdn.lfrs.sl/web.liferay.com";
+				getCDNBaseURL: function () {
+        return "https://cdn.lfrs.sl/web.liferay.com";
 				},
-				getCDNHost: function() {
-					return "https://cdn.lfrs.sl/web.liferay.com";
+				getCDNHost: function () {
+        return "https://cdn.lfrs.sl/web.liferay.com";
 				},
-				getCompanyId: function() {
-					return "1";
+				getCompanyId: function () {
+        return "1";
 				},
-				getCompanyGroupId: function() {
-					return "8431626";
+				getCompanyGroupId: function () {
+        return "8431626";
 				},
-				getUserId: function() {
-					return "5";
-				},
-
-				
-
-				getDoAsUserIdEncoded: function() {
-					return "";
-				},
-				getPlid: function() {
-					return "73285537";
+				getUserId: function () {
+        return "5";
 				},
 
-				
-					getLayoutId: function() {
-						return "1583";
-					},
-					getLayoutURL: function() {
-						return "https://web.liferay.com/sign-in";
-					},
-					isPrivateLayout: function() {
-						return "false";
-					},
-					getParentLayoutId: function() {
-						return "0";
-					},
-				
 
-				getScopeGroupId: function() {
-					return "14";
+
+				getDoAsUserIdEncoded: function () {
+        return "";
 				},
-				getScopeGroupIdOrLiveGroupId: function() {
-					return "14";
+				getPlid: function () {
+        return "73285537";
 				},
-				getParentGroupId: function() {
-					return "14";
+
+
+    getLayoutId: function () {
+        return "1583";
+    },
+    getLayoutURL: function () {
+        return "https://web.liferay.com/sign-in";
+    },
+    isPrivateLayout: function () {
+        return "false";
+    },
+    getParentLayoutId: function () {
+        return "0";
+    },
+
+
+				getScopeGroupId: function () {
+        return "14";
 				},
-				isImpersonated: function() {
-					return false;
+				getScopeGroupIdOrLiveGroupId: function () {
+        return "14";
 				},
-				isSignedIn: function() {
-					return false;
+				getParentGroupId: function () {
+        return "14";
 				},
-				getDefaultLanguageId: function() {
-					return "en_US";
+				isImpersonated: function () {
+        return false;
 				},
-				getLanguageId: function() {
-					return "en_US";
+				isSignedIn: function () {
+        return false;
 				},
-				isAddSessionIdToURL: function() {
-					return false;
+				getDefaultLanguageId: function () {
+        return "en_US";
 				},
-				isFreeformLayout: function() {
-					return false;
+				getLanguageId: function () {
+        return "en_US";
 				},
-				isStateExclusive: function() {
-					return false;
+				isAddSessionIdToURL: function () {
+        return false;
 				},
-				isStateMaximized: function() {
-					return false;
+				isFreeformLayout: function () {
+        return false;
 				},
-				isStatePopUp: function() {
-					return false;
+				isStateExclusive: function () {
+        return false;
 				},
-				getPathContext: function() {
-					return "";
+				isStateMaximized: function () {
+        return false;
 				},
-				getPathImage: function() {
-					return "https://cdn.lfrs.sl/web.liferay.com/image";
+				isStatePopUp: function () {
+        return false;
 				},
-				getPathJavaScript: function() {
-					return "/html/js";
+				getPathContext: function () {
+        return "";
 				},
-				getPathMain: function() {
-					return "/c";
+				getPathImage: function () {
+        return "https://cdn.lfrs.sl/web.liferay.com/image";
 				},
-				getPathThemeImages: function() {
-					return "https://cdn.lfrs.sl/web.liferay.com/osb-community-theme/images";
+				getPathJavaScript: function () {
+        return "/html/js";
 				},
-				getPathThemeRoot: function() {
-					return "/osb-community-theme/";
+				getPathMain: function () {
+        return "/c";
 				},
-				getURLControlPanel: function() {
-					return "/group/control_panel?doAsGroupId=14&refererPlid=73285537";
+				getPathThemeImages: function () {
+        return "https://cdn.lfrs.sl/web.liferay.com/osb-community-theme/images";
 				},
-				getURLHome: function() {
-					return "https://web.liferay.comwww.liferay.com";
+				getPathThemeRoot: function () {
+        return "/osb-community-theme/";
 				},
-				getSessionId: function() {
-					
-						
-						
-							return "";
-						
-					
+				getURLControlPanel: function () {
+        return "/group/control_panel?doAsGroupId=14&refererPlid=73285537";
 				},
-				getPortletSetupShowBordersDefault: function() {
-					return false;
+				getURLHome: function () {
+        return "https://web.liferay.comwww.liferay.com";
+				},
+				getSessionId: function () {
+
+
+
+        return "";
+
+
+				},
+				getPortletSetupShowBordersDefault: function () {
+        return false;
 				}
-			};
+};
 
-		
+
 
 module.exports = {
     viewArticleContent: function (config, article, languageid) {
@@ -265,11 +281,11 @@ module.exports = {
             };
             logger.debug(getrequest);
             request.get(getrequest, function (err, httpResponse, body) {
-              //  logger.silly("httpResponse: ", httpResponse);
-              //  logger.debug("body: " + body);
+                //  logger.silly("httpResponse: ", httpResponse);
+                //  logger.debug("body: " + body);
 
                 if (err) {
-                //    logger.error(err);
+                    //    logger.error(err);
                 } else if (httpResponse && httpResponse.statusCode && (httpResponse.statusCode != 200)) {
                     logger.error("An error seems to have occurred. Response Code " + httpResponse.statusCode);
                     var errorobj = {
@@ -282,8 +298,8 @@ module.exports = {
 
                     var startBody = body.indexOf("<body>");
                     var endBody = body.indexOf("</body>");
-                    
-                    var creamynougatcenter = body.substr(startBody+6, endBody-startBody-6 );
+
+                    var creamynougatcenter = body.substr(startBody + 6, endBody - startBody - 6);
                     logger.debug(creamynougatcenter);
                     logger.info("Writing article file: ", article);
                     fs.writeFile(article.filename, creamynougatcenter);
@@ -317,13 +333,13 @@ module.exports = {
                 "groupId": article.groupId,
                 "articleId": article.articleId,
                 "languageId": locale,
-                "themeDisplay":  {
-                     class: "com.liferay.portal.theme.ThemeDisplay",            
+                "themeDisplay": {
+                    class: "com.liferay.portal.theme.ThemeDisplay",
                     _companyId: 1,
                     _companyGroupId: 8431626,
                     _scopeGroupeId: article.groupId,
                     _siteGroupId: article.groupId
-                    
+
                 }
             }
         };

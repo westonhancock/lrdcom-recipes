@@ -18,6 +18,37 @@
         "groupId": "67510365",
         "articleId": "74578462",
         "filename": "build/agenda.html"
+    },
+    {
+        "groupId": "67510365",
+        "articleId": "74592094",
+        "filename": "build/unconference.html"
+    },
+      {
+        "groupId": "67510365",
+        "articleId": "74592132",
+        "filename": "build/prices.html"
+    },
+      {
+        "groupId": "67510365",
+        "articleId": "74666787",
+        "filename": "build/venue.html"
+    },
+      {
+        "groupId": "67510365",
+        "articleId": "74663232",
+        "filename": "build/twitter.html"
     }
-
+    ,
+      {
+        "groupId": "67510365",
+        "articleId": "74666897",
+        "filename": "build/sponsors.html"
+    }
+    ,
+      {
+        "groupId": "67510365",
+        "articleId": "74666972",
+        "filename": "build/footer.html"
+    }
 ]

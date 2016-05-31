@@ -6,6 +6,7 @@ $darkdark: #0A3D59;
 $white: #fff;
 
 @custom-media --small-viewport (max-width: 720px);
+@custom-media --big-viewport (min-width: 721px);
 
 .top-banner-container {
 	background: url($main-image-dir/Devcon-Mobile-Banner-1.jpg) repeat no-repeat center bottom;
@@ -164,12 +165,18 @@ $white: #fff;
 }
 
 .btn {
+	cursor: pointer;
 	background: $blue;
 	color: $white;
 	padding: 15px 40px;
 	font-size: 120%;
 	display: inline-block;
 	margin: 20px 0;
+	
+	&:hover {
+		background: $darkblue;
+		color: white;
+	}
 }
 
 /* quote section ---------------------------------*/
@@ -269,16 +276,17 @@ $white: #fff;
 .call-for-papers {
 	background: $lightblue;
 	
-	p {
+	.lego-block {	
 		max-width: 720px;
-		font-size: 150%;
-		margin: 0 auto;	
-		
-		@media (--small-viewport) {
-			font-size: 100%;
-		}
+	}
+	
+	@media (--big-viewport) { 
+		p {
+			font-size: 150%;
+			}
 	}
 }
+
 #cfppanel {
 	position: fixed;
 	width: 80vw;
@@ -359,6 +367,145 @@ flex: 1 0 auto;
 	margin-top: 5px;
 }
 }
+
+
+/* unconference ---------------------*/
+
+.unconference {
+	background: url($main-image-dir/Unconference-Banner.jpg) no-repeat top center;
+	background-size: cover;
+	color: white;
+	min-height: 400px;
+	@media (--big-viewport) {
+		background-attachment: fixed;
+		
+	
+	}
+	
+	.lego-block {
+		max-width: 720px;
+	}
+	p {
+		@media (--big-viewport) {
+			font-size: 150%;
+		}
+	}
+	h2 {
+		color: white;
+	}
+}
+
+/* prices ---------------------------*/
+
+.prices {
+	.section-2 {
+		margin: 0 auto;
+		max-width: 690px;
+		
+		.lego-block {
+			min-height: 200px;
+			vertical-align: top;
+			width: 28%;
+			border: 3px solid $darkdark;
+			margin: 10px;
+			> div {
+				/* have to override !important mobile padding rule */
+				padding: 0 !important;
+			}
+			
+			@media (--small-viewport) {
+				/* have to override normal mobile 100% rule that are *so* important */
+    			display: inline-block !important;
+				width: 35% !important;	
+				min-height: 180px;
+			}
+			
+		}
+		.block-1, .block-2, .block-3 {
+			background: $blue;
+		}
+		.block-4, .block-5, .block-6 {
+			background: $darkblue;
+		}
+	}
+	.ticket-type, .price-expires {
+		color: $blue;
+		background: white;
+		margin: 0;
+		@media (--small-viewport) {
+			font-size: 80%;		
+		}
+	}
+	.ticket-type {
+		padding: 20px 0 0 0;
+	
+	}
+	.price-expires {
+		padding: 0 0 20px 0;
+	}
+	.price-header {
+		padding-top: 10px;
+	}
+
+	.price-header, .price {
+		color: white;
+		margin: 0;
+		font-weight: normal;
+	}
+	.discount-block {
+		h3,h2,p {
+			color: white;
+			font-weight: normal;
+		}
+		background: $green;
+		
+		.discount-header {
+			margin: 20px 0 0 0;
+			@media (--small-viewport) {
+				font-size: 80%;		
+			}
+		}
+	}
+	.btn {
+		background: $darkblue;
+		&:hover {
+			background: $darkdark;
+		}
+	}
+
+
+}
+/* venue ----------------------------*/
+
+.venue {
+	
+	background: url($main-image-dir/Venue-Banner.jpg) no-repeat top center;
+	background-size: cover;
+	color: white;
+	min-height: 400px;
+	@media (--big-viewport) {
+		background-attachment: fixed;
+		.btn {
+			margin: 50px;
+		}
+		
+	}
+	.lego-block {
+		max-width: 720px;
+	}
+	p {
+		line-height: 15px;
+		@media (--big-viewport) {
+			font-size: 120%;		
+		}
+	}
+	h2,h3 {
+		color: white;
+	}
+}
+
+
+
 /*----------------------------------*/
 
 
@@ -366,6 +513,7 @@ flex: 1 0 auto;
 
 table.lfr-table {
 	counter-reset: section;
+	margin-left: 30px;
 }
 
 
@@ -395,9 +543,13 @@ table.lfr-table li[dataname=lego_element_attr]:before {
 	 @mixin counter element, null;
 }
 
+/*
 table.lfr-table textarea:not(.cke_source) {
 	height: 50px !important;
 }
+*/
+
+
 table.lfr-table .journal-article-component-container,
 table.lfr-table .journal-article-field-label,
 table.lfr-table .journal-article-localized-checkbox {

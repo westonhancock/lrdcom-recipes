@@ -64,12 +64,18 @@
 }
 
 .btn {
+	cursor: pointer;
 	background: #1477A8;
 	color: #fff;
 	padding: 15px 40px;
 	font-size: 120%;
 	display: inline-block;
-	margin: 20px 0;
+	margin: 20px 0
+}
+
+.btn:hover {
+	background: #024D77;
+	color: white;
 }
 
 /* quote section ---------------------------------*/
@@ -147,11 +153,10 @@
 	background: #B6E0EA;
 }
 
-.call-for-papers p {
+.call-for-papers .lego-block {
 	max-width: 720px;
-	font-size: 150%;
-	margin: 0 auto
 }
+
 #cfppanel {
 	position: fixed;
 	width: 80vw;
@@ -215,6 +220,124 @@ flex: 1 0 auto;
   margin-right: 10px;
 	float: right;
 }
+
+
+/* unconference ---------------------*/
+
+.unconference {
+	background: url(/documents/67510365/74348488//Unconference-Banner.jpg) no-repeat top center;
+	background-size: cover;
+	color: white;
+	min-height: 400px;
+}
+
+.unconference .lego-block {
+	max-width: 720px;
+}
+
+.unconference p {}
+
+.unconference h2 {
+	color: white;
+}
+
+/* prices ---------------------------*/
+
+.prices .section-2 {
+	margin: 0 auto;
+	max-width: 690px;
+}
+
+.prices .section-2 .lego-block {
+	min-height: 200px;
+	vertical-align: top;
+	width: 28%;
+	border: 3px solid #0A3D59;
+	margin: 10px;
+}
+
+.prices .section-2 .lego-block > div {
+
+	/* have to override !important mobile padding rule */
+	padding: 0 !important;
+}
+
+.prices .section-2 .block-1, .prices .section-2 .block-2, .prices .section-2 .block-3 {
+	background: #1477A8;
+}
+
+.prices .section-2 .block-4, .prices .section-2 .block-5, .prices .section-2 .block-6 {
+	background: #024D77;
+}
+
+.prices .ticket-type, .prices .price-expires {
+	color: #1477A8;
+	background: white;
+	margin: 0
+}
+
+.prices .ticket-type {
+	padding: 20px 0 0 0;
+}
+
+.prices .price-expires {
+	padding: 0 0 20px 0;
+}
+
+.prices .price-header {
+	padding-top: 10px;
+}
+
+.prices .price-header, .prices .price {
+	color: white;
+	margin: 0;
+	font-weight: normal;
+}
+
+.prices .discount-block {
+	background: #2BBCB1;
+}
+
+.prices .discount-block h3, .prices .discount-block h2, .prices .discount-block p {
+	color: white;
+	font-weight: normal;
+}
+
+.prices .discount-block .discount-header {
+	margin: 20px 0 0 0
+}
+
+.prices .btn {
+	background: #024D77
+}
+
+.prices .btn:hover {
+	background: #0A3D59;
+}
+/* venue ----------------------------*/
+
+.venue {
+	
+	background: url(/documents/67510365/74348488//Venue-Banner.jpg) no-repeat top center;
+	background-size: cover;
+	color: white;
+	min-height: 400px;
+}
+
+.venue .lego-block {
+	max-width: 720px;
+}
+
+.venue p {
+	line-height: 15px
+}
+
+.venue h2, .venue h3 {
+	color: white;
+}
+
+
+
 /*----------------------------------*/
 
 
@@ -222,6 +345,7 @@ flex: 1 0 auto;
 
 table.lfr-table {
 	counter-reset: section;
+	margin-left: 30px;
 }
 
 table.lfr-table li[dataname=lego_section_attr]:before {
@@ -252,9 +376,13 @@ table.lfr-table li[dataname=lego_element_attr]:before {
 	 counter-increment: element;
 }
 
+/*
 table.lfr-table textarea:not(.cke_source) {
 	height: 50px !important;
 }
+*/
+
+
 table.lfr-table .journal-article-component-container, table.lfr-table .journal-article-field-label, table.lfr-table .journal-article-localized-checkbox {
 	display: inline-block !important;
 }
@@ -400,10 +528,6 @@ table.lfr-table
 		background: #1477A8;
 	}
 
-	.call-for-papers p {
-		font-size: 100%;
-	}
-
 	#cfppanel .yui3-tab-label {
 		font-size: 0.75em;
 		margin: 0.75 0;
@@ -419,5 +543,48 @@ table.lfr-table
 		width: 20px;
 		height: 20px;
 		margin-top: 5px;
+	}
+
+	.prices .section-2 .lego-block {
+
+		/* have to override normal mobile 100% rule that are *so* important */
+		display: inline-block !important;
+		width: 35% !important;
+		min-height: 180px;
+	}
+
+	.prices .ticket-type, .prices .price-expires {
+		font-size: 80%;
+	}
+
+	.prices .discount-block .discount-header {
+		font-size: 80%;
+	}
+}
+
+@media (min-width: 721px) {
+
+	.call-for-papers p {
+		font-size: 150%;
+	}
+
+	.unconference {
+		background-attachment: fixed;
+	}
+
+	.unconference p {
+		font-size: 150%;
+	}
+
+	.venue {
+		background-attachment: fixed;
+	}
+
+	.venue .btn {
+		margin: 50px;
+	}
+
+	.venue p {
+		font-size: 120%;
 	}
 }
