@@ -315,6 +315,88 @@ var core = (
 			}
 		};
 
+		// allows for multiple steps and multiple tests for each step. 
+		var processAndTest = function(initialData) {
+			var self = this;
+			this.processSets = [];
+			this.data = initialData;
+			this.errorMessage = undefined;
+			this.pass = false;
+			this.newProcess = function(options) {
+				self.processSets.push({
+					action: options.action,
+					tests: options.tests,
+					mode: options.mode,
+					errorMessage: options.errorMessage
+				})
+			};
+			this.run = function() {
+				var counter = 0;
+				var numOfProcess = self.processSets.length;
+				var currentSet = self.processSets[counter];
+
+				// supports async operations
+				var runNextAction = function(set) {
+					// if async
+					if (currentSet.mode == "async") {
+						currentSet.action(self.data)
+							.then(function(res) {
+								self.data = res;
+								runTests(currentSet);
+							})
+					} 
+					// if sync
+					else {
+						self.data = currentSet.action(self.data);
+						runTests(currentSet);
+					}
+				};
+
+				// only sync operations
+				var runTests = function(data) {
+
+					// if it fails test
+					if (self.runTests(data) === false) {
+						self.pass = false;
+						self.onEnd();
+					}
+					// if current set passes test
+					else {
+						runItAgain();
+					}
+				}
+
+				// our loop/counter
+				var runItAgain = function() {
+					// should we run the next one?
+					if ((counter + 1) < numOfProcess) {
+						counter++
+						currentSet = self.processSets[counter];
+						runNextAction(currentSet);
+					}
+
+					else {
+						self.pass = true;
+						self.onEnd()
+					}
+				}
+
+				// run it for the first time.
+				runNextAction(currentSet);
+			};
+			this.onEnd = function() {},
+			this.runTests = function(set) {
+				for (var i = 0; i < set.tests.length ; i++) {
+					var pass = set.tests[i](self.data);
+
+					if (pass === false) {
+						self.errorMessage = set.errorMessage;
+						return false;
+					}
+				}
+			};
+		}
+
 		// use this to change state of application
 		var changeState = function(stateName, state) {
 			data['state'][stateName] = state;
@@ -333,6 +415,7 @@ var core = (
 			// utility functions
 			changeState: changeState,
 			publisher: publisher,
+			processAndTest: processAndTest,
 			templateRender: templateRender
 		};
 
@@ -452,8 +535,83 @@ var core = (
 // module with functionalities for handling CSV's
 var CSV = (function() {
 
-	// convert csv to JSON object
+	/*  
+		Turning CSV to JSON is multi-stepped needing multiple tests.
+	 	We leverage the processAndTest util to accomplish this.
+	*/
 	var csvToJSON = function(csv) {
+
+		var csvJSONtests = new core.processAndTest(csv);
+
+		// step 1: check if it is a CSV file
+		csvJSONtests.newProcess({
+			action: function(data) {
+				return data;
+			},
+			tests: [
+				isItCSV
+			],
+			errorMessage: "Not a CSV File"
+		});
+
+		csvJSONtests.newProcess({
+			action: function(data) {
+				return data;
+			},
+			tests: [
+				checkCSVFormatting
+			],
+			errorMessage: "CSV not formatted properly"
+		});
+
+		// step 2 (incomplete): let browser read the file as string
+		csvJSONtests.newProcess({
+			action: readFile,
+			mode: "async",
+			tests: [
+				checkCSVFormatting
+			],
+			errorMessage: "Error with CSV text"
+		});
+
+		// step 3 (incomplete): turn string into JSON
+		csvJSONtests.newProcess({
+			action: csvStringtoJSON,
+			tests: [
+			],
+			errorMessage: "Error with JSON"
+		});
+
+		return csvJSONtests;
+	}
+
+	var isItCSV = function(file) {
+		var fileMatches = 0;
+		var acceptableFileTypes = [
+			"text/csv",
+			"vnd.ms-excel"
+		]
+
+		// test acceptable file types
+		for (var p = 0; p < acceptableFileTypes.length; p++) {
+			if (file.type == acceptableFileTypes[p]) {
+				fileMatches++;
+			}
+		}
+
+		if (fileMatches > 0) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+
+	var checkCSVFormatting = function(csv) {
+		return true;
+	}
+
+	// convert csv to JSON object
+	var csvStringtoJSON = function(csv) {
 		var lines = csv.split('\n');
 		var result = [];
 
@@ -469,8 +627,6 @@ var CSV = (function() {
 
 				// data integrity by removing special characters
 				currentHeader = currentHeader.replace(/[^a-zA-Z ]/g, "");
-				currentLine = currentLine.replace(/[^a-zA-Z ]/g, "")
-
 				obj[currentHeader] = currentLine;
 			}
 
@@ -480,78 +636,21 @@ var CSV = (function() {
 		return result;
 	};
 
-	var getFileType = function(filename) {
-		var parts = filename.split('/');
-
-		return parts[parts.length - 1];
-	};
-
 	// read file in browser
 	var readFile = function(file) {
-
 		return new Promise(function(resolve, reject) {
-			var textType = 'csv';
-			var windowsTextType = 'vnd.ms-excel';
-			var fileType = getFileType(file.type);
+			var reader = new FileReader();
+			var content = reader.readAsText(file);
 
-			if (fileType === textType || fileType === windowsTextType) {
-				var reader = new FileReader();
-				var content = reader.readAsText(file);
-
-				step1Data.csvDone = false;
-
-				reader.onload = function() {
-					resolve(reader.result);
-				}
+			reader.onload = function() {
+				resolve(reader.result);
 			}
-			else {
-				reject(Error('Wrong File Type'));
-			}
-		});
-	};
-
-	// get information file
-	var getFileInformation = function(JSON) {
-		var entries = 0;
-
-		for (var key in JSON) {
-			if (JSON.hasOwnProperty(key)) {
-				entries++;
-			}
-		}
-
-		return {
-			entries: entries
-		};
-	};
-
-	// run tests for csv file
-	var checkCSV = function(csv) {
+		});	
 		
-		var hasCSV = false;
-
-		// run our tests
-		if (csv) {
-			hasCSV = true;
-		}
-
-		return hasCSV;
-	};
-
-	var checkJSON = function(json) {
-		// run tests for json file
-		if (json) {
-			return true;
-		}
 	};
 
 	return {
-		csvToJSON: csvToJSON,
-		getFileType: getFileType,
-		readFile: readFile,
-		getFileInformation: getFileInformation,
-		checkCSV: checkCSV,
-		checkJSON: checkJSON
+		csvToJSON: csvToJSON
 	}
 })();
 var hubspot = (function() {
@@ -617,20 +716,6 @@ var UTILS = (function() {
         return data;
     }
 
-    // adds object key renaming method to Objects object
-    Object.prototype.renameProperty = function(oldName, newName) {
-        // Do nothing if the names are the same
-        if (oldName == newName) {
-            return this;
-        }
-        // Check for the old property name to avoid a ReferenceError in strict mode.
-        if (this.hasOwnProperty(oldName)) {
-            this[newName] = this[oldName];
-            delete this[oldName];
-        }
-        return this;
-    };
-
     return {
         tableToJson: tableToJson
     }
@@ -667,12 +752,6 @@ var steps = (function() {
 	};
 
 })(core);
-var step1Data = {
-	csv: {},
-	ui: {
-		defaultDropText: "Drop Files Here"
-	}
-}
 var step1 = (function() {
 
 	steps.initStep(
@@ -685,47 +764,21 @@ var step1 = (function() {
 	);
 
 	var controller = (function() {
-		
-		// higher order function to manage the processing
 		var processFile = function(file) {
+			var processer = CSV.csvToJSON(file);
+			
+			processer.onEnd = function() {
+				if (processer.pass === true) {
+					steps.completeStep(1);
+					data.updateData('json', processer.data);
+				}
+				
+				else {
+					UI.fileGrade('fail', processer.errorMessage);
+				}
+			}
 
-			CSV.readFile(file)
-
-				// when file is done being read, test csv
-				.then(function(csv) {
-					step1Data.csv = csv;
-					
-					return csv;
-				})
-				// if there's an error with csv
-				.catch(function(e) {
-					UI.fileGrade('fail', 'Wrong file type. Upload CSV File');
-					data.incompleteStep(1);
-				})
-				// additional tests on csv
-				.then(function(csv) {
-					if (!CSV.checkCSV(csv)) {
-						throw "CSV is no good";
-					}
-
-					return csv;
-				})
-				// if file is checked, parse to JSON
-				.then(function(csv) {
-					if (csv) {
-						var json = CSV.csvToJSON(csv);
-
-						data.updateData('json', json);
-					}
-
-					return json;
-				})
-				// if we pass the JSON testing, we should complete the step
-				.then(function(json) {
-					if (CSV.checkJSON(data.json)) {
-						steps.completeStep(1);
-					}
-				})
+			processer.run();
 		};
 
 		return {
@@ -808,7 +861,7 @@ var step1 = (function() {
 			fileGrade: fileGrade
 		};
 	})(controller);
-})(CSV, hubspot, steps, step1Data);
+})(CSV, hubspot, steps);
 var step2 = (
 	function() {
 		steps.initStep(
@@ -918,7 +971,7 @@ var step3 = (function() {
 								email: entry["Email Address"],
 								hs_context: encodeURIComponent(JSON.stringify({
 									sfdcCampaignId: data.campaign,
-									"ipAddress": null
+									"ipAddress": ""
 								})),
 								recent_interaction: entry["Interaction"],
 								recent_interaction_detail: entry["Interaction Detail"],
