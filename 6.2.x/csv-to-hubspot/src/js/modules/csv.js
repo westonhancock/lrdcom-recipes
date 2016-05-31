@@ -16,8 +16,7 @@ var CSV = (function() {
 			},
 			tests: [
 				isItCSV
-			],
-			errorMessage: "Not a CSV File"
+			]
 		});
 
 		// step 2: let browser read the file as string and test formatting
@@ -25,28 +24,17 @@ var CSV = (function() {
 			action: readFile,
 			mode: "async",
 			tests: [
-				checkCSVFormatting
-			],
-			errorMessage: "CSV Improperly Formatted"
-		});
-
-		// step 3: test 
-		csvJSONtests.newProcess({
-			action: function(data) {
-				return data;
-			},
-			tests: [
+				checkCSVFormatting,
 				emptyCSVFields
-			],
-			errorMessage: "CSV File missing entries"
+			]
 		});
 
 		// step 3 (incomplete): turn string into JSON
 		csvJSONtests.newProcess({
 			action: csvStringtoJSON,
 			tests: [
-			],
-			errorMessage: "Error with JSON"
+				checkValidDate
+			]
 		});
 
 		return csvJSONtests;
@@ -69,16 +57,16 @@ var CSV = (function() {
 		if (fileMatches > 0) {
 			return true;
 		} else {
-			return false;
+			return "Not a CSV File";
 		}
 	}
 
 	var checkCSVFormatting = function(csv) {
-		var pattern = new RegExp(/[~`!#$%\^&*+=\\[\]\\';/{}|\\":<>\?]/)
+		var pattern = new RegExp(/[~`!#$%\^&*+=\\[\]\\';{}|\\":<>\?]/)
 		var res = pattern.test(csv);
 
 		if (res) {
-			return false;
+			return "CSV Improperly Formatted";
 		}
 		else {
 			return true;
@@ -86,16 +74,38 @@ var CSV = (function() {
 	}
 
 	var emptyCSVFields = function(csv) {
-		var pattern = new RegExp(",,");
-		var res = pattern.test(csv);
+		var emptyPattern = new RegExp(",,");
+		var res = emptyPattern.test(csv);
 
 		if (res) {
-			return false;
+			return "CSV File Missing Entries";
 		}
 		else {
 			return true;
 		}
 	}
+
+	var checkValidDate = function(json) {
+		var errorMessage = "";
+		var errors = 0;
+		var datePattern = new RegExp(/[/]/);
+
+		for (var g = 0; g < json.length; g++) {
+			var date = json[g]["Interaction Date"];
+
+			if (datePattern.test(date)) {
+				errors++;
+				errorMessage += "Date improperly formatted on line " + (g + 2) + "<br />";
+			} 
+		}
+
+		if (errors !== 0) {
+			return errorMessage;	
+		}
+		else {
+			return true;
+		}
+	};
 
 	// convert csv to JSON object
 	var csvStringtoJSON = function(csv) {
@@ -133,10 +143,14 @@ var CSV = (function() {
 				resolve(reader.result);
 			}
 		});	
-		
+
 	};
 
 	return {
 		csvToJSON: csvToJSON
+	}
+
+	var tests = function() {
+
 	}
 })();

@@ -124,10 +124,10 @@ var core = (
 			this.onEnd = function() {},
 			this.runTests = function(set) {
 				for (var i = 0; i < set.tests.length ; i++) {
-					var pass = set.tests[i](self.data);
+					var testResult = set.tests[i](self.data);
 
-					if (pass === false) {
-						self.errorMessage = set.errorMessage;
+					if (testResult !== true) {
+						self.errorMessage = testResult;
 						return false;
 					}
 				}
