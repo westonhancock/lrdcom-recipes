@@ -1,5 +1,5 @@
 .top-banner-container {
-	background: url(/documents/67510365/74348488//Devcon-Mobile-Banner-1.jpg) repeat no-repeat center bottom;
+	background: url(/images//Devcon-Mobile-Banner-1.jpg) repeat no-repeat center bottom;
  	text-align: center;
   	padding-bottom: 100px;
   	background-size: auto 100px;
@@ -108,7 +108,7 @@
 }
 
 .quote-section .block-1 {
-	background: url(/documents/67510365/74348488//Quote-Box-1.jpg) no-repeat center center;
+	background: url(/images//Quote-Box-1.jpg) no-repeat center center;
 	background-size: cover
 }
 
@@ -121,7 +121,7 @@
 }
 
 .quote-section .block-4 {
-	background: url(/documents/67510365/74348488//Quote-Box-2.jpg) no-repeat;
+	background: url(/images//Quote-Box-2.jpg) no-repeat;
 	background-size: cover
 }
 
@@ -162,18 +162,25 @@
 	width: 80vw;
 	height: 80vh;
 }
-#cfptabs {
-	box-sizing: border-box;
-    height: 100%;
-}
+
+/* whole panel */
+
 #cfppanel .yui3-tabview-panel {
 	overflow-y: auto;
-	height: 100%;
+	height: 90%;
 	background: #fff;
 }
+
+/* panel content */
+
 #cfppanel .yui3-tab-panel {
-	padding: 20px;
+	padding: 0 20px 20px 20px;
 }
+
+#cfppanel .main-content {
+	padding-bottom: 20px;
+}
+
 #cfppanel .yui3-tabview-list {
 	background: black;
 	border: none;
@@ -181,29 +188,32 @@
 	justify-content: center;
 	align-items: center;
 }
+
 #cfppanel .yui3-tabview-list li {
-flex: 1 0 auto;
+	flex: 1 0 auto;
 }
 
 #cfppanel .yui3-tab-selected .yui3-tab-label, #cfppanel .yui3-tab:hover .yui3-tab-label {
 	border-bottom: 2px solid #3c64ad;
 	font-weight: normal;
 }
+
 #cfppanel .yui3-tab-label {
-		background: black;
+	background: black;
 	border: none;
-		text-align: center;
-  text-transform: uppercase;
-	  font-size: 1.5em;
-  font-weight: lighter;
-	 color: #FFF;
-	 margin: 0.75em;
-	 	padding: 0 0.3em;
+	text-align: center;
+	text-transform: uppercase;
+	font-size: 1.5em;
+	font-weight: lighter;
+	color: #FFF;
+	margin: 0.75em;
+	padding: 0 0.3em;
 }
 
 #cfppanel h3 {
-    color: black;
+	color: black;
 }
+
 
  #main-content.full-screen-layout #cfppanel  .portlet-boundary {
 	 max-width: none;
@@ -217,15 +227,20 @@ flex: 1 0 auto;
 	order: 4;
 	width: 24px;
 	height: 24px;
-  margin-right: 10px;
+  	margin-right: 10px;
 	float: right;
+}
+
+#cfptabs {
+	box-sizing: border-box;
+    height: 100%;
 }
 
 
 /* unconference ---------------------*/
 
 .unconference {
-	background: url(/documents/67510365/74348488//Unconference-Banner.jpg) no-repeat top center;
+	background: url(/images//Unconference-Banner.jpg) no-repeat top center;
 	background-size: cover;
 	color: white;
 	min-height: 400px;
@@ -234,8 +249,6 @@ flex: 1 0 auto;
 .unconference .lego-block {
 	max-width: 720px;
 }
-
-.unconference p {}
 
 .unconference h2 {
 	color: white;
@@ -318,7 +331,7 @@ flex: 1 0 auto;
 
 .venue {
 	
-	background: url(/documents/67510365/74348488//Venue-Banner.jpg) no-repeat top center;
+	background: url(/images//Venue-Banner.jpg) no-repeat top center;
 	background-size: cover;
 	color: white;
 	min-height: 400px;
@@ -403,7 +416,7 @@ table.lfr-table
     opacity: 0.9;
 }
 
-@media(max-width:1199px) {
+@media (max-width:1199px) {
 
 	.top-banner-container {
 
@@ -444,7 +457,7 @@ table.lfr-table
 	}
 }
 
-@media(min-width:1200px) {
+@media (min-width:1200px) {
 
 	/* give more room to video */
 
@@ -474,7 +487,7 @@ table.lfr-table
 	}
 
 	.top-banner-container {
-		background: url("/documents/67510365/74348488//Devcon Banner_cropped.jpg") no-repeat right top;
+		background: url("/images//Devcon Banner_cropped.jpg") no-repeat right top;
 		background-size: auto 400px;
 		padding-bottom: 0;
 	}
@@ -520,7 +533,7 @@ table.lfr-table
 	}
 
 	.quote-section .block-3 {
-		background: url(/documents/67510365/74348488//Quote-Box-2.jpg) no-repeat;
+		background: url(/images//Quote-Box-2.jpg) no-repeat;
 		background-size: cover;
 	}
 
@@ -528,15 +541,19 @@ table.lfr-table
 		background: #1477A8;
 	}
 
-	#cfppanel .yui3-tab-label {
-		font-size: 0.75em;
-		margin: 0.75 0;
-		padding: 0;
+	#cfppanel .yui3-tabview-panel {
+		height: 100%;
 	}
 
 	#cfppanel {
 		width: 100%;
 		height: 100%;
+	}
+
+	#cfppanel .yui3-tab-label {
+		font-size: 0.75em;
+		margin: 0.75 0;
+		padding: 0;
 	}
 
 	.close-popup-content {
@@ -566,6 +583,10 @@ table.lfr-table
 
 	.call-for-papers p {
 		font-size: 150%;
+	}
+
+	#cfppanel .yui3-tabview-panel {
+		font-size: 125%;
 	}
 
 	.unconference {

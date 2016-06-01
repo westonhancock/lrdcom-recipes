@@ -26,6 +26,8 @@ AUI().use('node', function (A) {
 
 	A.on('resize', fixNav);
 	A.on('scroll', fixNav);
+
+	
 });
 
 window.addEventListener("load", function () {
@@ -50,10 +52,11 @@ AUI().use('tabview', function (A) {
 AUI().use('panel', function (A) {
 	var panel = new A.Panel({
 		srcNode: '#cfptabs',
-		
+
 		zIndex: 250,
 		id: "cfppanel",
 		centered: true,
+		constrain: true,
 		modal: true,
 		visible: false,
 		render: true,
@@ -65,7 +68,7 @@ AUI().use('panel', function (A) {
             },
 			{
 				eventName: 'click',
-				node: A.one(".close-popup-content") 
+				node: A.one(".close-popup-content")
 			}]
 	});
 
@@ -77,3 +80,52 @@ AUI().use('panel', function (A) {
 });
 
 
+
+
+AUI().use(
+	'anim',
+	'transition',
+	function (A) {
+		
+	/* outfit hash links with animate-scroll */
+	var links = document.querySelectorAll("#navigation a");
+	if (links) {
+		for (var i = 0; i < links.length; i++) {
+			if (links[i].hash !== "") {
+				links[i].className += " animate-scroll";
+				/* offset for fixed nav */
+				links[i].setAttribute("data-offset", 55);
+			}
+		}
+	}
+	
+       	A.all('.animate-scroll').on(
+			'click',
+			function (event) {
+				event.preventDefault();
+
+				var node = event.currentTarget;
+
+				var section = A.one(node.get('hash'));
+
+				var offset = parseInt(node.attr('data-offset'));
+
+				var scrollTo = parseInt(section.getY());
+
+				if (offset) {
+					scrollTo -= offset;
+				}
+
+				new A.Anim(
+					{
+						duration: 0.5,
+						easing: 'easeBoth',
+						node: 'win',
+						to: {
+							scroll: [0, scrollTo]
+						}
+					}
+				).run();
+			}
+		);
+	});
