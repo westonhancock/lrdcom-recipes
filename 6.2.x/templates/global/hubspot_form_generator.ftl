@@ -169,16 +169,16 @@
 					</#list>
 
 					<#if submit_text.data?has_content>
-						<#assign btn_text = localize(submit_text.data, submit_text.data) />
-					</#if>
-
-					<#if !btn_text?has_content>
+						<#assign btn_text = submit_text.data />
+					<#else>
 						<#assign btn_text = hs_form.getSubmitText() />
 					</#if>
 
 					<#if !btn_text?has_content>
-						<#assign btn_text = localize("submit", "Submit") />
+						<#assign btn_text = "Submit" />
 					</#if>
+
+					<#assign btn_text = localize(btn_text?replace(" ", "_")?lower_case, btn_text) />
 
 					<div class="btn-wrapper">
 						<input class="btn ${button_color.data}" type="submit" value="${btn_text}" />
