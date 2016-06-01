@@ -8,6 +8,17 @@
 			en_US: 'Best For:'
 		},
 
+		contact_us_comments: {
+			de_DE: 'Comments',
+			en_US: 'Comments',
+			es_ES: 'Comments',
+			fr_FR: 'Comments',
+			it_IT: 'Comments',
+			ja_JP: 'コメント',
+			pt_BR: 'Comments',
+			zh_CN: 'Comments'
+		},
+
 		company: {
 			de_DE: 'Unternehmen',
 			en_US: 'Company',
@@ -169,7 +180,14 @@
 		},
 
 		submit: {
-			en_US: 'Submit'
+			de_DE: 'Einreichen',
+			en_US: 'Submit',
+			es_ES: 'Enviar',
+			fr_FR: 'Soumettre',
+			it_IT: 'invio',
+			ja_JP: '送信',
+			pt_BR: 'Enviar',
+			zh_CN: '提交'
 		},
 
 		tel: {
@@ -192,6 +210,17 @@
 			ja_JP: 'ありがとうございました',
 			pt_BR: 'Obrigado',
 			zh_CN: '谢谢'
+		},
+
+		type_of_inquiry: {
+			de_DE: 'Type of Inquiry',
+			en_US: 'Type of Inquiry',
+			es_ES: 'Type of Inquiry',
+			fr_FR: 'Type of Inquiry',
+			it_IT: 'Type of Inquiry',
+			ja_JP: 'お問い合わせの種類',
+			pt_BR: 'Type of Inquiry',
+			zh_CN: 'Type of Inquiry'
 		},
 
 		x-is-required: {
