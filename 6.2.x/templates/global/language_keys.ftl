@@ -180,7 +180,7 @@
 		},
 
 		submit: {
-			de_DE: 'Einreichen',
+			de_DE: 'Senden',
 			en_US: 'Submit',
 			es_ES: 'Enviar',
 			fr_FR: 'Soumettre',
