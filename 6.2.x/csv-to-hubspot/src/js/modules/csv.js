@@ -1,8 +1,114 @@
 // module with functionalities for handling CSV's
 var CSV = (function() {
 
-	// convert csv to JSON object
+	/*  
+		Turning CSV to JSON is multi-stepped needing multiple tests.
+	 	We leverage the processAndTest util to accomplish this.
+	*/
 	var csvToJSON = function(csv) {
+
+		var csvJSONtests = new core.processAndTest(csv);
+
+		// step 1: check if it is a CSV file
+		csvJSONtests.newProcess({
+			action: function(data) {
+				return data;
+			},
+			tests: [
+				isItCSV
+			]
+		});
+
+		// step 2: let browser read the file as string and test formatting
+		csvJSONtests.newProcess({
+			action: readFile,
+			mode: "async",
+			tests: [
+				checkCSVFormatting,
+				emptyCSVFields
+			]
+		});
+
+		// step 3 (incomplete): turn string into JSON
+		csvJSONtests.newProcess({
+			action: csvStringtoJSON,
+			tests: [
+				checkValidDate
+			]
+		});
+
+		return csvJSONtests;
+	}
+
+	var isItCSV = function(file) {
+		var fileMatches = 0;
+		var acceptableFileTypes = [
+			"text/csv",
+			"application/vnd.ms-excel"
+		]
+
+		// test acceptable file types
+		for (var p = 0; p < acceptableFileTypes.length; p++) {
+			if (file.type == acceptableFileTypes[p]) {
+				fileMatches++;
+			}
+		}
+
+		if (fileMatches > 0) {
+			return true;
+		} else {
+			return "Not a CSV File. File is " + file.type;
+		}
+	}
+
+	var checkCSVFormatting = function(csv) {
+		var pattern = new RegExp(/[~`!#$%\^&*+=\\[\]\\';{}|\\":<>\?]/)
+		var res = pattern.test(csv);
+
+		if (res) {
+			return "CSV Improperly Formatted";
+		}
+		else {
+			return true;
+		}
+	}
+
+	var emptyCSVFields = function(csv) {
+		var emptyPattern = new RegExp(",,");
+		var res = emptyPattern.test(csv);
+
+		if (res) {
+			return "CSV File Missing Entries";
+		}
+		else {
+			return true;
+		}
+	}
+
+	var checkValidDate = function(json) {
+		var errorMessage = "";
+		var errors = 0;
+		var datePattern = new RegExp(/[/]/);
+
+		for (var g = 0; g < json.length; g++) {
+			var date = json[g]["Interaction Date"];
+
+			if (datePattern.test(date)) {
+				errors++;
+				errorMessage += "Date improperly formatted on line " + (g + 2) + "<br />";
+			} 
+		}
+
+		if (errors !== 0) {
+			return errorMessage;	
+		}
+		else {
+			return true;
+		}
+	};
+
+	// convert csv to JSON object
+	var csvStringtoJSON = function(csv) {
 		var lines = csv.split('\n');
 		var result = [];
 
@@ -18,8 +124,6 @@ var CSV = (function() {
 
 				// data integrity by removing special characters
 				currentHeader = currentHeader.replace(/[^a-zA-Z ]/g, "");
-				currentLine = currentLine.replace(/[^a-zA-Z ]/g, "")
-
 				obj[currentHeader] = currentLine;
 			}
 
@@ -29,77 +133,24 @@ var CSV = (function() {
 		return result;
 	};
 
-	var getFileType = function(filename) {
-		var parts = filename.split('/');
-
-		return parts[parts.length - 1];
-	};
-
 	// read file in browser
 	var readFile = function(file) {
-
 		return new Promise(function(resolve, reject) {
-			var textType = 'csv';
-			var windowsTextType = 'vnd.ms-excel';
-			var fileType = getFileType(file.type);
+			var reader = new FileReader();
+			var content = reader.readAsText(file);
 
-			if (fileType === textType || fileType === windowsTextType) {
-				var reader = new FileReader();
-				var content = reader.readAsText(file);
-
-				step1Data.csvDone = false;
-
-				reader.onload = function() {
-					resolve(reader.result);
-				}
+			reader.onload = function() {
+				resolve(reader.result);
 			}
-			else {
-				reject(Error('Wrong File Type'));
-			}
-		});
-	};
+		});	
 
-	// get information file
-	var getFileInformation = function(JSON) {
-		var entries = 0;
-
-		for (var key in JSON) {
-			if (JSON.hasOwnProperty(key)) {
-				entries++;
-			}
-		}
-
-		return {
-			entries: entries
-		};
-	};
-
-	// run tests for csv file
-	var checkCSV = function(csv) {
-		
-		var hasCSV = false;
-
-		// run our tests
-		if (csv) {
-			hasCSV = true;
-		}
-
-		return hasCSV;
-	};
-
-	var checkJSON = function(json) {
-		// run tests for json file
-		if (json) {
-			return true;
-		}
 	};
 
 	return {
-		csvToJSON: csvToJSON,
-		getFileType: getFileType,
-		readFile: readFile,
-		getFileInformation: getFileInformation,
-		checkCSV: checkCSV,
-		checkJSON: checkJSON
+		csvToJSON: csvToJSON
+	}
+
+	var tests = function() {
+
 	}
 })();

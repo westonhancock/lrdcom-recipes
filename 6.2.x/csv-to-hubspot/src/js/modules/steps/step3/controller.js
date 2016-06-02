@@ -45,7 +45,7 @@ var step3 = (function() {
 								email: entry["Email Address"],
 								hs_context: encodeURIComponent(JSON.stringify({
 									sfdcCampaignId: data.campaign,
-									"ipAddress": null
+									"ipAddress": ""
 								})),
 								recent_interaction: entry["Interaction"],
 								recent_interaction_detail: entry["Interaction Detail"],

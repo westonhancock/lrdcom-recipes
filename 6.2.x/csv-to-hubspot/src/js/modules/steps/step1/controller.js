@@ -10,47 +10,22 @@ var step1 = (function() {
 	);
 
 	var controller = (function() {
-		
-		// higher order function to manage the processing
 		var processFile = function(file) {
+			var processer = CSV.csvToJSON(file);
+			
+			processer.onEnd = function() {
+				if (processer.pass === true) {
+					steps.completeStep(1);
+					UI.fileGrade('pass');
+					data.updateData('json', processer.data);
+				}
+				
+				else {
+					UI.fileGrade('fail', processer.errorMessage);
+				}
+			}
 
-			CSV.readFile(file)
-
-				// when file is done being read, test csv
-				.then(function(csv) {
-					step1Data.csv = csv;
-					
-					return csv;
-				})
-				// if there's an error with csv
-				.catch(function(e) {
-					UI.fileGrade('fail', 'Wrong file type. Upload CSV File');
-					data.incompleteStep(1);
-				})
-				// additional tests on csv
-				.then(function(csv) {
-					if (!CSV.checkCSV(csv)) {
-						throw "CSV is no good";
-					}
-
-					return csv;
-				})
-				// if file is checked, parse to JSON
-				.then(function(csv) {
-					if (csv) {
-						var json = CSV.csvToJSON(csv);
-
-						data.updateData('json', json);
-					}
-
-					return json;
-				})
-				// if we pass the JSON testing, we should complete the step
-				.then(function(json) {
-					if (CSV.checkJSON(data.json)) {
-						steps.completeStep(1);
-					}
-				})
+			processer.run();
 		};
 
 		return {
@@ -133,4 +108,4 @@ var step1 = (function() {
 			fileGrade: fileGrade
 		};
 	})(controller);
-})(CSV, hubspot, steps, step1Data);
+})(CSV, hubspot, steps);

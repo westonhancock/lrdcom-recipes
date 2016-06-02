@@ -42,7 +42,6 @@ gulp.task(
 
 				// steps modules and its children
 				'src/js/modules/steps/controller.js',
-				'src/js/modules/steps/step1/data.js',
 				'src/js/modules/steps/step1/controller.js',
 				'src/js/modules/steps/step2/controller.js',
 				'src/js/modules/steps/step3/controller.js',
