@@ -1,34 +1,35 @@
 
-    
-    var questions = [1601,1602,1603,1603];
-    
-    
-    
-    
-    function changeAnswer() {
-        
-        var questions = []; 
-        $("#child_selection option").each(function() {
-            var val = $(this).val();
-            if (val !== "none") {
-                questions.push(val);
-            }
-        });
-        console.log("questions: " + questions);
-        
+function changeAnswer(interval) {
+
+    var questions = [];
+    $("#child_selection option").each(function () {
+        var val = $(this).val();
+        if (val !== "none") {
+            questions.push(val);
+        }
+    });
+
+
+    console.log("questions: " + questions);
+
+    var selectedIndex = null;
+
+    function showNextQuestion() {
         if (questions.length > 0) {
-            var number = 0 + Math.floor(Math.random() * questions.length);
-            console.log("picking q " + number + " of " + questions.length);
-            changeQuestion(questions[number]);   
-        }   
-        
-        function changeQuestion(questionId) {
-            setTheme();
-            clearTimeout(poller);
-            showResults(questionId);
+            if (selectedIndex == null || (selectedIndex > questions.length)) { selectedIndex = 0; }
+            else { selectedIndex += 1; }
+
+            console.log("picking q " + selectedIndex + " of " + questions.length);
+            changeQuestion(questions[selectedIndex]);
         }
     }
-    
-    
-    
-    
+    function changeQuestion(questionId) {
+        setTheme();
+        clearTimeout(poller);
+        showResults(questionId);
+    }
+    var timer = setInterval(showNextQuestion, interval);
+}
+
+
+
