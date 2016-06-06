@@ -14,7 +14,7 @@
         "defaultLocale": "en_US",
         "locales": [{
             "locale": "en_US",
-            "filename": "build/devcon.css"
+            "filename": "build/css/devcon.css"
         }]
 },
 {
@@ -26,6 +26,7 @@
             "filename": "build/alldevcon.js"
         }]
 }
+
 ]
 
 

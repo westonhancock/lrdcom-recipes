@@ -179,7 +179,8 @@ var ddmStructures=[
 {id: "69756111", name: "Beacon Region Events"},
 {id: "69756115", name: "Beacon Individual Events"},
 {id: "69756119", name: "Beacon Forms"},
-{id: "68745907", name: "Expert Exchange"}
+{id: "68745907", name: "Expert Exchange"},
+{id: "70719071", name: "CFP"}
 ];
 
 addCheckboxes();

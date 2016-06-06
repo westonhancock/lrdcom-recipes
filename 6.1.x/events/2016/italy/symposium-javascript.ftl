@@ -42,4 +42,14 @@
 				}
 			});
 	});
+	
+	
+	var links = document.querySelectorAll("#navigation a");
+	if (links) {
+		for (var i = 0; i < links.length; i++) {
+			if ((links[i].innerHTML === "Registrati") || (links[i].innerHTML === "Recap '15")) {
+				links[i].target = "_blank";	
+			}
+		}
+	}
 </script>

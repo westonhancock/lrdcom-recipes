@@ -306,11 +306,7 @@ module.exports = {
 
                 }
             });
-
-
         });
-
-
     },
     getDisplayArticleByTitle: function (config, article) {
 
@@ -779,3 +775,5 @@ module.exports = {
     }
 
 };
+
+module.exports.invoke_liferay = invoke_liferay;

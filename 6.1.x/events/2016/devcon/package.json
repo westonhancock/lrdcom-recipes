@@ -12,6 +12,7 @@
     "browser-sync-logger": "^1.0.3",
     "css-mqpacker": "^5.0.1",
     "cssunminifier": "0.0.2",
+    "del": "^2.2.0",
     "gulp": "^3.9.1",
     "gulp-concat": "^2.6.0",
     "gulp-ext-replace": "^0.3.0",

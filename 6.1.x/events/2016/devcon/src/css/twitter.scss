@@ -1,98 +1,140 @@
-    .blue-background {
-        background-color: #1277a7;
+.twitter-container { 
+    background-color: $lightblue;
+    padding: 60px 0;
+    text-align: center;
+    
+    .event_icon svg {
+        width: 150px;
+        height: 150px;
+        
+    }
+    .icons svg {
+        width: 50px;
+        height: 50px;
+        background: white;
     }
     
-    .inline {
+    > div {
         display: inline-block;
     }
-
-    .twitter-container {
-        background-color: #35A6CD;
-        padding: 60px 0;
-        text-align: center;
-    }
-
-    .twitter-container .icon-container {
-        color: #FFF;
+    
+    .icon-container {
+        color: $blue;
         margin: 0 30px;
         text-align: left;
         vertical-align: top;
-    }
-
-    .twitter-container .icon-container img {
-        margin-bottom: 30px;
-    }
-
-    .twitter-container .icon-container span {
-        font-size: 20px;
-        font-weight: normal;
-        margin-left: 10px;
-        position: relative;
-        top: 3px;
-        vertical-align: top;
-    }
-
-    .twitter-handles {
-        background-color: #FFF;
-        border: 3px solid #E3E6E8;
-        margin-bottom: 30px;
-        max-width: 280px;
-        text-align: left;
-        vertical-align: top;
-        width: 100%;
-    }
-
-    .twitter-handles a:last-child {
-        border-bottom: 0;
-    }
-
-    .twitter-handles .title, .twitter-handles .twitter-handle-container {
-        border-bottom: 1px solid #E3E6E8;
-    }
-
-    .twitter-handles .title {
-        font-size: 20px;
-        padding: 10px;
-    }
-
-    .twitter-handle-container {
-        display: block;
-        padding: 15px 0;
-    }
-
-    .twitter-handle-container img {
-        float: left;
-        padding: 0 15px;
-    }
-
-    .twitter-handle-container .at-handle {
-        font-size: 20px;
-    }
-
-    .twitter-handle-container .name{
-        color: #4C4C4E;
-        font-size: 18px;
-        font-weight: bold;
-    }
-
-    .twitter-handle-container .handle {
-        color: #D2D2D2;
-        font-size: 15px;
-        line-height: 10px;
-        margin-bottom: 10px;
-    }
-
-    .twitter-timeline.twitter-timeline-rendered {
-        display: inline-block !important;
-        margin: 0 30px !important;
-        max-width: 520px !important;
-        width: 100% !important;
-    }
-
-    @media(max-width: 600px) {
-
-        .twitter-timeline.twitter-timeline-rendered {
-            margin: 0 !important;
-            width: 90% !important;
+        
+        @media (--small-viewport) {
+            .event_icon {
+                text-align: center;
+            }
+         }
+        
+        .event_icon, .icon_with_text {
+            margin-bottom: 20px;
+        }
+        .icon_with_text {
+            display: flex;
+        }
+        span {
+            align-self: center;
+            font-size: 20px;
+            font-weight: normal;
+            padding-left: 10px;
+            vertical-align: top;  
         }
     }
+}
+
+
+
+
+.twitter-handles {
+    background-color: #FFF;
+    border: 3px solid #E3E6E8;
+    margin-bottom: 30px;
+    max-width: 280px;
+    text-align: left;
+    vertical-align: top;
+    width: 100%;
+}
+
+.twitter-handles a:last-child {
+    border-bottom: 0;
+}
+
+.twitter-handles .title, .twitter-handles .twitter-handle-container {
+    border-bottom: 1px solid #E3E6E8;
+}
+
+.twitter-handles .title {
+    font-size: 20px;
+    padding: 10px;
+}
+
+.twitter-handle-container {
+    display: block;
+    padding: 15px 0;
+}
+
+.twitter-handle-container img {
+    float: left;
+    padding: 0 15px;
+}
+
+.twitter-handle-container .at-handle {
+    font-size: 20px;
+}
+
+.twitter-handle-container .name{
+    color: #4C4C4E;
+    font-size: 18px;
+    font-weight: bold;
+}
+
+.twitter-handle-container .handle {
+    color: #D2D2D2;
+    font-size: 15px;
+    line-height: 10px;
+    margin-bottom: 10px;
+}
+
+.twitter-timeline.twitter-timeline-rendered {
+    display: inline-block !important;
+    margin: 0 30px !important;
+    max-width: 520px !important;
+    width: 100% !important;
+}
+
+@media (--small-viewport) {
+
+    .twitter-timeline.twitter-timeline-rendered {
+
+        width: 80% !important;
+    }
+}
+
+    /* style unrendered twitter timeline with message */
+a.twitter-timeline{
+    color: #3b94d9;
+    text-decoration: none;
+    font: normal normal 27px/1.4 Helvetica,Roboto,"Segoe UI",Calibri,sans-serif;
+    font-weight: 300;
+    text-align: left;
+    background: white;
+    max-width: 520px;
+    margin: 0 30px;
+    display: inline-block;
+    border-radius: 4px;
+    padding: 10px;
+}
+a.twitter-timeline::after {
+    content: "Please click on the link above or disable tracking protection to see the Twitter feed.  ";
+    padding: 20px;
+    line-height: 25px;
+    font-size: 16px;
+    color: black;
+    position: relative;
+    text-align: center;
+    display: block;
+}

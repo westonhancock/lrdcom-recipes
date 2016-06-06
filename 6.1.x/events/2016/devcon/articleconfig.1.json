@@ -71,6 +71,18 @@
             "filename": "build/alldevcon.js"
         }]
 }
+
+{
+        "groupId": "67510365",
+        "articleId": "74897050",
+        "defaultLocale": "de_DE",
+        "locales": [{
+            "locale": "de_DE",
+            "filename": "src/hotels.html"
+        }]
+}
+
+
 ]
 
 

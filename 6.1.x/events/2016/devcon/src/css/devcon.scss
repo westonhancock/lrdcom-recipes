@@ -51,6 +51,10 @@ $white: #fff;
 
 #navigation li a {
 	color: $white;
+	
+	&:hover {
+		background: $blue;
+	}
 }
 
 @media (--small-navigation) {
@@ -111,13 +115,17 @@ $white: #fff;
 		color: #6D6E71;
 		background: $white;
 		padding: 5px 20px;
+		&:hover {
+			color: $white;
+			background: $blue;
+		}
 	}
 	
 	.dynamic-navigation {
 		height: 60px;
 		position: static;
-		border:  solid 3px $darkblue;
-		background: linear-gradient(90deg, $green 8%, $darkdark 0, $darkdark 8.3%, $blue 0);
+		border:  solid 3px $darkdark;
+		background: linear-gradient(90deg, $green 8%, $darkdark 0, $darkdark 8.3%, $darkblue 0);
 	}
 	
 	.top-banner-container {
@@ -394,6 +402,108 @@ $white: #fff;
 }
 
 
+.ddl-form-portlet {
+	 p {
+	color: #929797;
+	font-size: 1.34em;
+	}
+
+	 p:nth-child(2) {
+	margin: 1em 0;
+	}
+
+	 .aui-button-input,  .aui-button-input:focus,  .portlet-msg-success a.btn,  .portlet-msg-success a.btn:focus {
+	background: #FFF;
+	border: 1px solid #198aca;
+	border-radius: 0;
+	color: #198aca;
+	font-weight: normal;
+	padding: 7px 15px;
+	text-shadow: none;
+	}
+
+	 .aui-button-input:hover,  .portlet-msg-success a.btn:hover {
+	background: #198aca;
+	border: 1px solid #198aca;
+	color: #FFF;
+	}
+
+	 .aui-choice-label {
+	color: #929797;
+	}
+
+	 .aui-choice-label .aui-label-required {
+	display: none;
+	}
+
+	 .aui-fieldset .aui-field-content,  .aui-field-row,  .aui-button-holder,  .aui-field-wrapper-content {
+	margin: 10px 1px;
+	}
+
+	 .aui-fieldset-content .aui-field-input {
+	background: #FFF;
+	}
+
+	 .aui-fieldset-content .aui-field-label {
+	color: #929797;
+	}
+
+	 .aui-field-label,  .aui-field-label-inline-label {
+	font-weight: normal;
+	}
+
+	 .aui-fieldset-content .aui-field-wrapper-content:nth-child(2) .aui-fieldset {
+	float: left;
+	padding-bottom: 60px;
+	width: 38%;
+	}
+
+	 .aui-fieldset-content .aui-field-wrapper-content:nth-child(3) .aui-fieldset {
+	float: right;
+	padding-bottom: 60px;
+	width: 58%;
+	}
+
+	 .aui-fieldset-content .aui-field-wrapper-content:nth-child(5) .aui-fieldset {
+	float: left;
+	width: 38%;
+	}
+
+	 .aui-fieldset-content .aui-field-wrapper-content:nth-child(6) .aui-fieldset {
+	float: right;
+	width: 58%;
+	}
+
+	 .aui-field-wrapper-content .aui-w25,  .aui-field-wrapper .aui-w25 {
+	width: 100% !important;
+	}
+
+	 .portlet-msg-success {
+	background: #FFF;
+	border: 0;
+	color: #929797;
+	margin: 0;
+	}
+
+	 .portlet-msg-success p {
+	font-weight: 100;
+	}
+
+	 .portlet-msg-success h2 {
+	color: #929798;
+	margin-top: 0;
+	font-size: 2em;
+	font-weight: normal;
+	text-align: center;
+	}
+
+	 .thank-you-submit p {
+	font-size: 1.25em;
+	font-weight: lighter;
+	text-align: center;
+	}
+}
+
 /* unconference ---------------------*/
 
 .unconference {
@@ -493,12 +603,15 @@ $white: #fff;
 	.btn {
 		background: $darkblue;
 		&:hover {
-			background: $darkdark;
+			background: $blue;
 		}
 	}
 
 
 }
+
+@import "twitter.scss";
+@import "hotel.scss";
 /* venue ----------------------------*/
 
 .venue {
@@ -529,7 +642,13 @@ $white: #fff;
 }
 
 
+/*  footer ---------------------------*/
 
+.footer .countdown {
+	h3, div {
+		color: $green;
+	}
+}
 /*----------------------------------*/
 
 

@@ -22,25 +22,22 @@ var logger = new winston.Logger({
         })
     ]
 });
+
 var fs = require("fs");
 var config = JSON.parse(fs.readFileSync('./config.json'));
 var environment = config.environment.prod;
 
 gulp.task("dev", function () {
-    
    environment = config.environment.dev; 
    logger.info("environment changed to: " ,  environment);
 });
-
-
- 
 
 var syncdir = "/Users/allenziegenfus/Documents/liferay-sync61/Events 2016/DEVCON";
 var paths = {
     scripts: ['src/liferay/**/*.js'],
     liferaycss: ['src/liferay/**/*.css'],
     pug: ['src/*.pug'],
-    css: ['src/*.scss'],
+    css: ['src/**/*.scss'],
     svg: ['images/*.svg'],
     html: ['src/*.html'],
     js: ['src/js/*.js']
@@ -62,7 +59,6 @@ gulp.task('browser-sync', function () {
 });
 
 gulp.task("js", function() {
-    
     var inject= require("gulp-inject-string");
    gulp.src(paths.js)
    .pipe(concat('alldevcon.js'))
@@ -71,7 +67,7 @@ gulp.task("js", function() {
    .pipe(gulp.dest("build"));
 });
 
-gulp.task('pug', ["liferaycss","scripts","sprite", "css"], function buildHTML() {
+gulp.task('pug', ["js", "liferaycss","scripts","sprite", "css"], function buildHTML() {
     logger.info("Running templates");
     var pug = require('gulp-pug');
     return gulp.src(paths.pug)
@@ -108,7 +104,7 @@ gulp.task('watch', function () {
      gulp.watch(paths.svg, ['pug']);
        gulp.watch(paths.html, ['pug']);
      gulp.watch(paths.scripts, ['scripts', 'pug']);
-     gulp.watch(paths.js, ['pug']);
+     gulp.watch(paths.js, ['js', 'pug']);
 });
 
 gulp.task('live-dev', ['dev', 'pug', 'watch', 'browser-sync']);
@@ -140,6 +136,7 @@ gulp.task("sprite", function (cb) {
         .pipe(svgSprite(config))
         .pipe(gulp.dest('build'))
         .on("end", function () {
+           
             logger.info("Renaming Sprite File");
             gulp.src('build/symbol/svg/sprite.symbol.svg')
                 .pipe(rename("devconsprite.svg"))
@@ -149,15 +146,13 @@ gulp.task("sprite", function (cb) {
     
 });
 
-
-
 gulp.task('css', function (cb) {
     var postcss = require('gulp-postcss');
     var gulpStylelint = require('gulp-stylelint');
     var fs = require('fs');
     logger.info("environment: ",  environment);
 
-    return gulp.src('src/**/*.scss')
+    return gulp.src(paths.css)
         .pipe(postcss([ 
         require('precss'),
         require("css-mqpacker"),
@@ -172,7 +167,6 @@ gulp.task('css', function (cb) {
         .pipe(gulp.dest('build/'));
         
 });
-
 
 
 gulp.task('images', function () {
@@ -223,5 +217,92 @@ gulp.task('get-content', function () {
       //  biggulp.getDisplayArticleByTitle(config, article); 
        // biggulp.getArticle(config, article);
     //    biggulp.getArticleContent(config, article, "en_US"); 
+    });
+});
+
+gulp.task('perms', function () {
+    var biggulp = require("./biggulp.js");
+    
+    var cmd = {
+        "/permission/check-permission": {
+            "groupId": 67510365,
+            "resourceId": 663854
+        }
+    };
+    
+    // https://web.liferay.com/de/web/mohit.soni/blog/-/blogs/deep-dive-in-roles-and-permissions
+    var cmd = {
+       '/resource/get-resource': {
+  
+          companyId: 1,
+            name: 'com.liferay.portal.model.Layout',
+      scope: 4 ,
+     primKey: '67504546'
+    }
+        
+    };
+    
+    
+    
+    var cmd = {
+        "/layout/get-layouts": {
+            "groupId": 67510365,
+            "privateLayout": false
+        }
+    };
+        var cmd = {
+        "/permission/check-permission": {
+            "groupId": 67510365,
+            "name": "com.liferay.portal.model.Layout",
+            "primKey": "74815470"
+        }
+    };
+    
+
+    
+      var cmd = {
+        "/role/get-group-roles": {
+         "groupId": 22
+        }
+    };
+    
+       var cmd = {
+        "/role/get-user-roles": {
+         "userId": 66748356
+        }
+    };
+    
+        
+     var cmd = {
+        "/role/get-role": {
+         "companyId": 1,
+         "name": "Guest"
+        }
+    };
+    
+        var cmd = {
+        "/role/get-user-group-roles": {
+         "userId": 66748356,
+         groupId: 67510365
+        }
+    };
+    
+      var cmd = {
+        "/role/get-role": {
+         "companyId": 1,
+         "name": "Guest"
+        }
+    };
+    
+        var cmd = {
+        "/permission/check-permission": {
+            "groupId": 11,
+            "name": "com.liferay.portal.model.Layout",
+            "primKey": "74815470"
+        }
+    };
+    
+    biggulp.invoke_liferay(config, cmd, function(body) {
+        console.log("we are now done", body);
     });
 });

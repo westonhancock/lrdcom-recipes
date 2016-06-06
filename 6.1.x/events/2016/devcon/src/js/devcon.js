@@ -52,10 +52,10 @@ AUI().use('tabview', function (A) {
 AUI().use('panel', function (A) {
 	var panel = new A.Panel({
 		srcNode: '#cfptabs',
-
 		zIndex: 250,
 		id: "cfppanel",
 		centered: true,
+		/* hey buddy, we are going to stay in the viewport */
 		constrain: true,
 		modal: true,
 		visible: false,
@@ -72,15 +72,60 @@ AUI().use('panel', function (A) {
 			}]
 	});
 
-	var openBtn = A.one('.call-for-papers .btn');
-
-    openBtn.on('click', function () {
+	A.one('.call-for-papers .btn').on('click', function () {
         panel.show();
     });
+	
+	var hotelPanel = new A.Panel({
+		srcNode: '#hotelPop',
+		zIndex: 250,
+		id: "hotelpanel",
+		centered: true,
+		/* hey buddy, we are going to stay in the viewport */
+		constrain: true,
+		modal: true,
+		visible: false,
+		render: true,
+		buttons: [
+			{
+                value: " ",
+                action: function(e) {
+                    e.preventDefault();
+                    hotelPanel.hide();
+                },
+                section: A.WidgetStdMod.HEADER,
+				classNames: "close-popup-content"
+			}
+           
+		],
+		hideOn: [
+            {
+				eventName: 'clickoutside'
+            }]
+	});
+		A.one('window').on(
+				'resize',
+				function() {
+					hotelPanel.centered = true;
+				}
+			);
+
+	A.one('#button-74666787211').on('click', function () {
+        hotelPanel.show();
+    });
+	
+	A.on('load', function () {
+	/*
+	
+	      var successNode2 = popup2.one('.portlet-msg-success');
+        var urlString = location.href;
+
+        if (successNode2){
+            successNode2.set('innerHTML', '<h2>Thank you for your submission!</h2><p>If chosen, you will be contacted through the email address provided.</p><p"><a class="btn" href="/web/events2016/northamerica/home?cfp">Submit another proposal!</a></p>');
+
+	*/
+	});
 });
-
-
-
 
 AUI().use(
 	'anim',
@@ -99,33 +144,33 @@ AUI().use(
 		}
 	}
 	
-       	A.all('.animate-scroll').on(
-			'click',
-			function (event) {
-				event.preventDefault();
+	A.all('.animate-scroll').on(
+		'click',
+		function (event) {
+			event.preventDefault();
 
-				var node = event.currentTarget;
+			var node = event.currentTarget;
 
-				var section = A.one(node.get('hash'));
+			var section = A.one(node.get('hash'));
 
-				var offset = parseInt(node.attr('data-offset'));
+			var offset = parseInt(node.attr('data-offset'));
 
-				var scrollTo = parseInt(section.getY());
+			var scrollTo = parseInt(section.getY());
 
-				if (offset) {
-					scrollTo -= offset;
-				}
-
-				new A.Anim(
-					{
-						duration: 0.5,
-						easing: 'easeBoth',
-						node: 'win',
-						to: {
-							scroll: [0, scrollTo]
-						}
-					}
-				).run();
+			if (offset) {
+				scrollTo -= offset;
 			}
-		);
-	});
+
+			new A.Anim(
+				{
+					duration: 0.5,
+					easing: 'easeBoth',
+					node: 'win',
+					to: {
+						scroll: [0, scrollTo]
+					}
+				}
+			).run();
+		}
+	);
+});

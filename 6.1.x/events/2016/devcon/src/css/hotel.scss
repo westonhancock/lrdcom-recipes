@@ -1,0 +1,83 @@
+.pop-up-content-container {
+  background-color: #FFF;
+  max-height: 90vh;
+  padding: 0 25px;
+  overflow: auto;
+}
+#hotelPop {
+    display: none;
+}
+#hotelpanel { 
+    
+
+    width: 70vw;
+    position: fixed;
+    @media (--small-viewport) {
+        width: 100vw;
+        height: 100vh;   
+  
+    }
+    .close-popup-content {
+          margin-right: 0;
+    }
+
+    .yui3-widget-hd {
+        background: black;
+        height: 30px;
+        
+    }
+    #hotelPop {
+        display: block;
+
+        svg {
+            width: 10px;
+            height: 10px;
+            margin-left: 5px;
+        }
+        
+        .aui-w33 {
+            display: inline-block;
+            margin: 0 1%;
+            vertical-align: top;
+            width: 30.3%;
+        }
+        
+        	@media (--small-viewport) {
+                
+                .tab-content {
+    overflow-y: auto;
+                }
+                
+                 .aui-w33 {
+    display: block;
+    margin: 15px 0 0 5%;
+    width: 95%;
+  }               
+            }
+    }
+}
+
+#hotelPop h3, #hotelPop div, #hotelPop p, #hotelPop a {
+  color: #1277a7;
+}
+
+#hotelPop a {
+  font-weight: bold;
+}
+
+#hotelPop a:hover {
+  color: #2bbbb0;
+}
+
+#hotelPop strong {
+  color: #35a6cd;
+}
+
+#hotelPop img {
+  margin-bottom: 20px;
+  max-width: 100%;
+}
+
+#hotelPop .disclaimer {
+  margin: 40px 0;
+}

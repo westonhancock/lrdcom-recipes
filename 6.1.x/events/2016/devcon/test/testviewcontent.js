@@ -6,7 +6,7 @@
     
     var articleConfig = [
         {
-        "groupId": "67510365",
+            "groupId": "67510365",
         "articleId": "74591624",
         "urlTitle": "devcon-call-for-papers-web-events2016-devcon"
         }];   
