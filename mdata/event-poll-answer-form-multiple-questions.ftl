@@ -103,7 +103,8 @@
 		<script>
 questionArray.push( {
 questionId: ${questionObj.questionId!0},
-questionType: "${questionObj.questionType}"
+questionType: "${questionObj.questionType}",
+selector: "#${questionObj.questionId} "
 });
 </script>
 		<h2>${questionObj.question?html}</h2><br>
@@ -221,6 +222,7 @@ questionType: "${questionObj.questionType}"
 
 	function getAndSendAnswers() {
 		questionArray.forEach(getAndSendAnswer);
+		return false;
 	}
 	function getAndSendAnswer(questionObj) {
 
@@ -288,19 +290,18 @@ questionType: "${questionObj.questionType}"
   
 				if (questionObj.questionType == "single"){
 		    var result = [];
-		    $('#radiocontainer :radio').each(function () {
+		    $(questionObj.selector + '#radiocontainer :radio').each(function () {
 			    var cb = $(this);
 			    if (cb.is(':checked')) {
 				    result.push(cb.attr('title').trim());
 			    }
 		    });
-		    return JSON.stringify(result);
-
+		 	   return JSON.stringify(result);
 				}
 							else	if (questionObj.questionType == "multiple"){
         
 		    var result = [];
-		    $('#checkboxcontainer :checkbox').each(function () {
+		    $(questionObj.selector + '#checkboxcontainer :checkbox').each(function () {
 			    var cb = $(this);
 			    if (cb.is(':checked')) {
 				    result.push(cb.attr('title').trim());
@@ -310,20 +311,20 @@ questionType: "${questionObj.questionType}"
 							}
 								else if (questionObj.questionType == "rating"){
   
-		    return Math.floor($('#slider').slider('value'));
+		    return Math.floor($(questionObj.selector + '#slider').slider('value'));
 								}
 								else if (questionObj.questionType == "ranking"){
    
 
 		    var result = [];
-		    $("#ranking_ul > li").each(function () {
+		    $("questionObj.selector + #ranking_ul > li").each(function () {
 			    result.push($(this).text().trim());
 		    });
 		    return JSON.stringify(result);
 								}
 								else if (questionObj.questionType == "text"){
        
-		    return $('#textarea').attr('value').trim();
+		    return $(questionObj.selector + '#textarea').attr('value').trim();
 
 								}
 								else {
