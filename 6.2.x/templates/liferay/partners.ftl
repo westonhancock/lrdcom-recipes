@@ -1,9 +1,11 @@
-<button class="reset">reset</button>
 <button class="unfiltered">unfiltered</button>
 <button class="someResults">someResults</button>
 <button class="noResults">noResults</button>
 
 <div class="" id="partnersDisplay">
+	 <div class="align-center block-container justify-center section-padding results-message w100">
+    	<h3>No local partners are available in your area at the moment, but our global services partners provide excellent service to Liferay customers all around the world.</h3>
+    </div>
 
 	<div class="global-container stacked">
 		<article class="global">
@@ -30,18 +32,7 @@
 	        	<p>Global</p>	
 	        </a>
 	    </article>
-	    <article class="global">
-	        <a class="block-container align-center justify-center no-padding">
-	        	<h2>[Logo]</h2>
-	        	<p>Global</p>	
-	        </a>
-	    </article>
-	    <article class="global">
-	        <a class="block-container align-center justify-center no-padding">
-	        	<h2>[Logo]</h2>
-	        	<p>Global</p>	
-	        </a>
-	    </article>
+
 	</div>
 
     <article class="local">
@@ -124,16 +115,58 @@
         </a>
     </article>
 
-    <div class="align-center block-container justify-center results-message text-center w100">
-    	<h3>No local results</h3>
-    </div>
+    <article class="local">
+        <a class="align-center block-container justify-center no-padding">
+	        <h2>[Logo]</h2>
+	        <h3>Partner Level</h3>
+	        <p>Location</p>
+        </a>
+    </article>
+
+    <article class="local">
+        <a class="align-center block-container justify-center no-padding">
+	        <h2>[Logo]</h2>
+	        <h3>Partner Level</h3>
+	        <p>Location</p>
+        </a>
+    </article>
+
+    <article class="local">
+        <a class="align-center block-container justify-center no-padding">
+	        <h2>[Logo]</h2>
+	        <h3>Partner Level</h3>
+	        <p>Location</p>
+        </a>
+    </article>
+
+    <article class="local">
+        <a class="align-center block-container justify-center no-padding">
+	        <h2>[Logo]</h2>
+	        <h3>Partner Level</h3>
+	        <p>Location</p>
+        </a>
+    </article>
+
+    <article class="local">
+        <a class="align-center block-container justify-center no-padding">
+	        <h2>[Logo]</h2>
+	        <h3>Partner Level</h3>
+	        <p>Location</p>
+        </a>
+    </article>
 
 </div>
 
 <style>
-	#partnersDisplay.wrap {
+	.wrapped {
 		display: flex;
 		flex-wrap: wrap;
+	}
+
+	.wrapped article {
+		flex-basis: 230px;
+		flex-grow: 1;
+		max-width: 23%;
 	}
 
 	#partnersDisplay .results-message {
@@ -141,11 +174,11 @@
 	}
 
 	#partnersDisplay article {
-	    width: 220px;
-	    height: 200px;
 	    border: 1px solid #e3e4e5;
+	    height: 200px;
 	    margin: .5em;
 	    position: relative;
+	    width: 23%;
 	}
 
 	#partnersDisplay article:hover {
@@ -154,13 +187,14 @@
 	}
 
 	#partnersDisplay article a {
-		width: 100%;
-		height: 100%;
-		position: absolute;
+		align-items: center;
+		color: inherit;
 		display: flex;
 		flex-direction: column;
-		align-items: center;
+		height: 100%;
+		position: absolute;
 		text-decoration: none;
+		width: 100%;
 	}
 
 	#partnersDisplay article.global {
@@ -168,17 +202,13 @@
 	}
 
 	#partnersDisplay .global-container.stacked {
-		width: 230px;
+		width: 23%;
 	}
 
 	#partnersDisplay .global-container.stacked article.global {
 		background: #F1F1F2;
+		width: 100%;
 		float: left;
-	}
-
-	#partnersDisplay .global-container.wrapped {
-		display: flex;
-		flex-wrap: wrap;
 	}
 
 	#partnersDisplay .global-container.wrapped article.global {
@@ -198,67 +228,143 @@
 	#partnersDisplay .local-container article.local {
 		display: block;
 	}
+
+	@media (max-width: 968px) {
+		.wrapped article {
+			max-width: 33%;
+		}
+
+		#partnersDisplay article {
+			width: 30%;
+		}
+
+		#partnersDisplay .global-container.stacked {
+			width: 30%;
+		}
+	}
+
+	@media (max-width: 768px) {
+		.wrapped article {
+			max-width: 50%;
+		}
+
+		#partnersDisplay article {
+			width: 46%;
+		}
+
+		#partnersDisplay .global-container.stacked {
+			width: 46%;
+		}
+	}
+
+	@media (max-width: 500px) {
+		.wrapped article {
+			max-width: 100%;
+		}
+
+		#partnersDisplay article {
+			width: 100%;
+		}
+
+		#partnersDisplay .global-container.stacked {
+			width: 100%;
+		}
+	}
 </style>
 
 <script>
 	AUI().use('event', function (A) {
-		var outerHTML = function(node){
-			return node.outerHTML || new XMLSerializer().serializeToString(node);
-		}
 
-		var wrapAll = function(wrapper, elems) {
-			var el = elems.length ? elems[0] : elems;
-		    var parent  = el.parentNode;
-		    var sibling = el.nextSibling;
+		var DOMUtils = (function() {
+			var outerHTML = function(node){
+				return node.outerHTML || new XMLSerializer().serializeToString(node);
+			};
 
-		    wrapper.appendChild(el);
+			var wrapAll = function(wrapper, elems) {
+				var el = elems.length ? elems[0] : elems;
+			    var parent  = el.parentNode;
+			    var sibling = el.nextSibling;
 
-		    for (var x = 1; x < elems.length; x++) {
-		    	wrapper.appendChild(elems[x]);
-		    }
-		    
-		    parent.insertAdjacentHTML('afterbegin', outerHTML(wrapper));
-		}
+			    wrapper.appendChild(el);
 
-		var unwrap = function(elems) {
-		    elems = 'length' in elems ? elems : [elems];
-		    for (var i = 0; i < elems.length; i++) {
-		        var elem = elems[i];
-		        var parent = elem.parentNode;
-		        var grandparent = parent.parentNode;
+			    for (var x = 1; x < elems.length; x++) {
+			    	wrapper.appendChild(elems[x]);
+			    }
+			    
+			    parent.insertAdjacentHTML('afterbegin', outerHTML(wrapper));
+			};
 
-		        if (parent.id !== "partnersDisplay") {
-		        	grandparent.insertBefore(elem, parent);
+			var unwrap = function(elems) {
+			    elems = 'length' in elems ? elems : [elems];
+			    for (var i = 0; i < elems.length; i++) {
+			        var elem = elems[i];
+			        var parent = elem.parentNode;
+			        var grandparent = parent.parentNode;
 
-			        if (parent.children.length === 0) 
-			            grandparent.removeChild(parent);
-		        }
-		    }
-		}
+			        if (parent.id !== "partnersDisplay") {
+			        	grandparent.insertBefore(elem, parent);
 
-		var resetButton = A.one('button.reset');
-		var unfilteredButton = A.one('button.unfiltered');
-		var someResultsButton = A.one('button.someResults');
-		var noResultsButton = A.one('button.noResults');
+				        if (parent.children.length === 0) 
+				            grandparent.removeChild(parent);
+			        }
+			    }
+			}
+		
+			var addWrapperTo = function(elems, orientation) {
+				if (elems) {
+					orientation = orientation ? orientation : ""
+					var currentElems = document.querySelectorAll('.' + elems);
+					var container = document.createElement('div');
 
-		resetButton.on("click", function() {
-			changeView.reset();
-		})
+					container.className = elems + "-container " + orientation;
+					wrapAll(container, currentElems);
+				}
+			};
 
-		unfilteredButton.on("click", function() {
-			changeView.unfiltered();
-		})
+			var changeOrder = function(order) {
+				var partnersDisplay = document.querySelector("#partnersDisplay");
+				var localArticles = document.querySelectorAll('.local');
+				var globalArticles = document.querySelectorAll('.global');
 
-		someResultsButton.on("click", function() {
-			changeView.someResults();
-		})
+				if (order === "flip") {
+					for (var f = 0; f < globalArticles.length; f++) {
+						partnersDisplay.appendChild(globalArticles[f]);	
+					}
+				} else {
+					for (var r = 0; r < localArticles.length; r++) {
+						partnersDisplay.appendChild(localArticles[r]);	
+					}
+				}	
+			};
 
-		noResultsButton.on("click", function() {
-			changeView.noResults();
-		})
+			var toggleResultsMessage = function(toggle) {
+				var partnersDisplay = document.querySelector("#partnersDisplay");
+				var resultsMessage = document.querySelector(".results-message");
 
-		var changeView = {
-			reset: function() {
+				if (toggle === "show") {
+					resultsMessage.style.display = "block";
+				} else {
+					resultsMessage.style.display = "none";
+				}
+
+				partnersDisplay.insertBefore(resultsMessage, partnersDisplay.childNodes[0]);
+			};
+
+			var toggleLocal = function(mode) {
+				var locals = document.querySelectorAll('.local');
+
+				if (mode === "hide") {
+					for (var l = 0; l < locals.length; l++) {
+						locals[l].style.display = "none";
+					}
+				} else {
+					for (var l = 0; l < locals.length; l++) {
+						locals[l].style.display = "inline-block";
+					}
+				}				
+			}
+
+			var reset = function() {
 				var globalArticles = document.getElementsByClassName('global');
 				var localArticles = document.getElementsByClassName('local');
 				var partnersDisplay = document.querySelector("#partnersDisplay");
@@ -274,64 +380,57 @@
 				partnersDisplay.className = "";
 
 				// 3. reset order of elements
-				this.changeOrder("reset");
+				changeOrder("reset");
 
 				// 4. hide results message
-				this.toggleResultsMessage("hide");
-			},
+				toggleResultsMessage("hide");
+
+				// 5. show local results
+				toggleLocal("show");
+			};
+
+			return {
+				reset: reset,
+				toggleResultsMessage: toggleResultsMessage,
+				changeOrder: changeOrder,
+				toggleLocal: toggleLocal,
+				addWrapperTo: addWrapperTo
+			}
+		})();
+
+		var changeView = {
 			unfiltered: function() {
-				this.reset();
-				this.addWrapperTo('global', 'stacked');
+				DOMUtils.reset();
+				DOMUtils.addWrapperTo('global', 'stacked');
 			},
 			someResults: function() {
-				this.reset();
-				this.changeOrder("flip");
-				partnersDisplay.className = "wrap";
+				DOMUtils.reset();
+				DOMUtils.changeOrder("flip");
+				partnersDisplay.className = "wrapped";
 			},
 			noResults: function() {
-				this.reset();
+				DOMUtils.reset();
+				DOMUtils.addWrapperTo("global", "wrapped");
+				DOMUtils.toggleResultsMessage("show");
+				DOMUtils.toggleLocal("hide");
+			}	
+		};
 
-				if (document.querySelector('.local')) {
-					this.addWrapperTo("local");
-				}
-				
-				this.addWrapperTo("global", "wrapped");
-				this.toggleResultsMessage("show");
-			},
-			addWrapperTo: function(elems, orientation) {
-				if (elems) {
-					orientation = orientation ? orientation : ""
-					var currentElems = document.querySelectorAll('.' + elems);
-					var container = document.createElement('div');
+		var resetButton = A.one('button.reset');
+		var unfilteredButton = A.one('button.unfiltered');
+		var someResultsButton = A.one('button.someResults');
+		var noResultsButton = A.one('button.noResults');
 
-					container.className = elems + "-container " + orientation;
-					wrapAll(container, currentElems);
-				}
-			},
-			changeOrder: function(order) {
-				var partnersDisplay = document.querySelector("#partnersDisplay");
-				var localArticles = document.querySelectorAll('.local');
-				var globalArticles = document.querySelectorAll('.global');
+		unfilteredButton.on("click", function() {
+			changeView.unfiltered();
+		});
 
-				if (order === "flip") {
-					for (var f = 0; f < globalArticles.length; f++) {
-						partnersDisplay.appendChild(globalArticles[f]);	
-					}
-				} else {
-					for (var r = 0; r < localArticles.length; r++) {
-						partnersDisplay.appendChild(localArticles[r]);	
-					}
-				}	
-			},
-			toggleResultsMessage: function(toggle) {
-				var resultsMessage = document.querySelector(".results-message");
+		someResultsButton.on("click", function() {
+			changeView.someResults();
+		});
 
-				if (toggle === "show") {
-					resultsMessage.style.display = "block";
-				} else {
-					resultsMessage.style.display = "none";
-				}
-			}
-		}
+		noResultsButton.on("click", function() {
+			changeView.noResults();
+		});
 	});
 </script>
