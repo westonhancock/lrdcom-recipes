@@ -41,41 +41,9 @@ window.addEventListener("load", function () {
 		}
 	});
 });
-
-AUI().use('tabview', function (A) {
-    var tabview = new A.TabView({
-		srcNode: "#cfptabs"
-    });
-	tabview.render();
-});
-
-AUI().use('panel', function (A) {
-	var panel = new A.Panel({
-		srcNode: '#cfptabs',
-		zIndex: 250,
-		id: "cfppanel",
-		centered: true,
-		/* hey buddy, we are going to stay in the viewport */
-		constrain: true,
-		modal: true,
-		visible: false,
-		render: true,
-		/* no buttons or header */
-		buttons: [],
-		hideOn: [
-            {
-				eventName: 'clickoutside'
-            },
-			{
-				eventName: 'click',
-				node: A.one(".close-popup-content")
-			}]
-	});
-
-	A.one('.call-for-papers .btn').on('click', function () {
-        panel.show();
-    });
 	
+AUI().use('panel', function (A) {
+		
 	var hotelPanel = new A.Panel({
 		srcNode: '#hotelPop',
 		zIndex: 250,
@@ -113,18 +81,7 @@ AUI().use('panel', function (A) {
 	A.one('#button-74666787211').on('click', function () {
         hotelPanel.show();
     });
-	
-	A.on('load', function () {
-	/*
-	
-	      var successNode2 = popup2.one('.portlet-msg-success');
-        var urlString = location.href;
 
-        if (successNode2){
-            successNode2.set('innerHTML', '<h2>Thank you for your submission!</h2><p>If chosen, you will be contacted through the email address provided.</p><p"><a class="btn" href="/web/events2016/northamerica/home?cfp">Submit another proposal!</a></p>');
-
-	*/
-	});
 });
 
 AUI().use(

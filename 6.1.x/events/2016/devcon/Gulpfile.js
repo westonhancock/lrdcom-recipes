@@ -301,7 +301,17 @@ gulp.task('perms', function () {
             "primKey": "74815470"
         }
     };
+    var cmd = {"/ddlrecordset/get-record-set": {
+     
+            recordSetId: 36416693    }
     
+    };
+    
+        var cmd = {"/ddmstructure/get-structure": {
+     
+            structureId: 36369534    }
+    
+    }
     biggulp.invoke_liferay(config, cmd, function(body) {
         console.log("we are now done", body);
     });
