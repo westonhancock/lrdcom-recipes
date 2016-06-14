@@ -58,6 +58,19 @@ gulp.task('browser-sync', function () {
 
 });
 
+gulp.task('browser-sync-dev', function () {
+    browserSync.init({
+        proxy: "localhost:8080",
+        files: ["build/css/devcon.css"],
+        plugins: ["browser-sync-logger"]
+    });
+    gulp.watch("build/css/devcon.css").on('change', function() {
+        updateLocal();
+        browserSync.reload();
+    
+});
+});
+
 gulp.task("js", function() {
     var inject= require("gulp-inject-string");
    gulp.src(paths.js)
@@ -107,7 +120,9 @@ gulp.task('watch', function () {
      gulp.watch(paths.js, ['js', 'pug']);
 });
 
+
 gulp.task('live-dev', ['dev', 'pug', 'watch', 'browser-sync']);
+gulp.task('live-local-dev', ['dev', 'pug', 'watch', 'browser-sync-dev']);
 
 gulp.task('svgmin', function () {
     return gulp.src('images/*.svg')
@@ -180,6 +195,19 @@ gulp.task('images', function () {
         .pipe(gulp.dest('build/images'));
 });
 
+
+function updateLocal() {
+    var biggulp = require("./biggulp.js");
+    var fs = require("fs");
+    var config = JSON.parse(fs.readFileSync('./config_local.json'));
+    var articleConfig = JSON.parse(fs.readFileSync('./articleconfig_local.json'));
+    
+    articleConfig.forEach(function(article) {  
+        biggulp.updateStaticArticleContent(config, article); 
+    });
+    
+}
+gulp.task('update-local', ["js", "pug"], updateLocal);
 
 gulp.task('update', ["js", "pug"], function () {
     var biggulp = require("./biggulp.js");
@@ -311,8 +339,151 @@ gulp.task('perms', function () {
      
             structureId: 36369534    }
     
-    }
+    };
+
+       var cmd = {
+        "/permission/check-permission": {
+            "groupId": 11,
+            "name": "com.liferay.portal.model.Layout",
+            "primKey": "74815470"
+        }
+       };
+       
+
+        var cmd = {
+        "/layout/get-layouts": {
+            "groupId": 67510365,
+            "privateLayout": false
+        }
+    };
+/*
+      biggulp.invoke_liferay(config, cmd, function(body) {
+        body.forEach(function(elem) {
+                console.log(elem.plid + " " + elem.friendlyURL);
+            
+        })  ;      
+    });
+
+*/
+ var cmd = {
+    '/permission/set-role-permission': 
+  {
+    roleId: 11,
+    groupId: 67510365,
+    name: 'com.liferay.portal.model.Layout',
+    scope: 4,
+    primKey: '74815470',
+    actionId: 'VIEW'
+ }};
+
+ var cmd = {
+    '/resourcepermission/add-resource-permission':
+  {
+    groupId: 67510365,
+    companyId: 1 ,
+    name: 'com.liferay.portal.model.Layout',
+    scope: 4,
+   primKey: '74815470',
+    roleId: 11,
+    actionId: "VIEW"
+ }};
+
+  var cmd = {
+    '/resourcepermission/set-individual-resource-permissions':
+  {
+    groupId: 67510365,
+    companyId: 1 ,
+    name: 'com.liferay.portal.model.Layout',
+   primKey: '74815470',
+   roleIdsToActionIds: {
+       "11": "VIEW"
+   } 
+}};
+
+
+  var cmd = {
+   '/resourcepermission/remove-resource-permission':
+  {
+    groupId:67510365 ,
+    companyId: 1,
+    name: 'com.liferay.portal.model.Layout',
+    scope: 4,
+    primKey: '74815470',
+    roleId: 11,
+    actionId: 'VIEW'
+  }};
+
+
+
+
     biggulp.invoke_liferay(config, cmd, function(body) {
+        console.log("we are now done", body);
+    });
+    
+});
+
+
+gulp.task('spain-perms', function () {
+    var biggulp = require("./biggulp.js");
+        
+    function addGrant(primKey) {
+     return {
+    '/resourcepermission/set-individual-resource-permissions':
+  {
+    groupId: 67510365,
+    companyId: 1 ,
+    name: 'com.liferay.portal.model.Layout',
+   primKey: "" + primKey,
+   roleIdsToActionIds: {
+       "11": "VIEW"
+   } 
+}};
+    }
+
+ function addRevoke(primKey) {
+     return {
+   '/resourcepermission/remove-resource-permission':
+  {
+    groupId:67510365 ,
+    companyId: 1,
+    name: 'com.liferay.portal.model.Layout',
+    scope: 4,
+   primKey: "" + primKey,
+    roleId: 11,
+    actionId: 'VIEW'
+  }};}
+
+
+
+    var spainPublic = 
+    ["73725067",
+    "73725070",
+    "73728642",
+    "73997932",
+    "73997937",
+    "73997939",
+    "74013753",
+    "73997940",
+    "73997942",
+    "74006172"
+    ];
+
+    var spainAdmin = 
+    [
+    "74094686",
+    "74540630",
+    "74540659"];
+
+    var bigCommand = [];
+
+    spainPublic.forEach(function(elem) {
+            bigCommand.push(addGrant(elem));
+    });
+    spainAdmin.forEach(function(elem) {
+     bigCommand.push(addRevoke(elem));
+    });
+
+        biggulp.invoke_liferay(config, bigCommand, function(body) {
         console.log("we are now done", body);
     });
 });
