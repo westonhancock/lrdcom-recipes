@@ -108,9 +108,10 @@
 </div>
 
 ## Content Template
-#macro (content_template12  $heading $array)
+#macro (content_template_2016  $heading $array)
 
-	<div class="sponsor-type">
+	#set ($className = $stringUtil.replace($heading, " ", "_").toLowerCase())
+	<div class="$className sponsor-type">
 		<div class="heading-container">
 			<h2 class="sponsor-heading">
 				$heading
@@ -220,7 +221,7 @@
 		#if (!$sponsor_labels.containsKey($sponsor_rank) ) 
 		    #set ($rank_label = $sponsor_rank)
 		#end
-		#content_template12( $rank_label, $rank_tree)
+		#content_template_2016( $rank_label, $rank_tree)
 	#end
   #end
 	
