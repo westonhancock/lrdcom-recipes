@@ -1,8 +1,10 @@
-.pop-up-content-container {
+.hotel-popup__container {
   background-color: #FFF;
   max-height: 90vh;
   padding: 0 25px;
   overflow: auto;
+ display: flex;
+ flex-flow: row wrap;
 }
 #hotelPop {
     display: none;
@@ -35,25 +37,25 @@
             margin-left: 5px;
         }
         
-        .aui-w33 {
+        .hotel-popup__hotelcolumn {
             display: inline-block;
             margin: 0 1%;
             vertical-align: top;
-            width: 30.3%;
+            width: 20%;
+            flex: 1 0 0;
         }
         
         	@media (--small-viewport) {
                 
                 .tab-content {
-    overflow-y: auto;
-                }
-                
-                 .aui-w33 {
-    display: block;
-    margin: 15px 0 0 5%;
-    width: 95%;
-  }               
-            }
+   	              overflow-y: auto;
+                } 
+                .hotel-popup__hotelcolumn {
+                display: block;
+                margin: 15px 0 0 5%;
+                width: 95%;
+              }               
+        }
     }
 }
 
