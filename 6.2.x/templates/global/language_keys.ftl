@@ -58,7 +58,7 @@
 
 		email: {
 			de_DE: 'E-Mail',
-			en_US: 'Email',
+			en_US: 'Work Email',
 			es_ES: 'Email',
 			fr_FR: 'Email',
 			it_IT: 'E-mail',
@@ -183,10 +183,10 @@
 			de_DE: 'Senden',
 			en_US: 'Submit',
 			es_ES: 'Enviar',
-			fr_FR: 'Soumettre',
-			it_IT: 'invio',
+			fr_FR: 'soumettre',
+			it_IT: 'Submit',
 			ja_JP: '送信',
-			pt_BR: 'Enviar',
+			pt_BR: 'Submit',
 			zh_CN: '提交'
 		},
 
