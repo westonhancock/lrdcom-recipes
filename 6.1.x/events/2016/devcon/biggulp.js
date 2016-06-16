@@ -59,12 +59,14 @@ function invoke_liferay_api(config, api, payload, callback) {
  */
 function invoke_liferay(config, body, callback) {
 
+    var invoke_path = (config.server.indexOf("https") === 0)? "/api/secure/jsonws/invoke" :  "/api/jsonws/invoke";
     var postrequest = {
         json: true,
-        url: config.server + "/api/secure/jsonws/invoke",
+        url: config.server + invoke_path,
         body: body,
         headers: { "Authorization": "Basic " + config.base64auth }
     };
+    logger.debug(invoke_path);
     logger.debug("POST Request: ", postrequest);
 
     request.post(postrequest, function (err, httpResponse, body) {
