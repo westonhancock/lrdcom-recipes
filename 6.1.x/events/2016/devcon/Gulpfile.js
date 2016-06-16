@@ -729,3 +729,13 @@ gulp.task("get-templates", function () {
 
 
 
+
+gulp.task('resize-hotel', function () {
+    var imageResize = require('gulp-image-resize');
+ 
+  gulp.src('images/hotels/*')
+    .pipe(imageResize({ 
+      height : 200
+      }))
+    .pipe(gulp.dest('build/images/hotel'));
+});
