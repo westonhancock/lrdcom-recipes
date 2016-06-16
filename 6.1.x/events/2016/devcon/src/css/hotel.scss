@@ -5,6 +5,10 @@
   overflow: auto;
  display: flex;
  flex-flow: row wrap;
+
+  @media (--small-viewport) {
+       height: 100%;
+  }
 }
 #hotelPop {
     display: none;
@@ -16,7 +20,7 @@
     position: fixed;
     @media (--small-viewport) {
         width: 100vw;
-        height: 100vh;   
+        height: 100%;   
   
     }
     .close-popup-content {
@@ -47,13 +51,13 @@
         
         	@media (--small-viewport) {
                 
-                .tab-content {
-   	              overflow-y: auto;
-                } 
+                height: 100%;
                 .hotel-popup__hotelcolumn {
-                display: block;
-                margin: 15px 0 0 5%;
-                width: 95%;
+            
+                  display: block;
+                  margin: 15px 0 0 5%;
+                  width: 95%;
+                  flex: 0 0 95%;
               }               
         }
     }
