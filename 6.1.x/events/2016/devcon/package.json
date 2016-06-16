@@ -16,6 +16,7 @@
     "gulp": "^3.9.1",
     "gulp-concat": "^2.6.0",
     "gulp-ext-replace": "^0.3.0",
+    "gulp-image-resize": "^0.8.0",
     "gulp-imageoptim": "^1.0.4",
     "gulp-inject": "^4.1.0",
     "gulp-inject-string": "^1.1.0",
