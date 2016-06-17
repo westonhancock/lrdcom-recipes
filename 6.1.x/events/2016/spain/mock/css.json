@@ -1,0 +1,34 @@
+{
+    "file": "symposium-css.ftl",
+    "data": {
+        "extra_css": "",
+        "banner_images": {
+            "siblings": [
+                {
+                    "banner_width": {
+                        "data": "720"
+                    },
+                    "banner_image": {
+                        "data": "images/16SPS-Top-Image-720x1024-2.jpg"
+                    }
+                },
+                {
+                    "banner_width": {
+                        "data": "1920"
+                    },
+                    "banner_image": {
+                        "data": "images/16SPS-Top-Image-1920x533-2.jpg"
+                    }
+                },
+                {
+                    "banner_width": {
+                        "data": "600"
+                    },
+                    "banner_image": {
+                        "data": "images/16SPS-Top-Image-600x960-2.jpg"
+                    }
+                }
+            ]
+        }
+    }
+}
