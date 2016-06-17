@@ -42,7 +42,7 @@
         float: right;
         height: 0;
         position: relative;
-        top: -199px;
+        top: -200px;
         width: 0;
         z-index: 1;
     }
@@ -387,10 +387,16 @@ AUI().ready(
 			var nodeWidth = node.get('clientWidth');
 
 			xCenter = (contentWidth / 2) - (nodeWidth / 2);
-			yCenter = ((winHeight / 2) - (nodeHeight / 2)) + currentScrollPos;
-
+			if (nodeHeight > winHeight) {
+                yCenter = currentScrollPos;
+            }
+            else {
+                 yCenter = ((winHeight / 2) - (nodeHeight / 2)) + currentScrollPos;
+            }
 			node.setStyle('right', xCenter);
 			node.setStyle('top', yCenter);
+
+
 		};
 
 		A.all('.pop-up').on(
