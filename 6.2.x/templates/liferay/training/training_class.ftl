@@ -8,7 +8,7 @@
 
 <#assign is_online_course = "&online=false"/>
 
-<#if online_course.data == "true">
+<#if online_course?? && online_course.data == "true">
 	<#assign is_online_course = "&online=true"/>
 </#if>
 
