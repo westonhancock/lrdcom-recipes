@@ -1,0 +1,99 @@
+<script>
+AUI().ready(
+  'aui-overlay-mask',
+  'aui-tabs',
+  'node',
+  'substitute',
+  function(A) {
+    var WIN = A.getWin();
+    var popUps = A.all('.pop-up');
+    var classToggleNodes = A.all('.class-toggle.section-1');
+
+    var createOverlayMask = function() {
+      var bindUI = function() {
+        var overlayMask = A.one('.aui-overlaymask');
+
+        if (overlayMask) {
+          var closePopUpContent = A.all('.close-popup-content');
+
+          overlayMask.on(
+            'click',
+            function() {
+              overlayMask.remove(true);
+              popUps.each(function(node){
+                node.removeClass('class-toggle-active');
+              });
+            }
+          );
+
+          closePopUpContent.each(function(node) {
+            node.on('click', function() {
+              overlayMask.remove(true);
+            });
+          });
+        }
+      }
+
+      var init = function() {
+        if (A.one('.aui-overlaymask')) {
+          return
+        }
+
+        var overlay = new A.OverlayMask().render();
+
+        overlay.set('z-index', 20);
+        overlay.set("opacity", 0.85);
+        overlay.show();
+
+        bindUI();
+      }
+
+      return init();
+    }
+
+    classToggleNodes.each(function(node) {
+      node.on('click', function() {
+        createOverlayMask();
+      });
+    });
+
+    var tabs1 = new A.TabView(
+      {
+        boundingBox: '#landingTab',
+        listNode: '#list',
+        contentNode: '#tabContent'
+      }
+    );
+
+    tabs1.render();
+    tabs1.show();
+
+    var showPopUp = function(tabObject, popupNode, tabIndex) {
+        tabObject.selectTab(tabIndex);
+        popupNode.addClass('class-toggle-active');
+
+        createOverlayMask();
+    }
+
+    A.on('load', function(event) {
+        var popup1 = A.one('#cfpPopUp');
+        var successNode1 = popup1.one('.portlet-msg-success');
+        var urlString = location.href;
+
+        if (successNode1){
+            successNode1.set('innerHTML', '<h2>¡Gracias por enviar tu propuesta!</h2><p>Nuestro comité revisará todas las propuestas recibidas y los participantes escogidos serán contactados por email en la dirección proporcionada.</p><p"><a class="btn" href="/web/events2016/spain/home?cfp#article-69934090">Enviar otra propuesta</a></p>');
+
+            var ddlForm = popup1.one('.lfr-dynamic-form');
+
+            ddlForm.addClass('aui-helper-hidden');
+
+            showPopUp(tabs1, popup1, 3);
+        }
+
+        if (urlString.indexOf('?cfp') > 0){
+            showPopUp(tabs1, popup1, 0);
+        }
+    });
+  }
+);
+</script>

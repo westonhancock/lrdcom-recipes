@@ -40,7 +40,8 @@ var paths = {
     css: ['src/**/*.scss'],
     svg: ['images/*.svg'],
     html: ['src/*.html'],
-    js: ['src/js/*.js']
+    js: ['src/js/*.js'],
+    freemarker: ['*.ftl', 'mock/*.json']
 
 };
 
@@ -80,7 +81,7 @@ gulp.task("js", function () {
         .pipe(gulp.dest("build"));
 });
 
-gulp.task('pug', ["js", "liferaycss", "scripts", "sprite", "css"], function buildHTML() {
+gulp.task('pug', ["freemarker", "js", "liferaycss", "scripts", "sprite", "css"], function buildHTML() {
     logger.info("Running templates");
     var pug = require('gulp-pug');
     return gulp.src(paths.pug)
@@ -119,6 +120,7 @@ gulp.task('watch', function () {
     gulp.watch(paths.html, ['pug']);
     gulp.watch(paths.scripts, ['scripts', 'pug']);
     gulp.watch(paths.js, ['js', 'pug']);
+    gulp.watch(paths.freemarker, ["pug"]);
 });
 
 
@@ -624,7 +626,7 @@ gulp.task("get-template", function () {
 });
 
 gulp.task("get-structures", function () {
-      var config = JSON.parse(fs.readFileSync('./config_local.json'));
+    var config = JSON.parse(fs.readFileSync('./config_local.json'));
     var biggulp = require("./biggulp.js");
     var cmd = {
         '/journalstructure/get-structures': {
@@ -657,7 +659,7 @@ gulp.task("get-structures", function () {
 });
 
 
-gulp.task("update-templates", function () {
+gulp.task("update-templates-test", function () {
     var biggulp = require("./biggulp.js");
     var config = JSON.parse(fs.readFileSync('./config_local.json'));
     var template = {
@@ -666,12 +668,12 @@ gulp.task("update-templates", function () {
         name: "French Symposium Fix Try 1"
     };
 
-   template = {
+    template = {
         groupId: config.groupId,
         templateId: 21510,
         name: "French Symposium Fix Try 1"
     };
-    
+
     var cmd = {
         "$template = /journaltemplate/get-template": {
             "groupId": template.groupId,
@@ -688,7 +690,7 @@ gulp.task("update-templates", function () {
                 //"@descriptionMap": "$template.descriptionCurrentValue",
                 //"@nameMap":  {"en_US":"$template.name"},
                 //"@nameMap":  {"en_US":"$template.name"},
-                "nameMap": {"en_US": template.name},
+                "nameMap": { "en_US": template.name },
                 "descriptionMap": null,
                 "xsl": "test",
                 "formatXsl": false,
@@ -698,13 +700,9 @@ gulp.task("update-templates", function () {
         }
     };
 
-    try {
     biggulp.invoke_liferay(config, cmd, function (body) {
         console.log(body);
     });
-    } catch(error) {
-        console.log(error);
-    }
 });
 
 
@@ -718,7 +716,7 @@ gulp.task("get-templates", function () {
     var cmd = {
         "/journaltemplate/get-template": {
             "groupId": template.groupId,
-            "templateId": template.templateId 
+            "templateId": template.templateId
         }
     };
 
@@ -732,10 +730,100 @@ gulp.task("get-templates", function () {
 
 gulp.task('resize-hotel', function () {
     var imageResize = require('gulp-image-resize');
- 
-  gulp.src('images/hotels/*')
-    .pipe(imageResize({ 
-      height : 200
-      }))
-    .pipe(gulp.dest('build/images/hotel'));
+
+    gulp.src('images/hotels/*')
+        .pipe(imageResize({
+            height: 200
+        }))
+        .pipe(gulp.dest('build/images/hotel'));
+});
+
+
+gulp.task("freemarker", function () {
+
+    var freemarker = require("gulp-freemarker");
+
+    return gulp.src("mock/*.json")
+        .pipe(freemarker({
+            viewRoot: "/Users/allenziegenfus/liferay/lrdcom-recipes/6.1.x/events/2016/italy/",
+            options: {}
+        }))
+          .on('error', function(errors) {
+           logger.error(errors);   
+          })
+        .pipe(gulp.dest("build"));
+});
+
+gulp.task("freemarker2", function() {
+
+var Freemarker = require('freemarker.js');
+var fm = new Freemarker({
+  viewRoot: '/Users/allenziegenfus/liferay/lrdcom-recipes/6.1.x/events/2016/italy/',
+  options: {
+    /** for fmpp */
+  }
+});
+    var mock = JSON.parse(fs.readFileSync('./mock/css.json'));
+// Single template file
+fm.render(mock.file, mock.data, function(err, html, output) {
+console.log("error" + err + "done error");
+console.log("html" + html);
+console.log("output:" + output);
+
+});
+
+
+});
+gulp.task("get-templates", function () {
+    var templateConfig = JSON.parse(fs.readFileSync('./template.json'));
+
+    var biggulp = require("./biggulp.js")
+
+    templateConfig.forEach(function (template) {
+        /*        "groupId": "67510365",
+                "templateId": "73732534",
+                "filename": "symposium-speaker.vm",
+                "name": "Speaker Symposium DDL Template"*/
+        var cmd = {
+            '/journaltemplate/get-template': {
+                "groupId": template.groupId,
+                "templateId": template.templateId
+            }
+        };
+        biggulp.invoke_liferay(config, cmd, function (body) {
+            logger.info("Writing template " + body.nameCurrentValue + " to " + template.filename);
+            fs.writeFile(template.filename, body.xsl);
+        });
+    });
+});
+
+
+gulp.task("update-templates", function () {
+    var biggulp = require("./biggulp.js");
+    var templateConfig = JSON.parse(fs.readFileSync('./template.json'));
+
+    templateConfig.forEach(function (template) {
+        var templateFileContent = fs.readFileSync(template.filename).toString();
+        var cmd = {
+            "$template = /journaltemplate/get-template": {
+                "groupId": template.groupId,
+                "templateId": template.templateId,
+                "$update = /journaltemplate/update-template": {
+                    "groupId": template.groupId,
+                    "templateId": template.templateId,
+                    "@structureId": "$template.structureId",
+                    "nameMap": { "en_US": template.name },
+                    "descriptionMap": null,
+                    "xsl": templateFileContent,
+                    "formatXsl": false,
+                    "@langType": "$template.langType",
+                    "@cacheable": "$template.cacheable"
+                }
+            }
+        };
+     logger.info("Updating template " + template.name + " from " + template.filename);
+        biggulp.invoke_liferay(config, cmd, function (body) {
+            console.log(body);
+        });
+    });
 });

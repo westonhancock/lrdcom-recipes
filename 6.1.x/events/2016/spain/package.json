@@ -1,5 +1,5 @@
 {
-  "name": "devcon",
+  "name": "spain",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
@@ -13,9 +13,11 @@
     "css-mqpacker": "^5.0.1",
     "cssunminifier": "0.0.2",
     "del": "^2.2.0",
+    "freemarker.js": "^1.2.2",
     "gulp": "^3.9.1",
     "gulp-concat": "^2.6.0",
     "gulp-ext-replace": "^0.3.0",
+    "gulp-freemarker": "^0.1.4",
     "gulp-image-resize": "^0.8.0",
     "gulp-imageoptim": "^1.0.4",
     "gulp-inject": "^4.1.0",

@@ -1,0 +1,38 @@
+.mobile-padding {
+        box-sizing: border-box;
+        padding: 0 20px;
+}
+@media(max-width:720px) {
+     .sponsor-title { font-size: 12px; }
+     .lego-article {  background-attachment: scroll !important; }
+#cfpPopUp .tab-nav .aui-tab-content a {
+    width: auto;
+   font-size: 12px;
+}
+#cfpPopUp .tab-nav .aui-tab-label {
+  width: auto;
+}
+#cfpPopUp li {
+    width: auto;
+}
+
+}
+@media(min-width:721px) {
+	
+	/* give more room to video */
+	.engage-container {
+		margin: 100px 0;
+	}
+
+.platinum .sponsor-image-container {
+    max-width: none;
+}
+
+
+.industry_partner .sponsor-image-container img,
+.gold .sponsor-image-container img
+ {
+    width: 100px;
+}
+
+}
