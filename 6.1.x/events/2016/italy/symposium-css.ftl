@@ -222,10 +222,7 @@ h3 {
 }
     
 
-#navigation.dynamic-navigation .child-menu li {
-    margin: 15px .5%;
-    vertical-align: middle;
-}
+
 
 #navigation.dynamic-navigation .child-menu  {
     background-color: #00537d;
@@ -267,6 +264,12 @@ h3 {
 }
 <#--  --------------------------------------------    Navigation ------------------------------------------------------------------ -->
 @media (min-width: 1011px) {
+
+    #navigation.dynamic-navigation .child-menu li {
+        margin: 15px .5%;
+        vertical-align: middle;
+    }
+
     nav#navigation.sticky {
         height: 88px;
     }
@@ -391,9 +394,9 @@ h3 {
     #navigation ul li {
         display: block;
         padding: 10px 5%;
-        font-size: 14px;
+        font-size: 12px;
+        margin: 0;
     }
 }
 
 ${(extra_css.data)!" "}
-  
