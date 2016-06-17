@@ -314,7 +314,7 @@ h3 {
     div.lego-element {
         background-attachment: scroll;   
     }
-    .main-top-banner {
+    header {
         margin-top: 55px;
     }
     .dynamic-navigation {
