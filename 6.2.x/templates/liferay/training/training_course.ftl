@@ -9,11 +9,11 @@
 		<h2>${general_course_info.course_quick_description.data}</h2>
 
 		<p>
-            Length: <strong>${general_course_info.length_of_course.data}</strong> <br />
+			Length: <strong>${general_course_info.length_of_course.data}</strong> <br />
 			Formats: <strong>${general_course_info.course_formats.data}</strong> <br />
 			Liferay Version: <strong>${general_course_info.liferay_version.data}</strong> <br />
-	        <#if general_course_info.prerequisites.data?has_content>
-		        Prerequisites: ${general_course_info.prerequisites.data}
+			<#if general_course_info.prerequisites.data?has_content>
+				Prerequisites: ${general_course_info.prerequisites.data}
 			</#if>
 		</p>
 
@@ -103,20 +103,52 @@
 
 		<article class="block block-container day large-padding-horizontal">
 			<h3>Day ${cur_day_index + 1}</h3>
-			<ul class="no-margin category-set">
+			<ul class="category-set no-margin">
 				<#list cur_day.agenda_item.siblings as item>
-					<li class="category-header standard-padding-vertical">
+					<#if item.subitem?? && item.subitem.data?has_content>
+						<#assign category_header_class = "">
+					<#else>
+						<#assign category_header_class = "no-subcontent">
+					</#if>
+					<li class="category-header standard-padding-vertical ${category_header_class}">
+
+						<#-- Plus / Cross Icon -->
 						<#if item.subitem?? && item.subitem.data?has_content>
 							<svg class="toggle-icon" width="20" height="20" viewBox="0 0 40 40" xmlns="http://www.w3.org/2000/svg" id="yui_patched_v3_11_0_1_1462196000162_829"><title>Elements/toggle grey</title><g stroke="#9EA2B4" stroke-width="1.5" fill="none" fill-rule="evenodd"><ellipse cx="20" cy="20" rx="19" ry="19"></ellipse><path d="M11 19.75h17.675M19.75 28.675V11" stroke-linecap="round"></path></g></svg>
 						</#if>
+
 						${item.data}
 					</li>
+
+					<#-- Subitem -->
 					<#if item.subitem??>
-    					<ul class="category-content toggler-content-collapsed">
-    						<#list item.subitem.siblings as subitem>
-    						<li class="small-padding-vertical">${subitem.data}</li>
-    						</#list>
-    					</ul>
+						<ul class="category-content toggler-content-collapsed">
+							<#list item.subitem.siblings as subitem>
+								<#if subitem.secondary_subitem?? && subitem.secondary_subitem.data?has_content>
+									<#assign category_header_class = "">
+								<#else>
+									<#assign category_header_class = "no-subcontent">
+								</#if>
+								<li class="category-header small-padding-vertical ${category_header_class}">
+									<#-- Plus / Cross Icon -->
+									<#if subitem.secondary_subitem?? && subitem.secondary_subitem.data?has_content>
+										<svg class="toggle-icon" width="20" height="20" viewBox="0 0 40 40" xmlns="http://www.w3.org/2000/svg" id="yui_patched_v3_11_0_1_1462196000162_829"><title>Elements/toggle grey</title><g stroke="#9EA2B4" stroke-width="1.5" fill="none" fill-rule="evenodd"><ellipse cx="20" cy="20" rx="19" ry="19"></ellipse><path d="M11 19.75h17.675M19.75 28.675V11" stroke-linecap="round"></path></g></svg>
+									</#if>
+									${subitem.data}
+
+									<#-- Secondary Subitem -->
+									<#if subitem.secondary_subitem??>
+										<ul class="category-content small-padding-vertical toggler-content-collapsed">
+											<#list subitem.secondary_subitem.siblings as secondary_subitem>
+												<li class="small-padding-vertical">
+													${secondary_subitem.data}
+												</li>
+											</#list>
+										</ul>
+									</#if>
+								</li>
+							</#list>
+						</ul>
 					</#if>
 				</#list>
 			</ul>
@@ -125,7 +157,7 @@
 </div>
 
 <#if general_course_info.course_pdf.data?has_content>
-	<div class="text-center large-padding">
+	<div class="large-padding text-center">
 		<a class="btn btn-accent" href="${general_course_info.course_pdf.data}">Download Course PDF</a>
 	</div>
 </#if>
@@ -143,7 +175,7 @@
 	}
 
 	.training-banner a {
-		color: #fff;
+		color: #FFF;
 		text-decoration: underline;
 	}
 
@@ -187,10 +219,10 @@
 		background: #EFEFEF;
 	}
 
-    .agenda.block-container {
-        margin: auto;
-        width: 75%;
-    }
+	.agenda.block-container {
+		margin: auto;
+		width: 75%;
+	}
 
 	.agenda h3 {
 		font-size: 1.5em;
@@ -202,21 +234,38 @@
 	}
 
 	.agenda.two .day {
-		max-width: 50%;
+		width: 50%;
 	}
 
 	.agenda.three .day {
-		max-width: 33%;
+		width: 33%;
+	}
+
+	.agenda .day ul {
+		margin-bottom: 0;
+		margin-left: 10px;
 	}
 
 	.agenda .day li {
-		font-size: 1.1em;
 		list-style-type: none;
+		position: relative;
+	}
+
+	.agenda .day li.no-subcontent:hover {
+		cursor: default;
+	}
+
+	.agenda .day li.no-subcontent * {
+		padding: 0;
+	}
+
+	.agenda .day li.no-subcontent + div * {
+		padding: 0;
 	}
 
 	.toggle-icon {
-		position: absolute;
 		left: 0;
+		position: absolute;
 	}
 
 	.category-set {
@@ -237,23 +286,23 @@
 	}
 
 	.toggler-header .toggle-icon {
-	    -webkit-transform-origin: center 50%;
-	    -moz-transform-origin: center 50%;
-	    -ms-transform-origin: center 50%;
-	    -o-transform-origin: center 50%;
-	    transform-origin: center 50%;
-	    -webkit-transition: -webkit-transform 1s;
-	    -moz-transition: -moz-transform 1s;
-	    -o-transition: -o-transform 1s;
-	    transition: transform 1s;
+		-moz-transform-origin: center 50%;
+		-moz-transition: -moz-transform 1s;
+		-ms-transform-origin: center 50%;
+		-o-transform-origin: center 50%;
+		-o-transition: -o-transform 1s;
+		-webkit-transform-origin: center 50%;
+		-webkit-transition: -webkit-transform 1s;
+		transform-origin: center 50%;
+		transition: transform 1s;
 	}
 
 	.toggler-header-expanded .toggle-icon {
-	    -webkit-transform: rotate(45deg);
-	    -moz-transform: rotate(45deg);
-	    -ms-transform: rotate(45deg);
-	    -o-transform: rotate(45deg);
-	    transform: rotate(45deg);
+		-moz-transform: rotate(45deg);
+		-ms-transform: rotate(45deg);
+		-o-transform: rotate(45deg);
+		-webkit-transform: rotate(45deg);
+		transform: rotate(45deg);
 	}
 
 	@media (max-width: 760px) {
@@ -265,22 +314,22 @@
 
 <script>
 	YUI().use(
-	    'aui-toggler',
-	    function(Y) {
-	        new Y.TogglerDelegate(
-	            {
-	                animated: true,
-	                closeAllOnExpand: false,
-	                container: '.agenda',
-	                content: '.category-content',
-	                expanded: false,
-	                header: '.category-header',
-	                transition: {
-	                    duration: 0.6,
-	                    easing: 'cubic-bezier(0, 0.1, 0, 1)'
-	                }
-	            }
-	        );
-	    }
+		'aui-toggler',
+		function(Y) {
+			new Y.TogglerDelegate(
+				{
+					animated: true,
+					closeAllOnExpand: false,
+					container: '.agenda',
+					content: '.category-content',
+					expanded: false,
+					header: '.category-header',
+					transition: {
+						duration: 0.6,
+						easing: 'cubic-bezier(0, 0.1, 0, 1)'
+					}
+				}
+			);
+		}
 	);
 </script>
