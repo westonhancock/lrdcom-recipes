@@ -192,7 +192,7 @@ gulp.task('images', function () {
 
     var imageOptim = require('gulp-imageoptim');
 
-    return gulp.src('images/*')
+    return gulp.src('images/**')
         .pipe(imageOptim.optimize({
             jpegmini: false
         }))
@@ -726,7 +726,15 @@ gulp.task("get-templates", function () {
 });
 
 
+gulp.task('resize-sponsors', function () {
+    var imageResize = require('gulp-image-resize');
 
+    gulp.src('images/sponsors/**')
+        .pipe(imageResize({
+            width: 170
+        }))
+        .pipe(gulp.dest('build/images/sponsors'));
+});
 
 gulp.task('resize-hotel', function () {
     var imageResize = require('gulp-image-resize');
