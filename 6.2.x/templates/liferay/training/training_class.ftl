@@ -1,18 +1,18 @@
-<#assign serviceContext = staticUtil["com.liferay.portal.service.ServiceContextThreadLocal"].getServiceContext()>
-<#assign httpServletRequest = serviceContext.getRequest()>
-<#assign request_url = "/osb-portlet/training/events" />
+<#assign request_url = "/osb-portlet/training/events?" />
 
 <#if course_id.data?has_content>
-	<#assign request_url = request_url + "?trainingCourseId=" + course_id.data + "&" />
+	<#assign request_url = request_url + "trainingCourseId=" + course_id.data />
 </#if>
 
-<#assign is_online_course = "&online=false"/>
+<#assign online_course_only = ""/>
 
-<#if online_course?? && online_course.data == "true">
-	<#assign is_online_course = "&online=true"/>
+<#if course_filter?? && course_filter.data == "true">
+	<#assign online_course_only = "&online=true"/>
+<#elseif course_filter?? && course_filter.data == "false">
+	<#assign online_course_only = "&online=false"/>
 </#if>
 
-<#assign request_url = request_url + "?startDate=" + .now?long + is_online_course />
+<#assign request_url = request_url + "&startDate=" + .now?long + online_course_only />
 <#assign css_padding_class = "standard-padding"/>
 
 <#if number_of_classes.data == "0">

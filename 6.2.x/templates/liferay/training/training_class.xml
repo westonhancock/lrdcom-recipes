@@ -108,13 +108,34 @@
 			</entry>
 		</meta-data>
 	</dynamic-element>
-	<dynamic-element dataType="boolean" indexType="keyword" localizable="true" name="online_course" readOnly="false" repeatable="false" required="false" showLabel="true" type="checkbox" width="">
+	<dynamic-element dataType="string" indexType="keyword" localizable="true" multiple="false" name="course_filter" readOnly="false" repeatable="false" required="false" showLabel="true" type="select" width="">
+		<dynamic-element name="option15269" type="option" value="true">
+			<meta-data locale="en_US">
+				<entry name="label">
+					<![CDATA[Online Courses Only]]>
+				</entry>
+			</meta-data>
+		</dynamic-element>
+		<dynamic-element name="option15270" type="option" value="false">
+			<meta-data locale="en_US">
+				<entry name="label">
+					<![CDATA[Public Courses Only]]>
+				</entry>
+			</meta-data>
+		</dynamic-element>
+		<dynamic-element name="option15271" type="option" value="null">
+			<meta-data locale="en_US">
+				<entry name="label">
+					<![CDATA[All Courses]]>
+				</entry>
+			</meta-data>
+		</dynamic-element>
 		<meta-data locale="en_US">
 			<entry name="label">
-				<![CDATA[Online Course]]>
+				<![CDATA[Course Filter]]>
 			</entry>
 			<entry name="predefinedValue">
-				<![CDATA[false]]>
+				<![CDATA[["null"]]]>
 			</entry>
 			<entry name="tip">
 				<![CDATA[]]>
