@@ -93,6 +93,10 @@ AUI().use(
 					links[i].className += " animate-scroll";
 					/* offset for fixed nav */
 					links[i].setAttribute("data-offset", 55);
+				} else {
+					if (links[i].innerHTML == "Recap '15") {
+						links[i].target = "_blank";
+					}
 				}
 			}
 		}
