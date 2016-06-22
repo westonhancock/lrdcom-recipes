@@ -2,159 +2,17 @@
 <button class="someResults">someResults</button>
 <button class="noResults">noResults</button>
 
+<#assign request_url = "/osb-partnership-portlet/partnership/partnership_entries?" />
+
 <div id="partnersDisplay">
-	<div class="align-center block-container justify-center section-padding results-message w100">
-		<h3>No local partners are available in your area at the moment, but our global services partners provide excellent service to Liferay customers all around the world.</h3>
-	</div>
+	<#if empty_results_msg??>
+		<div class="block-container large-padding justify-center results-message w100">
+			<h3>${empty_results_msg.data}</h3>
+		</div>
+	</#if>
 
 	<div class="global-container stacked">
-		<article class="global">
-			<a class="block-container align-center justify-center no-padding">
-				<h2>[Logo]</h2>
-				<p>Global</p>
-			</a>
-		</article>
-		<article class="global">
-			<a class="block-container align-center justify-center no-padding">
-				<h2>[Logo]</h2>
-				<p>Global</p>
-			</a>
-		</article>
-		<article class="global">
-			<a class="block-container align-center justify-center no-padding">
-				<h2>[Logo]</h2>
-				<p>Global</p>
-			</a>
-		</article>
-		<article class="global">
-			<a class="block-container align-center justify-center no-padding">
-				<h2>[Logo]</h2>
-				<p>Global</p>
-			</a>
-		</article>
-
 	</div>
-
-	<article class="local">
-		<a class="align-center block-container justify-center no-padding">
-			<h2>[Logo]</h2>
-			<h3>Partner Level</h3>
-			<p>Location</p>
-		</a>
-	</article>
-
-	<article class="local">
-		<a class="align-center block-container justify-center no-padding">
-			<h2>[Logo]</h2>
-			<h3>Partner Level</h3>
-			<p>Location</p>
-		</a>
-	</article>
-
-	<article class="local">
-		<a class="align-center block-container justify-center no-padding">
-			<h2>[Logo]</h2>
-			<h3>Partner Level</h3>
-			<p>Location</p>
-		</a>
-	</article>
-
-	<article class="local">
-		<a class="align-center block-container justify-center no-padding">
-			<h2>[Logo]</h2>
-			<h3>Partner Level</h3>
-			<p>Location</p>
-		</a>
-	</article>
-
-	<article class="local">
-		<a class="align-center block-container justify-center no-padding">
-			<h2>[Logo]</h2>
-			<h3>Partner Level</h3>
-			<p>Location</p>
-		</a>
-	</article>
-
-	<article class="local">
-		<a class="align-center block-container justify-center no-padding">
-			<h2>[Logo]</h2>
-			<h3>Partner Level</h3>
-			<p>Location</p>
-		</a>
-	</article>
-
-	<article class="local">
-		<a class="align-center block-container justify-center no-padding">
-			<h2>[Logo]</h2>
-			<h3>Partner Level</h3>
-			<p>Location</p>
-		</a>
-	</article>
-
-	<article class="local">
-		<a class="align-center block-container justify-center no-padding">
-			<h2>[Logo]</h2>
-			<h3>Partner Level</h3>
-			<p>Location</p>
-		</a>
-	</article>
-
-	<article class="local">
-		<a class="align-center block-container justify-center no-padding">
-			<h2>[Logo]</h2>
-			<h3>Partner Level</h3>
-			<p>Location</p>
-		</a>
-	</article>
-
-	<article class="local">
-		<a class="align-center block-container justify-center no-padding">
-			<h2>[Logo]</h2>
-			<h3>Partner Level</h3>
-			<p>Location</p>
-		</a>
-	</article>
-
-	<article class="local">
-		<a class="align-center block-container justify-center no-padding">
-			<h2>[Logo]</h2>
-			<h3>Partner Level</h3>
-			<p>Location</p>
-		</a>
-	</article>
-
-	<article class="local">
-		<a class="align-center block-container justify-center no-padding">
-			<h2>[Logo]</h2>
-			<h3>Partner Level</h3>
-			<p>Location</p>
-		</a>
-	</article>
-
-	<article class="local">
-		<a class="align-center block-container justify-center no-padding">
-			<h2>[Logo]</h2>
-			<h3>Partner Level</h3>
-			<p>Location</p>
-		</a>
-	</article>
-
-	<article class="local">
-		<a class="align-center block-container justify-center no-padding">
-			<h2>[Logo]</h2>
-			<h3>Partner Level</h3>
-			<p>Location</p>
-		</a>
-	</article>
-
-	<article class="local">
-		<a class="align-center block-container justify-center no-padding">
-			<h2>[Logo]</h2>
-			<h3>Partner Level</h3>
-			<p>Location</p>
-		</a>
-	</article>
-
 </div>
 
 <style>
@@ -169,12 +27,13 @@
 		max-width: 23%;
 	}
 
-	#partnersDisplay .results-message {
-		display: none;
-	}
-
 	#partnersDisplay article {
 		border: 1px solid #E3E4E5;
+
+		-moz-border-radius: 3px;
+		-webkit-border-radius: 3px;
+		border-radius: 3px;
+
 		height: 200px;
 		margin: .5em;
 		position: relative;
@@ -197,8 +56,9 @@
 		width: 100%;
 	}
 
-	#partnersDisplay article.global {
-		background: #F1F1F2;
+	#partnersDisplay article.regional {
+		display: inline-block;
+		vertical-align:top;
 	}
 
 	#partnersDisplay .global-container.stacked {
@@ -206,7 +66,6 @@
 	}
 
 	#partnersDisplay .global-container.stacked article.global {
-		background: #F1F1F2;
 		width: 100%;
 		float: left;
 	}
@@ -215,18 +74,21 @@
 		float: none;
 	}
 
-	#partnersDisplay article.local {
-		display: inline-block;
-		vertical-align:top;
+	#partnersDisplay .partner-level {
+		text-transform: capitalize;
 	}
 
-	#partnersDisplay .local-container {
-		display: flex;
-		flex-wrap: wrap;
+	#partnersDisplay .partner-logo {
+		height: 64px;
+		padding: 1.75em 0;
 	}
 
-	#partnersDisplay .local-container article.local {
-		display: block;
+	#partnersDisplay .partner-name {
+		padding: 3em 0.5em .5em;
+	}
+
+	#partnersDisplay .results-message {
+		display: none;
 	}
 
 	@media (max-width: 968px) {
@@ -274,8 +136,11 @@
 
 <script type="text/javascript">
 	AUI().use(
-		'event',
+		'aui-base', 'aui-io-request', 'event',
 		function (A) {
+			var globalPartnersContainer = A.one('#partnersDisplay .global-container');
+			var partnersDisplay = A.one('#partnersDisplay');
+
 			var DOMUtils = (function() {
 				var outerHTML = function(node){
 					return node.outerHTML || new XMLSerializer().serializeToString(node);
@@ -324,7 +189,7 @@
 
 				var changeOrder = function(order) {
 					var partnersDisplay = document.querySelector("#partnersDisplay");
-					var localArticles = document.querySelectorAll('.local');
+					var regionalArticles = document.querySelectorAll('.regional');
 					var globalArticles = document.querySelectorAll('.global');
 
 					if (order === "flip") {
@@ -332,8 +197,8 @@
 							partnersDisplay.appendChild(globalArticles[f]);
 						}
 					} else {
-						for (var r = 0; r < localArticles.length; r++) {
-							partnersDisplay.appendChild(localArticles[r]);
+						for (var r = 0; r < regionalArticles.length; r++) {
+							partnersDisplay.appendChild(regionalArticles[r]);
 						}
 					}
 				};
@@ -351,30 +216,30 @@
 					partnersDisplay.insertBefore(resultsMessage, partnersDisplay.childNodes[0]);
 				};
 
-				var toggleLocal = function(mode) {
-					var locals = document.querySelectorAll('.local');
+				var toggleRegional = function(mode) {
+					var regionals = document.querySelectorAll('.regional');
 
 					if (mode === "hide") {
-						for (var l = 0; l < locals.length; l++) {
-							locals[l].style.display = "none";
+						for (var l = 0; l < regionals.length; l++) {
+							regionals[l].style.display = "none";
 						}
 					} else {
-						for (var l = 0; l < locals.length; l++) {
-							locals[l].style.display = "inline-block";
+						for (var l = 0; l < regionals.length; l++) {
+							regionals[l].style.display = "inline-block";
 						}
 					}
 				};
 
 				var reset = function() {
 					var globalArticles = document.getElementsByClassName('global');
-					var localArticles = document.getElementsByClassName('local');
+					var regionalArticles = document.getElementsByClassName('regional');
 					var partnersDisplay = document.querySelector("#partnersDisplay");
 
 					// 1. remove all wrappers
 					unwrap(globalArticles);
 
-					if (localArticles) {
-						unwrap(localArticles);
+					if (regionalArticles) {
+						unwrap(regionalArticles);
 					}
 
 					// 2. remove classes from parent container
@@ -386,15 +251,15 @@
 					// 4. hide results message
 					toggleResultsMessage("hide");
 
-					// 5. show local results
-					toggleLocal("show");
+					// 5. show regional results
+					toggleRegional("show");
 				};
 
 				return {
 					reset: reset,
 					toggleResultsMessage: toggleResultsMessage,
 					changeOrder: changeOrder,
-					toggleLocal: toggleLocal,
+					toggleRegional: toggleRegional,
 					addWrapperTo: addWrapperTo
 				}
 			}
@@ -414,7 +279,7 @@
 					DOMUtils.reset();
 					DOMUtils.addWrapperTo("global", "wrapped");
 					DOMUtils.toggleResultsMessage("show");
-					DOMUtils.toggleLocal("hide");
+					DOMUtils.toggleRegional("hide");
 				}
 			};
 
@@ -434,6 +299,82 @@
 			noResultsButton.on("click", function() {
 				changeView.noResults();
 			});
+
+			var displayPartners = function(data) {
+				var htmlGlobal = '';
+				var htmlRegional = '';
+
+				A.Array.each(
+					data,
+					function(obj, index) {
+						var logoURL = obj.logoURL;
+						var partnerName = obj.name;
+						var partnerships = obj.partnerships;
+						var partnershipsEntries = obj.partnerships.length;
+						var profileURL = obj.profileURL || '';
+
+						var partnerLogo = '<p class="partner-name">' + partnerName + '</p>';
+
+						if (logoURL) {
+							var partnerLogo = '<img class="partner-logo" src="'+ obj.logoURL + '">';
+						}
+
+						for (i = 0; i < partnershipsEntries; i++) {
+							var partnershipCountry = partnerships[i].country;
+							var partnershipLevel = partnerships[i].level;
+
+							if (partnershipCountry == 'global') {
+								htmlGlobal = '<article class="element-background global">' +
+									'<a class="block-container justify-center text-center" href="' + profileURL + '" title="' + partnerName + '">' +
+									partnerLogo +
+									'<h3>${languageUtil.get(locale, "global", "Global")}</h3>' +
+									'</a>' +
+									'</article>';
+
+								globalPartnersContainer.appendChild(htmlGlobal);
+							}
+							else if (partnerships[i].type == 'distributor') {
+								// pending design and PM decisions
+							}
+							else {
+								htmlRegional = '<article class="regional">' +
+									'<a class="text-center" href="' + profileURL + '" title="' + partnerName + '">' +
+									partnerLogo +
+									'<h3 class="partner-level">${languageUtil.get(locale, "' + partnershipLevel + '")}</h3>' +
+									'<p>' + partnershipCountry + '</p>' +
+									'</a>' +
+									'</article>';
+
+								partnersDisplay.appendChild(htmlRegional);
+							}
+						}
+					}
+				);
+			};
+
+			A.io.request(
+				'${request_url}',
+				{
+					dataType: 'JSON',
+					method: 'GET',
+					on: {
+						success: function (event, id, obj) {
+							var responseData = this.get('responseData');
+
+							displayPartners(responseData);
+						},
+						failure: function (event, id, obj) {
+							console.log('failed to retrieve data');
+
+							var unavailableMessage = '<h3 class="standard-padding">' +
+								'${languageUtil.format(locale, "is-temporarily-unavailable", "entry-information")}' +
+								'</h3>';
+
+							partnersDisplay.appendChild(unavailableMessage);
+						}
+					}
+				}
+			);
 		}
 	);
 </script>
