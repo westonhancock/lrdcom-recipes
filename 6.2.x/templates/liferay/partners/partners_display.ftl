@@ -6,9 +6,7 @@
 
 <div id="partnersDisplay">
 	<#if empty_results_msg??>
-		<div class="block-container large-padding justify-center results-message w100">
-			<h3>${empty_results_msg.data}</h3>
-		</div>
+		<h3 class="results-message standard-padding">${empty_results_msg.data}</h3>
 	</#if>
 
 	<div class="global-container stacked">
@@ -301,12 +299,15 @@
 			});
 
 			var displayPartners = function(data) {
+				var arrayGlobal = [];
+				var arrayRegional = [];
+
 				var htmlGlobal = '';
 				var htmlRegional = '';
 
 				A.Array.each(
 					data,
-					function(obj, index) {
+					function(obj) {
 						var logoURL = obj.logoURL;
 						var partnerName = obj.name;
 						var partnerships = obj.partnerships;
@@ -331,7 +332,7 @@
 									'</a>' +
 									'</article>';
 
-								globalPartnersContainer.appendChild(htmlGlobal);
+								arrayGlobal.push(htmlGlobal);
 							}
 							else if (partnerships[i].type == 'distributor') {
 								// pending design and PM decisions
@@ -345,11 +346,32 @@
 									'</a>' +
 									'</article>';
 
-								partnersDisplay.appendChild(htmlRegional);
+								arrayRegional.push(htmlRegional);
 							}
 						}
 					}
 				);
+
+				randomizePartners(arrayGlobal, globalPartnersContainer);
+				randomizePartners(arrayRegional, partnersDisplay);
+			};
+
+			var randomizePartners = function(array, node) {
+				if (array.length <= 0) {
+					return;
+				}
+
+				for (var i = array.length -1; i > 0; i--) {
+					var rand = Math.floor(Math.random() * (i + 1));
+					var temp = array[i];
+
+					array[i] = array[rand];
+					array[rand] = temp;
+				}
+
+				for (var j = 0; j < array.length; j++) {
+					node.appendChild(array[j]);
+				}
 			};
 
 			A.io.request(
