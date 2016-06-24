@@ -61,7 +61,7 @@
 		#end
 
 		<div class="button-group float-right">
-			#if ($releaseNotes.isEmpty())
+			#if (!$releaseNotes.isEmpty())
 				#set ($hide = "")
 
 				#if ($download_groups.downloads.release_notes_link.data == "")

@@ -20,7 +20,7 @@
 	#set ($role = $roleLocalService.getRole($companyId, $stringUtil.trim($roleName)))
 	#set ($hasRole = $userGroupRoleLocalService.hasUserGroupRole($userId, $getterUtil.getLong($scopeGroupId), $role.getRoleId(), true))
 
-	#if ($hasRole)
+	#if (!$hasRole)
 		#break
 	#end
 #end
@@ -150,7 +150,7 @@
 				#end
 
 				<div class="aui-helper-clearfix button-group $selectCssClass">
-					#if ($releaseNotes.isEmpty())
+					#if (!$releaseNotes.isEmpty())
 						#set ($hide = "")
 
 						#if ($download_groups.downloads.release_notes_link.data == "")
