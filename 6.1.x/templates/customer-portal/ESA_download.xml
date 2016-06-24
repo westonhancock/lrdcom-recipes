@@ -1,0 +1,106 @@
+<?xml version="1.0"?>
+
+<root>
+	<dynamic-element name="box_heading" type="text" index-type="" repeatable="false">
+		<meta-data>
+			<entry name="displayAsTooltip"><![CDATA[true]]></entry>
+			<entry name="required"><![CDATA[false]]></entry>
+			<entry name="instructions"><![CDATA[]]></entry>
+			<entry name="label"><![CDATA[Box Heading]]></entry>
+			<entry name="predefinedValue"><![CDATA[]]></entry>
+		</meta-data>
+	</dynamic-element>
+	<dynamic-element name="download_heading" type="text" index-type="" repeatable="false">
+		<meta-data>
+			<entry name="displayAsTooltip"><![CDATA[true]]></entry>
+			<entry name="required"><![CDATA[false]]></entry>
+			<entry name="instructions"><![CDATA[]]></entry>
+			<entry name="label"><![CDATA[Download Heading]]></entry>
+			<entry name="predefinedValue"><![CDATA[]]></entry>
+		</meta-data>
+	</dynamic-element>
+	<dynamic-element name="download_groups" type="text" index-type="" repeatable="true">
+		<meta-data>
+			<entry name="displayAsTooltip"><![CDATA[true]]></entry>
+			<entry name="required"><![CDATA[false]]></entry>
+			<entry name="instructions"><![CDATA[]]></entry>
+			<entry name="label"><![CDATA[Download Group]]></entry>
+			<entry name="predefinedValue"><![CDATA[]]></entry>
+		</meta-data>
+		<dynamic-element name="downloads" type="text" index-type="" repeatable="true">
+			<meta-data>
+				<entry name="displayAsTooltip"><![CDATA[true]]></entry>
+				<entry name="required"><![CDATA[false]]></entry>
+				<entry name="instructions"><![CDATA[]]></entry>
+				<entry name="label"><![CDATA[Download Title]]></entry>
+				<entry name="predefinedValue"><![CDATA[]]></entry>
+			</meta-data>
+			<dynamic-element name="link" type="text" index-type="" repeatable="false">
+				<meta-data>
+					<entry name="displayAsTooltip"><![CDATA[true]]></entry>
+					<entry name="required"><![CDATA[false]]></entry>
+					<entry name="instructions"><![CDATA[]]></entry>
+					<entry name="label"><![CDATA[Download Link URL]]></entry>
+					<entry name="predefinedValue"><![CDATA[]]></entry>
+				</meta-data>
+			</dynamic-element>
+			<dynamic-element name="release_notes_link" type="text" index-type="" repeatable="false">
+				<meta-data>
+					<entry name="displayAsTooltip"><![CDATA[true]]></entry>
+					<entry name="required"><![CDATA[false]]></entry>
+					<entry name="instructions"><![CDATA[]]></entry>
+					<entry name="label"><![CDATA[Release Notes Link URL]]></entry>
+					<entry name="predefinedValue"><![CDATA[]]></entry>
+				</meta-data>
+			</dynamic-element>
+			<dynamic-element name="details" type="selection_break" index-type="" repeatable="true">
+				<meta-data>
+					<entry name="displayAsTooltip"><![CDATA[true]]></entry>
+					<entry name="required"><![CDATA[false]]></entry>
+					<entry name="instructions"><![CDATA[]]></entry>
+					<entry name="label"><![CDATA[Download Details]]></entry>
+					<entry name="predefinedValue"><![CDATA[]]></entry>
+				</meta-data>
+				<dynamic-element name="key" type="text" index-type="" repeatable="false">
+					<meta-data>
+						<entry name="displayAsTooltip"><![CDATA[true]]></entry>
+						<entry name="required"><![CDATA[false]]></entry>
+						<entry name="instructions"><![CDATA[]]></entry>
+						<entry name="label"><![CDATA[Detail Title]]></entry>
+						<entry name="predefinedValue"><![CDATA[]]></entry>
+					</meta-data>
+				</dynamic-element>
+				<dynamic-element name="value" type="text" index-type="" repeatable="false">
+					<meta-data>
+						<entry name="displayAsTooltip"><![CDATA[true]]></entry>
+						<entry name="required"><![CDATA[false]]></entry>
+						<entry name="instructions"><![CDATA[]]></entry>
+						<entry name="label"><![CDATA[Value]]></entry>
+						<entry name="predefinedValue"><![CDATA[]]></entry>
+					</meta-data>
+				</dynamic-element>
+			</dynamic-element>
+		</dynamic-element>
+	</dynamic-element>
+	<dynamic-element name="required_role_names" type="text" index-type="" repeatable="false">
+		<meta-data>
+			<entry name="displayAsTooltip"><![CDATA[true]]></entry>
+			<entry name="required"><![CDATA[false]]></entry>
+			<entry name="instructions"><![CDATA[A comma separated list of required role names such as "User"]]></entry>
+			<entry name="label"><![CDATA[Required Role Names]]></entry>
+			<entry name="predefinedValue"><![CDATA[]]></entry>
+		</meta-data>
+	</dynamic-element>
+	<dynamic-element name="download_style" type="list" index-type="" repeatable="false">
+		<meta-data>
+			<entry name="displayAsTooltip"><![CDATA[false]]></entry>
+			<entry name="required"><![CDATA[false]]></entry>
+			<entry name="instructions"><![CDATA[]]></entry>
+			<entry name="label"><![CDATA[Download Style]]></entry>
+			<entry name="predefinedValue"><![CDATA[]]></entry>
+		</meta-data>
+		<dynamic-element name="Blue Box" type="blue-box" index-type="" repeatable="false"></dynamic-element>
+		<dynamic-element name="Gray Box" type="gray-box" index-type="" repeatable="false"></dynamic-element>
+		<dynamic-element name="No Box" type="false" index-type="" repeatable="false"/>
+	</dynamic-element>
+</root>
