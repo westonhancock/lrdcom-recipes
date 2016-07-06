@@ -4,13 +4,7 @@
 <#assign layout = layout_service.getLayout(plid?number) />
 <#assign hasUpdatePermissons = layoutPermission.contains(permissionChecker, layout, "UPDATE")/>
 
-<#assign has_source = "" />
-
-<#if source.data?has_content>
-	<#assign has_source = "has-source large-padding-vertical" />
-</#if>
-
-<div class="quote-section ${has_source} ${text_color.data}">
+<div class="quote-section ${text_color.data}">
 	<#if quote.data?has_content>
 		<#assign quote_css_class = "" />
 		<#assign quote_attrs = "" />
