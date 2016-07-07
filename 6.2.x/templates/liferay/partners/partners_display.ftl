@@ -342,7 +342,7 @@
 									'<a class="text-center" href="' + profileURL + '" title="' + partnerName + '">' +
 									partnerLogo +
 									'<h3 class="partner-level">${languageUtil.get(locale, "' + partnershipLevel + '")}</h3>' +
-									'<p>${languageUtil.get(locale, "' + partnershipCountry + '")}</p>' +
+									'<p class="font-weight-bold">${languageUtil.get(locale, "' + partnershipCountry + '")}</p>' +
 									'</a>' +
 									'</article>';
 
