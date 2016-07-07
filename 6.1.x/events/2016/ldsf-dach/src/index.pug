@@ -1,0 +1,27 @@
+doctype html
+html(lang="en" class="responsive")
+  head
+    title="Fun with LDSF-DACH"
+    script
+        include ../../devcon/build/all.min.js
+        include ../src/getwin.js    
+    style
+        include ../../devcon/src/font.css  
+        include ../../devcon/build/all.css
+        include ../../devcon/src/theme.css    
+        include ../src/recap.css
+    <meta content="minimum-scale=1.0, width=device-width" name="viewport">
+  body.yui3-skin-sam
+    #wrapper
+        header
+          //include ../build/recap/banner.html
+          include ../build/recap/banner-out.html
+        //include ../src/recap-popup.html
+        include ../build/recap/hubspot-newsletter.html
+        include ../build/recap/about-video.html
+        include ../build/recap/agenda-description.html
+        include ../build/recap/agenda.html
+        include ../build/recap/winner.html
+        include ../build/recap/sponsors.html
+        include ../build/recap/footer.html
+        include ../build/all.js

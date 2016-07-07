@@ -1,0 +1,74 @@
+/* iphone button looks funny, x not placed right */
+
+#intro #introCover .event-subtitle span:first-child {
+    font-size: 24px;
+    text-transform: uppercase;
+}
+
+@media screen and (max-width: 500px)  {
+
+    #intro #introCover .event-subtitle span:first-child {
+        font-size: 15px;  
+        margin: 0;
+    }
+    #intro #introCover .event-subtitle span {
+        display: block;
+        max-width: 180px;
+        margin: -10px 0 0 -60px;
+        font-size: 12px;
+    }
+
+    #recappanel {
+        width: 100vw;
+        height: 100%; 
+        position: fixed;
+    }
+
+    #recap-popup, .recap-popup__container{
+        height: 100%;
+    }
+
+    #recap-popup .hbspt-form input.aui-button-input {
+        font-size: 10px;
+    }
+}
+
+.hbspt-form .btn-wrapper {
+    text-align: center;
+}
+
+.recap-popup__container {
+    overflow: auto;
+}
+.recap-popup__container > div {
+    padding: 50px;
+}
+
+.recap-popup {
+    display: none;
+}
+#recappanel .recap-popup {
+    display: block;
+}
+
+#recappanel .recap-popup  .yui3-widget-hd {
+    background: black;
+    height: 30px;
+}
+
+.close-popup-content {
+  background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAcZJREFUeNqslksoRFEcxmeMR5FIyIIkSSgSkbcikrKQlI2SUrKysLBQysZCWVoNRUmTKGKpJKWQZKkkpEgiydv1/fluTtOd+5i5t35155z/+X3dO+dxPZqmeUA7GOS9G4hvFcTKj2zwCr7BgAvyNvCm/V1DeuMwGySkPwJ5K3ihyw+8aucIO75AXxjyZvBMxxzwSXtw0SgLPkGvA3mjIl/Q5UYBwpgS0mNDXq/Il1R5qABhXAnpNpHXgifWBoLlZgHCBAd+gC6D/mrwyJplEGPksXr8SQpk2nUq7ZXggX2/8z2Uw84fOKWEdIByRb5uJrcbIExT+K68800ruZMAL1jU/q8DEGdnrN2AYnCrBMhqbXEroEiRb4FZ3svcb4o0oADcULgN4vm6/EpIQ7gB+eCaoh2QoPRFcb/RQ+qcBuSBKwp2QaJBjazaedbIzKqxG5ALLjlwDySZPKVPmV2yqqusAnLABQfsW8jVkADHyAKsCBUgJ9s5Cw9BsoPtOpr7kR5SFhyQBc5YcARSwjhwZFWv0HEPSvWATHDKjmOQGsGRKSFrdN2BEg+noFwnIM2FQ19CNvS1Iw2FXETpLn62yD41AzJ+BBgAUxU01oimE8UAAAAASUVORK5CYII=) no-repeat;
+	background-size: 100%;
+	cursor: pointer;
+	flex: 0 0 auto;
+	order: 4;
+	width: 24px;
+	height: 24px;
+  	margin-right: 0;
+	float: right;
+}
+
+ #recap-popup .hbspt-form input.aui-button-input:hover {
+	background-color: #153F6D;
+	color: #FFF;
+}
