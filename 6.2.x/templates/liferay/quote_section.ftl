@@ -81,7 +81,7 @@
 </div>
 
 <#if source?? && source.data?has_content>
-	<div class="source-text">
+	<div class="source-text text-center">
 		${source.data}
 	</div>
 </#if>
