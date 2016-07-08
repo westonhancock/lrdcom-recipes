@@ -5,7 +5,7 @@
         "locales": [
         {
             "locale": "en_US",
-            "filename": "src/recap.css"
+            "filename": "build/recap.css"
         }]   
 },
 {

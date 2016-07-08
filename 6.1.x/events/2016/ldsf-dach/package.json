@@ -5,6 +5,7 @@
   "main": "index.js",
   "dependencies": {
     "gulp": "^3.9.1",
+    "gulp-replace": "^0.5.4",
     "liferay-json": "https://github.com/allen-ziegenfus/liferay-json",
     "velocity": "^0.7.2"
   },

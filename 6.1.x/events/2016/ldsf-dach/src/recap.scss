@@ -1,11 +1,46 @@
-/* iphone button looks funny, x not placed right */
+@custom-media --small-viewport (max-width: 500px);
+@custom-media --big-viewport (min-width: 771px);
+@custom-media --mobile-tablet-viewport (max-width: 770px);
 
+
+@media (--big-viewport) {
+
+    .lego-section p {
+        font-size: 1.25em;
+    }
+}
+
+@media (--mobile-tablet-viewport) {
+
+
+    .lego-section {
+        padding: 20px;
+    }
+}
 #intro #introCover .event-subtitle span:first-child {
     font-size: 24px;
     text-transform: uppercase;
 }
 
-@media screen and (max-width: 500px)  {
+#article-69935556 {
+        background: url($main-image-dir/16-LDSF-Recap-Partner-Awards.jpg) no-repeat center center;
+        background-size: cover;
+        @media (--big-viewport) {
+            background-attachment: fixed;        
+        }
+        min-height: 395px;
+        p {
+            font-weight: normal;
+           text-shadow: 0 0 30px rgba(12, 0, 5, 0.8);
+        }
+        @media (--small-viewport) {
+            text-align: center;
+        }
+        
+}
+@media (--small-viewport) {
+
+
 
     #intro #introCover .event-subtitle span:first-child {
         font-size: 15px;  
@@ -31,6 +66,8 @@
     #recap-popup .hbspt-form input.aui-button-input {
         font-size: 10px;
     }
+
+
 }
 
 .hbspt-form .btn-wrapper {
@@ -54,6 +91,7 @@
 #recappanel .recap-popup  .yui3-widget-hd {
     background: black;
     height: 30px;
+    text-align: center;
 }
 
 .close-popup-content {

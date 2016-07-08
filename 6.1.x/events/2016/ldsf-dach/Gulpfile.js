@@ -5,6 +5,7 @@ var ext_replace = require('gulp-ext-replace');
 var svgSprite = require('gulp-svg-sprite');
 var concat = require("gulp-concat");
 var liferay = require("liferay-json");
+var replace = require("gulp-replace");
 
 var winston = require("winston");
 var logger = new winston.Logger({
@@ -53,6 +54,7 @@ gulp.task('browser-sync', function () {
         server: {
             baseDir: "build/"
         },
+        files: ['build/*.css'],
         plugins: ["browser-sync-logger"]
     });
     gulp.watch("build/index.html").on('change', browserSync.reload);
@@ -62,7 +64,7 @@ gulp.task('browser-sync', function () {
 gulp.task('browser-sync-dev', function () {
     browserSync.init({
         proxy: "localhost:8080",
-        files: ["build/css/devcon.css"],
+        files: ["*.css"],
         plugins: ["browser-sync-logger"]
     });
     gulp.watch("build/css/devcon.css").on('change', function () {
@@ -81,7 +83,15 @@ gulp.task("js", function () {
         .pipe(gulp.dest("build"));
 });
 
-gulp.task('pug', ["velocity", "js", "liferaycss", "scripts", "sprite", "css"], function buildHTML() {
+gulp.task("replace", function() {
+ return gulp.src(['build/**/*.html'])
+    .pipe(replace(/url\(\/documents/g, 'url(' + config.server + '/documents'))
+    .pipe(replace(/url\('\/documents/g, 'url(\'' + config.server + '/documents'))
+    .pipe(replace(/src="\/documents/g,'src="' + config.server + '/documents'))
+    .pipe(gulp.dest('build'));
+});
+
+gulp.task('pug', ["replace", "velocity", "js", "liferaycss", "scripts", "sprite", "css"], function buildHTML() {
     logger.info("Running templates");
     var pug = require('gulp-pug');
     return gulp.src(paths.pug)
@@ -115,7 +125,7 @@ gulp.task('liferaycss', function () {
 
 gulp.task('watch', function () {
     gulp.watch(paths.pug, ['pug']);
-    gulp.watch(paths.css, ['css', 'pug']);
+    gulp.watch(paths.css, ['css']);
     gulp.watch(paths.svg, ['pug']);
     gulp.watch(paths.html, ['pug']);
     gulp.watch(paths.scripts, ['scripts', 'pug']);
@@ -196,7 +206,8 @@ gulp.task('images', function () {
         .pipe(imageOptim.optimize({
             jpegmini: false
         }))
-        .pipe(gulp.dest('build/images'));
+        .pipe(gulp.dest('build/images'))
+        .pipe(gulp.dest(config.syncDir));
 });
 
 
@@ -225,31 +236,16 @@ gulp.task('update', ["js", "pug"], function () {
 });
 
 gulp.task('default', ["sprite", "css", "pug"]);
-gulp.task('get-content', function () {
+gulp.task('get-content', function (done) {
 
     var fs = require("fs");
     var config = JSON.parse(fs.readFileSync('./config.json'));
-    //var articleConfig = JSON.parse(fs.readFileSync('./articleconfig.json'));
     var articleConfig = JSON.parse(fs.readFileSync('./article-lookup-config.json'));
-    /*var articleConfig = [
-        {
-        "groupId": "67510365",
-        "articleId": "74591624",
-        "urlTitle": "devcon-call-for-papers-web-events2016-devcon"
-        }];   
-          articleConfig = [
-        {
-        "groupId": "39527293",
-        "articleId": "39575459",
-        "urlTitle": "devcon-call-for-papers-web-events2014-devcon"
-        }]; */
 
     articleConfig.forEach(function (article) {
-        liferay.viewArticleContent(config, article, "en_US");
-        //  biggulp.getDisplayArticleByTitle(config, article); 
-        // biggulp.getArticle(config, article);
-        //    biggulp.getArticleContent(config, article, "en_US"); 
+        liferay.viewArticleContent(config, article, "en_US", function() { });
     });
+    done();
 });
 
 gulp.task('perms', function () {

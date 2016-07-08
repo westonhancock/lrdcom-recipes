@@ -34,7 +34,13 @@
         "groupId": "67510365",
         "articleId": "69935581",
         "filename": "build/recap/footer.html"
-    }
+    },
 
-    
+
+    {
+        "groupId": "67510365",
+        "articleId": "69935556",
+      
+            "filename": "build/recap/partnerawards.html"
+    }
 ]

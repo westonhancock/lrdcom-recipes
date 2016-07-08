@@ -11,6 +11,7 @@ AUI().use('panel', function (A) {
 		modal: true,
 		visible: false,
 		render: true,
+		headerContent: "Events Newsletter",
 		buttons: [
 			{
                 value: " ",

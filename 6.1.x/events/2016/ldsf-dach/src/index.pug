@@ -4,12 +4,12 @@ html(lang="en" class="responsive")
     title="Fun with LDSF-DACH"
     script
         include ../../devcon/build/all.min.js
-        include ../src/getwin.js    
+        include ../src/getwin.js  
     style
         include ../../devcon/src/font.css  
         include ../../devcon/build/all.css
         include ../../devcon/src/theme.css    
-        include ../src/recap.css
+    <link text="text/css" rel="stylesheet" href="recap.css">
     <meta content="minimum-scale=1.0, width=device-width" name="viewport">
   body.yui3-skin-sam
     #wrapper
@@ -21,7 +21,11 @@ html(lang="en" class="responsive")
         include ../build/recap/about-video.html
         include ../build/recap/agenda-description.html
         include ../build/recap/agenda.html
-        include ../build/recap/winner.html
+        //include ../build/recap/winner.html
+        //include ../build/recap/winner-complete.html
+        include ../build/recap/partnerawards.html
         include ../build/recap/sponsors.html
         include ../build/recap/footer.html
-        include ../build/all.js
+        include ../build/all.js   
+        script 
+            include ../../devcon/src/liferay/js/h-main.js
