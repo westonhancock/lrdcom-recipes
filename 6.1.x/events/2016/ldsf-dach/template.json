@@ -3,4 +3,11 @@
         "templateId": "69679784",
         "filename": "ldsf-sliding-banner.vm",
         "name": "Sliding Top Banner Template - 2016 LDSF"
-}]
+},
+{
+        "groupId": "67510365",
+        "templateId": "71756485",
+        "filename": "ldsf-dach-agenda.vm",
+        "name": "DDL Agenda Recap Template"
+}
+]

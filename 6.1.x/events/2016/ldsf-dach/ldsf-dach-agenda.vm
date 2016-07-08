@@ -85,6 +85,8 @@
 
 ## Get DDL Records
 #set ($ddl_records_local_service = $serviceLocator.findService("com.liferay.portlet.dynamicdatalists.service.DDLRecordLocalService"))
+#set ($dlFileEntryLocalService = $serviceLocator.findService("com.liferay.portlet.documentlibrary.service.DLFileEntryLocalService"))
+
 #set ($record_set_id = $getterUtil.getLong($record_set_id.data))
 #set ($records = $ddl_records_local_service.getRecords($record_set_id))
 
@@ -966,6 +968,118 @@
 
 
 #if ($recap) 
+
+#macro (clean_up $string)
+    #set ($string = $stringUtil.replace($string, "[", ""))
+    #set ($string = $stringUtil.replace($string, "]", ""))
+    #set ($string = $stringUtil.replace($string, '"', ''))
+#end
+
+#macro (get_tactic_info71 $tactic_id $hs_tactic_map)
+    #set ($tactic_map = $portal.getClass().forName("java.util.TreeMap").newInstance())
+
+    #set ($tactic_record = $ddl_records_local_service.fetchDDLRecord($getterUtil.getLong($tactic_id)))
+
+
+    #if ($tactic_record)
+
+        #foreach ($field in $hs_field_values)
+            #set ($field_name = "")
+
+            #if ($tactic_record.getField($field))
+                #set ($field_name = $tactic_record.getFieldValue($field))
+            #end
+
+            #clean_up($field_name)
+
+            #if ($field_name != "")
+                #set ($VOID = $tactic_map.put($field, $field_name))
+            #end
+        #end
+
+        #set ($asset_record = "")
+
+        #if ($tactic_record.getField("asset"))
+            #set ($asset_record = $tactic_record.getFieldValue("asset"))
+        #end
+
+        #set ($asset_type = "")
+
+        #if ($tactic_record.getField("asset_type"))
+            #set ($asset_type = $tactic_record.getFieldValue("asset_type"))
+        #end
+
+        #clean_up($asset_type)
+
+        #set ($asset_id = "")
+
+        #if ($tactic_record.getField("asset_id"))
+            #set ($asset_id = $tactic_record.getFieldValue("asset_id"))
+        #end
+        
+        #set ($asset_name = "")
+
+        #if ($tactic_record.getField("asset_name"))
+            #set ($asset_name = $tactic_record.getFieldValue("asset_name"))
+        #end
+        
+        #set ($asset_url = "")
+
+        #if ($tactic_record.getField("asset_url"))
+            #set ($asset_url = $tactic_record.getFieldValue("asset_url"))
+        #end
+
+        #set ($asset_json_object = $jsonFactoryUtil.getNullJSON())
+        
+        #if ($stringUtil.startsWith($asset_record, "{") && $stringUtil.endsWith($asset_record, "}"))
+            #set ($asset_json_object = $jsonFactoryUtil.createJSONObject($asset_record))
+        #end
+        
+        #set ($asset = false)
+
+        #if ($asset_json_object.getString('uuid'))
+            #set ($asset_url = "${request.get('scheme')}://${request.get('theme-display').get('portal-url')}/documents/14/${asset_json_object.getString('uuid')}")
+
+            #set ($asset = $dlFileEntryLocalService.getFileEntryByUuidAndGroupId($asset_json_object.getString('uuid'), 14))
+
+            #if ($asset)
+                #set ($asset_id = $asset.getUuid())
+                #set ($asset_name = $asset.getTitle())
+            #end
+        #end
+
+        #if ($asset_name != "")
+            #set ($VOID = $tactic_map.put("asset_name", $asset_name))
+        #end
+
+        #if ($asset_id != "")
+            #set ($VOID = $tactic_map.put("asset_id", $asset_id))
+        #end
+
+        #if ($asset_url != "")
+            #set ($VOID = $tactic_map.put("asset_url", $asset_url))
+        #end
+
+        #set ($VOID = $tactic_map.put("tactic_id", $tactic_record.getRecordId()))
+
+        #set ($hs_tactic_map = "{")
+
+        #foreach ($key in $tactic_map.keySet())
+            #if ($velocityCount != 1)
+                #set ($hs_tactic_map = "${hs_tactic_map},")
+            #end
+
+            #set ($hs_tactic_map = "${hs_tactic_map}&#34;${key}&#34;:&#34;${tactic_map.get($key)}&#34;")
+        #end
+
+        #set ($hs_tactic_map = "${hs_tactic_map}}")
+    #end
+#end
+
+#set ($hs_field_values = ["asset_type","campaign","leadsource","lead_source_type","product_interest","program","tactic_name","video_type"])
+
+
+
 <div id="popuphome">
 <div class="aui-helper-hidden page-pop-up" data-overlay="true" id="popup">
     <div class="close-popup-content">&nbsp;</div>
@@ -1217,8 +1331,19 @@
 	
 	        #set ($data_sources = "")
 			#set ($video_url = $record.getFieldValue("video_url"))
-	        #set ($download_url = $record.getFieldValue("download_url"))	      
-	          
+	        #set ($download_url = $record.getFieldValue("download_url"))
+
+
+            #set ($slides_tactic_id = "")
+            #if ($record.getField("slides_tactic_id"))
+                #set ($slides_tactic_id = $record.getFieldValue("slides_tactic_id"))
+            #end	      
+
+            #set ($hs_slides_map = "")
+            #if ($slides_tactic_id != "")
+               #get_tactic_info71($slides_tactic_id, $hs_slides_map)
+            #end
+     
 	        #if ($validator.isNotNull($speaker_image))
 	            #set ($data_sources = "data-img='/documents/$speaker_image_group_id/$speaker_image_uuid'")
 	        #end
@@ -1237,7 +1362,13 @@
 	        #if ($validator.isNotNull($video_url))
 	            #set ($data_sources = $data_sources + " " + "data-video-url='$htmlUtil.escape($video_url)'")
 	        #end
-	
+
+            #if ($validator.isNotNull($hs_slides_map))
+               #set ($data_sources = $data_sources + " " + "data-slides-tactic-info='$hs_slides_map'")
+            #end
+
+       
+
 	        #if ($validator.isNotNull($download_url))
 	            #set ($data_sources = $data_sources + " " + "data-download-url='$htmlUtil.escape($download_url)'")
 	        #end
@@ -1769,6 +1900,13 @@ AUI().ready(
 				}
 			}
 
+
+    		var tacticID = node.getAttribute('data-slides-tactic-info');
+
+            if (tacticID) {
+                oldPopUpSlides.one('form').setAttribute('data-tactic-item-fields', tacticID);
+            }
+
 			oldPopUpTitle.setContent(newPopUpTitle.getContent());
 
 			popup.removeClass('aui-helper-hidden');
@@ -1897,4 +2035,3 @@ AUI().ready(
 
 </script>
 #end
-
