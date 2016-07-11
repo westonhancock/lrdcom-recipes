@@ -1,7 +1,7 @@
 <div class="info-hub">
 	<#list article_ids.siblings as article_id>
 		<#if article_id.data?has_content>
-			<runtime-portlet name="56" instance="${article_id.data}" />
+			${journalContentUtil.getContent(groupId, article_id.data, "", locale, xmlRequest)}
 		</#if>
 	</#list>
 
