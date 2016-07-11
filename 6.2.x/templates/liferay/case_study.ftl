@@ -131,6 +131,50 @@
 	.ie11 .case-study-body {
 		display: table;
 	}
+
+.quote-section .quote:after, .quote-section .quote:before {
+	color: rgba(128,128,128,0.2);
+	font-size: 4em;
+	font-weight: 600;
+	position: absolute;
+}
+
+.quote-section .quote:after {
+	bottom: -.5em;
+	content:"\201D";
+	right: 0;
+}
+
+.quote-section .quote:before {
+	content:"\201C";
+	left: 0;
+	top: -.25em;
+}
+
+.quote-section .quote.single-quote:after {
+	display: none;
+}
+
+.quote-section .quote.single-quote:before {
+	display: block;
+	line-height: .75em;
+	position: relative;
+	text-align: center;
+	top: 0;
+}
+
+@media (max-width: 760px) {
+	.quote-section .quote:after {
+		display: none;
+	}
+
+	.quote-section .quote:before {
+		display: block;
+		position: relative;
+		text-align: center;
+		top: 0;
+	}
+}
 </style>
 
 <div class="case-study max-full">
