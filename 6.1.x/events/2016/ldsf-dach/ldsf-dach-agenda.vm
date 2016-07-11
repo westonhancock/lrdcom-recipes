@@ -1,3 +1,9 @@
+<svg width="0" height="0" style="position:absolute"><symbol viewBox="0 0 80.371 80.37" id="Call_for_paper_Icon-12"><g fill="#0067aa"><path d="M61.37 18.925h19.114v-.001L61.449-.112h-.079z"/>
+<path d="M61.37 24.877h-5.952V-.112H0V80.37h80.484V24.877z"/></g></symbol>
+<symbol viewBox="0 0 393 234" id="video-play"><g stroke="white"  fill="#0067aa"  stroke-width="10"><path d="M1 1h391v232H1z"/><circle cx="197" cy="117" r="46"/><path d="M180 90l43 26-43 24z"/></g></symbol>
+</svg>
+
+
 #*
     This template basically loops once through all the records creating a treemap
     object and then loops through that map object to generate the table. When
@@ -962,6 +968,13 @@
 		width: 100%;
 	}
 }
+
+.recap-agenda__icons {
+    width: 20px;
+    height: 20px;
+    vertical-align: text-top;
+}
+
 </style>
 
 #end
@@ -1332,6 +1345,7 @@
 	        #set ($data_sources = "")
 			#set ($video_url = $record.getFieldValue("video_url"))
 	        #set ($download_url = $record.getFieldValue("download_url"))
+        
 
 
             #set ($slides_tactic_id = "")
@@ -1399,8 +1413,19 @@
               #end
 
               #if ($title != "")
-                <span class="title-name trigger">$title</span><br>
-              #end
+                <span class="title-name trigger">$title</span>
+              
+                #if ($recap)
+                    #if ($validator.isNotNull($video_url))
+                        <svg class="recap-agenda__icons" style="width: 40px; height: 20px;"><use xlink:href="#video-play"</use></svg>
+                    #end
+
+                    #if ($validator.isNotNull($hs_slides_map) ||   $validator.isNotNull($download_url))
+                        <svg class="recap-agenda__icons"><use xlink:href="#Call_for_paper_Icon-12"</use></svg>
+                    #end
+                #end
+                <br>
+            #end
 
               #if ($is_liferay_seven == "true" && $validator.isNotNull($is_liferay_seven))
                   <div class="liferay-seven-icon"></div>
