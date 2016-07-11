@@ -51,7 +51,6 @@
 	}
 
 	.case-study .quote-section .quote {
-		font-weight: bolder;
 		padding: 1em 0;
 	}
 
@@ -109,10 +108,6 @@
 
 	.no-menu menu {
 		display: none;
-	}
-
-	.quote .triangle {
-		border-color: currentColor;
 	}
 
 	.quote-author {
@@ -233,15 +228,9 @@
 			<div class="block large-padding-vertical right-block quote-panel w30">
 				<div class="quote-section">
 
-					<div class="max-med primary-color quote">
-						<span class="accent-color triangle upper-left"></span>
-						<span class="accent-color second-triangle triangle upper-left"></span>
-						<span class="accent-color lower-right triangle"></span>
-						<span class="accent-color lower-right second-triangle triangle"></span>
-
+					<div class="max-med primary-color quote single-quote">
 						${quote.data}
 					</div>
-
 
 					<div class="alt-font-color quote-source">
 						<div class="quote-author">
