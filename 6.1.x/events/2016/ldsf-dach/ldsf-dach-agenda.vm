@@ -1313,22 +1313,7 @@ var agenda_entries = {};
             #set ($session_type = $stringUtil.replace($session_type, "]", ""))
             #set ($session_type = $stringUtil.replace($session_type, '"', ''))
 
-            #set ($speaker_record = false)
-            #if ($record.getFieldValue("speakers_uuid") != "")
-              #set ($speaker_record_info = $ddl_records_local_service.getDDLRecordByUuidAndGroupId($record.getFieldValue("speakers_uuid"), $groupId))
-              #set ($speaker_record = $ddl_records_local_service.fetchDDLRecord($getterUtil.getLong($speaker_record_info.recordId)))
-            #end
-            #if ($speaker_record)
-              #set ($speaker_bio = $speaker_record.getFieldValue("speaker_bio"))
-              #set ($speaker_company = $speaker_record.getFieldValue("speaker_company"))
-              #set ($speaker_name = $speaker_record.getFieldValue("speaker_name"))
-              #set ($speaker_title = $speaker_record.getFieldValue("speaker_title"))
-            #else
-              #set ($speaker_bio = "")
-              #set ($speaker_company = "")
-              #set ($speaker_name = "")
-              #set ($speaker_title = "")
-            #end
+           
             
             ## company logo
             #if ($record.getFieldValue("company_logo") && $record.getFieldValue("company_logo") != "")
@@ -1378,14 +1363,6 @@ var agenda_entries = {};
 			##-------------------------------get extra info for recapping ---- 
 			## --- this currently only gets one of the speakers if there are multiple..
 			## clear variables in case we don't go through the loop
-			#set ($speaker_bio = "")
-	        #set ($speaker_company = "")
-            #set ($speaker_name = "")
-            #set ($speaker_title = "")
-            #set ($speaker_image_group_id = "")
-            #set ($speaker_image = "")
-            #set ($speaker_image_uuid = "")
-            #set ($speaker_json_object = "")
 	 		#set ($speaker_array_uuid = $stringUtil.split($record.getFieldValue("speakers_uuid")))
 		
             <script>
@@ -1393,41 +1370,7 @@ var agenda_entries = {};
 
 			 #foreach ($speakers_uuid in $speaker_array_uuid)
 	            #set ($speakers_uuid = $stringUtil.trim($speakers_uuid))
-                
                 agenda_entries["$record.getUuid()"].push(agenda_speakers["$speakers_uuid"]);
-                
-
-	            #set ($speaker_record = false)
-	            #if ($validator.isNotNull($speakers_uuid))
-	                #set ($speaker_record_info = $ddl_records_local_service.getDDLRecordByUuidAndGroupId($speakers_uuid, $groupId))
-	                #set ($speaker_record = $ddl_records_local_service.fetchDDLRecord($getterUtil.getLong($speaker_record_info.recordId)))
-	            #end
-	            #if ($validator.isNotNull($speaker_record))
-	                #set ($speaker_image_group_id = $record.getGroupId())
-	
-	                #set ($speaker_image = "")
-	
-	                #if ($speaker_record.getField("speaker_image"))
-	                    #set ($speaker_image = $speaker_record.getFieldValue("speaker_image"))
-	                #end
-	                
-	                #set ($speaker_json_object = $jsonFactoryUtil.createJSONObject($speaker_image))
-	                #set ($speaker_image_uuid = $speaker_json_object.getString("uuid"))
-	                #set ($speaker_bio = $speaker_record.getFieldValue("speaker_bio"))
-	                #set ($speaker_company = $speaker_record.getFieldValue("speaker_company"))
-	                #set ($speaker_name = $speaker_record.getFieldValue("speaker_name"))
-	                #set ($speaker_title = $speaker_record.getFieldValue("speaker_title"))
-	            #else
-	                #set ($speaker_bio = "")
-	                #set ($speaker_company = "")
-	                #set ($speaker_name = "")
-	                #set ($speaker_title = "")
-	                #set ($speaker_image_group_id = "")
-	                #set ($speaker_image = "")
-	                #set ($speaker_image_uuid = "")
-	                #set ($speaker_json_object = "")
-	            #end
-
 	        #end
 	        </script>
 
@@ -1520,12 +1463,10 @@ var agenda_entries = {};
                       #set ($speaker_record = $ddl_records_local_service.fetchDDLRecord($getterUtil.getLong($speaker_record_info.recordId)))
                     #end
                     #if ($speaker_record)
-                      #set ($speaker_bio = $speaker_record.getFieldValue("speaker_bio"))
                       #set ($speaker_company = $speaker_record.getFieldValue("speaker_company"))
                       #set ($speaker_name = $speaker_record.getFieldValue("speaker_name"))
                       #set ($speaker_title = $speaker_record.getFieldValue("speaker_title"))
                     #else
-                      #set ($speaker_bio = "")
                       #set ($speaker_company = "")
                       #set ($speaker_name = "")
                       #set ($speaker_title = "")
@@ -1561,11 +1502,9 @@ var agenda_entries = {};
                     #if ($speaker_record)
                       #set ($speaker_name = $speaker_record.getFieldValue("speaker_name"))
                       #set ($speaker_company = $speaker_record.getFieldValue("speaker_company"))
-                      #set ($speaker_title = $speaker_record.getFieldValue("speaker_title"))
                     #else
                       #set ($speaker_name = "")
                       #set ($speaker_company = "")
-                      #set ($speaker_title = "")
                     #end
 
                     <div class="speaker-entry">
