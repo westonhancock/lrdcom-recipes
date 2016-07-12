@@ -975,6 +975,18 @@
     vertical-align: text-top;
 }
 
+
+.share-link {
+
+    display: flex;
+    align-items: baseline;
+    margin-bottom: 10px;
+}
+
+.share-link input {
+    flex: 1 0 0 ;
+    margin-left: 10px;
+}
 </style>
 
 #end
@@ -1092,7 +1104,6 @@
 #set ($hs_field_values = ["asset_type","campaign","leadsource","lead_source_type","product_interest","program","tactic_name","video_type"])
 
 
-
 <div id="popuphome">
 <div class="aui-helper-hidden page-pop-up" data-overlay="true" id="popup">
     <div class="close-popup-content">&nbsp;</div>
@@ -1104,10 +1115,23 @@
     		<div class="pop-up-name"></div>
     		<div class="pop-up-role"></div>
 			<div class="pop-up-bio"></div>
+            <div id="pop-up-extra">
+					<runtime-portlet name="56" instance="extra_$reserved-article-id.data" queryString=""/>
+			</div>
     	</div>
     	<div class="aui-w65 inline">
 	    	<div class="pop-up-video"></div>
 			<div class="pop-up-title"></div>
+            <div class="share-link">
+                <span class="share-text">
+                 #if ($validator.isNotNull($recap_share_slides_text))
+                    $recap_share_slides_text.data
+                 #else
+                    Share This Presentation:
+                #end
+                </span>
+                <input type="text" value="" onclick="this.select()" readonly />
+            </div>
 			<div class="pop-up-slides">
 				<div id="embedded-hs-form">
 					<runtime-portlet name="56" instance="targeted_$reserved-article-id.data" queryString=""/>
@@ -1381,12 +1405,14 @@
                #set ($data_sources = $data_sources + " " + "data-slides-tactic-info='$hs_slides_map'")
             #end
 
-       
+            #set ($my_session_id = $record.getUuid())
+           
+            
 
 	        #if ($validator.isNotNull($download_url))
 	            #set ($data_sources = $data_sources + " " + "data-download-url='$htmlUtil.escape($download_url)'")
 	        #end
-	        
+
 	        ## only show popup when download stuff available
 	        #if ($recap && $validator.isNull($download_url) && $validator.isNull($video_url)) 
 				#set ($pop_up_css_class = $pop_up_css_class.replace("pop-up", ""))
@@ -1400,7 +1426,7 @@
  			#end
             ## Print td
             #set ($session-title = "$title - $speaker_name")
-            <td class="agenda-item $pop_up_css_class" $colspan data-session-title='$htmlUtil.escape($session-title)' $data_sources $rowspan>
+            <td class="agenda-item $pop_up_css_class" $colspan data-session-title='$htmlUtil.escape($session-title)' $data_sources id='$my_session_id' $rowspan>
              ##if ($session_type != "blank" && $session_type != "")
              ##   <span>$session_type:</span>
              ## #end
@@ -1839,6 +1865,9 @@ AUI().ready(
 
 #if ($recap) 
 <script>
+
+
+
 AUI().ready(
 	'aui-overlay-mask',
 	'node',
@@ -1860,6 +1889,8 @@ AUI().ready(
 			if (!newPopUpTitle) {
 				return;
 			}
+
+            popup.one(".share-link input").setAttribute("value", window.location.protocol + "//" + window.location.hostname + window.location.pathname + "?pt=" + node.getAttribute("id"));
 
 			var oldPopUpImg = popup.one('.pop-up-img');
 
@@ -1912,7 +1943,11 @@ AUI().ready(
 					if (slidesForm) {
 						slidesForm.setAttribute('data-asset-url', slides);
 					}
+                    
 				}
+                if (slides || node.getAttribute('data-slides-tactic-info')) {
+                    oldPopUpSlides.removeClass('aui-helper-hidden');
+                }
 			}
 
 			var oldPopUpVideo = popup.one('.pop-up-video');
@@ -1938,7 +1973,7 @@ AUI().ready(
 
 			createOverlayMask();
 
-			centerOnPage(popup, popuphome);
+		    centerOnPage(popup, popuphome);
 
 			var popUpContent = popup.one('.pop-up-content');
 
@@ -1956,7 +1991,7 @@ AUI().ready(
 					if (oldPopUpSlides.one('form')) {
 						oldPopUpSlides.one('form').setAttribute('data-tactic-item-fields', '');
 					}
-
+                    oldPopUpSlides.addClass('aui-helper-hidden');
 					oldPopUpVideo.setContent('');
 
 					var overlayMask = A.one('.aui-overlaymask');
@@ -2021,9 +2056,9 @@ AUI().ready(
 			}
 		);
 
-		/*#set ($current_url  = $request.get("attributes").get("CURRENT_URL"))
+        
+		#set ($current_url  = $request.get("attributes").get("CURRENT_URL"))
 		#set ($session_id = $httpUtil.getParameter($current_url, "pt", false))
-
 		#if ($session_id != "")
 			A.on(
 				'load',
@@ -2031,7 +2066,7 @@ AUI().ready(
 					copyToPopUp(A.one('#$session_id'));
 				}
 			);
-		#end*/
+		#end
 
 		popup.delegate(
 			'click',
@@ -2042,6 +2077,7 @@ AUI().ready(
 					this.addClass('video-playing');
 					this.removeClass('video-overlay');
 					this.setContent('<iframe allowfullscreen="true" frameborder="0" height="250px" src="//www.youtube.com/embed/' + embed + '?autoplay=1&enablejsapi=1&wmode=transparent" width="100%"></iframe>');
+                   
 				}
 			},
 			'.video-overlay'
