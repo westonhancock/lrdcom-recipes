@@ -1473,8 +1473,7 @@ var agenda_entries = {};
  			   #set ($pop_up_css_class = "$pop_up_css_class break-row-td")
  			#end
             ## Print td
-            #set ($session-title = "$title - $speaker_name")
-            <td class="agenda-item $pop_up_css_class" $colspan data-session-title='$htmlUtil.escape($session-title)' $data_sources id='$my_session_id' $rowspan>
+            <td class="agenda-item $pop_up_css_class" $colspan data-session-title='$htmlUtil.escape($title)' $data_sources id='$my_session_id' $rowspan>
              ##if ($session_type != "blank" && $session_type != "")
              ##   <span>$session_type:</span>
              ## #end
@@ -1625,7 +1624,14 @@ AUI().use(
     });
      A.all('#agendaPop td.pop-up').on("click", function(event) {
       if (window.ga && event && event.currentTarget) {
-      	ga('send', 'event', '$ga_conference_name', 'Agenda Session Clicks', event.currentTarget.attr('data-session-title'));
+
+        var title = event.currentTarget.attr('data-session-title');
+        var id = event.currentTarget.attr('id');
+        for (var i = 0; i < agenda_entries[id].length; i++) {
+            if (i == 0) title += " - ";
+            title += agenda_entries[id][i].speaker_name + " ";
+        }
+      	ga('send', 'event', '$ga_conference_name', 'Agenda Session Clicks', title);
       }
     });
       
