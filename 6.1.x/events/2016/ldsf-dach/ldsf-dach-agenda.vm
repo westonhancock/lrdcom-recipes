@@ -2031,6 +2031,7 @@ AUI().ready(
 					if (oldPopUpSlides.one('form')) {
 						oldPopUpSlides.one('form').setAttribute('data-tactic-item-fields', '');
 					}
+                    oldPopUpImg.one('img').setAttribute('src', "");
                     oldPopUpSlides.addClass('aui-helper-hidden');
 					oldPopUpVideo.setContent('');
 
