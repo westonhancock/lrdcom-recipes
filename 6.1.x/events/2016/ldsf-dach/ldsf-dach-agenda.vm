@@ -96,8 +96,25 @@
 ## Create the empty map that will hold all the agenda info
 #set ($agenda = $portal.getClass().forName("java.util.TreeMap").newInstance())
 
+#set ($found_speaker_record_set_id = false)
+
 ## Loop Through records and place them in the correct place in the map
 #foreach ($record in $records)
+
+
+    #set ($agenda_speakers_uuid = $record.getFieldValue("speakers_uuid"))
+    #if ((!$found_speaker_record_set_id) && ($validator.isNotNull($agenda_speakers_uuid)))
+    	#set ($agenda_speaker_array_uuid = $stringUtil.split($agenda_speakers_uuid))
+        #set ($agenda_speaker_uuid = $stringUtil.trim($agenda_speaker_array_uuid.get(0)))
+        #if ($validator.isNotNull($agenda_speaker_uuid))
+            #set ($speaker_record_info = $ddl_records_local_service.getDDLRecordByUuidAndGroupId($agenda_speaker_uuid, $groupId))
+            #set ($speaker_recordset_id = $speaker_record_info.recordSetId)
+            #set ($found_speaker_record_set_id = true)
+        #end
+    #end
+
+
+
   #if ($record.getFieldValue("display_on_live"))
     ## Get date, start-time, end-time and room for sorting purposes
     #set ($date = $record.getFieldValue("date"))
@@ -215,6 +232,49 @@
     #end
   #end
 #end
+
+<script type="text/javascript">
+var test = test;
+</script>
+
+<script type="text/javascript">
+var agenda_speakers = {
+
+#if ($found_speaker_record_set_id)
+    #set ($speaker_records = $ddl_records_local_service.getRecords($speaker_recordset_id))
+    ## Loop Through records and place them in the correct place in the map
+    #foreach ($speaker_record in $speaker_records)
+
+        ## remove newlines
+        #set ($speaker_bio = $htmlUtil.escape($speaker_record.getFieldValue("speaker_bio")).replaceAll("\n", ""))
+         #set ($speaker_image_group_id = $speaker_record.getGroupId())
+	
+	    #set ($speaker_image = "")
+	
+	    #if ($speaker_record.getField("speaker_image"))
+	        #set ($speaker_image = $speaker_record.getFieldValue("speaker_image"))
+	    #end
+	                
+        #set ($speaker_json_object = $jsonFactoryUtil.createJSONObject($speaker_image))
+        #set ($speaker_image_uuid = $speaker_json_object.getString("uuid"))
+
+        #if ($velocityCount != 1) 
+            ,
+        #end
+        "$speaker_record.getUuid()": {
+            "speaker_bio":  "$speaker_bio",  
+            "speaker_company":  "$htmlUtil.escape($speaker_record.getFieldValue("speaker_company"))",
+            "speaker_name":  "$htmlUtil.escape($speaker_record.getFieldValue("speaker_name"))",     
+            "speaker_title":  "$htmlUtil.escape($speaker_record.getFieldValue("speaker_title"))",
+            "speaker_image":   "/documents/$speaker_image_group_id/$speaker_image_uuid"
+        }
+    #end
+#end
+};
+
+var agenda_entries = {};
+</script>
+
 
 #set( $tabWidth = 100 / $agenda.keySet().size() )
 
@@ -1328,8 +1388,15 @@
             #set ($speaker_json_object = "")
 	 		#set ($speaker_array_uuid = $stringUtil.split($record.getFieldValue("speakers_uuid")))
 		
+            <script>
+            agenda_entries["$record.getUuid()"] = [];
+
 			 #foreach ($speakers_uuid in $speaker_array_uuid)
 	            #set ($speakers_uuid = $stringUtil.trim($speakers_uuid))
+                
+                agenda_entries["$record.getUuid()"].push(agenda_speakers["$speakers_uuid"]);
+                
+
 	            #set ($speaker_record = false)
 	            #if ($validator.isNotNull($speakers_uuid))
 	                #set ($speaker_record_info = $ddl_records_local_service.getDDLRecordByUuidAndGroupId($speakers_uuid, $groupId))
@@ -1362,7 +1429,8 @@
 	            #end
 
 	        #end
-	
+	        </script>
+
 	        #set ($data_sources = "")
 			#set ($video_url = $record.getFieldValue("video_url"))
 	        #set ($download_url = $record.getFieldValue("download_url"))
@@ -1974,9 +2042,27 @@ AUI().ready(
 
 			var popUpContent = popup.one('.pop-up-content');
 
+
+            var agendaId = node.getAttribute("id");
+            var agendaIndex = 0;
+            var timeoutId = window.setInterval(function() {
+                console.log("timeout function!");
+                var myspeakers = agenda_entries[agendaId];
+                if ((agendaIndex + 1) == myspeakers.length) {
+                    agendaIndex = 0;
+                } else {
+                    agendaIndex++;
+                }
+                oldPopUpName.setContent(myspeakers[agendaIndex].speaker_name);
+                oldPopUpBio.setContent(myspeakers[agendaIndex].speaker_bio);
+                oldPopUpRole.setContent(myspeakers[agendaIndex].speaker_title);
+                oldPopUpImg.one('img').setAttribute('src', myspeakers[agendaIndex].speaker_image);
+            }, 6000);
+
 			popUpContent.on(
 				'clickoutside',
 				function(event) {
+                    window.clearInterval(timeoutId);
 					popup.addClass('aui-helper-hidden');
 
 					popUpContent.detach('clickoutside');
