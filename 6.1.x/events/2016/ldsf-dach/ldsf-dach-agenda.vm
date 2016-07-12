@@ -1447,21 +1447,6 @@ var agenda_entries = {};
                #get_tactic_info71($slides_tactic_id, $hs_slides_map)
             #end
      
-	        #if ($validator.isNotNull($speaker_image))
-	            #set ($data_sources = "data-img='/documents/$speaker_image_group_id/$speaker_image_uuid'")
-	        #end
-	        #if ($validator.isNotNull($speaker_name))
-	            #set ($data_sources = $data_sources + " " + "data-speaker-name='$htmlUtil.escape($speaker_name)'")
-	        #end
-	
-	        #if ($validator.isNotNull($speaker_title))
-	            #set ($data_sources = $data_sources + " " + "data-speaker-role='$htmlUtil.escape($speaker_title)'")
-	        #end
-	
-	        #if ($validator.isNotNull($speaker_bio))
-	            #set ($data_sources = $data_sources + " " + "data-speaker-bio='$htmlUtil.escape($speaker_bio)'")
-	        #end
-	
 	        #if ($validator.isNotNull($video_url))
 	            #set ($data_sources = $data_sources + " " + "data-video-url='$htmlUtil.escape($video_url)'")
 	        #end
@@ -1472,8 +1457,6 @@ var agenda_entries = {};
 
             #set ($my_session_id = $record.getUuid())
            
-            
-
 	        #if ($validator.isNotNull($download_url))
 	            #set ($data_sources = $data_sources + " " + "data-download-url='$htmlUtil.escape($download_url)'")
 	        #end
@@ -1958,45 +1941,9 @@ AUI().ready(
             popup.one(".share-link input").setAttribute("value", window.location.protocol + "//" + window.location.hostname + window.location.pathname + "?pt=" + node.getAttribute("id"));
 
 			var oldPopUpImg = popup.one('.pop-up-img');
-
-			if (oldPopUpImg) {
-				var img = node.getAttribute('data-img');
-
-				if (img) {
-					oldPopUpImg.one('img').setAttribute('src', img);
-				}
-			}
-
 			var oldPopUpName = popup.one('.pop-up-name');
-
-			if (oldPopUpName) {
-				var name = node.getAttribute('data-speaker-name');
-
-				if (name) {
-					oldPopUpName.setContent(name);
-				}
-			}
-
 			var oldPopUpRole = popup.one('.pop-up-role');
-
-			if (oldPopUpRole) {
-				var role = node.getAttribute('data-speaker-role');
-
-				if (role) {
-					oldPopUpRole.setContent(role);
-				}
-			}
-
 			var oldPopUpBio = popup.one('.pop-up-bio');
-
-			if (oldPopUpBio) {
-				var bio = node.getAttribute('data-speaker-bio');
-
-				if (bio) {
-					oldPopUpBio.setContent(bio);
-				}
-			}
-
 			var oldPopUpSlides = popup.one('.pop-up-slides');
 
 			if (oldPopUpSlides) {
@@ -2044,19 +1991,23 @@ AUI().ready(
 
 
             var agendaId = node.getAttribute("id");
+            var myspeakers = agenda_entries[agendaId];
             var agendaIndex = 0;
+            function setSpeakerInfo(speakerindex) {
+                if (oldPopUpName) oldPopUpName.setContent(myspeakers[speakerindex].speaker_name);
+                if (oldPopUpBio) oldPopUpBio.setContent(myspeakers[speakerindex].speaker_bio);
+                if (oldPopUpRole) oldPopUpRole.setContent(myspeakers[speakerindex].speaker_title);
+                if (oldPopUpImg) oldPopUpImg.one('img').setAttribute('src', myspeakers[speakerindex].speaker_image);
+            }
+            setSpeakerInfo(0);
+            
             var timeoutId = window.setInterval(function() {
-                console.log("timeout function!");
-                var myspeakers = agenda_entries[agendaId];
-                if ((agendaIndex + 1) == myspeakers.length) {
+                if ((agendaIndex + 1) ==  myspeakers.length) {
                     agendaIndex = 0;
                 } else {
                     agendaIndex++;
                 }
-                oldPopUpName.setContent(myspeakers[agendaIndex].speaker_name);
-                oldPopUpBio.setContent(myspeakers[agendaIndex].speaker_bio);
-                oldPopUpRole.setContent(myspeakers[agendaIndex].speaker_title);
-                oldPopUpImg.one('img').setAttribute('src', myspeakers[agendaIndex].speaker_image);
+                setSpeakerInfo(agendaIndex);
             }, 6000);
 
 			popUpContent.on(
