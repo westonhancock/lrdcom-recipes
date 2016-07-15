@@ -4,7 +4,7 @@
 	}
 </style>
 
-<#assign journal_article_local_service = serviceLocator.findService("com.liferay.portlet.journal.service.JournalArticleLocalService") /> 
+<#assign journal_article_local_service = serviceLocator.findService("com.liferay.portlet.journal.service.JournalArticleLocalService") />
 
 <#assign service_context = objectUtil("com.liferay.portal.service.ServiceContextThreadLocal").getServiceContext() />
 <#assign http_servlet_request = service_context.getRequest() />
@@ -21,18 +21,25 @@
 <#include "${templatesPath}/1561886" />
 
 <#if title?has_content>
-	<#assign article = journal_article_local_service.fetchArticleByUrlTitle(groupId, title) />
+	<#assign article = journal_article_local_service.getLatestArticleByUrlTitle(groupId, title, 0) />
 <#elseif template_article_id?has_content>
 	<#assign article = journal_article_local_service.getLatestArticle(groupId, template_article_id)! />
 </#if>
 
 <#if updateURL && article??>
-	<#assign article_url = stringUtil.replace(article.getTitle(), " ", "-") />
+	<#assign structure_id = getterUtil.getLong(article.getStructureId()) - 1 />
+	<#assign template_id = getterUtil.getLong(article.getTemplateId()) - 1 />
 
-	<#assign article = journal_article_local_service.updateStatus(permissionChecker.getUserId(), article, 0, stringUtil.lowerCase(article_url), null, service_context)! />
-</#if>
+	<#assign new_article = journal_article_local_service.addArticle(getterUtil.getLong(permissionChecker.getUserId()), getterUtil.getLong(groupId), getterUtil.getLong(article.getFolderId()), article.getTitleMap(), article.getDescriptionMap(), article.getContent(), article.getStructureId(), article.getTemplateId(), service_context)! />
 
-<#if title?has_content && article??>
+	new_article: ${new_article}
+
+	<#-- <#assign VOID = journal_article_local_service.expireArticle(permissionChecker.getUserId(), groupId, article.getArticleId(), article.getUrlTitle(), service_context) /> -->
+
+	<#-- <script type="text/javascript">
+		window.location = '/resources/l?title=${new_article.getUrlTitle()}';
+	</script> -->
+<#elseif title?has_content && article??>
 	${journalContentUtil.getContent(groupId, article.getArticleId()?string, "", locale, xmlRequest)}
 
 	<#if layoutPermission.contains(permissionChecker, layout, "UPDATE")>
@@ -55,7 +62,7 @@
 			</div>
 
 			<div class="btn-wrapper">
-				<a href="/resources/l?title=${article.getUrlTitle()}&updateURL=1" class="btn">
+				<a href="/resources/l?articleId=${article.getArticleId()}&updateURL=1" class="btn">
 					<span class="taglib-text ">Update URL</span>
 				</a>
 			</div>
@@ -68,30 +75,21 @@
 
 	<#assign dynamic_elements = document.selectNodes("/root/dynamic-element[@name=\"article_ids\"]/dynamic-content") />
 
-	<#assign ddm_structure_local_service = serviceLocator.findService("com.liferay.portlet.dynamicdatamapping.service.DDMStructureLocalService") />  
 	<#assign journal_converter_util = staticUtil["com.liferay.portlet.journal.util.JournalConverterUtil"]>
 
 	<#assign class_name_id = portalUtil.getClassNameId("com.liferay.portlet.journal.model.JournalArticle") />
 
 	<#list dynamic_elements as dynamic_element>
-	<!-- create a macro that takes the embedded_article_id, copy the article, update new_article's embedded article_ids -->
-
 		<#assign embedded_article_id = dynamic_element.getText() />
-	
+
 		<#assign embedded_article = journal_article_local_service.getLatestArticle(groupId, embedded_article_id)! />
 
-		<#assign new_embedded_article = journal_article_local_service.copyArticle(permissionChecker.getUserId(), groupId, embedded_article.getArticleId(), "", true, embedded_article.getVersion())! />
-		
-		<#assign ddm_structure = ddm_structure_local_service.fetchStructure(groupId, class_name_id, article.getStructureId())! />
+		<#assign new_embedded_article = journal_article_local_service.copyArticle(permissionChecker.getUserId(), groupId, embedded_article_id, "", true, embedded_article.getVersion())! />
 
-		<#assign ddm_structure_fields = journal_converter_util.getDDMFields(ddm_structure, new_embedded_article.getContent()) />
+		<#assign new_embedded_article_id = new_embedded_article.getArticleId() />
 
-
-		<!-- update field value for article_ids -->
-
+		<#assign VOID = dynamic_element.setText(new_embedded_article_id) />
 	</#list>
-	
-	<!-- update new_article with new_content -->
-	<#assign void = journal_article_service.updateArticle(new_article.getGroupId(), new_article.getFolderId(), new_article.getArticleId(), new_article.getVersion(), document.asXML(), service_context) />
 
+	<#assign VOID = journal_article_local_service.updateArticle(new_article.getUserId(), new_article.getGroupId(), new_article.getFolderId(), new_article.getArticleId(), new_article.getVersion(), document.asXML(), service_context) />
 </#if>
