@@ -141,7 +141,7 @@ gulp.task('svgmin', function () {
     return gulp.src('images/*.svg')
         .pipe(svgmin())
         .pipe(gulp.dest('build'))
-        .pipe(gulp.dest(config.syncDir))
+        //.pipe(gulp.dest(config.syncDir))
         ;
 });
 
@@ -150,7 +150,7 @@ gulp.task('svgmin', function () {
 
 gulp.task("sprite", function (cb) {
     var config = {
-        log: "info",
+        log: "debug",
         mode: {
             symbol: {
                 inline: true
@@ -162,17 +162,51 @@ gulp.task("sprite", function (cb) {
     logger.info("Creating SVG sprite");
     gulp.src('**/*.svg', { cwd: 'images' })
         .pipe(svgSprite(config))
+        .on ("error", function(error) {
+            console.log(error);
+        })
         .pipe(gulp.dest('build'))
         .on("end", function () {
 
             logger.info("Renaming Sprite File");
             gulp.src('build/symbol/svg/sprite.symbol.svg')
-                .pipe(rename("devconsprite.svg"))
+                .pipe(rename("svgsprite.svg"))
                 .pipe(gulp.dest('build'))
                 .on("end", cb);
         });
 
 });
+
+
+gulp.task("recap-sprite", function (cb) {
+    var config = {
+        log: "debug",
+        mode: {
+            symbol: {
+                inline: true
+            },
+            dest: "out"
+        }
+    };
+
+    logger.info("Creating SVG sprite");
+    gulp.src('recap-icons/*.svg', { cwd: 'images' })
+        .pipe(svgSprite(config))
+        .on ("error", function(error) {
+            console.log(error);
+        })
+        .pipe(gulp.dest('build'))
+        .on("end", function () {
+
+            logger.info("Renaming Sprite File");
+            gulp.src('build/symbol/svg/sprite.symbol.svg')
+                .pipe(rename("recapicons.svg"))
+                .pipe(gulp.dest('build'))
+                .on("end", cb);
+        });
+
+});
+
 
 gulp.task('css', function (cb) {
     var postcss = require('gulp-postcss');
@@ -207,7 +241,7 @@ gulp.task('images', function () {
             jpegmini: false
         }))
         .pipe(gulp.dest('build/images'))
-        .pipe(gulp.dest(config.syncDir));
+      //  .pipe(gulp.dest(config.syncDir));
 });
 
 

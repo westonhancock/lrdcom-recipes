@@ -27,5 +27,15 @@
             "locale": "en_US",
             "filename": "src/recap-popup.html"
         }]
+},
+{
+        "groupId": "67510365",
+        "articleId": "76467971",
+        "defaultLocale": "en_US",
+        "locales": [
+        {
+            "locale": "en_US",
+            "filename": "build/svgbanner.html"
+        }]
 }
 ]

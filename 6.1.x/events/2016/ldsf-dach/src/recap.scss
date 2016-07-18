@@ -71,13 +71,23 @@
 
 }
 
-.hbspt-form .btn-wrapper {
-    text-align: center;
-}
 
 .recap-popup__container {
     overflow: auto;
+
+    .hbspt-form .btn-wrapper {
+        text-align: center;
+    }
 }
+
+ #popuphome .hbspt-form .btn-wrapper {
+        padding: 0;
+        margin: 0;
+        input {
+            margin: 0;
+        }
+}
+
 .recap-popup__container > div {
     padding: 50px;
 }
