@@ -1,46 +1,45 @@
-[
-    {
-        "groupId": "67510365",
-        "articleId": "75590948",
-        "filename": "build/recap/banner.html"
-    },
-
-   {
-        "groupId": "67510365",
-        "articleId": "75590968",
-        "filename": "build/recap/about-video.html"
-    },
-  {
-        "groupId": "67510365",
-        "articleId": "69935737",
-        "filename": "build/recap/agenda-description.html"
-    },
-  {
-        "groupId": "67510365",
-        "articleId": "75591022",
-        "filename": "build/recap/agenda.html"
-    },
-  {
-        "groupId": "67510365",
-        "articleId": "76090386",
-        "filename": "build/recap/winner.html"
-    },
-  {
-        "groupId": "67510365",
-        "articleId": "75591054",
-        "filename": "build/recap/sponsors.html"
-    },
-      {
-        "groupId": "67510365",
-        "articleId": "69935581",
-        "filename": "build/recap/footer.html"
-    },
-
-
-    {
-        "groupId": "67510365",
-        "articleId": "69935556",
-      
-            "filename": "build/recap/partnerawards.html"
-    }
-]
+[{
+    "groupId": "67510365",
+    "articleId": "75590948",
+    "filename": "build/recap/banner.html"
+}, {
+    "groupId": "67510365",
+    "articleId": "75590968",
+    "filename": "build/recap/about-video.html"
+}, {
+    "groupId": "67510365",
+    "articleId": "69935737",
+    "filename": "build/recap/agenda-description.html"
+}, {
+    "groupId": "67510365",
+    "articleId": "75591022",
+    "filename": "build/recap/agenda.html"
+}, {
+    "groupId": "67510365",
+    "articleId": "76090386",
+    "filename": "build/recap/winner.html"
+}, {
+    "groupId": "67510365",
+    "articleId": "75591054",
+    "filename": "build/recap/sponsors.html"
+}, {
+    "groupId": "67510365",
+    "articleId": "69935581",
+    "filename": "build/recap/footer.html"
+}, {
+    "groupId": "67510365",
+    "articleId": "69935556",
+    "filename": "build/recap/partnerawards.html"
+}, {
+    "groupId": "67510365",
+    "articleId": "76316867",
+    "filename": "build/recap.css"
+}, {
+    "groupId": "67510365",
+    "articleId": "76316882",
+    "filename": "build/all.js"
+}, {
+    "groupId": "67510365",
+    "articleId": "76316914",
+    "filename": "src/recap-popup.html"
+}]

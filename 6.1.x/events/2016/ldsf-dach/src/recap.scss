@@ -3,6 +3,10 @@
 @custom-media --mobile-tablet-viewport (max-width: 770px);
 
 
+.portlet-borderless-container {
+    min-height: 0;
+}
+
 @media (--big-viewport) {
 
     .lego-section p {
@@ -77,6 +81,10 @@
 
     .hbspt-form .btn-wrapper {
         text-align: center;
+    }
+
+    .portlet-msg-success {
+        display: none;
     }
 }
 

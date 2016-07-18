@@ -1,10 +1,13 @@
+.portlet-borderless-container {
+    min-height: 0;
+}
 #intro #introCover .event-subtitle span:first-child {
     font-size: 24px;
     text-transform: uppercase;
 }
 
 #article-69935556 {
-        background: url(/images//16-LDSF-Recap-Partner-Awards.jpg) no-repeat center center;
+        background: url(/documents/67510365/76243704//16-LDSF-Recap-Partner-Awards.jpg) no-repeat center center;
         background-size: cover;
         min-height: 395px;
         
@@ -24,6 +27,11 @@
 
 .recap-popup__container .hbspt-form .btn-wrapper {
     text-align: center;
+}
+
+
+.recap-popup__container .portlet-msg-success {
+    display: none;
 }
 
  #popuphome .hbspt-form .btn-wrapper {
@@ -70,51 +78,42 @@
 }
 
  @media (min-width: 771px) {
-
     .lego-section p {
         font-size: 1.25em;
     }
-
     #article-69935556 {
         background-attachment: fixed;
     }
 }
 
  @media (max-width: 770px) {
-
     .lego-section {
         padding: 20px;
     }
 }
 
  @media (max-width: 500px) {
-
     #article-69935556 {
         text-align: center;
     }
-
     #intro #introCover .event-subtitle span:first-child {
         font-size: 15px;
         margin: 0;
     }
-
     #intro #introCover .event-subtitle span {
         display: block;
         max-width: 180px;
         margin: -10px 0 0 -60px;
         font-size: 12px;
     }
-
     #recappanel {
         width: 100vw;
         height: 100%;
         position: fixed;
     }
-
     #recap-popup, .recap-popup__container {
         height: 100%;
     }
-
     #recap-popup .hbspt-form input.aui-button-input {
         font-size: 10px;
     }
