@@ -157,9 +157,9 @@
 						<#if !featured_case_study>
 							<h4 class="asset-entry-title">
 								<#if dl_title??>
-									<b>${htmlUtil.escape(dl_title)}</b>
+									${htmlUtil.escape(dl_title)}
 								<#else>
-									<b>${htmlUtil.escape(asset_title)}</b>
+									${htmlUtil.escape(asset_title)}
 								</#if>
 							</h4>
 						</#if>
