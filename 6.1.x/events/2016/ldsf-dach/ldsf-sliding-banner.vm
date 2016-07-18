@@ -96,7 +96,7 @@
 		left: 0;
 		margin-left: 0;
 		overflow: hidden;
-		z-index: 9999;
+		z-index: 999;
 	}
 
 	.events-nav.register {
@@ -107,7 +107,7 @@
 		background-clip: border-box;
 		right: 0;
 		width: auto;
-		z-index: 9999;
+		z-index: 999;
 	}
 
 	.floating-nav.register-button .btn {

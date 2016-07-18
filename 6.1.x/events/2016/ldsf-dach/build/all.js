@@ -3,7 +3,7 @@ AUI().use('panel', function (A) {
 
 	var panel = new A.Panel({
 		srcNode: '#recap-popup',
-		zIndex: 9999,
+		zIndex: 1000,
 		id: "recappanel",
 		centered: true,
 		/* hey buddy, we are going to stay in the viewport */

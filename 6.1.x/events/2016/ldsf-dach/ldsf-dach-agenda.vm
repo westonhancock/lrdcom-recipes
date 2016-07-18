@@ -340,24 +340,9 @@ var agenda_entries = {};
 		height: 0
 	}
 
-	@media(max-width: 720px) {
-		#agendaPop.class-toggle-active {
-			margin: auto;
-			max-width: 480px;
-			top: 0;
-		}
-	}
-
 	@media(max-width: 780px) {
 		#agendaPop.class-toggle-active {
 			max-height: 6250px;
-		}
-	}
-
-	@media(max-width: 480px) {
-		#agendaPop.class-toggle-active {
-			margin: auto;
-			max-width: 320px;
 		}
 	}
 
