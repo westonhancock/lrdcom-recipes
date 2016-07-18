@@ -18,6 +18,9 @@ var url = "http://www.liferay.com/solutionsforum-de";
 
 function savePage(size, filename) {
     var page = require('webpage').create();
+    page.onConsoleMessage = function (msg) {
+    console.log(msg);
+}
 
     page.onResourceError = function (resourceError) {
         console.log('Unable to load resource (#' + resourceError.id + 'URL:' + resourceError.url + ')');
@@ -42,34 +45,24 @@ function savePage(size, filename) {
 for (var i = 0; i < sizes.length; i++) {
     var value = sizes[i];
     //console.log(value.width);
- 
-    //savePage(value, "test/ldsf-dach-" + value.width + "x" + value.height + ".png");
+
+    savePage(value, "test/ldsf-dach-" + value.width + "x" + value.height + ".png");
 }
 
 var page = require('webpage').create();
 
-page.onConsoleMessage = function(msg) {
-  console.log(msg);
+page.onConsoleMessage = function (msg) {
+    console.log(msg);
 }
-
-   page.viewportSize = { width: 1920, height: 1080 };
+page.viewportSize = { width: 1920, height: 1080 };
 page.open(url, function () {
-
-    //setTimeout(function () {
-        page.evaluate(function () {
-
-       //     YUI().use('node', function (Y) {
-         //       console.log("yui", Y);
-
-                document.querySelector("#fixedRegisterBtn a").click();
-                //var x = Y.one("#fixedRegisterBtn a");
-                //console.log(x);
-                //x.simulate("click");
-                
-           // });
-        });
-        page.render("test/click.png");
-        phantom.exit();
-    //}, 10000);
+        console.log("opened page for newsletter test");
+       setTimeout(function () {
+              console.log("testing  newsletter test");
+    page.evaluate(function () {
+        document.querySelector("#fixedRegisterBtn a").click();
+    });
+       }, 20000);
+    page.render("test/click.png");
     //phantom.exit();
 });
