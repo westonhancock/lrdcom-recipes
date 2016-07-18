@@ -40,7 +40,7 @@
     "xml2js": "^0.4.16"
   },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "phantomjs test/index.js"
   },
   "author": "Allen Ziegenfus <allen.ziegenfus@liferay.com> (https://www.liferay.com/web/allen.ziegenfus/blog)",
   "license": "ISC"
