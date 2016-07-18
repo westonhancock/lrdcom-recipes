@@ -1,9 +1,4 @@
-<style>
-	.btn-wrapper {
-		margin-top: 1.5em;
-	}
-</style>
-
+<#assign landing_page_path = '/resources/l' />
 <#assign journal_article_local_service = serviceLocator.findService("com.liferay.portlet.journal.service.JournalArticleLocalService") />
 
 <#assign service_context = objectUtil("com.liferay.portal.service.ServiceContextThreadLocal").getServiceContext() />
@@ -27,18 +22,20 @@
 </#if>
 
 <#if updateURL && article??>
-	<#assign structure_id = getterUtil.getLong(article.getStructureId()) - 1 />
-	<#assign template_id = getterUtil.getLong(article.getTemplateId()) - 1 />
+	<#assign title_map = {"en_US": article.getTitle("en_US"), "es_ES": article.getTitle("es_ES"), "it_IT": article.getTitle("it_IT"), "ja_JP": article.getTitle("ja_JP"), "pt_BR": article.getTitle("pt_BR"), "fr_FR": article.getTitle("fr_FR"), "zh_CN": article.getTitle("zh_CN"), "de_DE": article.getTitle("de_DE")} />
+	<#assign description_map = {"en_US": article.getDescription("en_US"), "es_ES": article.getDescription("es_ES"), "it_IT": article.getDescription("it_IT"), "ja_JP": article.getDescription("ja_JP"), "pt_BR": article.getDescription("pt_BR"), "fr_FR": article.getDescription("fr_FR"), "zh_CN": article.getDescription("zh_CN"), "de_DE": article.getDescription("de_DE")} />
 
-	<#assign new_article = journal_article_local_service.addArticle(getterUtil.getLong(permissionChecker.getUserId()), getterUtil.getLong(groupId), getterUtil.getLong(article.getFolderId()), article.getTitleMap(), article.getDescriptionMap(), article.getContent(), article.getStructureId(), article.getTemplateId(), service_context)! />
+	<#assign new_article = journal_article_local_service.addArticle(permissionChecker.getUserId()?number, groupId?number, article.getFolderId()?number, title_map, description_map, article.getContent()?string, article.getStructureId()?string, article.getTemplateId()?string, service_context)! />
 
-	new_article: ${new_article}
+	<#if new_article?? && new_article.getUrlTitle() != article.getUrlTitle()>
+		<#assign VOID = journal_article_local_service.expireArticle(permissionChecker.getUserId(), groupId, article.getArticleId(), article.getUrlTitle(), service_context) />
 
-	<#-- <#assign VOID = journal_article_local_service.expireArticle(permissionChecker.getUserId(), groupId, article.getArticleId(), article.getUrlTitle(), service_context) /> -->
-
-	<#-- <script type="text/javascript">
-		window.location = '/resources/l?title=${new_article.getUrlTitle()}';
-	</script> -->
+		<script type="text/javascript">
+			window.location = '/resources/l?title=${new_article.getUrlTitle()}';
+		</script>
+	<#elseif new_article??>
+		<#assign VOID = journal_article_local_service.deleteArticle(new_article) />
+	</#if>
 <#elseif title?has_content && article??>
 	${journalContentUtil.getContent(groupId, article.getArticleId()?string, "", locale, xmlRequest)}
 
@@ -55,14 +52,14 @@
 
 		<span class="lfr-icon-action lfr-icon-action-edit lfr-meta-actions pull-right">
 			<div class="edit-wrapper">
-				<a href="${edit_url}" class="taglib-icon">
-					<img src="/osb-community-theme/images/spacer.png" alt="Edit" style="background-image: url('/osb-community-theme/sprite/images/common/_sprite.png'); background-position: 50% -608px; background-repeat: no-repeat; height: 16px; width: 16px;">
+				<a class="taglib-icon" href="${edit_url}">
+					<img alt="Edit" src="/osb-community-theme/images/spacer.png" style="background-image: url('/osb-community-theme/sprite/images/common/_sprite.png'); background-position: 50% -608px; background-repeat: no-repeat; height: 16px; width: 16px;">
 					<span class="taglib-text ">Edit Landing Page Template</span>
 				</a>
 			</div>
 
 			<div class="btn-wrapper">
-				<a href="/resources/l?articleId=${article.getArticleId()}&updateURL=1" class="btn">
+				<a class="btn" href="${landing_page_path}?articleId=${article.getArticleId()}&updateURL=1">
 					<span class="taglib-text ">Update URL</span>
 				</a>
 			</div>
@@ -92,4 +89,14 @@
 	</#list>
 
 	<#assign VOID = journal_article_local_service.updateArticle(new_article.getUserId(), new_article.getGroupId(), new_article.getFolderId(), new_article.getArticleId(), new_article.getVersion(), document.asXML(), service_context) />
+
+	<script type="text/javascript">
+		window.location = '${landing_page_path}?title=${new_article.getUrlTitle()}';
+	</script>
 </#if>
+
+<style>
+	.btn-wrapper {
+		margin-top: 1.5em;
+	}
+</style>
