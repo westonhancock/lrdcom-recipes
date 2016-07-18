@@ -732,7 +732,7 @@
 						var dlwindow = window.open(redirectAssetURL, '_blank');
 
 						if (typeof(dlwindow)=='undefined'){
-							alert("Please disable your browser pop-up blocker to view the presentation link.");
+							alert("Please disable your browser pop-up blocker to view and download the presentation.");
 						}
 					}
 
