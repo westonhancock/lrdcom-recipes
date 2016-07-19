@@ -639,18 +639,15 @@ var CSV = (function() {
 
 			reader.onload = function() {
 				resolve(reader.result);
-			}
+			};
 		});
 
 	};
 
 	return {
 		csvToJSON: csvToJSON
-	}
+	};
 
-	var tests = function() {
-
-	}
 })();
 var hubspot = (function() {
 
