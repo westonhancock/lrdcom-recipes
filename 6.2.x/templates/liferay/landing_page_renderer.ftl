@@ -1,4 +1,5 @@
-<#assign landing_page_path = '/resources/l' />
+<#assign landing_page_path = "/resources/l" />
+<#assign landing_page_admin_path = "/resources/l/admin" />
 <#assign journal_article_local_service = serviceLocator.findService("com.liferay.portlet.journal.service.JournalArticleLocalService") />
 
 <#assign service_context = objectUtil("com.liferay.portal.service.ServiceContextThreadLocal").getServiceContext() />
@@ -11,50 +12,66 @@
 
 <#assign template_article_id = paramUtil.getString(http_servlet_request, "articleId") />
 <#assign title = paramUtil.getString(http_servlet_request, "title") />
-<#assign updateURL = paramUtil.getBoolean(http_servlet_request, "updateURL") />
+<#assign update_url = paramUtil.getBoolean(http_servlet_request, "updateURL") />
 
 <#include "${templatesPath}/1561886" />
 
 <#if title?has_content>
-	<#assign article = journal_article_local_service.getLatestArticleByUrlTitle(groupId, title, 0) />
+	<#assign article = journal_article_local_service.fetchLatestArticleByUrlTitle(groupId, title, 0)! />
 <#elseif template_article_id?has_content>
-	<#assign article = journal_article_local_service.getLatestArticle(groupId, template_article_id)! />
+	<#assign article = journal_article_local_service.fetchLatestArticle(groupId, template_article_id, 0)! />
 </#if>
 
-<#if updateURL && article??>
-	<#assign title_map = {"en_US": article.getTitle("en_US"), "es_ES": article.getTitle("es_ES"), "it_IT": article.getTitle("it_IT"), "ja_JP": article.getTitle("ja_JP"), "pt_BR": article.getTitle("pt_BR"), "fr_FR": article.getTitle("fr_FR"), "zh_CN": article.getTitle("zh_CN"), "de_DE": article.getTitle("de_DE")} />
-	<#assign description_map = {"en_US": article.getDescription("en_US"), "es_ES": article.getDescription("es_ES"), "it_IT": article.getDescription("it_IT"), "ja_JP": article.getDescription("ja_JP"), "pt_BR": article.getDescription("pt_BR"), "fr_FR": article.getDescription("fr_FR"), "zh_CN": article.getDescription("zh_CN"), "de_DE": article.getDescription("de_DE")} />
+<#if update_url && article?has_content>
+	<#assign default_language_id = article.getDefaultLanguageId() />
 
-	<#assign new_article = journal_article_local_service.addArticle(permissionChecker.getUserId()?number, groupId?number, article.getFolderId()?number, title_map, description_map, article.getContent()?string, article.getStructureId()?string, article.getTemplateId()?string, service_context)! />
+	<#assign new_article_url_title = stringUtil.replace(stringUtil.lowerCase(article.getTitle(default_language_id)), " ", "-") />
 
-	<#if new_article?? && new_article.getUrlTitle() != article.getUrlTitle()>
+	<#assign existing_article = journal_article_local_service.fetchArticleByUrlTitle(groupId, new_article_url_title)! />
+
+	<#if existing_article?has_content>
+		<p class="alert alert-info">
+			The URL title <strong>${new_article_url_title}</strong> is already assigned to ${article.getTitle(default_language_id)}.<br />
+
+			<a class="taglib-icon" href="/resources/l?title=${article.getUrlTitle()}">
+				<img alt="View" src="/osb-community-theme/images/spacer.png" style="background-image: url('/osb-community-theme/sprite/images/common/_sprite.png'); background-position: 50% -608px; background-repeat: no-repeat; height: 16px; width: 16px;">
+				<span class="taglib-text">View Landing Page</span>
+			</a>
+
+			<#if layoutPermission.contains(permissionChecker, layout, "UPDATE")>
+				<#assign edit_url = get_edit_url(article, request.attributes.CURRENT_COMPLETE_URL!, http_servlet_request) />
+
+				<a class="taglib-icon" href="${edit_url}">
+					<img alt="Edit" src="/osb-community-theme/images/spacer.png" style="background-image: url('/osb-community-theme/sprite/images/common/_sprite.png'); background-position: 50% -608px; background-repeat: no-repeat; height: 16px; width: 16px;">
+					<span class="taglib-text">Edit Landing Page</span>
+				</a>
+			</#if>
+		</p>
+	<#elseif article.getUrlTitle() != new_article_url_title >
+		<#assign title_map = get_data_map(saxReaderUtil.read(article.getTitle())!, "Title") />
+		<#assign description_map = get_data_map(saxReaderUtil.read(article.getDescription())!, "Description") />
+		
+		<#assign new_article = journal_article_local_service.addArticle(permissionChecker.getUserId(), groupId, article.getFolderId(), title_map, description_map, article.getContent(), article.getStructureId(), article.getTemplateId(), service_context) />
+
 		<#assign VOID = journal_article_local_service.expireArticle(permissionChecker.getUserId(), groupId, article.getArticleId(), article.getUrlTitle(), service_context) />
 
-		<script type="text/javascript">
-			window.location = '/resources/l?title=${new_article.getUrlTitle()}';
-		</script>
-	<#elseif new_article??>
-		<#assign VOID = journal_article_local_service.deleteArticle(new_article) />
+		<#if new_article?has_content>
+			<script type="text/javascript">
+				window.location = '/resources/l?title=${new_article.getUrlTitle()}';
+			</script>
+		</#if>
 	</#if>
-<#elseif title?has_content && article??>
+<#elseif title?has_content && article?has_content>
 	${journalContentUtil.getContent(groupId, article.getArticleId()?string, "", locale, xmlRequest)}
 
 	<#if layoutPermission.contains(permissionChecker, layout, "UPDATE")>
-		<#assign current_url = request.attributes.CURRENT_COMPLETE_URL! />
-
-		<#assign edit_url = portletURLFactory.create(http_servlet_request, "15", plid, "0") />
-		<#assign VOID = edit_url.setParameter("p_p_state", "maximized") />
-		<#assign VOID = edit_url.setParameter("p_p_lifecycle", "0") />
-		<#assign VOID = edit_url.setParameter("groupId", "${groupId}") />
-		<#assign VOID = edit_url.setParameter("struts_action", "/journal/edit_article") />
-		<#assign VOID = edit_url.setParameter("redirect", "${current_url}") />
-		<#assign VOID = edit_url.setParameter("articleId", "${article.getArticleId()?string}") />
+		<#assign edit_url = get_edit_url(article, request.attributes.CURRENT_COMPLETE_URL!, http_servlet_request) />
 
 		<span class="lfr-icon-action lfr-icon-action-edit lfr-meta-actions pull-right">
 			<div class="edit-wrapper">
 				<a class="taglib-icon" href="${edit_url}">
 					<img alt="Edit" src="/osb-community-theme/images/spacer.png" style="background-image: url('/osb-community-theme/sprite/images/common/_sprite.png'); background-position: 50% -608px; background-repeat: no-repeat; height: 16px; width: 16px;">
-					<span class="taglib-text ">Edit Landing Page Template</span>
+					<span class="taglib-text">Edit Landing Page</span>
 				</a>
 			</div>
 
@@ -65,27 +82,19 @@
 			</div>
 		</span>
 	</#if>
-<#elseif template_article_id?has_content>
+<#elseif template_article_id?has_content && article?has_content>
 	<#assign new_article = journal_article_local_service.copyArticle(permissionChecker.getUserId(), groupId, article.getArticleId(), "", true, article.getVersion())! />
 
 	<#assign document = saxReaderUtil.read(new_article.getContent()) />
 
 	<#assign dynamic_elements = document.selectNodes("/root/dynamic-element[@name=\"article_ids\"]/dynamic-content") />
 
-	<#assign journal_converter_util = staticUtil["com.liferay.portlet.journal.util.JournalConverterUtil"]>
-
-	<#assign class_name_id = portalUtil.getClassNameId("com.liferay.portlet.journal.model.JournalArticle") />
-
 	<#list dynamic_elements as dynamic_element>
-		<#assign embedded_article_id = dynamic_element.getText() />
+		<#assign embedded_article = journal_article_local_service.getLatestArticle(groupId, dynamic_element.getText())! />
 
-		<#assign embedded_article = journal_article_local_service.getLatestArticle(groupId, embedded_article_id)! />
+		<#assign new_embedded_article = journal_article_local_service.copyArticle(permissionChecker.getUserId(), groupId, embedded_article.getArticleId(), "", true, embedded_article.getVersion())! />
 
-		<#assign new_embedded_article = journal_article_local_service.copyArticle(permissionChecker.getUserId(), groupId, embedded_article_id, "", true, embedded_article.getVersion())! />
-
-		<#assign new_embedded_article_id = new_embedded_article.getArticleId() />
-
-		<#assign VOID = dynamic_element.setText(new_embedded_article_id) />
+		<#assign VOID = dynamic_element.setText(new_embedded_article.getArticleId()) />
 	</#list>
 
 	<#assign VOID = journal_article_local_service.updateArticle(new_article.getUserId(), new_article.getGroupId(), new_article.getFolderId(), new_article.getArticleId(), new_article.getVersion(), document.asXML(), service_context) />
@@ -93,7 +102,43 @@
 	<script type="text/javascript">
 		window.location = '${landing_page_path}?title=${new_article.getUrlTitle()}';
 	</script>
+
+<#else>
+	<p class="alert alert-error">Web content not found.</p>
+
+	<div class="btn-wrapper">
+		<a class="btn" href="${landing_page_admin_path}">
+			<span class="taglib-text ">Landing Page Templates</span>
+		</a>
+	</div>
 </#if>
+
+<#function get_data_map document element>
+	<#assign data_map = {} />
+	
+	<#if document?has_content && element?has_content>
+		<#assign dynamic_elements = document.selectNodes("/root/${element}") />
+
+		<#list dynamic_elements as dynamic_element>
+			<#assign data_map = data_map + {dynamic_element.attributeValue('language-id'):dynamic_element.getText()} />
+		</#list>
+	</#if>
+
+	<#return data_map>
+</#function>
+
+<#function get_edit_url article current_url http_servlet_request>
+	<#assign edit_url = portletURLFactory.create(http_servlet_request, "15", plid, "0") />
+
+	<#assign VOID = edit_url.setParameter("p_p_state", "maximized") />
+	<#assign VOID = edit_url.setParameter("p_p_lifecycle", "0") />
+	<#assign VOID = edit_url.setParameter("groupId", "${groupId}") />
+	<#assign VOID = edit_url.setParameter("struts_action", "/journal/edit_article") />
+	<#assign VOID = edit_url.setParameter("redirect", "${current_url}") />
+	<#assign VOID = edit_url.setParameter("articleId", "${article.getArticleId()?string}") />
+
+	<#return edit_url>
+</#function>
 
 <style>
 	.btn-wrapper {
