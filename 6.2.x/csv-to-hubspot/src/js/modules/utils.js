@@ -20,9 +20,9 @@ var UTILS = (function() {
         }
 
         return data;
-    }
+    };
 
     return {
         tableToJson: tableToJson
-    }
+    };
 })();
