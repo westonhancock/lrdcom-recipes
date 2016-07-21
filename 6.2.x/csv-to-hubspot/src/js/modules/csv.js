@@ -1,7 +1,7 @@
 // module with functionalities for handling CSV's
 var CSV = (function() {
 
-	/*  
+	/*
 		Turning CSV to JSON is multi-stepped needing multiple tests.
 	 	We leverage the processAndTest util to accomplish this.
 	*/
@@ -24,7 +24,7 @@ var CSV = (function() {
 			action: readFile,
 			mode: "async",
 			tests: [
-				checkCSVFormatting,
+				checkSpecialCharacters,
 				emptyCSVFields
 			]
 		});
@@ -38,14 +38,14 @@ var CSV = (function() {
 		});
 
 		return csvJSONtests;
-	}
+	};
 
 	var isItCSV = function(file) {
 		var fileMatches = 0;
 		var acceptableFileTypes = [
 			"text/csv",
 			"application/vnd.ms-excel"
-		]
+		];
 
 		// test acceptable file types
 		for (var p = 0; p < acceptableFileTypes.length; p++) {
@@ -59,19 +59,19 @@ var CSV = (function() {
 		} else {
 			return "Not a CSV File. File is " + file.type;
 		}
-	}
+	};
 
-	var checkCSVFormatting = function(csv) {
-		var pattern = new RegExp(/[~`!#$%\^&*+=\\[\]\\';{}|\\":<>\?]/)
+	var checkSpecialCharacters = function(csv) {
+		var pattern = new RegExp(/[~`!#$%\^&*+=\\[\]\\';{}|\\"<>\?]/);
 		var res = pattern.test(csv);
 
 		if (res) {
-			return "CSV Improperly Formatted";
+			return "No special characters allowed";
 		}
 		else {
 			return true;
 		}
-	}
+	};
 
 	var emptyCSVFields = function(csv) {
 		var emptyPattern = new RegExp(",,");
@@ -83,7 +83,7 @@ var CSV = (function() {
 		else {
 			return true;
 		}
-	}
+	};
 
 	var checkValidDate = function(json) {
 		var errorMessage = "";
@@ -96,11 +96,11 @@ var CSV = (function() {
 			if (datePattern.test(date)) {
 				errors++;
 				errorMessage += "Date improperly formatted on line " + (g + 2) + "<br />";
-			} 
+			}
 		}
 
 		if (errors !== 0) {
-			return errorMessage;	
+			return errorMessage;
 		}
 		else {
 			return true;
@@ -141,16 +141,13 @@ var CSV = (function() {
 
 			reader.onload = function() {
 				resolve(reader.result);
-			}
-		});	
+			};
+		});
 
 	};
 
 	return {
 		csvToJSON: csvToJSON
-	}
+	};
 
-	var tests = function() {
-
-	}
 })();

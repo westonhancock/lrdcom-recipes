@@ -12,18 +12,18 @@ var step1 = (function() {
 	var controller = (function() {
 		var processFile = function(file) {
 			var processer = CSV.csvToJSON(file);
-			
+
 			processer.onEnd = function() {
 				if (processer.pass === true) {
 					steps.completeStep(1);
 					UI.fileGrade('pass');
 					data.updateData('json', processer.data);
 				}
-				
+
 				else {
 					UI.fileGrade('fail', processer.errorMessage);
 				}
-			}
+			};
 
 			processer.run();
 		};

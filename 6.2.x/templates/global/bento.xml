@@ -1,32 +1,6 @@
 
 <root available-locales="en_US" default-locale="en_US">
 	<dynamic-element dataType="string" indexType="keyword" localizable="true" name="block" readOnly="false" repeatable="true" required="false" showLabel="true" type="text" width="large">
-		<dynamic-element dataType="document-library" fieldNamespace="ddm" indexType="keyword" localizable="true" name="media" readOnly="false" repeatable="true" required="false" showLabel="true" type="ddm-documentlibrary" width="">
-			<dynamic-element dataType="string" indexType="keyword" localizable="true" name="video_type" readOnly="false" repeatable="false" required="false" showLabel="true" type="text" width="small">
-				<meta-data locale="en_US">
-					<entry name="label">
-						<![CDATA[Video Type]]>
-					</entry>
-					<entry name="predefinedValue">
-						<![CDATA[]]>
-					</entry>
-					<entry name="tip">
-						<![CDATA[Filling this in will tell the template this document is a video. The content should look like video/mp4 (or whatever file type it should be)]]>
-					</entry>
-				</meta-data>
-			</dynamic-element>
-			<meta-data locale="en_US">
-				<entry name="label">
-					<![CDATA[Media]]>
-				</entry>
-				<entry name="predefinedValue">
-					<![CDATA[]]>
-				</entry>
-				<entry name="tip">
-					<![CDATA[Select a video or image to be displayed as the background of the current block. You can select multiple to allow for fallbacks.]]>
-				</entry>
-			</meta-data>
-		</dynamic-element>
 		<dynamic-element dataType="string" indexType="keyword" localizable="true" name="article_id" readOnly="false" repeatable="true" required="false" showLabel="true" type="text" width="large">
 			<meta-data locale="en_US">
 				<entry name="label">
@@ -113,6 +87,32 @@
 				</entry>
 				<entry name="tip">
 					<![CDATA[]]>
+				</entry>
+			</meta-data>
+		</dynamic-element>
+		<dynamic-element dataType="document-library" fieldNamespace="ddm" indexType="keyword" localizable="true" name="media" readOnly="false" repeatable="true" required="false" showLabel="true" type="ddm-documentlibrary" width="">
+			<dynamic-element dataType="string" indexType="keyword" localizable="true" name="video_type" readOnly="false" repeatable="false" required="false" showLabel="true" type="text" width="small">
+				<meta-data locale="en_US">
+					<entry name="label">
+						<![CDATA[Video Type]]>
+					</entry>
+					<entry name="predefinedValue">
+						<![CDATA[]]>
+					</entry>
+					<entry name="tip">
+						<![CDATA[Filling this in will tell the template this document is a video. The content should look like video/mp4 (or whatever file type it should be)]]>
+					</entry>
+				</meta-data>
+			</dynamic-element>
+			<meta-data locale="en_US">
+				<entry name="label">
+					<![CDATA[Background Media]]>
+				</entry>
+				<entry name="predefinedValue">
+					<![CDATA[]]>
+				</entry>
+				<entry name="tip">
+					<![CDATA[Select a video or image to be displayed as the background of the current block. You can select multiple to allow for fallbacks.]]>
 				</entry>
 			</meta-data>
 		</dynamic-element>

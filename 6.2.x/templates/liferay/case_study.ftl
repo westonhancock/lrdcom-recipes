@@ -51,7 +51,6 @@
 	}
 
 	.case-study .quote-section .quote {
-		font-weight: bolder;
 		padding: 1em 0;
 	}
 
@@ -111,10 +110,6 @@
 		display: none;
 	}
 
-	.quote .triangle {
-		border-color: currentColor;
-	}
-
 	.quote-author {
 		font-size: 1.25em;
 	}
@@ -136,6 +131,50 @@
 	.ie11 .case-study-body {
 		display: table;
 	}
+
+.quote-section .quote:after, .quote-section .quote:before {
+	color: rgba(128,128,128,0.2);
+	font-size: 4em;
+	font-weight: 600;
+	position: absolute;
+}
+
+.quote-section .quote:after {
+	bottom: -.5em;
+	content:"\201D";
+	right: 0;
+}
+
+.quote-section .quote:before {
+	content:"\201C";
+	left: 0;
+	top: -.25em;
+}
+
+.quote-section .quote.single-quote:after {
+	display: none;
+}
+
+.quote-section .quote.single-quote:before {
+	display: block;
+	line-height: .75em;
+	position: relative;
+	text-align: center;
+	top: 0;
+}
+
+@media (max-width: 760px) {
+	.quote-section .quote:after {
+		display: none;
+	}
+
+	.quote-section .quote:before {
+		display: block;
+		position: relative;
+		text-align: center;
+		top: 0;
+	}
+}
 </style>
 
 <div class="case-study max-full">
@@ -162,9 +201,9 @@
 	</#if>
 
 	<div class="block-container case-study-body">
-		<#if !quick_fact.data?has_content && !quote.data?has_content>
+		<#if !quick_fact.data?has_content && !quick_fact.description.data?has_content && !quote.data?has_content>
 			<#assign body_css_class = "w100">
-		<#elseif !quick_fact.data?has_content>
+		<#elseif !quick_fact.data?has_content && !quick_fact.description.data?has_content>
 			<#assign body_css_class = "w70">
 		<#elseif !quote.data?has_content>
 			<#assign body_css_class = "w80">
@@ -172,7 +211,7 @@
 			<#assign body_css_class = "w50">
 		</#if>
 
-		<#if quick_fact.data?has_content>
+		<#if quick_fact.data?has_content || quick_fact.description.data?has_content>
 			<div class="block fact-panel large-padding-vertical left-block w20">
 				<#assign css_class = "">
 
@@ -183,10 +222,12 @@
 				<div class="${css_class}" id="quickFacts">
 					<#list quick_fact.siblings as fact>
 						<figure class="accent-color">
-							<div class="stat">
-								${fact.data}
-								<sup>${fact.unit.data}</sup>
-							</div>
+							<#if fact.data?has_content>
+								<div class="stat">
+									${fact.data}
+									<sup>${fact.unit.data}</sup>
+								</div>
+							</#if>
 
 							<figcaption class="primary-color">${fact.description.data}</figcaption>
 						</figure>
@@ -231,15 +272,9 @@
 			<div class="block large-padding-vertical right-block quote-panel w30">
 				<div class="quote-section">
 
-					<div class="max-med primary-color quote">
-						<span class="accent-color triangle upper-left"></span>
-						<span class="accent-color second-triangle triangle upper-left"></span>
-						<span class="accent-color lower-right triangle"></span>
-						<span class="accent-color lower-right second-triangle triangle"></span>
-
+					<div class="max-med primary-color quote single-quote">
 						${quote.data}
 					</div>
-
 
 					<div class="alt-font-color quote-source">
 						<div class="quote-author">

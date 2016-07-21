@@ -18,12 +18,7 @@
 		</#if>
 
 		<div class="large-padding max-med quote">
-			<span class="${quote_css_class}" ${quote_attrs}>${quote.data}</span>
-
-			<div class="triangle upper-left"></div>
-			<div class="triangle upper-left second-triangle"></div>
-			<div class="lower-right triangle"></div>
-			<div class="lower-right triangle second-triangle"></div>
+			<p class="${quote_css_class}" ${quote_attrs}>${quote.data}</p>
 		</div>
 	</#if>
 
@@ -84,3 +79,55 @@
 		</#if>
 	</div>
 </div>
+
+<#if source?? && source.data?has_content>
+	<div class="source-text text-center">
+		${source.data}
+	</div>
+</#if>
+
+<style>
+.quote-section .quote:after, .quote-section .quote:before {
+	color: rgba(128,128,128,0.2);
+	font-size: 4em;
+	font-weight: 600;
+	position: absolute;
+}
+
+.quote-section .quote:after {
+	bottom: -.5em;
+	content:"\201D";
+	right: 0;
+}
+
+.quote-section .quote:before {
+	content:"\201C";
+	left: 0;
+	top: -.25em;
+}
+
+.quote-section .quote.single-quote:after {
+	display: none;
+}
+
+.quote-section .quote.single-quote:before {
+	display: block;
+	line-height: .75em;
+	position: relative;
+	text-align: center;
+	top: 0;
+}
+
+@media (max-width: 760px) {
+	.quote-section .quote:after {
+		display: none;
+	}
+
+	.quote-section .quote:before {
+		display: block;
+		position: relative;
+		text-align: center;
+		top: 0;
+	}
+}
+</style>

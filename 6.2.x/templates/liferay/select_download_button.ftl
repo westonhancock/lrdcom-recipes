@@ -2,7 +2,7 @@
 
 <#assign reserved_article_id = .vars["reserved-article-id"].data />
 
-<div id="select-${reserved_article_id}" class="block-container small-padding ${form_class.data}">
+<div id="select-${reserved_article_id}" class="small-padding ${form_class.data}">
 	<select
 		onchange="AUI().one('#select-${reserved_article_id} a').set('href', this.value);"
 		onkeypress="if (event.keyCode == 13) window.location = this.value;">
@@ -46,7 +46,7 @@
 		cursor: pointer;
 		padding-left: 10px;
 		padding-top: 0;
-		
+
 		-webkit-appearance: none;
 	}
 

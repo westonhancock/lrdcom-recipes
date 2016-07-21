@@ -1,0 +1,189 @@
+#set ($articleId = ${reserved-article-id.data.toString()})
+
+<div class="download-section $article_class.data">
+	#if ($heading.data != "")
+		<h4>
+			#if ($product_icon.data != "")
+				<span class="product-icon">$product_icon.data</span>
+			#end
+
+			$heading.data
+		</h4>
+	#end
+
+	<div class="aui-helper-clearfix download">
+		#if (!$download_groups.siblings.isEmpty())
+			#set ($counter = 0)
+			#set ($downloadDetails = {})
+			#set ($downloadTickets = {})
+			#set ($releaseNotes = [])
+
+			<select id="downloadSelect${articleId}" onchange="AUI().one('#download${articleId}').attr('href', this.value); updateDownloadDetails${articleId}(this.selectedIndex);">
+				#foreach ($download_group in $download_groups.siblings)
+					<optgroup label="$download_group.data">
+						#foreach ($download in $download_group.downloads.siblings)
+							<option value="$download.link.data">$download.data</option>
+
+							#set ($currentDownloadDetails = {})
+
+							#foreach ($downloadDetails in $download.details.siblings)
+								#if ($downloadDetails.key.data != "")
+									#set ($detail = {"key": $downloadDetails.key.data, "value": $downloadDetails.value.data})
+
+									#set ($void = $currentDownloadDetails.put($velocityCount, $detail))
+								#end
+							#end
+
+							#if (!$currentDownloadDetails.isEmpty())
+								#set ($void = $downloadDetails.put($counter, $currentDownloadDetails))
+							#end
+
+							#set ($currentIncludedTickets = {})
+
+							#foreach ($includedTicket in $download.included_tickets.siblings)
+								#if ($includedTicket.title.data != "")
+									#set ($ticket = {"title": $includedTicket.title.data, "url": $includedTicket.link_url.data})
+
+									#set ($void = $currentIncludedTickets.put($velocityCount, $ticket))
+								#end
+							#end
+
+							#if (!$currentIncludedTickets.isEmpty())
+								#set ($void = $downloadTickets.put($counter, $currentIncludedTickets))
+							#end
+
+							#set ($void = $releaseNotes.add($download.release_notes.data))
+							#set ($counter = $counter + 1)
+						#end
+					</optgroup>
+				#end
+			</select>
+		#end
+
+		<div class="button-group float-right">
+			#if (!$releaseNotes.isEmpty())
+				#set ($hide = "")
+
+				#if ($download_groups.downloads.release_notes_link.data == "")
+					#set ($hide = "aui-helper-hidden")
+				#end
+
+				<a class="article-${articleId} $hide release-notes" href="$download_groups.downloads.release_notes_link.data">Release Notes</a>
+			#end
+
+			<a class="btn download-btn style-b" href="$download_groups.downloads.link.data" id="download${articleId}">#language('download')</a>
+		</div>
+	</div>
+
+	#if (!$downloadDetails.isEmpty() || $included_tickets.title.data != "")
+		<div class="details-section" id="detailsSection${articleId}">
+			<a class="class-toggle" data-target-node="#detailsSection${articleId}" href="javascript:;">#language("details")</a>
+
+			<div class="details toggle-content">
+				#if (!$downloadDetails.isEmpty())
+					#foreach ($detailSet in $downloadDetails)
+						#set ($hide = "aui-helper-hidden")
+						#set ($index = $velocityCount - 1)
+
+						#if ($velocityCount == 1)
+							#set ($hide = "")
+						#end
+
+						<div class="article-${articleId} details download-info $hide" id="downloadDetail${articleId}_${index}">
+							#foreach($detail in $detailSet)
+								<dl>
+									<dt title="${detail.key}">
+										${detail.key}:
+									</dt>
+									<dd>
+										${detail.value}
+									</dd>
+								</dl>
+							#end
+						</div>
+					#end
+				#end
+
+				#if (!$downloadTickets.isEmpty())
+					<div class="article-${articleId} blue-box download-info tickets">
+						<h4>Security Fixes Included:</h4>
+
+						<div class="content">
+							#foreach ($ticketSet in $downloadTickets)
+								#set ($hide = "aui-helper-hidden")
+								#set ($index = $velocityCount - 1)
+
+								#if ($velocityCount == 1)
+									#set ($hide = "")
+								#end
+
+								<ul class="article-${articleId} $hide included-tickets unstyled-list" id="ticketSet${articleId}_${index}">
+									#foreach ($ticket in $ticketSet)
+										<li>
+											<a href="${ticket.url}">$ticket.title</a>
+										</li>
+									#end
+								</ul>
+							#end
+
+							<p>
+								For installation instructions please refer to the following Knowledge Base article:
+							</p>
+
+							<a href="/group/customer/knowledge/kb/-/knowledge_base/article/14991389">Applying Fix Packs to Liferay Digital Experience Platform</a>
+						</div>
+					</div>
+				#end
+			</div>
+		</div>
+	#end
+</div>
+
+<script type="text/javascript">
+	function updateDownloadDetails${articleId}(index) {
+		var A = AUI();
+
+		var articleId = '${articleId}';
+
+		var releaseNotesURLS = $releaseNotes;
+
+		var currentDetailNode = A.one('#downloadDetail' + articleId + '_' + index);
+		var currentTicketSet = A.one('#ticketSet' + articleId + '_' + index);
+		var detailNodes = A.all('.download-info.details.article-' + articleId);
+		var includedTicketNodes = A.all('.included-tickets.article-' + articleId);
+		var releaseNotes = A.one('.release-nodes.article-' + articleId);
+		var ticketBox = A.one('.download-info.tickets.article-' + articleId);
+
+		if (detailNodes) {
+			detailNodes.hide();
+		}
+
+		if (currentDetailNode) {
+			currentDetailNode.show();
+		}
+
+		if (ticketBox) {
+			if (includedTicketNodes) {
+				includedTicketNodes.hide();
+			}
+
+			if (currentTicketSet) {
+				ticketBox.show();
+				currentTicketSet.show();
+			}
+			else {
+				ticketBox.hide();
+			}
+		}
+
+		if (releaseNotes) {
+			if (!releaseNotesURLS[index]) {
+				releaseNotes.hide();
+			}
+			else {
+				releaseNotes.attr('href', releaseNotesURLS[index]);
+				releaseNotes.show();
+			}
+		}
+	}
+</script>

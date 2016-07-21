@@ -53,12 +53,13 @@
 		},
 
 		download: {
+			ja_JP: 'ダウンロード',
 			zh_CN: '下载'
 		},
 
 		email: {
 			de_DE: 'E-Mail',
-			en_US: 'Email',
+			en_US: 'Work Email',
 			es_ES: 'Email',
 			fr_FR: 'Email',
 			it_IT: 'E-mail',
@@ -183,10 +184,10 @@
 			de_DE: 'Senden',
 			en_US: 'Submit',
 			es_ES: 'Enviar',
-			fr_FR: 'Soumettre',
-			it_IT: 'invio',
+			fr_FR: 'soumettre',
+			it_IT: 'Submit',
 			ja_JP: '送信',
-			pt_BR: 'Enviar',
+			pt_BR: 'Submit',
 			zh_CN: '提交'
 		},
 
@@ -226,7 +227,7 @@
 		x-is-required: {
 			en_US: '{0} is required',
 			ja_JP: '{0} は必須です',
-			zh_CN: 'China requires {0}'
+			zh_CN: '请您填写{0}'
 		},
 
 		your_request_completed_successfully: {
