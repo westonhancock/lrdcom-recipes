@@ -1,0 +1,353 @@
+#set ($ddl_records_local_service = $serviceLocator.findService("com.liferay.portlet.dynamicdatalists.service.DDLRecordLocalService"))
+#set ($dlFileEntryLocalService = $serviceLocator.findService("com.liferay.portlet.documentlibrary.service.DLFileEntryLocalService"))
+
+
+#macro (get_tactic_info73 $tactic_id $hs_tactic_map)
+	#set ($tactic_map = $portal.getClass().forName("java.util.TreeMap").newInstance())
+
+	#set ($tactic_record = $ddl_records_local_service.fetchDDLRecord($getterUtil.getLong($tactic_id)))
+
+
+	#if ($tactic_record)
+
+		#foreach ($field in $hs_field_values)
+			#set ($field_name = "")
+
+			#if ($tactic_record.getField($field))
+				#set ($field_name = $tactic_record.getFieldValue($field))
+			#end
+
+			#clean_up($field_name)
+
+			#if ($field_name != "")
+				#set ($VOID = $tactic_map.put($field, $field_name))
+			#end
+		#end
+
+		#set ($asset_record = "")
+
+		#if ($tactic_record.getField("asset"))
+			#set ($asset_record = $tactic_record.getFieldValue("asset"))
+		#end
+
+		#set ($asset_type = "")
+
+		#if ($tactic_record.getField("asset_type"))
+			#set ($asset_type = $tactic_record.getFieldValue("asset_type"))
+		#end
+
+		#clean_up($asset_type)
+
+		#set ($asset_id = "")
+
+		#if ($tactic_record.getField("asset_id"))
+			#set ($asset_id = $tactic_record.getFieldValue("asset_id"))
+		#end
+
+		#set ($asset_name = "")
+
+		#if ($tactic_record.getField("asset_name"))
+			#set ($asset_name = $tactic_record.getFieldValue("asset_name"))
+		#end
+
+		#set ($asset_url = "")
+
+		#if ($tactic_record.getField("asset_url"))
+			#set ($asset_url = $tactic_record.getFieldValue("asset_url"))
+		#end
+
+		#set ($asset_json_object = $jsonFactoryUtil.getNullJSON())
+
+		#if ($stringUtil.startsWith($asset_record, "{") && $stringUtil.endsWith($asset_record, "}"))
+			#set ($asset_json_object = $jsonFactoryUtil.createJSONObject($asset_record))
+		#end
+
+		#set ($asset = false)
+
+		#if ($asset_json_object.getString('uuid'))
+			#set ($asset_url = "${request.get('scheme')}://${request.get('theme-display').get('portal-url')}/documents/14/${asset_json_object.getString('uuid')}")
+
+			#set ($asset = $dlFileEntryLocalService.getFileEntryByUuidAndGroupId($asset_json_object.getString('uuid'), 14))
+
+			#if ($asset)
+				#set ($asset_id = $asset.getUuid())
+				#set ($asset_name = $asset.getTitle())
+			#end
+		#end
+
+		#if ($asset_name != "")
+			#set ($VOID = $tactic_map.put("asset_name", $asset_name))
+		#end
+
+		#if ($asset_id != "")
+			#set ($VOID = $tactic_map.put("asset_id", $asset_id))
+		#end
+
+		#if ($asset_url != "")
+			#set ($VOID = $tactic_map.put("asset_url", $asset_url))
+		#end
+
+		#set ($VOID = $tactic_map.put("tactic_id", $tactic_record.getRecordId()))
+
+		#set ($hs_tactic_map = "{")
+
+		#foreach ($key in $tactic_map.keySet())
+			#if ($velocityCount != 1)
+				#set ($hs_tactic_map = "${hs_tactic_map},")
+			#end
+
+			#set ($hs_tactic_map = "${hs_tactic_map}'${key}':'${tactic_map.get($key)}'")
+		#end
+
+		#set ($hs_tactic_map = "${hs_tactic_map}}")
+	#end
+#end
+
+#set ($hs_field_values = ["asset_type","campaign","leadsource","lead_source_type","product_interest","program","tactic_name","video_type"])
+
+<script>
+
+function submittedHSForm(A) {
+    A.one('#popUpContentWrapper-${reserved-article-id.data}').addClass('aui-helper-hidden');
+    A.one('#thankYouWrapper-${reserved-article-id.data}').removeClass('aui-helper-hidden');
+}
+var tacticIdsSubmitted = {};
+var tacticIdFields = {};
+#foreach ($marketing_asset in $tactic_id.siblings)
+
+    #set ($hs_slides_map = "")
+	#get_tactic_info73($marketing_asset.data, $hs_slides_map)
+	tacticIdsSubmitted[$marketing_asset.data] = false;
+    tacticIdFields[$marketing_asset.data] = $hs_slides_map;
+
+#end
+
+</script>
+	
+
+<style>
+#embedded-targeted-article-${form_article_id.data} .aui-button-input{
+    background: transparent;
+}
+
+#embedded-targeted-article-${form_article_id.data} .aui-button-input:hover, #embedded-targeted-article-${form_article_id.data} .aui-button-input:focus {
+	background-color: #F49B45;
+}
+
+#thankYouWrapper-${reserved-article-id.data} .thank-you-content {
+	text-align: center;
+}
+
+.aui-overlay-content.aui-overlaymask-content {
+	background-color: rgba(255, 255, 255, 0.99);
+}
+
+.page-pop-up {
+	background-color: transparent;
+	max-width: 680px;
+	position: absolute;
+	width: 100%;
+	z-index: 1000;
+}
+
+.page-pop-up .pop-up-header, .page-pop-up .pop-up-content {
+	padding: 20px;
+}
+
+.page-pop-up .pop-up-heading {
+	font-size: 2em;
+	margin: 0;
+	text-align: center;
+}
+
+.page-pop-up .left-column, .page-pop-up .right-column {
+	color: #909295;
+}
+
+.page-pop-up .whitepaper-title {
+	color: #474A4B;
+	font-size: 1em;
+	font-weight: normal;
+}
+
+.pop-up-info {
+	padding-right: 20px;
+}
+
+.position-static .portlet-borderless-container {
+	position: static;
+}
+
+@media all and (max-width: 520px) {
+	.aui-overlay-content.aui-overlaymask-content {
+		cursor: pointer;
+	}
+}
+</style>
+
+<script>
+function displayPopUp${reserved-article-id.data}(node) {
+	AUI().ready(
+		'aui-base',
+		'node',
+		function(A) {
+			node.removeClass('aui-helper-hidden');
+
+			var overlayMask = A.one('.aui-overlaymask');
+
+			if (overlayMask) {
+				overlayMask.remove(true);
+			}
+
+			var popUpContent = node.one('.pop-up-content')
+
+			popUpContent.on(
+				'clickoutside',
+				function(event) {
+					node.addClass('aui-helper-hidden');
+
+					popUpContent.detach('clickoutside');
+
+					var overlayMask = A.one('.aui-overlaymask');
+
+					if (overlayMask) {
+						overlayMask.remove(true);
+					}
+                    A.one('#popUpContentWrapper-${reserved-article-id.data}').removeClass('aui-helper-hidden');
+                    A.one('#thankYouWrapper-${reserved-article-id.data}').addClass('aui-helper-hidden');
+				}
+			);
+
+			createOverlayMask${reserved-article-id.data}();
+
+			centerOnPage${reserved-article-id.data}(node);
+
+			A.one('window').on(
+				'resize',
+				function() {
+					centerOnPage${reserved-article-id.data}(node);
+				}
+			);
+		}
+	);
+};
+
+function createOverlayMask${reserved-article-id.data}() {
+	AUI().ready(
+		'aui-base',
+		'aui-overlay-mask',
+		function(A) {
+			if (A.one('.aui-overlaymask')) {
+				return;
+			}
+
+			var overlay = new A.OverlayMask().render();
+
+			overlay.set('opacity', 0.99);
+			overlay.set('z-index', 20);
+			overlay.show();
+		}
+	);
+};
+
+function centerOnPage${reserved-article-id.data}(node) {
+	AUI().ready(
+		'aui-base',
+		'node',
+		function(A) {
+			var WIN = A.getWin();
+
+			var currentScrollPos = WIN.get('docScrollY');
+			var winHeight = WIN.get('innerHeight');
+
+			if (winHeight == undefined) {
+				winHeight = document.documentElement.clientHeight;
+			}
+
+			var contentWidth = A.one('#wrapper').get('clientWidth');
+			var nodeHeight = node.get('clientHeight');
+			var nodeWidth = node.get('clientWidth');
+
+			var yPosition = (winHeight / 2) - (nodeHeight / 2);
+
+			(yPosition < 0) ? (yPosition = 0) : yPosition;
+
+			var xCenter = (contentWidth / 2) - (nodeWidth / 2);
+			var yCenter = yPosition + currentScrollPos;
+
+			node.setStyle('right', xCenter);
+			node.setStyle('top', yCenter);
+		}
+	);
+};
+
+AUI().ready(
+	function(A) {
+		A.all('.${button_class.data}').on(
+			'click',
+			function(event) {
+				var gatedBtnPopUp = A.one('#gatedBtnPopUp-${reserved-article-id.data}');
+	
+                var currentTargetNode = event.currentTarget;
+                var tacticId = currentTargetNode.attr('data-tactic-id');
+				
+				if (gatedBtnPopUp) {
+                    var hsform = gatedBtnPopUp.one('form');
+                    A.one(".fallback-msg a").setAttribute("href", tacticIdFields[tacticId].asset_url);
+                    if (hsform) hsform.setAttribute('data-tactic-item-fields', JSON.stringify(tacticIdFields[tacticId]));
+					displayPopUp${reserved-article-id.data}(gatedBtnPopUp);
+				}
+			}
+		);
+	}
+);
+</script>
+
+<div class="aui-helper-hidden page-pop-up" data-overlay="true" id="gatedBtnPopUp-${reserved-article-id.data}">
+	<div class="pop-up-content">
+		<div id="popUpContentWrapper-${reserved-article-id.data}">
+			<div class="pop-up-header">
+				<h3 class="pop-up-heading">$heading.data</h3>
+			</div>
+			<div class="aui-helper-clearfix">
+				#set ($left_column_css_class = "aui-w45 content-column")
+				#set ($right_column_css_class = "aui-w55")
+
+				#if ($pop_up_info.data == "")
+					#set ($right_column_css_class = "aui-w100")
+				#end
+
+				#if ($pop_up_info.data != "")
+					<div class="$left_column_css_class">
+						<div class="content-column-content left-column pop-up-info">
+								$pop_up_info.data
+						</div>
+					</div>
+				#end
+
+				<div class="${right_column_css_class} content-column pop-up-form">
+					<div class="content-column-content right-column">
+						#set ($form_css_class = "form-wrapper")
+
+						<div class="$form_css_class">
+							<p>$instructions.data</p>
+
+							<div id="embedded-targeted-article-$form_article_id.data">
+								<runtime-portlet name="56" instance="targeted_$form_article_id.data" queryString=""/>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<div class="aui-helper-hidden" id="thankYouWrapper-${reserved-article-id.data}">
+			<div class="pop-up-header">
+				<h3 class="pop-up-heading">$thank_you_heading.data</h3>
+			</div>
+			<div class="aui-helper-clearfix thank-you-content">
+				$thank_you_content.data
+			</div>
+		</div>
+	</div>
+</div>

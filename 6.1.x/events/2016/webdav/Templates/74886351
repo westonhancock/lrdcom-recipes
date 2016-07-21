@@ -1,0 +1,28 @@
+<div class="twitter-container">
+    <div class="icon-container">
+        <div class="event_icon">$event_icon.data</div>
+        <div class="icons">
+        #foreach ($icon in $left_icon.siblings)
+            <div class="icon_with_text">$icon.data <span>$icon.icon_text.data</span></div>
+        #end
+        </div>
+    </div>
+    <div class="twitter-handles">
+        <div class="title normal">
+            Follow Liferay
+        </div>
+        #foreach ($twitter in $twitter_link.siblings)
+            <a class="twitter-handle-container" href="$twitter.data" target="_blank">
+                <img src="$twitter.twitter_image.data" />
+                <span class="name">
+                    $twitter.twitter_name.data
+                </span><br/>
+                <span class="handle normal">
+                    <span class="at-handle">@</span>$twitter.twitter_handle.data
+                </span>
+            </a>
+        #end
+    </div>
+    <a class="twitter-timeline" data-widget-id="484393999285764096" href="https://twitter.com/hashtag/LRDevcon" target="_blank">#LRDevcon Tweets
+    </a>
+</div>

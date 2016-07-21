@@ -177,7 +177,7 @@
 	#set ($room_record = false)
 	#set ($room_record_info = $ddl_records_local_service.getDDLRecordByUuidAndGroupId($room_uuid, $groupId))
 	#set ($room_record = $ddl_records_local_service.fetchDDLRecord($getterUtil.getLong($room_record_info.recordId)))
-	
+<script>
 	#if ($room_record)
 	  #set ($room_name = $room_record.getFieldValue("room_name"))
 	  #set ($room_number = $room_record.getFieldValue("room_number"))
@@ -187,6 +187,13 @@
 	  #set ($room_number = 0)
 	  #set ($map_id = "")
 	#end
+		var room_record_info = "$room_record_info";
+		var room_uuid = "$room_uuid";
+		var groupid = "$groupId";
+		var recordid = "$room_record_info.recordId";
+		var room_record = "$room_record";
+		var  room_name =  "$room_name";
+	</script>
 
 	## Create parts of map that dont exist
 	#if (!$agenda.get("day-$date"))

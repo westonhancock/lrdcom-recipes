@@ -5,4 +5,5 @@
 	<dynamic-element name="twitter_widget_id" type="text" index-type="" repeatable="false"/>
 	<dynamic-element name="twitter_link" type="text" index-type="" repeatable="false"/>
 	<dynamic-element name="twitter_link_text" type="text" index-type="" repeatable="false"/>
+	<dynamic-element name="twitter_error_message" type="text" index-type="" repeatable="false"/>
 </root>

@@ -109,7 +109,7 @@
       #set ($start_time_minutes = "0" + $start_time_minutes)
     #end
 
-	## lower case for am pm instead of ampm
+    ## lower case for am pm instead of ampm
     #set ($startTimeDate = $dateTool.toDate("HH:mm" , $start_time_hour.concat(":").concat($start_time_minutes), $localeEn))
     #set ($start_time_display = $dateTool.format($timeFormat,$startTimeDate,$localePage).toLowerCase())
     
@@ -143,7 +143,8 @@
     #set ($room_uuid = $stringUtil.replace($room_uuid, "[", ""))
     #set ($room_uuid = $stringUtil.replace($room_uuid, "]", ""))
     #set ($room_uuid = $stringUtil.replace($room_uuid, '"', ''))
-
+#set ($room_record_info = false)
+	#set ($room_record = false)
     #set ($room_record_info = $ddl_records_local_service.getDDLRecordByUuidAndGroupId($room_uuid, $groupId))
     #set ($room_record = $ddl_records_local_service.fetchDDLRecord($getterUtil.getLong($room_record_info.recordId)))
 

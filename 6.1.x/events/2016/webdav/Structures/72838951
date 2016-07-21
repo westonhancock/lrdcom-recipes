@@ -4,4 +4,5 @@
 	<dynamic-element name="eventid" type="text" index-type="" repeatable="false"/>
 	<dynamic-element name="formheight" type="text" index-type="" repeatable="false"/>
 	<dynamic-element name="sectionid" type="text" index-type="" repeatable="false"/>
+	<dynamic-element name="event_brite_url" type="text" index-type="" repeatable="false"/>
 </root>

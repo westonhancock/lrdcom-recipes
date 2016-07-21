@@ -64,26 +64,15 @@
 	}
 #end
 
-   .speaker-wrapper {
-        padding: 40px 0 10px;
-        text-align: center;
-    }
 
-   .speaker-item-wrapper {
-        display: inline-block;
-        height: $speakersize;
-        margin: 0 15px 15px 0;
-        overflow: hidden;
-        width: $speakersize;
-    }
-
+## keep fancy stuff for desktop to prevent memory crashes on mobile
+@media (min-width:801px) {
     .flip-wrapper {
         -moz-perspective: 800px;
         -ms-perspective: 800px;
         -o-perspective: 800px;
         -webkit-perspective: 800px;
         perspective: 800px;
-        position: relative;
     }
 
      .flip-item {
@@ -91,12 +80,8 @@
         -ms-transform-style: preserve-3d;
         -o-transform-style: preserve-3d;
         -webkit-transform-style: preserve-3d;
-        transition: .6s;
-        -webkit-transition: .6s;
-        -moz-transition: .6s;
-        -o-transition: .6s;
-    }
-
+       
+	}
      .flip-item.class-toggle-off-click-active {
         -moz-transform: rotateY(180deg);
         -ms-transform: rotateY(180deg);
@@ -104,46 +89,22 @@
         -webkit-transform: rotateY(180deg);
         transform: rotateY(180deg);
     }
-
-    .speaker-item {
-        height: 100%;
-        text-align: left;
-        width: 100%;
-    }
-
-   .speaker-item.class-toggle-off-click {
-        cursor: pointer;
-    }
     
-    .speaker-item, .speaker-item .front-side {
-        background-position: 0;
-        background-size: 100%;
-        background-repeat: no-repeat;
-    }
-
-
-     .flip-item .flip-side,  .speaker-item .speaker-info {
-        -moz-backface-visibility: hidden;
+	.flip-item .flip-side,  .speaker-item .speaker-info {
         -moz-transform: translate3d(0, 0, 0);
         -ms-transform: translate3d(0, 0, 0);
-        -o-backface-visibility: hidden;
-        -o-transform: translate3d(0, 0, 0);
-        -webkit-backface-visibility: hidden;
+        -o-transform: translate3d(0, 0, 0)
         -webkit-transform: translate3d(0, 0, 0);
+         transform: translate3d(0, 0, 0);
+         
+        -moz-backface-visibility: hidden;
+        -o-backface-visibility: hidden;
+        -webkit-backface-visibility: hidden;
         backface-visibility: hidden;
         -ms-backface-visibility: visible;
-        bottom: 0;
-        left: 0;
-        max-height: $speakersize;
-        max-width: $speakersize;
-        overflow: hidden;
-        position: absolute;
-        right: 0;
-        top: 0;
-        transform: translate3d(0, 0, 0);
-    }
-
-     .flip-item .back-side {
+     }
+        
+    .flip-item .back-side {
         -moz-transform: rotateY(-180deg);
         -ms-transform: rotateY(-180deg);
         -o-transform: rotateY(-180deg);
@@ -157,6 +118,100 @@
         -o-transition: all 0.4s ease-in-out;
         -webkit-transition: all 0.4s ease-in-out;
         transition: all 0.4s ease-in-out;
+        
+  
+    }
+        
+     .speaker-item .speaker-info {
+        -moz-transform: translate(100%, 100%);
+        -ms-transform: translate(100%, 100%);
+        -o-transform: translate(100%, 100%);
+        -webkit-transform: translate(100%, 100%); 
+        transform: translate(100%, 100%);
+    }
+    .speaker-item:hover .speaker-info {
+        -moz-transform: translate(0, 0);
+        -ms-transform: translate(0, 0);
+        -o-transform: translate(0, 0);
+        -webkit-transform: translate(0, 0);
+        transform: translate(0, 0);
+    }
+    
+    .speaker-info:before {
+        -moz-transform: rotate(45deg);
+        -ms-transform: rotate(45deg);
+        -o-transform: rotate(45deg);
+        -webkit-transform: rotate(45deg); 
+        transform: rotate(45deg);
+     }
+}
+@media (max-width:800px) {
+ 	.speaker-item .speaker-info {
+    	 display: none;
+	}
+  
+  	.flip-item .back-side {
+  		display: none;
+ 	}
+ 	
+	.class-toggle-off-click-active.flip-item .back-side {
+        display: block;
+	}
+}
+
+
+
+   .speaker-wrapper {
+        padding: 40px 0 10px;
+        text-align: center;
+    }
+
+   .speaker-item-wrapper {
+        display: inline-block;
+        height: $speakersize;
+        margin: 0 15px 15px 0;
+        overflow: hidden;
+        width: $speakersize;
+    }
+
+
+	.flip-item { 
+	     transition: .6s;
+	     -webkit-transition: .6s;
+	     -moz-transition: .6s;
+	     -o-transition: .6s;
+	}
+	
+	.flip-wrapper {
+	 	position: relative;
+	 }
+	 
+	 .speaker-item {
+		height: 100%;
+		text-align: left;
+		width: 100%;
+	}
+
+   .speaker-item.class-toggle-off-click {
+        cursor: pointer;
+    }
+    
+    .speaker-item, .speaker-item .front-side {
+        background-position: 0;
+        background-size: 100%;
+        background-repeat: no-repeat;
+    }
+
+
+    .flip-item .flip-side,  .speaker-item .speaker-info {
+        bottom: 0;
+        left: 0;
+        max-height: $speakersize;
+        max-width: $speakersize;
+        overflow: hidden;
+        position: absolute;
+        right: 0;
+        top: 0;  
     }
 
     .speaker-item .speaker-info, .speaker-item .speaker-bio {
@@ -165,20 +220,7 @@
     }
 
     .speaker-item .speaker-info {
-        -moz-transform: translate(100%, 100%);
-        -ms-transform: translate(100%, 100%);
-        -o-transform: translate(100%, 100%);
-        -webkit-transform: translate(100%, 100%);
-        padding: 5%;
-        transform: translate(100%, 100%);
-    }
-    
-    .speaker-item:hover .speaker-info {
-        -moz-transform: translate(0, 0);
-        -ms-transform: translate(0, 0);
-        -o-transform: translate(0, 0);
-        -webkit-transform: translate(0, 0);
-        transform: translate(0, 0);
+    	padding: 5%;
     }
 
     .speaker-info .speaker-name {
@@ -186,11 +228,7 @@
         font-weight: 100;
     }
 
-     .speaker-info:before {
-        -moz-transform: rotate(45deg);
-        -ms-transform: rotate(45deg);
-        -o-transform: rotate(45deg);
-        -webkit-transform: rotate(45deg);
+     .speaker-info:before {     
         background: $backgroundcolor;
         display: inline-block;
         height: 200%;
@@ -198,7 +236,6 @@
         pointer-events: none;
         position: absolute;
         top: 0;
-        transform: rotate(45deg);
         width: 230%;
         z-index: -1;
     }
@@ -220,6 +257,8 @@
         font-size: 1em;
         text-align: center;
     }
+
+
 
 /* ---------- Browser Specific ---------- */
 
@@ -307,7 +346,7 @@
 <div class="speaker-pop-up" id="speakerToggle">
 
 #end
-<div class="default-max-width speaker-wrapper" id="$sectionid.data">
+<div class="$speakercssclass default-max-width speaker-wrapper" id="$sectionid.data">
     #foreach($speaker in $speaker_records)
         #set ($speaker_bio = $speaker.get("speaker_bio"))
         #set ($speaker_company = $speaker.get("speaker_company"))

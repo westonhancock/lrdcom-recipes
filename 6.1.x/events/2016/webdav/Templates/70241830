@@ -240,7 +240,7 @@
 			#if ($velocityCount == 1)
 	        <div class="expert">
 	            <div class="image-container">
-	                <img src="/documents/${group_id}/${image_uuid}" /></div>
+	                <img src="/documents/${group_id}/${image_uuid}?width=250" /></div>
 	             <div class="aui-helper-hidden info-container">
 	                 <img class="expert-logo lazy-load" datasrc="/documents/${group_id}/${logo_uuid}">
 	        #end

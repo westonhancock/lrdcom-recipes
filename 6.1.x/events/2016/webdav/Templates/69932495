@@ -1,6 +1,6 @@
 #macro (clean_up $string)
     #set ($string = $stringUtil.replace($string, "[", ""))
-	#set ($string = $stringUtil.replace($string, "]", ""))
+    #set ($string = $stringUtil.replace($string, "]", ""))
 	#set ($string = $stringUtil.replace($string, '"', ''))
 
 	#if ($string == "_blank")
@@ -729,7 +729,11 @@
 					}
 
 					if ((redirectAssetURL != "") && (form.getAttribute('data-asset-new-tab') == "true")) {
-						window.open(redirectAssetURL, '_blank');
+						var dlwindow = window.open(redirectAssetURL, '_blank');
+
+						if (typeof(dlwindow)=='undefined'){
+							alert("Please disable your browser pop-up blocker to view and download the presentation.");
+						}
 					}
 
 					if (fields["asset_primary_buyers_stage"]) {

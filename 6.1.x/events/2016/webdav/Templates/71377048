@@ -179,7 +179,8 @@ var ddmStructures=[
 {id: "69756111", name: "Beacon Region Events"},
 {id: "69756115", name: "Beacon Individual Events"},
 {id: "69756119", name: "Beacon Forms"},
-{id: "68745907", name: "Expert Exchange"}
+{id: "68745907", name: "Expert Exchange"},
+{id: "70719071", name: "CFP"}
 ];
 
 addCheckboxes();
@@ -192,7 +193,7 @@ function getRecordSet(recordsetid) {
 		
 		}
 		});
-  	 var invokeURL = "https://www.liferay.com/api/jsonws/invoke?cmd=";
+  	 var invokeURL = "/api/jsonws/invoke?cmd=";
   	  
  	var req = new XMLHttpRequest();
  	req.onload = function () {
@@ -247,7 +248,7 @@ function createStructures() {
   }
   
   
-  var invokeURL = "https://www.liferay.com/api/jsonws/invoke?cmd=";
+  var invokeURL = "/api/jsonws/invoke?cmd=";
   
 	var req = new XMLHttpRequest();
 	req.onload = function () {
@@ -269,7 +270,7 @@ function createStructures() {
 	};
 	
 	//"serviceContext": {"guestPermissions": }
-	var ctx = "&serviceContext.guestPermissions=" + JSON.stringify(["action.VIEW"]);
+	//var ctx = "&serviceContext.guestPermissions=" + JSON.stringify(["action.VIEW"]);
 	var ctx = "&serviceContext.addGuestPermissions=true";
 	req.open('get', invokeURL + JSON.stringify(cmdArray) + "&p_auth=" + Liferay.authToken + "&" + ctx, true);
 	req.send();

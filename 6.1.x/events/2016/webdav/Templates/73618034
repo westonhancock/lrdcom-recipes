@@ -1,0 +1,176 @@
+.top-banner-container {
+  background: url(/documents/67510365/74348488/Devcon-Mobile-Banner-1.jpg/60281214-b5a0-48bc-90fb-5a68fa21a0a5?t=1463656085000) repeat no-repeat center bottom;
+  text-align: center;
+  padding-bottom: 100px;
+  background-size: auto 100px;
+}
+
+.top-banner-container img {
+  margin: 45px 0;
+  width: 90%;
+  max-height: 200px;
+}
+
+.dynamic-navigation {
+	background: #093d5a ;
+	height: 50px;
+    position: fixed;
+    top: 0;
+    width: 100%;
+}
+
+#navigation li {
+	text-transform: uppercase;
+	margin: 7px 10px;	
+}
+
+.dynamic-navigation .parent-title {
+	background: url(/documents/14/48124953/hamburger.png) no-repeat left 15px center;
+    display: block;
+    height: 100%;
+	width: 100px;
+}
+
+#navigation .parent-title a {
+	display: none;
+}
+
+#navigation li a {
+	color: white;
+}
+
+
+@media(max-width:1199px) {	
+	.top-banner-container {
+		/* make room for fixed nav */
+		margin-top: 50px;
+	}
+	#navigation .child-menu {
+		max-height: 0;
+		transition: max-height .3s ease-in-out;
+		overflow: hidden;
+		width: 100%;
+		background: #093d5a;
+	}
+	
+	#navigation li.last {
+		position: absolute;
+		top: 0;
+		right: 10px;		
+		
+	}
+	#navigation ul {
+		text-align: left;
+	}
+	#navigation li {
+        display: block;
+        padding: 0;
+        font-size: 14px;
+    }
+	#navigation li.last a{
+		background: #1678a9;
+	}
+	
+	#navigation[data-state=open] .child-menu {
+          max-height: 600px;
+    }
+	
+}
+@media(min-width:1200px) {
+	
+	/* give more room to video */
+	.engage-container {
+		margin: 100px 0;
+	}
+	
+    nav#navigation.sticky {
+        position: fixed;
+    }
+	
+	.dynamic-navigation .parent-title {
+		display: none;
+	}
+	#navigation li.last a{
+		color: #6D6E71;
+		background: white;
+		padding: 5px 20px;
+	}
+	.dynamic-navigation {
+		position: static;
+		background: #074d77;
+	}
+	.top-banner-container {
+		background: url(/documents/67510365/74348488/Devcon+Banner_cropped.jpg/a6b6ded5-1723-44c4-94c5-d13a829aab7f?t=1463656093000) no-repeat right top;
+		padding-bottom: 0;
+	}
+	
+	/* bigger margins on desktop image so we see whole banner on right hand side*/
+	.top-banner-container img {
+	  margin: 100px 0;
+	}
+}
+
+/* override standard mobile padding of 15px that leads to white borders */
+#main-content.full-screen-layout .portlet-dropzone {
+    padding: 0 !important;
+}
+
+
+
+/* quote section */
+.lego-quote .lego-article-content {
+    max-width: 100%;
+}
+
+.quote-section, .quote-header {
+  text-align: center;
+  margin-top: 50px;
+}
+.quote-section {
+   display: flex;
+    flex-flow: row wrap;
+}
+
+.quote-header h2 {
+  color: #074d77;
+
+}
+.quote-section > div {
+	
+  height: 400px;
+  color: white;
+  flex: 0 0 50%;
+  box-sizing: border-box;
+padding: 50px 45px;
+  align-items: center;
+  display: flex;
+  justify-content: center
+}
+
+.quote-section .quote {
+    font-size: 200%;
+    line-height: 120%;
+}
+
+.quote-section .attribution {
+	font-size: 150%;
+}
+
+.quote-section .block-1 {
+  background: url(https://web.liferay.com/documents/67510365/74348488/Quote-Box-1.jpg);
+  background-size: cover;
+}
+
+.quote-section .block-2 {
+  background: #1ebcb0;
+
+}
+.quote-section .block-3 {
+  background: #074d77;
+
+}
+.quote-section .block-4 {
+   background: url(https://web.liferay.com/documents/67510365/74348488/Quote-Box-2.jpg);
+    background-size: cover;
+
+}

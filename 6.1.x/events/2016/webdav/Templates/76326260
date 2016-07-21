@@ -1,0 +1,281 @@
+<style type="text/css">
+    .btn {
+		border: 1px solid #00537d;
+		color: #00537d;
+		cursor: pointer;
+		display: inline-block;
+		font-size: 15px;
+		margin: auto;
+		padding: 10px;
+		text-align: center;
+		text-decoration: none;
+	}
+
+	.complementary {
+		background: #f7bf21;
+		border: 1px solid #f7bf21;
+		color: #ffffff;
+	}
+
+	.complementary:hover {
+		color: #ffffff;
+	}
+
+	.error-msg {
+		color: #ff0000;
+		margin-top: 1em;
+	}
+
+	.fl {
+		float: left;
+	}
+
+	.label {
+		font-size: .95em;
+		margin-right: 5px;
+		text-transform: lowercase;
+		font-variant: small-caps;
+		font-weight: bold;
+	}
+	
+	.session-banner {
+		background-color: #00537d;
+		padding: 2em 0;
+	}
+
+	.session-banner h2 {
+		color: #ffffff;
+		display: inline;
+		margin-left: .5em;
+	}
+
+	.session-wrapper {
+		border-bottom: 1px solid #00537d;
+		margin: 0 3em 1em 0;
+	}
+
+	.session-wrapper:last-child {
+		border-width: 0;
+	}
+
+	.sign-in {
+		font-weight: bold;
+	}
+
+	.sign-up {
+		margin-top: 3em;
+		min-height: 379px;
+	}
+
+	.speaker-sign-up {
+		font-size: 18px;
+	}
+
+	@media (max-width: 600px) {
+		.responsive-w100 {
+			width: 100% !important;
+		}
+	}
+</style>
+
+#set ($user_local_service = $serviceLocator.findService("com.liferay.portal.service.UserLocalService"))
+#set ($user = $user_local_service.getUser($permissionChecker.getUserId()))
+
+#set ($info_record_set_id = $getterUtil.getLong($infoRecordSetId.data))
+#set ($headshot_record_set_id = $getterUtil.getLong($headshotRecordSetId.data))
+#set ($session_record_set_id = $getterUtil.getLong($sessionRecordSetId.data))
+#set ($invalid_email_message =  $getterUtil.getString($invalidEmailMessage.data))
+#set ($sign_in_url = $signInURL.data)
+
+<div class="speaker-sign-up">
+    <div class="session-banner">
+    	<div class="max-full">
+			<svg xmlns="http://www.w3.org/2000/svg" width="150" height="auto" viewBox="0 0 319.186 81.571"><g fill="#FFF"><path d="M13.442 33.158H26.64v9.324H2.444V.152h10.998V33.16zM42.347 42.482H31.353V.152h10.994v42.33zM61.66 9.48v7.07h12.078v9.316h-12.08v16.617H50.663V.153h24.296v9.325h-13.3zM93.203 9.48v7.07h12.402v9.316H93.203v7.293h13.08v9.323H82.204V.153h24.077v9.325h-13.08zM149.39 42.482H135.69l-10.388-16.287h-.107v16.287h-11V.152h16.44c8.363 0 14.708 3.986 14.708 13.03 0 5.834-3.26 10.875-9.26 11.95l13.304 17.35zm-24.194-23.356h1.06c3.588 0 7.636-.675 7.636-5.283 0-4.588-4.048-5.265-7.637-5.265h-1.06v10.548zM164.253 35.12l-2.915 7.362H149.67L165.943.152h12.004l15.945 42.33h-11.735l-2.736-7.363h-15.167zm7.69-21.877h-.112l-4.546 13.46h9.146l-4.486-13.46zM187.04.153h13.193l7.916 11.51 7.91-11.51h13.184l-15.6 22.005v20.324h-10.996V22.16L187.04.152zM13.37 59.204c-1-1.675-2.278-2.538-4.31-2.538-2.145 0-4.5 1.47-4.5 3.812 0 2.103 2.07 3.215 3.75 3.862l1.926.75c3.814 1.49 6.675 3.6 6.675 8.1 0 4.885-3.79 8.38-8.6 8.38-4.355 0-7.75-3.215-8.31-7.526l3.388-.713c-.04 2.956 2.32 5.1 5.198 5.1 2.895 0 4.97-2.428 4.97-5.238 0-2.893-2.32-4.145-4.642-5.106l-1.853-.783c-3.07-1.32-5.85-3.066-5.85-6.823 0-4.34 3.857-6.95 7.918-6.95 2.995 0 5.453 1.468 6.926 4.072l-2.684 1.602zM21.366 54.1h3.852l6.595 11.486 6.6-11.487h3.856L33.49 69.3v11.693h-3.357V69.302L21.365 54.1zM52.724 63.235h-.07l-3.142 17.76H46.04l5.487-28.028 9.255 21.18 9.235-21.18 5.493 28.028h-3.458l-3.137-17.76h-.075L60.782 81.57l-8.058-18.335zM85.43 80.995H82.07V54.1h3.858c8.27 0 10.84 2.856 10.84 7.773 0 5.673-4.316 7.86-9.412 7.86h-1.93v11.262zm0-14.258h1.062c3.426 0 7.137-.645 7.137-4.926 0-4.21-4-4.712-7.308-4.712h-.894v9.64zM129.593 67.546c0 7.996-6.33 14.025-14.1 14.025-7.774 0-14.082-6.028-14.082-14.024 0-7.7 6.385-14.017 14.084-14.017 7.707 0 14.1 6.317 14.1 14.016zm-3.355 0c0-5.91-4.427-10.88-10.744-10.88-6.303 0-10.732 4.97-10.732 10.88 0 6.134 4.923 10.884 10.732 10.884 5.815 0 10.744-4.75 10.744-10.884zM148.35 59.204c-.998-1.675-2.28-2.538-4.314-2.538-2.138 0-4.5 1.47-4.5 3.812 0 2.103 2.066 3.215 3.75 3.862l1.927.75c3.812 1.49 6.67 3.6 6.67 8.1 0 4.885-3.783 8.38-8.596 8.38-4.354 0-7.742-3.215-8.312-7.526l3.383-.713c-.04 2.956 2.328 5.1 5.208 5.1 2.89 0 4.963-2.428 4.963-5.238 0-2.893-2.32-4.145-4.64-5.106l-1.853-.783c-3.076-1.32-5.854-3.066-5.854-6.823 0-4.34 3.858-6.95 7.93-6.95 2.992 0 5.454 1.468 6.913 4.072l-2.675 1.602zM162.364 80.995h-3.352V54.1h3.352v26.895zM173.855 54.1v15.875c0 4.396 1.32 8.455 6.493 8.455 5.17 0 6.49-4.06 6.49-8.455V54.1h3.35v17.02c0 5.918-3.667 10.45-9.84 10.45-6.164 0-9.845-4.532-9.845-10.45V54.1h3.352zM202.96 63.235h-.07l-3.136 17.76h-3.47l5.507-28.028 9.232 21.18 9.23-21.18 5.507 28.028h-3.462l-3.146-17.76h-.075L211.02 81.57l-8.06-18.335zM291.693 0H241.17v33.852h6.887V6.88h40.864l23.386 22.468v45.156h-64.25v-21.83h21.67V67h7.42l24.32-24.32v-5.22l-24.525-23.44h-7.68v19.834h6.83v-11.2l18.25 17.455-17.78 17.795V45.846h-35.39V81.39h78.016V26.422"/></g></svg>
+			
+			<h2 class="max-full">North America 2016</h2>
+		</div>
+	</div>
+
+	<div class="max-full">
+		#if (!$permissionChecker.isSignedIn())
+			<p class="sign-up">Please <a class="sign-in" href="$sign_in_url">sign in</a> with your liferay.com account. If you don't have an account, <a class="sign-in" href="$sign_in_url">sign up</a> now.</p>
+		#else
+			#set($ddl_record_local_service = $serviceLocator.findService("com.liferay.portlet.dynamicdatalists.service.DDLRecordLocalService"))
+			#set($ddl_record_set_local_service = $serviceLocator.findService("com.liferay.portlet.dynamicdatalists.service.DDLRecordSetLocalService"))
+
+			#set ($info_records = $ddl_record_local_service.getRecords($info_record_set_id))
+
+			#set ($info_record = "")
+			#set ($email_address = "")
+
+			#foreach ($cur_record in $info_records)
+				#set ($info_record = $cur_record)
+
+				#set ($email_address = $info_record.getFieldValue("email_address"))
+
+				#if ($email_address == $user.getEmailAddress())
+					#break
+				#end
+			#end
+
+			#set ($headshot_records = $ddl_record_local_service.getRecords($headshot_record_set_id, $user.getUserId()))
+
+			#set ($headshot_record = "")
+
+			#set ($file_name = "")
+			#set ($headshot_url = "")
+
+			#set ($headshot_label = "Add Headshot")
+			
+			#set ($edit_headshot_url = "/web/events2016/northamerica/admin/speaker-sign-up?p_p_id=169_INSTANCE_AdclVc5FA9a9&p_p_lifecycle=0&p_p_state=maximized&p_p_mode=view&p_p_col_id=column-1&p_p_col_pos=2&p_p_col_count=3&_169_INSTANCE_AdclVc5FA9a9_struts_action=%2Fdynamic_data_list_display%2Fedit_record&_169_INSTANCE_AdclVc5FA9a9_redirect=https%3A%2F%2Fweb.liferay.com%2Fweb%2Fevents2016%2Fnorthamerica%2Fspeaker-sign-up&_169_INSTANCE_AdclVc5FA9a9_backURL=https%3A%2F%2Fweb.liferay.com%2Fweb%2Fevents2016%2Fnorthamerica%2Fspeaker-sign-up&_169_INSTANCE_AdclVc5FA9a9_recordSetId=76385483&_169_INSTANCE_AdclVc5FA9a9_detailDDMTemplateId=0")
+			
+			#if ($headshot_records.size() > 0)
+				#set ($headshot_record = $headshot_records.get(0))
+
+				#set ($headshot = $headshot_record.getFieldValue("headshot"))
+
+				#set ($headshot_json_object = $jsonFactoryUtil.createJSONObject($headshot))
+
+				#set ($file_name = $headshot_json_object.getString("name"))
+				#set ($class_name = $headshot_json_object.getString("className"))
+				#set ($class_pk = $headshot_json_object.getString("classPK"))
+
+				#set ($headshot_url = "/documents/ddm/$class_name/$class_pk/headshot")
+
+				#set ($headshot_label = "Edit Headshot")
+
+				#set ($edit_headshot_url = "/web/events2016/northamerica/admin/speaker-sign-up?p_p_id=169_INSTANCE_AdclVc5FA9a9&p_p_lifecycle=0&p_p_state=maximized&p_p_mode=view&p_p_col_id=column-1&p_p_col_pos=2&p_p_col_count=3&_169_INSTANCE_AdclVc5FA9a9_struts_action=%2Fdynamic_data_list_display%2Fedit_record&_169_INSTANCE_AdclVc5FA9a9_cmd=update&_169_INSTANCE_AdclVc5FA9a9_redirect=https%3A%2F%2Fweb.liferay.com%2Fweb%2Fevents2016%2Fnorthamerica%2Fspeaker-sign-up&_169_INSTANCE_AdclVc5FA9a9_backURL=https%3A%2F%2Fweb.liferay.com%2Fweb%2Fevents2016%2Fnorthamerica%2Fspeaker-sign-up&_169_INSTANCE_AdclVc5FA9a9_recordId=$headshot_record.getRecordId()&_169_INSTANCE_AdclVc5FA9a9_detailDDMTemplateId=0")
+			#end
+
+			#if ($email_address == $user.getEmailAddress())
+				<div class="fl aui-w50 responsive-w100">
+					<h3>Session Info</h3>
+
+					#set ($session_records = $ddl_record_local_service.getRecords($session_record_set_id, $user.getUserId()))
+
+					#foreach ($cur_record in $session_records)
+						#set ($session_title = $cur_record.getFieldValue("session_title"))
+
+						#set ($session_abstract = $cur_record.getFieldValue("session_abstract"))
+						#set ($session_abstract = $session_abstract.replaceAll("(\r\n|\n)", "<br />"))
+
+						#set ($keywords = $cur_record.getFieldValue("keywords"))
+
+						#set ($session_type = $cur_record.getFieldValue("session_type"))
+						#set ($session_type_json_array = $jsonFactoryUtil.createJSONArray($session_type))
+						#set ($session_type = $session_type_json_array.getString(0))
+
+						#set ($session_topic = $cur_record.getFieldValue("session_topic"))
+						#set ($session_topic_json_array = $jsonFactoryUtil.createJSONArray($session_topic))
+						#set ($session_topic = $session_topic_json_array.getString(0))
+
+						<div class="session-wrapper">
+							<div class="field"><span class="label">Title:</span>$session_title</div>
+							<div class="field"><span class="label">Keywords:</span>$keywords</div>
+							<div class="field"><span class="label">Type:</span>$session_type</div>
+							<div class="field"><span class="label">Topic:</span>$session_topic</div>
+							<div class="field">
+								<span class="label">Abstract:</span>
+
+								<p>$session_abstract</p>
+							</div>
+
+							#set ($slides = $cur_record.getFieldValue("session_slides"))
+
+							#set ($slide_json_object = $jsonFactoryUtil.createJSONObject($slides))
+
+							#set ($slides_file_name = $slide_json_object.getString("name"))
+							#set ($slides_class_name = $slide_json_object.getString("className"))
+							#set ($slides_class_pk = $slide_json_object.getString("classPK"))
+
+							#set ($slides_url = "/documents/ddm/$slides_class_name/$slides_class_pk/session_slides")
+							
+							<div class="field">
+								<span class="label">Slides:</span>
+
+								#if (($slides_file_name != "") && ($slides_url != ""))
+									<p><a href="$slides_url">$slides_file_name</a></p>
+								#end
+							</div>
+
+							<p>
+								<a class="btn" href="/web/events2016/northamerica/admin/speaker-sign-up?p_p_id=169_INSTANCE_WX1B5VeBXj3E&p_p_lifecycle=0&p_p_state=maximized&p_p_mode=view&p_p_col_id=column-1&p_p_col_pos=1&p_p_col_count=3&_169_INSTANCE_WX1B5VeBXj3E_struts_action=%2Fdynamic_data_list_display%2Fedit_record&_169_INSTANCE_WX1B5VeBXj3E_cmd=update&_169_INSTANCE_WX1B5VeBXj3E_redirect=https%3A%2F%2Fweb.liferay.com%2Fweb%2Fevents2016%2Fnorthamerica%2Fspeaker-sign-up&_169_INSTANCE_WX1B5VeBXj3E_backURL=https%3A%2F%2Fweb.liferay.com%2Fweb%2Fevents2016%2Fnorthamerica%2Fspeaker-sign-up&_169_INSTANCE_WX1B5VeBXj3E_recordId=$cur_record.getRecordId()&_169_INSTANCE_WX1B5VeBXj3E_detailDDMTemplateId=0">
+									Edit Session
+								</a>
+							</p>
+						</div>
+					#end
+
+					<p>
+						<a class="btn complementary" href="/web/events2016/northamerica/admin/speaker-sign-up?p_p_id=169_INSTANCE_WX1B5VeBXj3E&p_p_lifecycle=0&p_p_state=maximized&p_p_mode=view&p_p_col_id=column-1&p_p_col_pos=1&p_p_col_count=3&_169_INSTANCE_WX1B5VeBXj3E_struts_action=%2Fdynamic_data_list_display%2Fedit_record&_169_INSTANCE_WX1B5VeBXj3E_redirect=https%3A%2F%2Fweb.liferay.com%2Fweb%2Fevents2016%2Fnorthamerica%2Fspeaker-sign-up%3Fp_p_id%3D169_INSTANCE_WX1B5VeBXj3E%26p_p_lifecycle%3D0%26p_p_state%3Dnormal%26p_p_mode%3Dview%26p_p_col_id%3Dcolumn-1%26p_p_col_pos%3D1%26p_p_col_count%3D3&_169_INSTANCE_WX1B5VeBXj3E_backURL=https%3A%2F%2Fweb.liferay.com%2Fweb%2Fevents2016%2Fnorthamerica%2Fspeaker-sign-up&_169_INSTANCE_WX1B5VeBXj3E_recordSetId=76377831&_169_INSTANCE_WX1B5VeBXj3E_detailDDMTemplateId=0">
+							Add Session
+						</a>
+					</p>
+				</div>
+
+				<div class="fl aui-w50 responsive-w100">
+					<h3>Speaker Info</h3>
+
+					#set ($first_name = $info_record.getFieldValue("first_name"))
+					#set ($last_name = $info_record.getFieldValue("last_name"))
+					#set ($speaker_company = $info_record.getFieldValue("company"))
+					#set ($job_title = $info_record.getFieldValue("job_title"))
+
+					<div class="speaker-info">
+						<div class="field"><span class="label">Email Address:</span> $email_address</div>
+						<div class="field"><span class="label">First Name:</span> $first_name</div>
+						<div class="field"><span class="label">Last Name:</span> $last_name</div>
+						<div class="field"><span class="label">Company:</span> $speaker_company</div>
+						<div class="field"><span class="label">Job Title:</span> $job_title</div>
+
+						#set ($social_linkedin_url = $info_record.getFieldValue("social_linkedin_url"))
+
+						#if ($social_linkedin_url != "")
+							<div class="field"><span class="label">LinkedIn:</span> <a href="$social_linkedin_url" target="_new">$social_linkedin_url</a></div>
+						#end
+
+						#set ($social_twitter_url = $info_record.getFieldValue("social_twitter_url"))
+
+						#if ($social_twitter_url != "")
+							<div class="field"><span class="label">Twitter:</span> <a href="$social_twitter_url" target="_new">$social_twitter_url</a></div>
+						#end
+
+						#set ($bio = $info_record.getFieldValue("bio"))
+						#set ($bio = $bio.replaceAll("(\r\n|\n)", "<br />"))
+
+						<div class="field">
+							<span class="label">Biography:</span>
+						 	<p>$bio</p>
+						 </div>
+
+						<p>
+							<a class="btn" href="/web/events2016/northamerica/admin/speaker-sign-up?p_p_id=169_INSTANCE_zCuCZpSqAQQ1&p_p_lifecycle=0&p_p_state=maximized&p_p_mode=view&p_p_col_id=column-1&p_p_col_count=1&_169_INSTANCE_zCuCZpSqAQQ1_struts_action=%2Fdynamic_data_list_display%2Fedit_record&_169_INSTANCE_zCuCZpSqAQQ1_cmd=update&_169_INSTANCE_zCuCZpSqAQQ1_redirect=https%3A%2F%2Fweb.liferay.com%2Fweb%2Fevents2016%2Fnorthamerica%2Fspeaker-sign-up%3Fp_p_id%3D169_INSTANCE_zCuCZpSqAQQ1%26p_p_lifecycle%3D0%26p_p_state%3Dnormal%26p_p_mode%3Dview%26p_p_col_id%3Dcolumn-1%26p_p_col_count%3D1&_169_INSTANCE_zCuCZpSqAQQ1_backURL=%2Fweb%2Fevents2016%2Fnorthamerica%2Fspeaker-sign-up&_169_INSTANCE_zCuCZpSqAQQ1_detailDDMTemplateId=76416990&_169_INSTANCE_zCuCZpSqAQQ1_recordId=$info_record.getRecordId()">
+								Edit Speaker Info
+							</a>
+						</p>
+
+						<div class="field">
+							<p class="label">Headshot:</p>
+
+							#if ($file_name != "")
+								$file_name<br />
+							#end
+
+							#if ($headshot_url != "")
+								<p>
+									<img height="100" src="$headshot_url" width="100" />
+								</p>
+							#end
+
+							<a class="btn" href="$edit_headshot_url">$headshot_label</a>
+						</div>
+					</div>
+				</div>
+			#else
+				<p class="error-msg">Speaker invitation not found for $user.getEmailAddress()</p>
+
+				<p>$invalid_email_message</p>
+			#end
+		#end
+	</div>
+</div>

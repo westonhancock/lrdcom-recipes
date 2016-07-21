@@ -96,7 +96,7 @@
 		left: 0;
 		margin-left: 0;
 		overflow: hidden;
-		z-index: 9999;
+		z-index: 999;
 	}
 
 	.events-nav.register {
@@ -107,7 +107,7 @@
 		background-clip: border-box;
 		right: 0;
 		width: auto;
-		z-index: 9999;
+		z-index: 999;
 	}
 
 	.floating-nav.register-button .btn {
@@ -298,6 +298,7 @@
 		margin-top: 40px;
 	}
 
+
 	#intro {
 		background: url($background_image.data);
 		background-position: 0 50%;
@@ -316,6 +317,7 @@
 		z-index: 3;
 	}
 
+
 	#intro .content.slided {
 		left: 15%;
 	}
@@ -323,6 +325,7 @@
 	#intro .content img {
 		height: 190px;
 	}
+
 
 	## 800px here to avoid multiple edits in individual border widths 
 	## this is one huge border that when blown up shows a 45 degree angle
@@ -417,8 +420,8 @@
 			margin-top: 120%;
 		}
 		#intro .content, #intro .content.slided {
-			left: 10%;
-			top: 10%;
+			left: 7%;
+			top: 7%;
 		}
 	}
 </style>
@@ -566,7 +569,9 @@
 				<div class="span-left">
 				</div>
 				<div class="span-right">
+					#if ($logo_image.logo_text_image.data != "")
 					<div class="event-logo-text"></div>
+					#end
 					<div class="event-subtitle top">
 						#foreach($event_text_line in $event_text.getSiblings())
 							<span style="line-height: 1.4;">$event_text_line.getData()</span> <br/>
@@ -735,7 +740,8 @@
 		
 	});
 	
-	addEventFunc("load", function(event) {	
+
+	addEventFunc("load",  function(event) {	
 			## fade in banner content
 			var bannerContent = document.getElementById("bannerContent");
 
