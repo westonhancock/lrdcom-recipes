@@ -173,9 +173,11 @@
 	#set ($room_uuid = $stringUtil.replace($room_uuid, "]", ""))
 	#set ($room_uuid = $stringUtil.replace($room_uuid, '"', ''))
 
+	#set ($room_record_info = false)
+	#set ($room_record = false)
 	#set ($room_record_info = $ddl_records_local_service.getDDLRecordByUuidAndGroupId($room_uuid, $groupId))
 	#set ($room_record = $ddl_records_local_service.fetchDDLRecord($getterUtil.getLong($room_record_info.recordId)))
-
+	
 	#if ($room_record)
 	  #set ($room_name = $room_record.getFieldValue("room_name"))
 	  #set ($room_number = $room_record.getFieldValue("room_number"))
