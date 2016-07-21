@@ -50,7 +50,7 @@
 	<#elseif article.getUrlTitle() != new_article_url_title >
 		<#assign title_map = get_data_map(saxReaderUtil.read(article.getTitle())!, "Title") />
 		<#assign description_map = get_data_map(saxReaderUtil.read(article.getDescription())!, "Description") />
-		
+
 		<#assign new_article = journal_article_local_service.addArticle(permissionChecker.getUserId(), groupId, article.getFolderId(), title_map, description_map, article.getContent(), article.getStructureId(), article.getTemplateId(), service_context) />
 
 		<#assign VOID = journal_article_local_service.expireArticle(permissionChecker.getUserId(), groupId, article.getArticleId(), article.getUrlTitle(), service_context) />
@@ -115,7 +115,7 @@
 
 <#function get_data_map document element>
 	<#assign data_map = {} />
-	
+
 	<#if document?has_content && element?has_content>
 		<#assign dynamic_elements = document.selectNodes("/root/${element}") />
 
