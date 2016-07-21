@@ -1,0 +1,98 @@
+#macro (get_tactic_info22 $tactic_id $hs_tactic_map)
+    #set ($tactic_map = $portal.getClass().forName("java.util.TreeMap").newInstance())
+
+    #set ($tactic_record = $ddlRecordLocalService.fetchDDLRecord($getterUtil.getLong($tactic_id)))
+
+    #if ($tactic_record)
+        #foreach ($field in $hs_field_values)
+            #set ($field_name = "")
+
+            #if ($tactic_record.getField($field))
+                #set ($field_name = $tactic_record.getFieldValue($field))
+            #end
+
+            #clean_up($field_name)
+
+            #if ($field_name != "")
+                #set ($VOID = $tactic_map.put($field, $field_name))
+            #end
+        #end
+
+        #set ($asset_record = "")
+
+        #if ($tactic_record.getField("asset"))
+            #set ($asset_record = $tactic_record.getFieldValue("asset"))
+        #end
+
+        #set ($asset_type = "")
+
+        #if ($tactic_record.getField("asset_type"))
+            #set ($asset_type = $tactic_record.getFieldValue("asset_type"))
+        #end
+
+        #clean_up($asset_type)
+
+        #set ($asset_id = "")
+
+        #if ($tactic_record.getField("asset_id"))
+            #set ($asset_id = $tactic_record.getFieldValue("asset_id"))
+        #end
+        
+        #set ($asset_name = "")
+
+        #if ($tactic_record.getField("asset_name"))
+            #set ($asset_name = $tactic_record.getFieldValue("asset_name"))
+        #end
+        
+        #set ($asset_url = "")
+
+        #if ($tactic_record.getField("asset_url"))
+            #set ($asset_url = $tactic_record.getFieldValue("asset_url"))
+        #end
+
+        #set ($asset_json_object = $jsonFactoryUtil.getNullJSON())
+        
+        #if ($stringUtil.startsWith($asset_record, "{") && $stringUtil.endsWith($asset_record, "}"))
+            #set ($asset_json_object = $jsonFactoryUtil.createJSONObject($asset_record))
+        #end
+        
+        #set ($asset = false)
+
+        #if ($asset_json_object.getString('uuid'))
+            #set ($asset_url = "${request.get('scheme')}://${request.get('theme-display').get('portal-url')}/documents/14/${asset_json_object.getString('uuid')}")
+
+            #set ($asset = $dlFileEntryLocalService.getFileEntryByUuidAndGroupId($asset_json_object.getString('uuid'), 14))
+
+            #if ($asset)
+                #set ($asset_id = $asset.getUuid())
+                #set ($asset_name = $asset.getTitle())
+            #end
+        #end
+
+        #if ($asset_name != "")
+            #set ($VOID = $tactic_map.put("asset_name", $asset_name))
+        #end
+
+        #if ($asset_id != "")
+            #set ($VOID = $tactic_map.put("asset_id", $asset_id))
+        #end
+
+        #if ($asset_url != "")
+            #set ($VOID = $tactic_map.put("asset_url", $asset_url))
+        #end
+
+        #set ($VOID = $tactic_map.put("tactic_id", $tactic_record.getRecordId()))
+
+        #set ($hs_tactic_map = "{")
+
+        #foreach ($key in $tactic_map.keySet())
+            #if ($velocityCount != 1)
+                #set ($hs_tactic_map = "${hs_tactic_map},")
+            #end
+
+            #set ($hs_tactic_map = "${hs_tactic_map}&#34;${key}&#34;:&#34;${tactic_map.get($key)}&#34;")
+        #end
+
+        #set ($hs_tactic_map = "${hs_tactic_map}}")
+    #end
+#end
