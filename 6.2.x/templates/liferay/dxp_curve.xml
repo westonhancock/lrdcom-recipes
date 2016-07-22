@@ -1,0 +1,210 @@
+
+<root available-locales="en_US" default-locale="en_US">
+	<dynamic-element dataType="string" indexType="keyword" localizable="true" name="curve_position" readOnly="false" repeatable="false" required="false" showLabel="true" type="radio" width="">
+		<dynamic-element name="option3977" type="option" value="top">
+			<meta-data locale="en_US">
+				<entry name="label">
+					<![CDATA[Top]]>
+				</entry>
+			</meta-data>
+		</dynamic-element>
+		<dynamic-element name="option3978" type="option" value="bottom">
+			<meta-data locale="en_US">
+				<entry name="label">
+					<![CDATA[Bottom]]>
+				</entry>
+			</meta-data>
+		</dynamic-element>
+		<meta-data locale="en_US">
+			<entry name="label">
+				<![CDATA[Curve Position]]>
+			</entry>
+			<entry name="predefinedValue">
+				<![CDATA[["top"]]]>
+			</entry>
+			<entry name="tip">
+				<![CDATA[]]>
+			</entry>
+		</meta-data>
+	</dynamic-element>
+	<dynamic-element dataType="string" indexType="keyword" localizable="true" multiple="false" name="curve_background_color" readOnly="false" repeatable="false" required="false" showLabel="true" type="select" width="">
+		<dynamic-element name="option11330" type="option" value="#E8C41E">
+			<meta-data locale="en_US">
+				<entry name="label">
+					<![CDATA[DXP Yellow]]>
+				</entry>
+			</meta-data>
+		</dynamic-element>
+		<dynamic-element name="option11331" type="option" value="#575C78">
+			<meta-data locale="en_US">
+				<entry name="label">
+					<![CDATA[DXP Blue]]>
+				</entry>
+			</meta-data>
+		</dynamic-element>
+		<dynamic-element name="option11332" type="option" value="#0F0F12">
+			<meta-data locale="en_US">
+				<entry name="label">
+					<![CDATA[DXP Dark Blue]]>
+				</entry>
+			</meta-data>
+		</dynamic-element>
+		<dynamic-element name="option11333" type="option" value="#22386D">
+			<meta-data locale="en_US">
+				<entry name="label">
+					<![CDATA[DXP Darker Blue]]>
+				</entry>
+			</meta-data>
+		</dynamic-element>
+		<dynamic-element name="option11334" type="option" value="#D74817">
+			<meta-data locale="en_US">
+				<entry name="label">
+					<![CDATA[DXP Red]]>
+				</entry>
+			</meta-data>
+		</dynamic-element>
+		<dynamic-element name="option11335" type="option" value="#EEF2F5">
+			<meta-data locale="en_US">
+				<entry name="label">
+					<![CDATA[DXP Gray]]>
+				</entry>
+			</meta-data>
+		</dynamic-element>
+		<dynamic-element name="option11336" type="option" value="#F1F5F7">
+			<meta-data locale="en_US">
+				<entry name="label">
+					<![CDATA[DXP Grey]]>
+				</entry>
+			</meta-data>
+		</dynamic-element>
+		<dynamic-element name="option11337" type="option" value="#EEF3F5">
+			<meta-data locale="en_US">
+				<entry name="label">
+					<![CDATA[DXP Quote Gray]]>
+				</entry>
+			</meta-data>
+		</dynamic-element>
+		<dynamic-element name="option5200" type="option" value="#46718A">
+			<meta-data locale="en_US">
+				<entry name="label">
+					<![CDATA[DXP Primary Color]]>
+				</entry>
+			</meta-data>
+		</dynamic-element>
+		<dynamic-element name="option11338" type="option" value="#FFF">
+			<meta-data locale="en_US">
+				<entry name="label">
+					<![CDATA[White]]>
+				</entry>
+			</meta-data>
+		</dynamic-element>
+		<dynamic-element name="option69770" type="option" value="none">
+			<meta-data locale="en_US">
+				<entry name="label">
+					<![CDATA[None]]>
+				</entry>
+			</meta-data>
+		</dynamic-element>
+		<meta-data locale="en_US">
+			<entry name="label">
+				<![CDATA[Curve Background Color]]>
+			</entry>
+			<entry name="predefinedValue">
+				<![CDATA[["#EEF3F5"]]]>
+			</entry>
+			<entry name="tip">
+				<![CDATA[]]>
+			</entry>
+		</meta-data>
+	</dynamic-element>
+	<dynamic-element dataType="string" indexType="keyword" localizable="true" multiple="false" name="curve_border_color" readOnly="false" repeatable="false" required="false" showLabel="true" type="select" width="">
+		<dynamic-element name="option11622" type="option" value="#E8C41E">
+			<meta-data locale="en_US">
+				<entry name="label">
+					<![CDATA[DXP Yellow]]>
+				</entry>
+			</meta-data>
+		</dynamic-element>
+		<dynamic-element name="option11623" type="option" value="#575C78">
+			<meta-data locale="en_US">
+				<entry name="label">
+					<![CDATA[DXP Blue]]>
+				</entry>
+			</meta-data>
+		</dynamic-element>
+		<dynamic-element name="option11624" type="option" value="#0F0F12">
+			<meta-data locale="en_US">
+				<entry name="label">
+					<![CDATA[DXP Dark Blue]]>
+				</entry>
+			</meta-data>
+		</dynamic-element>
+		<dynamic-element name="option11625" type="option" value="#22386D">
+			<meta-data locale="en_US">
+				<entry name="label">
+					<![CDATA[DXP Darker Blue]]>
+				</entry>
+			</meta-data>
+		</dynamic-element>
+		<dynamic-element name="option11626" type="option" value="#D74817">
+			<meta-data locale="en_US">
+				<entry name="label">
+					<![CDATA[DXP Red]]>
+				</entry>
+			</meta-data>
+		</dynamic-element>
+		<dynamic-element name="option11627" type="option" value="#EEF2F5">
+			<meta-data locale="en_US">
+				<entry name="label">
+					<![CDATA[DXP Grey]]>
+				</entry>
+			</meta-data>
+		</dynamic-element>
+		<dynamic-element name="option11628" type="option" value="#F1F5F7">
+			<meta-data locale="en_US">
+				<entry name="label">
+					<![CDATA[DXP Gray]]>
+				</entry>
+			</meta-data>
+		</dynamic-element>
+		<dynamic-element name="option11629" type="option" value="#EEF3F5">
+			<meta-data locale="en_US">
+				<entry name="label">
+					<![CDATA[DXP Quote Gray]]>
+				</entry>
+			</meta-data>
+		</dynamic-element>
+		<dynamic-element name="option5484" type="option" value="#46718A">
+			<meta-data locale="en_US">
+				<entry name="label">
+					<![CDATA[DXP Primary Color]]>
+				</entry>
+			</meta-data>
+		</dynamic-element>
+		<dynamic-element name="option11630" type="option" value="#FFF">
+			<meta-data locale="en_US">
+				<entry name="label">
+					<![CDATA[White]]>
+				</entry>
+			</meta-data>
+		</dynamic-element>
+		<dynamic-element name="option70063" type="option" value="none">
+			<meta-data locale="en_US">
+				<entry name="label">
+					<![CDATA[None]]>
+				</entry>
+			</meta-data>
+		</dynamic-element>
+		<meta-data locale="en_US">
+			<entry name="label">
+				<![CDATA[Curve Border Color]]>
+			</entry>
+			<entry name="predefinedValue">
+				<![CDATA[["none"]]]>
+			</entry>
+			<entry name="tip">
+				<![CDATA[]]>
+			</entry>
+		</meta-data>
+	</dynamic-element>
+</root>
