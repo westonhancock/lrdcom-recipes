@@ -78,13 +78,13 @@
 			</div>
 		</#if>
 	</div>
-</div>
 
-<#if source?? && source.data?has_content>
-	<div class="source-text text-center">
-		${source.data}
-	</div>
-</#if>
+	<#if source?? && source.data?has_content>
+		<div class="source-text text-center">
+			${source.data}
+		</div>
+	</#if>
+</div>
 
 <style>
 .quote-section .quote:after, .quote-section .quote:before {
