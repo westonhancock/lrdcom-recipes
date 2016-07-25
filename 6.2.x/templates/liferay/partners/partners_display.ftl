@@ -387,12 +387,6 @@
 						},
 						failure: function (event, id, obj) {
 							console.log('failed to retrieve data');
-
-							var unavailableMessage = '<h3 class="standard-padding">' +
-								'${languageUtil.format(locale, "is-temporarily-unavailable", "entry-information")}' +
-								'</h3>';
-
-							partnersDisplay.appendChild(unavailableMessage);
 						}
 					}
 				}
