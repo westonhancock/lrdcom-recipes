@@ -80,7 +80,18 @@
 	</div>
 
 	<#if source?? && source.data?has_content>
-		<div class="source-text text-center">
+		<#assign source_css_class = "source-text text-center" />
+		<#assign source_attrs = "" />
+
+		<#if hasUpdatePermissons>
+			<#assign source_css_class = source_css_class + " live-edit" />
+			<#assign source_attrs = source_attrs + "
+				data-article-id='${.vars[\"reserved-article-id\"].data}'
+				data-level-path='${source.name}::0'
+			" />
+		</#if>
+
+		<div class="${source_css_class}" ${source_attrs}>
 			${source.data}
 		</div>
 	</#if>
