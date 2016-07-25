@@ -19,7 +19,7 @@
 				<#if layoutPermission.contains(permissionChecker, layout, "UPDATE") && article??>
 					<#assign edit_url = get_edit_url(article, request.attributes.CURRENT_COMPLETE_URL!, http_servlet_request) />
 
-					<div class="lfr-meta-actions icons-container">
+					<div class="icons-container lfr-meta-actions">
 						<div class="lfr-icon-actions">
 							<span class="lfr-icon-action lfr-icon-action-edit lfr-meta-actions">
 								<div class="edit-wrapper">
@@ -37,8 +37,8 @@
 	</#list>
 
 	<#if related_resource.siblings?has_content || sources.siblings?has_content>
-		<div class="related-resources-sources max-med standard-padding">
-			<#if related_resource.siblings?has_content>
+		<div class="max-med related-resources-sources standard-padding">
+			<#if related_resource.data?has_content>
 				<div class="related-resources standard-padding">
 					<#assign resources_title = '${languageUtil.get(locale, "related-resources", "Related Resources")}' />
 
@@ -52,7 +52,7 @@
 				</div>
 			</#if>
 
-			<#if sources.siblings?has_content>
+			<#if sources.data?has_content>
 				<div class="alt-font-color sources standard-padding">
 					<#assign sources_title = '${languageUtil.get(locale, "sources", "Sources")}' />
 
