@@ -88,13 +88,19 @@
 	<#assign document = saxReaderUtil.read(new_article.getContent()) />
 
 	<#assign dynamic_elements = document.selectNodes("/root/dynamic-element[@name=\"article_ids\"]/dynamic-content") />
+	<#assign no_copy_nodes = document.selectNodes("/root/dynamic-element[@name=\"article_ids\"]/dynamic-element[@name=\"no_copy\"]/dynamic-content") />
 
 	<#list dynamic_elements as dynamic_element>
-		<#assign embedded_article = journal_article_local_service.getLatestArticle(groupId, dynamic_element.getText())! />
+		<#assign no_copy_node = no_copy_nodes[dynamic_element_index] />
+		<#assign no_copy = no_copy_node.getStringValue()?trim />
 
-		<#assign new_embedded_article = journal_article_local_service.copyArticle(permissionChecker.getUserId(), groupId, embedded_article.getArticleId(), "", true, embedded_article.getVersion())! />
+		<#if !getterUtil.getBoolean(no_copy)>
+			<#assign embedded_article = journal_article_local_service.getLatestArticle(groupId, dynamic_element.getText())! />
 
-		<#assign VOID = dynamic_element.setText(new_embedded_article.getArticleId()) />
+			<#assign new_embedded_article = journal_article_local_service.copyArticle(permissionChecker.getUserId(), groupId, embedded_article.getArticleId(), "", true, embedded_article.getVersion())! />
+
+			<#assign VOID = dynamic_element.setText(new_embedded_article.getArticleId()) />
+		</#if>
 	</#list>
 
 	<#assign VOID = journal_article_local_service.updateArticle(new_article.getUserId(), new_article.getGroupId(), new_article.getFolderId(), new_article.getArticleId(), new_article.getVersion(), document.asXML(), service_context) />
