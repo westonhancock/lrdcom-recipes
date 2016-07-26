@@ -321,7 +321,7 @@
 						}
 
 						for (i = 0; i < partnershipsEntries; i++) {
-							var partnershipCountry = partnerships[i].country;
+							var partnershipCountry = partnerships[i].countryName;
 							var partnershipLevel = partnerships[i].level;
 
 							if (partnershipCountry == 'global') {
