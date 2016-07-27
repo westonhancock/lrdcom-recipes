@@ -1149,7 +1149,7 @@ var agenda_entries = {};
 	#end
 #end
 
-#set ($hs_field_values = ["asset_type","campaign","leadsource","lead_source_type","product_interest","program","tactic_name","video_type"])
+#set ($hs_field_values = ["asset_type","campaign","leadsource","lead_source_type","product_interest","program","tactic_name","video_type","asset_primary_buyers_stage"])
 
 
 <div id="popuphome">
