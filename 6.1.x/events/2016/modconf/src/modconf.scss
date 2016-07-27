@@ -1,6 +1,9 @@
+@custom-media --small-viewport (max-width: 500px);
+@custom-media --big-viewport (min-width: 771px);
+@custom-media --mobile-tablet-viewport (max-width: 770px);
+
 $darkestgray: #414042; /* text and background */
 $gray: #d1d3d4; /* border */
-
 
 $red: #dd515e;  /* text and agenda header*/
 $white: #ffffff; /* text*/
@@ -10,4 +13,39 @@ $darkgray: #58595b; /* number text*/
 $darkgray2: #6d6e71;  /* border, agenda day selected */
 $gray2: #a7a9ac; /* agenda day*/
 
+
+.banner  {
+    text-align: center;
+    background: url($main-image-dir/MC16-Mobile-Banner-img-1-1.png) no-repeat center center;
+    background-size: 100%;
+    padding-bottom: 95%;
+    position: relative;
+    
+    @media (--big-viewport) {
+        background: url($main-image-dir/MC16-Banner-img-1-1_70percent.png) no-repeat center center;
+        background-size: 100%;
+        padding-bottom: 37%; 
+    }
+}
+.banner__desktoplogo {
+    display: none;
+}
+@media (--big-viewport) {
+    .banner__mobilelogo {
+        display: none;
+    }
+    .banner__desktoplogo {
+        display: inline;
+    }
+}
+
+.banner__mobilelogo, .banner__desktoplogo {
+   position:absolute;
+    top:50%;
+    bottom:50%;
+    transform: translateX( -50%) translateY(-50%);
+    -webkit-transform:  translateX( -50%) translateY(-50%);
+    width: 70%;
+    height: 70%;
+}
 

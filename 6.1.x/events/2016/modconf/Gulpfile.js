@@ -91,7 +91,7 @@ gulp.task("replace", function() {
     .pipe(gulp.dest('build'));
 });
 
-gulp.task('pug', ["replace", "velocity", "js", "liferaycss", "scripts", "sprite", "css"], function buildHTML() {
+gulp.task('pug', ["replace", "js", "liferaycss", "scripts", "sprite", "css"], function buildHTML() {
     logger.info("Running templates");
     var pug = require('gulp-pug');
     return gulp.src(paths.pug)
@@ -134,8 +134,8 @@ gulp.task('watch', function () {
 });
 
 
-gulp.task('live-dev', ['dev', 'velocity', 'pug', 'watch', 'browser-sync']);
-gulp.task('live-local-dev', ['dev', 'velocity', 'pug', 'watch', 'browser-sync-dev']);
+gulp.task('live-dev', ['dev', 'pug', 'watch', 'browser-sync']);
+gulp.task('live-local-dev', ['dev', 'pug', 'watch', 'browser-sync-dev']);
 
 gulp.task('svgmin', function () {
     return gulp.src('images/*.svg')
@@ -750,21 +750,3 @@ gulp.task('resize-hotel', function () {
     .pipe(gulp.dest('build/images/hotel'));
 });
 
-
-
-gulp.task("velocity", function() { 
-
-var velocityconfig = {
-  template: './ldsf-sliding-banner.vm',
-  context: './ldsf-sliding-banner.js'
-};
-var Engine = require('velocity').Engine;
-
-var engine = new Engine( velocityconfig );
-var result = engine.render( velocityconfig.context);
-  fs.writeFile("./build/recap/banner-out.html", result);
-//console.log(result);
-
-
-
-});
