@@ -18,13 +18,13 @@ $gray2: #a7a9ac; /* agenda day*/
     text-align: center;
     background: url($main-image-dir/MC16-Mobile-Banner-img-1-1.png) no-repeat center center;
     background-size: 100%;
-    padding-bottom: 95%;
+    padding-bottom: 114%;
     position: relative;
     
     @media (--big-viewport) {
         background: url($main-image-dir/MC16-Banner-img-1-1_70percent.png) no-repeat center center;
         background-size: 100%;
-        padding-bottom: 37%; 
+        padding-bottom: 46%; 
     }
 }
 .banner__desktoplogo {
@@ -49,3 +49,42 @@ $gray2: #a7a9ac; /* agenda day*/
     height: 70%;
 }
 
+.anewevent {
+    text-align: center;
+
+}
+
+
+.anewevent__block{
+    vertical-align: middle;
+    box-sizing: border-box;
+
+}
+
+.anewevent__header {
+    color: $red;
+    font-size: 350%;
+    line-height: 1em;
+    text-align: left;
+    @media (--big-viewport) {
+        font-size: 800%;
+    }
+}
+.anewevent__abouttext {
+    color: $darkestgray;
+    border-left: 10px solid $gray;
+    padding-left: 10px;
+    text-align: left;
+
+    @media (--big-viewport) {
+        max-width: 400px;
+        font-size: 150%;
+        border-left: 20px solid $gray;
+        padding-left: 20px;
+    }
+
+}
+
+
+
+@import "lego-edit.scss";
