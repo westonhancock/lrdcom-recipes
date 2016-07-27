@@ -139,11 +139,11 @@ var tacticIdFields = {};
 }
 
 .aui-overlay-content.aui-overlaymask-content {
-	background-color: rgba(255, 255, 255, 0.99);
+	background-color: rgba(0, 0, 0, 0.85);
 }
 
 .page-pop-up {
-	background-color: transparent;
+	background-color: white;
 	max-width: 680px;
 	position: absolute;
 	width: 100%;
@@ -176,6 +176,17 @@ var tacticIdFields = {};
 
 .position-static .portlet-borderless-container {
 	position: static;
+}
+
+.close-popup-content {
+  background: url(/documents/35935946/36204257/close-pop-up.png/98401a14-9fcf-4f9a-8f1d-4fdcb7ff0207?t=1392924953000?t=1392924953000?t=1392924953590) no-repeat;
+	background-size: 100%;
+	cursor: pointer;
+	flex: 0 0 auto;
+	order: 4;
+	width: 50px;
+	height: 50px;
+	float: right;
 }
 
 @media all and (max-width: 520px) {
@@ -304,6 +315,7 @@ AUI().ready(
 </script>
 
 <div class="aui-helper-hidden page-pop-up" data-overlay="true" id="gatedBtnPopUp-${reserved-article-id.data}">
+	<div class="close-popup-content"></div>
 	<div class="pop-up-content">
 		<div id="popUpContentWrapper-${reserved-article-id.data}">
 			<div class="pop-up-header">
