@@ -51,6 +51,7 @@ $gray2: #a7a9ac; /* agenda day*/
 
 .anewevent {
     text-align: center;
+    margin: 3em 0;
 
 }
 
@@ -63,11 +64,13 @@ $gray2: #a7a9ac; /* agenda day*/
 
 .anewevent__header {
     color: $red;
+    margin: 0;
     font-size: 350%;
     line-height: 1em;
     text-align: left;
     @media (--big-viewport) {
         font-size: 800%;
+        font-size: 7vw;
     }
 }
 .anewevent__abouttext {
@@ -75,7 +78,7 @@ $gray2: #a7a9ac; /* agenda day*/
     border-left: 10px solid $gray;
     padding-left: 10px;
     text-align: left;
-
+    margin: 0;
     @media (--big-viewport) {
         max-width: 400px;
         font-size: 150%;
