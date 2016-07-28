@@ -49,10 +49,12 @@ $gray2: #a7a9ac; /* agenda day*/
     height: 70%;
 }
 
-body  {
-    font-size: calc(16px + (24 - 16)*(100vw - 600px)/ ( 1920 - 600) );
+.lego-article {
+
+    font-size: calc(16px + (24 - 16)*(100vw - 400px)/ ( 1600 - 400) );
 }
 .anewevent {
+    
     text-align: center;
     margin: 3em 0;
 }
@@ -65,7 +67,7 @@ body  {
 .anewevent__header {
     color: $red;
     margin: 0;
-    font-size: 6em;
+    font-size: 4em;
     line-height: 1em;
     text-align: left;
 }
@@ -78,6 +80,52 @@ body  {
     margin: 0;
 }
 
+.whyhowwhat {
+    background-color: $darkestgray;
+    color: $white;
+    padding: 2em;
+      @media (--small-viewport) {
+            padding: 2em 0.1em 2em 2em;
+      }
+   
+}
 
+.whyhowwhat .lego-block {
+    vertical-align: top;
+    padding: 2em;
+    box-sizing: border-box;
+    counter-increment: whyhowwhat__block;
+    position: relative;
+    
+}
+
+
+.whyhowwhat .lego-block::before {
+    content: counter(whyhowwhat__block);
+    color: $darkgray;
+    font-size: 12em;
+    font-weight: bold;
+    position: absolute;
+    top: -0.4em;
+    left: -0.1em;  
+
+    display: block;
+
+}
+.whyhowwhat__header, .whyhowwhat__text {
+      z-index: 1;
+      position: relative;
+}
+.whyhowwhat__header {
+    color: $white;
+    margin: 0;
+  
+
+}
+
+.whyhowwhat__text{
+
+
+}
 
 @import "lego-edit.scss";
