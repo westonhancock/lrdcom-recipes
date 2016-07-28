@@ -50,11 +50,10 @@ $gray2: #a7a9ac; /* agenda day*/
 }
 
 .lego-article {
-
     font-size: calc(16px + (24 - 16)*(100vw - 400px)/ ( 1600 - 400) );
 }
+
 .anewevent {
-    
     text-align: center;
     margin: 3em 0;
 }
@@ -80,14 +79,21 @@ $gray2: #a7a9ac; /* agenda day*/
     margin: 0;
 }
 
-.whyhowwhat {
+.whyhowwhat, .prices {
     background-color: $darkestgray;
     color: $white;
-    padding: 2em;
-      @media (--small-viewport) {
-            padding: 2em 0.1em 2em 2em;
-      }
-   
+    padding: 2em 0;
+}
+
+.whyhowwhat .max-960, .anewevent .max-960{
+    max-width: none;
+}
+
+.whyhowwhat .section-1 {
+    padding: 0 2em;
+    @media (--small-viewport) {
+        padding: 0 0 0 2em;
+    }
 }
 
 .whyhowwhat__block {
@@ -99,7 +105,6 @@ $gray2: #a7a9ac; /* agenda day*/
     float: left;
 }
 
-
 .whyhowwhat__block::before {
     content: counter(whyhowwhat__block);
     color: $darkgray;
@@ -108,9 +113,7 @@ $gray2: #a7a9ac; /* agenda day*/
     position: absolute;
     top: -0.4em;
     left: -0.1em;  
-
     display: block;
-
 }
 .whyhowwhat__header, .whyhowwhat__text {
       z-index: 1;
@@ -145,12 +148,44 @@ $gray2: #a7a9ac; /* agenda day*/
     text-align: center;
 }
 
-.whyhowwhat__button {
+.whyhowwhat__button, .prices__button, .btn {
     border: 0.2em solid $white;
     padding: 0.5em;
     color: $white;
     font-weight: normal;
     font-size: 1.5em;
+    display: inline-block;
+}
+
+.agenda__header {
+    color: $red;
+    text-align: center;
+}
+
+.prices {
+ box-sizing: border-box;
+    text-align: center;
+
+    .block-2 .content-column-content, .block-3 .content-column-content {
+          border-left: 0.8em solid $darkgray2;
+          padding-left: 0.8em;
+          margin: 0 2em 2em 2em;         
+    }
+
+
+}
+
+
+
+.prices__header {
+    color: $white;
+    margin-top: 0;
+}
+.prices__title, .prices__price, .prices p {
+    color: $white;
+    margin: 0;
+    
+    text-align: left;
 }
 
 @import "lego-edit.scss";
