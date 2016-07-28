@@ -49,43 +49,33 @@ $gray2: #a7a9ac; /* agenda day*/
     height: 70%;
 }
 
+body  {
+    font-size: calc(18px + (24 - 18)*(100vw - 400px)/ ( 800 - 400) );
+}
 .anewevent {
     text-align: center;
     margin: 3em 0;
-
 }
-
 
 .anewevent__block{
     vertical-align: middle;
     box-sizing: border-box;
-
 }
 
 .anewevent__header {
     color: $red;
     margin: 0;
-    font-size: 350%;
+    font-size: 3.5em;
     line-height: 1em;
     text-align: left;
-    @media (--big-viewport) {
-        font-size: 800%;
-        font-size: 7vw;
-    }
 }
 .anewevent__abouttext {
     color: $darkestgray;
-    border-left: 10px solid $gray;
-    padding-left: 10px;
+    border-left: 0.8em solid $gray;
+    padding-left: 1.5em;
+    font-size: 0.8em;
     text-align: left;
     margin: 0;
-    @media (--big-viewport) {
-        max-width: 400px;
-        font-size: 150%;
-        border-left: 20px solid $gray;
-        padding-left: 20px;
-    }
-
 }
 
 
