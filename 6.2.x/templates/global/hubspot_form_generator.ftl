@@ -276,6 +276,12 @@
 								}
 							}
 
+							var previousPageSeen = document.referrer;
+
+							if (previousPageSeen) {
+								fields['recent_conversion_previous_page_seen'] = previousPageSeen;
+							}
+
 							var leave = false;
 
 							form.all('.field').each(
