@@ -90,17 +90,17 @@ $gray2: #a7a9ac; /* agenda day*/
    
 }
 
-.whyhowwhat .lego-block {
+.whyhowwhat__block {
     vertical-align: top;
     padding: 2em;
     box-sizing: border-box;
     counter-increment: whyhowwhat__block;
     position: relative;
-    
+    float: left;
 }
 
 
-.whyhowwhat .lego-block::before {
+.whyhowwhat__block::before {
     content: counter(whyhowwhat__block);
     color: $darkgray;
     font-size: 12em;
@@ -126,6 +126,31 @@ $gray2: #a7a9ac; /* agenda day*/
 .whyhowwhat__text{
 
 
+}
+
+.whyhowwhat__ctatext {
+
+    color: $white;
+    font-size: 1.25em;
+    max-width: 1200px;
+    margin: 2em auto;
+    
+    
+}
+
+.whyhowwhat_registersection {
+    margin: 0 auto;
+    border-top: 3px solid $white;
+    max-width: 90%;
+    text-align: center;
+}
+
+.whyhowwhat__button {
+    border: 0.2em solid $white;
+    padding: 0.5em;
+    color: $white;
+    font-weight: normal;
+    font-size: 1.5em;
 }
 
 @import "lego-edit.scss";
