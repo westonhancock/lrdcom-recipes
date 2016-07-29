@@ -217,8 +217,22 @@ gulp.task('update', ["js", "pug"], function () {
     var config = JSON.parse(fs.readFileSync('./config.json'));
     var articleConfig = JSON.parse(fs.readFileSync('./articleconfig.json'));
 
+
+    var minimist = require('minimist');
+    var options = minimist(process.argv.slice(2));
+
+    if (options && options.articleId) {
+        console.log("Using articleId " + options.articleId);
+    }
+
     articleConfig.forEach(function (article) {
-        biggulp.updateStaticArticleContent(config, article);
+        if (options && options.articleId) {
+            if (article.articleId.indexOf(options.articleId) >= 0) {
+                biggulp.updateStaticArticleContent(config, article);
+            }
+        } else {
+            biggulp.updateStaticArticleContent(config, article);
+        }
     });
 });
 
