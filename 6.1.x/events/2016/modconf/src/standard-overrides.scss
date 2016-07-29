@@ -1,0 +1,15 @@
+
+/* hide footer */
+#footer {
+    display: none;
+}
+
+/* hide "technical articles (js, popups)" */
+.portlet-borderless-container{
+    min-height: 0;
+}
+
+/* override standard mobile padding of 15px that leads to white borders */
+#main-content.full-screen-layout .portlet-dropzone {
+    padding: 0 !important;
+}

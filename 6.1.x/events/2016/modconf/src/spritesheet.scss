@@ -1,0 +1,16 @@
+#spritesheet {
+    display: flex;
+    flex: 1 0 auto;
+    flex-flow: row wrap;
+
+}
+#spritesheet div {
+    border: 1px solid black;
+    text-align: center;
+    margin: 10px;
+}
+
+#spritesheet svg {
+    border: 1px solid black;
+    background: lightblue;
+}

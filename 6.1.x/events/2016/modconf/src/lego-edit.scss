@@ -1,0 +1,60 @@
+
+$blue: #1477A8;
+$lightblue: #B6E0EA;
+
+
+table.lfr-table {
+	counter-reset: section;
+	margin-left: 30px;
+}
+
+
+@define-mixin counter $increment, $reset {
+   font-size: 40px;
+   background: linear-gradient($lightblue, $blue);
+   color: white;
+	 display: block;
+   counter-increment: $(increment);  
+	 @if $(reset) != null {
+	 	counter-reset: $(reset);
+	 }
+
+	 }
+
+table.lfr-table li[dataname=lego_section_attr]:before {
+	 content: "SECTION " counter(section) " ";
+	 @mixin counter section, block;
+}
+table.lfr-table li[dataname=lego_block_attr]:before {
+	 content: "SECTION " counter(section) " BLOCK " counter(block) " ";
+	 	 @mixin counter block, element;
+}
+
+table.lfr-table li[dataname=lego_element_attr]:before {
+	 content: "SECTION " counter(section) " BLOCK " counter(block) " ELEMENT " counter(element) " ";
+	 @mixin counter element, null;
+}
+
+/*
+table.lfr-table textarea:not(.cke_source) {
+	height: 50px !important;
+}
+*/
+
+
+table.lfr-table .journal-article-component-container,
+table.lfr-table .journal-article-field-label,
+table.lfr-table .journal-article-localized-checkbox {
+	display: inline-block !important;
+}
+/*
+table.lfr-table 
+.taglib-form-navigator .form-section .aui-field-input {
+	width: 100px !important;
+}*/
+table.lfr-table 
+.taglib-form-navigator .form-section .aui-field-input[name*=title] {
+	width: 100% !important;
+	max-width: initial !important;
+	
+}

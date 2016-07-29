@@ -611,6 +611,9 @@ $white: #fff;
 
 }
 
+.portlet-borderless-container{
+    min-height: 0;
+}
 @import "twitter.scss";
 @import "hotel.scss";
 /* venue ----------------------------*/

@@ -1,0 +1,29 @@
+doctype html
+html(lang="en" class="responsive")
+  head
+    title="Fun with modconf"
+    script
+        include ../../devcon/build/all.min.js
+        include ../src/getwin.js  
+    style
+        include ../../devcon/src/font.css  
+        include ../../devcon/build/all.css
+        include ../../devcon/src/theme.css    
+    <link text="text/css" rel="stylesheet" href="modconf.css">
+    <meta content="minimum-scale=1.0, width=device-width" name="viewport">
+  body.yui3-skin-sam
+    #wrapper
+        header
+          include ../src/banner.pug
+        #main-content.full-screen-layout
+          div.portlet-dropzone.portlet-column-content
+            include ../build/anewevent.html
+            include ../build/whyhowwhat.html
+            include ../build/agendatitle.html
+            include ../build/agenda.html
+            include ../build/prices.html
+            include ../build/venue.html
+            include ../build/hotels.html
+        include ../build/all.js   
+        script 
+            include ../../devcon/src/liferay/js/h-main.js

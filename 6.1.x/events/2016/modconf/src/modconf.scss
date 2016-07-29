@@ -1,0 +1,231 @@
+@custom-media --small-viewport (max-width: 500px);
+@custom-media --big-viewport (min-width: 771px);
+@custom-media --mobile-tablet-viewport (max-width: 770px);
+
+@custom-media --theme-small-viewport (max-width: 720px);
+
+$darkestgray: #414042; /* text and background */
+$gray: #d1d3d4; /* border */
+
+$red: #dd515e;  /* text and agenda header*/
+$white: #ffffff; /* text*/
+$darkgray: #58595b; /* number text*/
+
+
+$darkgray2: #6d6e71;  /* border, agenda day selected */
+$gray2: #a7a9ac; /* agenda day*/
+
+
+.banner  {
+    text-align: center;
+    background: url($main-image-dir/MC16-Mobile-Banner-img-1-1.png) no-repeat center center;
+    background-size: 100%;
+    padding-bottom: 114%;
+    position: relative;
+    
+    @media (--big-viewport) {
+        background: url($main-image-dir/MC16-Banner-img-1-1_70percent.png) no-repeat center center;
+        background-size: 100%;
+        padding-bottom: 46%; 
+    }
+}
+
+.banner__desktoplogo {
+    display: none;
+}
+
+@media (--big-viewport) {
+    .banner__mobilelogo {
+        display: none;
+    }
+    .banner__desktoplogo {
+        display: inline;
+    }
+}
+
+.banner__mobilelogo, .banner__desktoplogo {
+    position:absolute;
+    top:50%;
+    left:50%;
+    transform: translateX( -50%) translateY(-50%);
+    -webkit-transform:  translateX( -50%) translateY(-50%);
+    -ms-transform: translateX( -50%) translateY(-50%);
+    width: 70%;
+    height: 70%;
+}
+
+.lego-article, #agenda {
+    font-size: calc(16px + (24 - 16)*(100vw - 400px)/ ( 1600 - 400) );
+}
+
+.anewevent {
+    text-align: center;
+    margin: 3em 2em;
+}
+
+.anewevent__block{
+    vertical-align: middle;
+    box-sizing: border-box;
+}
+
+.anewevent__header {
+    color: $red;
+    margin: 0;
+    font-size: 4em;
+    line-height: 1em;
+    text-align: left;
+}
+
+.anewevent__abouttext {
+    color: $darkestgray;
+    border-left: 0.8em solid $gray;
+    padding-left: 1.5em;
+    font-size: 1em;
+    text-align: left;
+    margin: 0;
+}
+
+.whyhowwhat, .prices {
+    background-color: $darkestgray;
+    color: $white;
+    padding: 2em 0;
+}
+
+.whyhowwhat .max-960, .anewevent .max-960{
+    max-width: none;
+}
+
+.whyhowwhat .section-1 {
+    padding: 0 2em;
+    @media (--small-viewport) {
+        padding: 0 0 0 2em;
+    }
+}
+
+.whyhowwhat__block {
+    vertical-align: top;
+    padding: 2em;
+    box-sizing: border-box;
+    counter-increment: whyhowwhat__block;
+    position: relative;
+    float: left;
+
+    @media (max-width: 1024px) {
+        width: 100% !important;
+    }
+}
+
+.whyhowwhat__block::before {
+    content: counter(whyhowwhat__block);
+    color: $darkgray;
+    font-size: 12em;
+    font-weight: bold;
+    position: absolute;
+    top: -0.4em;
+    left: -0.1em;  
+    display: block;
+}
+
+.whyhowwhat__header, .whyhowwhat__text {
+      z-index: 1;
+      position: relative;
+}
+
+.whyhowwhat__header {
+    color: $white;
+    margin: 0;
+}
+
+.whyhowwhat__text{
+    font-size: 0.95em;
+}
+
+.whyhowwhat__ctatext {
+    color: $white;
+    font-size: 1.25em;
+    max-width: 1200px;
+    margin: 2em auto;   
+}
+
+.whyhowwhat_registersection {
+    margin: 0 auto;
+    border-top: 3px solid $white;
+    max-width: 90%;
+    text-align: center;
+}
+
+ .btn {
+    border: 0.2em solid $white;
+    padding: 0.5em;
+    color: $white;
+    font-weight: bold;
+    font-size: 1em;
+    display: inline-block;
+    width: 9em;
+    text-transform: uppercase;
+    cursor: pointer;
+   
+   &:hover {
+       background: white;
+       color: $red;    
+   }
+}
+
+.btn--ondarkbackground:hover {
+        color: $darkestgray;
+}
+
+.agenda__header {
+    color: $red;
+    text-align: center;
+}
+
+.prices {
+    box-sizing: border-box;
+    text-align: center;
+
+    .block-2 , .block-3 {
+        .content-column-content {
+          border-left: 0.8em solid $darkgray2;
+          padding-left: 0.8em;
+          margin: 0 2em 2em 2em;   
+          display: inline-block; 
+        }
+    }
+}
+
+.prices__header {
+    color: $white;
+    margin-top: 0;
+}
+
+.prices__title, .prices__price, .prices p {
+    color: $white;
+    margin: 0;
+    text-align: left;
+}
+
+.venue {
+    background: url($main-image-dir/MC16-Venue-img-1-0._70percent.png) no-repeat center center;
+    background-size: cover;
+    text-align: center;
+    color: $white;
+
+    h3, h2 {
+        color: $white;
+    }
+    
+    .btn {
+        margin: 1em 2em;
+    }
+}
+
+#agenda #agendaWrapper #agendaTabs span.select-day {
+    background-color: $red;
+}
+
+
+
+@import "lego-edit.scss";
+@import "hotel.scss";
+@import "standard-overrides.scss";

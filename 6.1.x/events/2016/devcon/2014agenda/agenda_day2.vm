@@ -1,0 +1,477 @@
+#*
+    This template basically loops once through all the records creating a treemap
+    object and then loops through that map object to generate the table. When
+    constructing the map it starts at the bottom (that is the deepest branches)
+    of the tree and works its way up, since we are adding individual records in the
+    correct places in tree. It is basically structured like this:
+
+    agenda={
+        day-2013-1-1={
+        	row-100={
+				end-time=000900,
+				end-time-display=9:00am,
+				extended-sessions= {
+					room-1=001000
+				},
+				sessions={
+					room-1={
+						end-time=000900,
+						map-id=290837,
+						record={},
+						room-name=Grand Ballroom,
+						room-number=1
+					}
+				},
+				start-time=000800,
+				start-time=8:00am
+			}
+		}
+	}
+*#
+
+#macro (mark_as_extended30 $end_time $row_end_time $row_start_time)
+	#if ($end_time > $row_end_time)
+		#set ($extension_count = $extension_count + 1)
+		#set ($next_row = false)
+		#set ($next_row = $day.higherEntry("row-$row_start_time"))
+
+		#if ($next_row)
+			#set($next_row = $next_row.getValue())
+			#set($void = $next_row.get("extended-sessions").put("room-$room_number", $end_time))
+
+			#set($next_row_end_time = $integer.parseInt($next_row.get("end-time")))
+			#set($next_row_start_time = $next_row.get("start-time"))
+
+			#mark_as_extended30($end_time $next_row_end_time $next_row_start_time)
+		#end
+	#end
+#end
+
+#macro (print_empty_sessions31 $after $number_of_sessions)
+	#foreach($i in [1..$number_of_sessions])
+		#if ($after)
+			#set ($room_count = $room_count + 1)
+		#end
+
+		#set ($extensions_time = false)
+		#set ($extensions_time = $extensions.get("room-$room_count"))
+
+		#if (!$after)
+			#set ($room_count = $room_count + 1)
+		#end
+
+		#if (!$extensions_time)
+			<td class="empty-session"></td>
+		#end
+	#end
+#end
+
+#set ($day_to_print = "day-2014-11-05")
+#set ($default_col_span = 3)
+#set ($integer = 0)
+#set ($link_to_speakers_page = "/web/devcon2014#speakers")
+
+## Prep work for Edit botton
+#set ($layout_id = $request.get("theme-display").get("plid"))
+#set ($layout_service = $serviceLocator.findService("com.liferay.portal.service.LayoutLocalService"))
+#set ($layout_long = $getterUtil.getLong($layout_id))
+#set ($layout = $layout_service.getLayout($layout_long))
+#set ($user_has_permissions = $layoutPermission.contains($permissionChecker, $layout, "UPDATE"))
+
+## Get DDL Records
+#set ($ddl_records_local_service = $serviceLocator.findService("com.liferay.portlet.dynamicdatalists.service.DDLRecordLocalService"))
+#set ($record_set_id = $getterUtil.getLong($reserved_record_set_id.data))
+#set ($records = $ddl_records_local_service.getRecords($record_set_id))
+
+## Create the empty map that will hold all the agenda info
+#set ($agenda = $portal.getClass().forName("java.util.TreeMap").newInstance())
+
+## Loop Through records and place them in the correct place in the map
+#foreach ($record in $records)
+	#if ($record.getFieldValue("display_on_live"))
+		## Get date, start-time, end-time and room for sorting purposes
+		#set ($date = $dateTool.format("yyyy-MM-dd", $record.getFieldValue("date")))
+
+		#set ($start_time_hour = $record.getFieldValue("start_time_hour"))
+		#set ($start_time_hour = $stringUtil.replace($start_time_hour, "[", ""))
+		#set ($start_time_hour = $stringUtil.replace($start_time_hour, "]", ""))
+		#set ($start_time_hour = $stringUtil.replace($start_time_hour, '"', ''))
+		#if ($start_time_hour.length() == 1)
+			#set ($start_time_hour_sort = "0" + $start_time_hour)
+		#else
+			#set ($start_time_hour_sort = $start_time_hour)
+		#end
+
+		#set ($start_time_minutes = $record.getFieldValue("start_time_minutes"))
+		#set ($start_time_minutes = $stringUtil.replace($start_time_minutes, "[", ""))
+		#set ($start_time_minutes = $stringUtil.replace($start_time_minutes, "]", ""))
+		#set ($start_time_minutes = $stringUtil.replace($start_time_minutes, '"', ''))
+		#if ($start_time_minutes == "0" || $start_time_minutes == "5")
+			#set ($start_time_minutes = "0" + $start_time_minutes)
+		#end
+
+		## #set ($start_time_am_pm = $record.getFieldValue("start_time_am_pm"))
+		## #set ($start_time_am_pm = $stringUtil.replace($start_time_am_pm, "[", ""))
+		## #set ($start_time_am_pm = $stringUtil.replace($start_time_am_pm, "]", ""))
+		## #set ($start_time_am_pm = $stringUtil.replace($start_time_am_pm, '"', ''))
+		## #if ($start_time_am_pm == "pm" && $start_time_hour != "12")
+		## 	#set ($start_time_am_pm_sort = "01")
+		## #else
+		## 	#set ($start_time_am_pm_sort = "00")
+		## #end
+
+		#set ($start_time_display = $start_time_hour + ":" + $start_time_minutes)
+		#set ($start_time_sort = $start_time_hour_sort + $start_time_minutes)
+
+		#set ($end_time_hour = $record.getFieldValue("end_time_hour"))
+		#set ($end_time_hour = $stringUtil.replace($end_time_hour, "[", ""))
+		#set ($end_time_hour = $stringUtil.replace($end_time_hour, "]", ""))
+		#set ($end_time_hour = $stringUtil.replace($end_time_hour, '"', ''))
+		#if ($end_time_hour.length() == 1)
+			#set ($end_time_hour_sort = "0" + $end_time_hour)
+		#else
+			#set ($end_time_hour_sort = $end_time_hour)
+		#end
+
+		#set ($end_time_minutes = $record.getFieldValue("end_time_minutes"))
+		#set ($end_time_minutes = $stringUtil.replace($end_time_minutes, "[", ""))
+		#set ($end_time_minutes = $stringUtil.replace($end_time_minutes, "]", ""))
+		#set ($end_time_minutes = $stringUtil.replace($end_time_minutes, '"', ''))
+		#if ($end_time_minutes == "0" || $end_time_minutes == "5")
+			#set ($end_time_minutes = "0" + $end_time_minutes)
+		#end
+
+		## #set ($end_time_am_pm = $record.getFieldValue("end_time_am_pm"))
+		## #set ($end_time_am_pm = $stringUtil.replace($end_time_am_pm, "[", ""))
+		## #set ($end_time_am_pm = $stringUtil.replace($end_time_am_pm, "]", ""))
+		## #set ($end_time_am_pm = $stringUtil.replace($end_time_am_pm, '"', ''))
+		## #if ($end_time_am_pm == "pm" && $end_time_hour != "12")
+		## 	#set ($end_time_am_pm_sort = "01")
+		## #else
+		## 	#set ($end_time_am_pm_sort = "00")
+		## #end
+
+		#set ($end_time_display = $end_time_hour + ":" +$end_time_minutes)
+		#set ($end_time_sort = $end_time_hour_sort + $end_time_minutes)
+
+		#set ($room_uuid = $record.getFieldValue("room_uuid"))
+		#set ($room_uuid = $stringUtil.replace($room_uuid, "[", ""))
+		#set ($room_uuid = $stringUtil.replace($room_uuid, "]", ""))
+		#set ($room_uuid = $stringUtil.replace($room_uuid, '"', ''))
+
+		#set ($room_record_info = $ddl_records_local_service.getDDLRecordByUuidAndGroupId($room_uuid, $groupId))
+		#set ($room_record = $ddl_records_local_service.fetchDDLRecord($getterUtil.getLong($room_record_info.recordId)))
+
+		#if ($room_record)
+			#set ($room_name = $room_record.getFieldValue("room_name"))
+			#set ($room_number = $room_record.getFieldValue("room_number"))
+			#set ($map_id = $room_record.getFieldValue("map_id"))
+		#else
+			#set ($room_name = "")
+			#set ($room_number = 0)
+			#set ($map_id = "")
+		#end
+
+		## Create parts of map that dont exist
+		#if (!$agenda.get("day-$date"))
+			#set ($void = $agenda.put("day-$date", $portal.getClass().forName("java.util.TreeMap").newInstance()))
+		#end
+
+		#if (!$agenda.get("day-$date").get("row-$start_time_sort"))
+			#set ($row_map = $portal.getClass().forName("java.util.TreeMap").newInstance())
+			#set ($void = $row_map.put("end-time", $end_time_sort))
+			#set ($void = $row_map.put("end-time-display", $end_time_display))
+			#set ($void = $row_map.put("extended-sessions", $portal.getClass().forName("java.util.TreeMap").newInstance()))
+			#set ($void = $row_map.put("sessions", $portal.getClass().forName("java.util.TreeMap").newInstance()))
+			#set ($void = $row_map.put("start-time", $start_time_sort))
+			#set ($void = $row_map.put("start-time-display", $start_time_display))
+			#set ($void = $agenda.get("day-$date").put("row-$start_time_sort", $row_map))
+		#end
+
+		## Add content to map
+		#set ($existing_row_map = $agenda.get("day-$date").get("row-$start_time_sort"))
+		#set ($existing_session_map = $existing_row_map.get("sessions"))
+		#set ($session_map_info = $portal.getClass().forName("java.util.TreeMap").newInstance())
+		#set ($void = $session_map_info.put("custom-css-class", $record.getFieldValue("custom_css_class")))
+		#set ($void = $session_map_info.put("end-time", $end_time_sort))
+		#set ($void = $session_map_info.put("end-time-display", $end_time_display))
+		#set ($void = $session_map_info.put("map-id", $map_id))
+		#set ($void = $session_map_info.put("room-name", $room_name))
+		#set ($void = $session_map_info.put("record", $record))
+		#set ($void = $session_map_info.put("room-number", $room_number))
+		#set ($void = $existing_session_map.put("room-$room_number", $session_map_info))
+		#set ($void = $existing_row_map.put("sessions", $existing_session_map))
+
+		#set ($existing_end_time = $existing_row_map.get("end-time"))
+
+		#if ($integer.parseInt($end_time_sort) < $integer.parseInt($existing_end_time))
+			#set ($void = $existing_row_map.put("end-time", $end_time_sort))
+			#set ($void = $existing_row_map.put("end-time-display", $end_time_display))
+		#end
+	#end
+#end
+
+#set ($day = $agenda.get("$day_to_print"))
+
+<div id="agendaWrapper">
+	<table id="agenda-$day_to_print" class="agenda-table">
+		<tr class="track-row">
+			<td></td> 
+			<td class="multi-room-td room-1">Track A</td>
+			<td class="multi-room-td room-2">Track B</td>
+			<td class="multi-room-td room-3">Track C</td>
+		</tr>
+		#foreach ($row in $day)
+			<tr>
+				#set ($room_count = 0)
+				#set ($row_count = $velocityCount)
+				#set ($row_end_time_display = $row.get("end-time-display"))
+				#set ($start_time = $row.get("start-time"))
+				#set ($start_time_display = $row.get("start-time-display"))
+
+				<td class="first-col">$start_time_display - $row_end_time_display</td>
+
+				#foreach ($session in $row.get("sessions"))
+					#set ($custom_css_class = $session.get("custom-css-class"))
+					#set ($end_time = $integer.parseInt($session.get("end-time")))
+					#set ($extensions_time = false)
+					#set ($room_count = $room_count + 1)
+					#set ($room_number = $session.get("room-number"))
+					#set ($row_end_time = $integer.parseInt($row.get("end-time")))
+					#set ($row_sessions_size = $row.get("sessions").size())
+
+					## Find all extended sessions and mark them in the next array
+					#set ($extension_count = 1)
+					#mark_as_extended30($end_time $row_end_time $start_time)
+
+					## Get current rows extensions and generate all empty sessions
+					#set ($extensions = $row.get("extended-sessions"))
+					#set ($number_of_skipped_rooms = $room_number - $room_count)
+
+					#if ($number_of_skipped_rooms > 0 && $row_sessions_size > 1)
+						#print_empty_sessions31(false $number_of_skipped_rooms)
+					#end
+
+					## Set all variables needed for printing the td
+					#set ($end_time_display = $session.get("end-time-display"))
+
+					#set ($record = $session.get("record"))
+
+					#set ($session_summary = $record.getFieldValue("session_summary"))
+
+					#set ($session_type = $record.getFieldValue("session_type"))
+					#set ($session_type = $stringUtil.replace($session_type, "[", ""))
+					#set ($session_type = $stringUtil.replace($session_type, "]", ""))
+					#set ($session_type = $stringUtil.replace($session_type, '"', ''))
+
+					#set ($title = $record.getFieldValue("title"))
+
+					#set ($pop_up_css_class = "pop-up")
+
+					#if ($custom_css_class)
+						#set ($pop_up_css_class = "$pop_up_css_class $custom_css_class")
+					#end
+
+					#if($row_sessions_size == 1 && $extensions.size() == 0)
+						#set ($colspan = "colspan='$default_col_span'")
+					#else
+						#set ($colspan = "")
+
+						#set ($pop_up_css_class = "$pop_up_css_class multi-room-td room-$room_count")
+					#end
+
+					#if($extension_count > 1)
+						#set ($rowspan = "rowspan='$extension_count'")
+					#else
+						#set ($rowspan = "")
+					#end
+
+					#set ($cleantitle = "$title - $speaker_name")
+					#set ($cleantitle = $stringUtil.replace($cleantitle, '"', ''))
+					#set ($cleantitle = $stringUtil.replace($cleantitle, "'", ""))
+					#set ($cleantitle = '')
+
+					## Print td
+					<td class="$pop_up_css_class" $colspan $rowspan data-slides="$download_url" data-video="$video_url" data-video-tactic-info="$video_map" id="$record.getUuid()" onclick="('send', 'event', 'Conferences - DevCon 2014', 'Agenda Session Clicks', '$cleantitle');">
+						#if ($session_type != "blank" && $session_type != "")
+							<span><b>$session_type:</b></span>
+						#end
+
+						#if ($title != "")
+							<span class="trigger">$title</span><br>
+						#end 
+
+						<div class="pop-up-content">
+							<span class="data">
+								<div class="room-session">
+									<i>Room: $session.get("room-name"), Time: $start_time_display - $end_time_display</i><br>
+								</div>
+
+								#set ($speaker_array_uuid = $stringUtil.split($record.getFieldValue("speakers_uuid")))
+
+								#foreach ($speakers_uuid in $speaker_array_uuid)
+									#set ($speakers_uuid = $stringUtil.trim($speakers_uuid))
+									#set ($speaker_record = false)
+									#if ("$speakers_uuid" != "")
+										#set ($speaker_record_info = $ddl_records_local_service.getDDLRecordByUuidAndGroupId($speakers_uuid, $groupId))
+										#set ($speaker_record = $ddl_records_local_service.fetchDDLRecord($getterUtil.getLong($speaker_record_info.recordId)))
+									#end
+									#if ($speaker_record)
+										#set ($speaker_bio = $speaker_record.getFieldValue("speaker_bio"))
+										#set ($speaker_company = $speaker_record.getFieldValue("speaker_company"))
+										#set ($speaker_name = $speaker_record.getFieldValue("speaker_name"))
+										#set ($speaker_title = $speaker_record.getFieldValue("speaker_title"))
+									#else
+										#set ($speaker_bio = "")
+										#set ($speaker_company = "")
+										#set ($speaker_name = "")
+										#set ($speaker_title = "")
+									#end
+
+									<div class="speaker-information">
+										#if ($speaker_name != "")
+											<strong>$speaker_name, </strong>
+										#end
+										<div>
+											#if ($speaker_title != "" && $speaker_company != "")
+												$speaker_title, <i>$speaker_company</i>
+											#end
+										</div>
+									</div>
+								#end
+
+								#if ($session_summary != "")
+									#set($session_summary = $escapeTool.html($session_summary).replaceAll("\n", "<br />"))
+
+									<b>Session Summary:</b><br /><p>$session_summary</p>
+								#end
+							</span>
+						</div>
+
+						<div class="speakers-agenda-info">
+							#foreach ($speakers_uuid in $speaker_array_uuid)
+								#set ($speakers_uuid = $stringUtil.trim($speakers_uuid))
+								#set ($speaker_record = false)
+								#if ("$speakers_uuid" != "")
+									#set ($speaker_record_info = $ddl_records_local_service.getDDLRecordByUuidAndGroupId($speakers_uuid, $groupId))
+									#set ($speaker_record = $ddl_records_local_service.fetchDDLRecord($getterUtil.getLong($speaker_record_info.recordId)))
+								#end
+								#if ($speaker_record)
+									#set ($speaker_name = $speaker_record.getFieldValue("speaker_name"))
+									#set ($speaker_company = $speaker_record.getFieldValue("speaker_company"))
+									#set ($speaker_title = $speaker_record.getFieldValue("speaker_title"))
+								#else
+									#set ($speaker_name = "")
+									#set ($speaker_company = "")
+									#set ($speaker_title = "")
+								#end
+
+								<div class="speaker-entry">
+									#if ($speaker_name != "")
+										<span>$speaker_name, </span>
+									#end
+
+									<i>
+										#if ($speaker_title != "" && $speaker_company != "")
+											$speaker_title, $speaker_company
+										#end
+									</i>
+								</div>
+							#end
+						</div>
+
+						#if ($user_has_permissions)
+							<a class="taglib-icon edit-only" href="/web/devcon2014/admin?p_p_id=169_INSTANCE_7Em8SJeyq4BY&p_p_lifecycle=0&p_p_state=maximized&p_p_mode=view&p_p_col_id=column-1&p_p_col_count=3&_169_INSTANCE_7Em8SJeyq4BY_struts_action=%2Fdynamic_data_list_display%2Fedit_record&_169_INSTANCE_7Em8SJeyq4BY_cmd=update&_169_INSTANCE_7Em8SJeyq4BY_redirect=https%3A%2F%2Fwww.liferay.com%2Fweb%2Fdevcon2014%2Fadmin%3Fp_p_id%3D169_INSTANCE_7Em8SJeyq4BY%26p_p_lifecycle%3D0%26p_p_state%3Dnormal%26p_p_mode%3Dview%26p_p_col_id%3Dcolumn-1%26p_p_col_count%3D3%26_169_INSTANCE_7Em8SJeyq4BY_currentURL%3D%252Fweb%252Fdevcon2014%252Fadmin%26_169_INSTANCE_7Em8SJeyq4BY_portletAjaxable%3D1&_169_INSTANCE_7Em8SJeyq4BY_recordId=$record.getRecordId()">
+								<img class="icon" src="/osb-community-theme/images/common/edit.png" alt="Edit DDL Record" title="Edit DDL Record">
+							</a>
+						#end
+					</td>
+
+					#set ($multi_session_row = $extensions.size() > 0 || $row_sessions_size > 1)
+
+					#if ($multi_session_row && ($row_sessions_size == $velocityCount) && ($room_number < $default_col_span))
+						#set ($number_of_empty_rooms = $default_col_span - $room_number)
+
+						#print_empty_sessions31(true $number_of_empty_rooms)
+					#end
+				#end
+			</tr>
+		#end
+	</table>
+</div>
+
+<style>
+#agendaWrapper {
+	margin: 0 10px;
+}
+
+#agendaWrapper tr {
+	border-bottom: 1px solid #58585A;
+}
+
+#agendaWrapper td {
+	padding: 10px;
+}
+
+#agendaWrapper .first-col {
+	display: table-cell;
+	text-align: right;
+	vertical-align: top;
+	width: 150px;
+}
+
+#agendaWrapper .first-col:hover {
+	background-color: transparent;
+}
+
+#agendaWrapper .pop-up-content {
+	display: none;
+}
+
+.pop-up-content {
+	color: #6B6C6B;
+}
+
+.pop-up-content .view-all-bio-link a {
+	font-size: 15px
+}
+
+.pop-up-content .view-all-bio-link, .pop-up-content .room-session, .pop-up-content .speaker-information {
+	padding-bottom: 1em;
+}
+
+#agendaLegend span, #agendaWrapper .multi-room-td {
+	border-left: 3px solid #1DA99E;
+}
+
+#agendaLegend .room-2, #agendaWrapper .room-2 {
+	border-left-color: #E95B27;
+}
+
+#agendaLegend .room-3, #agendaWrapper .room-3 {
+	border-left-color: #FAA325;
+}
+
+#agendaLegend .room-4, #agendaWrapper .room-4 {
+	border-left-color: #662F8A;
+}
+
+.controls-hidden .edit-only {
+	display: none;
+}
+
+.keynote {
+	color: #005E8E;
+	font-weight: bold;
+}
+
+@media all and (max-width: 720px) {
+	#agendaWrapper td {
+		display: block;
+	}
+
+	#agendaWrapper .first-col {
+		width: 98px;
+	}
+}
+</style>
