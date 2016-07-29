@@ -2,6 +2,8 @@
 @custom-media --big-viewport (min-width: 771px);
 @custom-media --mobile-tablet-viewport (max-width: 770px);
 
+@custom-media --theme-small-viewport (max-width: 720px);
+
 $darkestgray: #414042; /* text and background */
 $gray: #d1d3d4; /* border */
 
@@ -42,14 +44,15 @@ $gray2: #a7a9ac; /* agenda day*/
 .banner__mobilelogo, .banner__desktoplogo {
    position:absolute;
     top:50%;
-    bottom:50%;
+    left:50%;
     transform: translateX( -50%) translateY(-50%);
     -webkit-transform:  translateX( -50%) translateY(-50%);
+    -ms-transform: translateX( -50%) translateY(-50%);
     width: 70%;
     height: 70%;
 }
 
-.lego-article {
+.lego-article, #agenda {
     font-size: calc(16px + (24 - 16)*(100vw - 400px)/ ( 1600 - 400) );
 }
 
@@ -103,6 +106,10 @@ $gray2: #a7a9ac; /* agenda day*/
     counter-increment: whyhowwhat__block;
     position: relative;
     float: left;
+
+    @media (max-width: 1024px) {
+        width: 100% !important;
+    }
 }
 
 .whyhowwhat__block::before {
@@ -127,7 +134,7 @@ $gray2: #a7a9ac; /* agenda day*/
 }
 
 .whyhowwhat__text{
-
+font-size: 0.95em;
 
 }
 
@@ -155,7 +162,7 @@ $gray2: #a7a9ac; /* agenda day*/
     font-weight: normal;
     font-size: 1.25em;
     display: inline-block;
-    width: 250px;
+    width: 9em;
     text-transform: uppercase;
    
 }
@@ -172,9 +179,12 @@ $gray2: #a7a9ac; /* agenda day*/
     .block-2 .content-column-content, .block-3 .content-column-content {
           border-left: 0.8em solid $darkgray2;
           padding-left: 0.8em;
-          margin: 0 2em 2em 2em;         
+          margin: 0 2em 2em 2em;   
+          display: inline-block; 
+      
     }
 
+ 
 
 }
 
