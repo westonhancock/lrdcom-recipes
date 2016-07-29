@@ -208,10 +208,10 @@ gulp.task("recap-sprite", function (cb) {
 });
 
 
-gulp.task('css', function (cb) {
+gulp.task('css', function () {
     var postcss = require('gulp-postcss');
-    var gulpStylelint = require('gulp-stylelint');
-    var fs = require('fs');
+    //var gulpStylelint = require('gulp-stylelint');
+    //var fs = require('fs');
     logger.info("environment: ", environment);
 
     return gulp.src(paths.css)
@@ -240,7 +240,7 @@ gulp.task('images', function () {
         .pipe(imageOptim.optimize({
             jpegmini: false
         }))
-        .pipe(gulp.dest('build/images'))
+        .pipe(gulp.dest('build/images'));
       //  .pipe(gulp.dest(config.syncDir));
 });
 
@@ -277,7 +277,7 @@ gulp.task('get-content', function (done) {
     var articleConfig = JSON.parse(fs.readFileSync('./article-lookup-config.json'));
 
     articleConfig.forEach(function (article) {
-        liferay.viewArticleContent(config, article, "en_US", function() { });
+        liferay.viewArticleContent(config, article,  article.locale || "en_US", function() { });
     });
     done();
 });
@@ -465,7 +465,7 @@ gulp.task('perms', function () {
 });
 
 gulp.task("list-layouts", function () {
-    var biggulp = require("./biggulp.js")
+    var biggulp = require("./biggulp.js");
     var cmd = {
         "/layout/get-layouts": {
             "groupId": 67510365,
@@ -639,7 +639,7 @@ gulp.task('devcon-perms', function () {
 
 
 gulp.task("get-template", function () {
-    var biggulp = require("./biggulp.js")
+    var biggulp = require("./biggulp.js");
     var cmd = {
         '/journaltemplate/get-template': {
             "groupId": 67510365,

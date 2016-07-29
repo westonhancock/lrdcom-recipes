@@ -29,9 +29,11 @@ $gray2: #a7a9ac; /* agenda day*/
         padding-bottom: 46%; 
     }
 }
+
 .banner__desktoplogo {
     display: none;
 }
+
 @media (--big-viewport) {
     .banner__mobilelogo {
         display: none;
@@ -42,7 +44,7 @@ $gray2: #a7a9ac; /* agenda day*/
 }
 
 .banner__mobilelogo, .banner__desktoplogo {
-   position:absolute;
+    position:absolute;
     top:50%;
     left:50%;
     transform: translateX( -50%) translateY(-50%);
@@ -58,7 +60,7 @@ $gray2: #a7a9ac; /* agenda day*/
 
 .anewevent {
     text-align: center;
-    margin: 3em 0;
+    margin: 3em 2em;
 }
 
 .anewevent__block{
@@ -73,6 +75,7 @@ $gray2: #a7a9ac; /* agenda day*/
     line-height: 1em;
     text-align: left;
 }
+
 .anewevent__abouttext {
     color: $darkestgray;
     border-left: 0.8em solid $gray;
@@ -122,30 +125,26 @@ $gray2: #a7a9ac; /* agenda day*/
     left: -0.1em;  
     display: block;
 }
+
 .whyhowwhat__header, .whyhowwhat__text {
       z-index: 1;
       position: relative;
 }
+
 .whyhowwhat__header {
     color: $white;
     margin: 0;
-  
-
 }
 
 .whyhowwhat__text{
-font-size: 0.95em;
-
+    font-size: 0.95em;
 }
 
 .whyhowwhat__ctatext {
-
     color: $white;
     font-size: 1.25em;
     max-width: 1200px;
-    margin: 2em auto;
-    
-    
+    margin: 2em auto;   
 }
 
 .whyhowwhat_registersection {
@@ -155,16 +154,25 @@ font-size: 0.95em;
     text-align: center;
 }
 
-.whyhowwhat__button, .prices__button, .btn {
+ .btn {
     border: 0.2em solid $white;
     padding: 0.5em;
     color: $white;
-    font-weight: normal;
-    font-size: 1.25em;
+    font-weight: bold;
+    font-size: 1em;
     display: inline-block;
     width: 9em;
     text-transform: uppercase;
+    cursor: pointer;
    
+   &:hover {
+       background: white;
+       color: $red;    
+   }
+}
+
+.btn--ondarkbackground:hover {
+        color: $darkestgray;
 }
 
 .agenda__header {
@@ -173,31 +181,27 @@ font-size: 0.95em;
 }
 
 .prices {
- box-sizing: border-box;
+    box-sizing: border-box;
     text-align: center;
 
-    .block-2 .content-column-content, .block-3 .content-column-content {
+    .block-2 , .block-3 {
+        .content-column-content {
           border-left: 0.8em solid $darkgray2;
           padding-left: 0.8em;
           margin: 0 2em 2em 2em;   
           display: inline-block; 
-      
+        }
     }
-
- 
-
 }
-
-
 
 .prices__header {
     color: $white;
     margin-top: 0;
 }
+
 .prices__title, .prices__price, .prices p {
     color: $white;
     margin: 0;
-    
     text-align: left;
 }
 
@@ -206,19 +210,22 @@ font-size: 0.95em;
     background-size: cover;
     text-align: center;
     color: $white;
-    h3, h2 {
-            color: $white;
-    }
 
+    h3, h2 {
+        color: $white;
+    }
+    
     .btn {
         margin: 1em 2em;
-
     }
-
 }
 
 #agenda #agendaWrapper #agendaTabs span.select-day {
     background-color: $red;
 }
 
+
+
 @import "lego-edit.scss";
+@import "hotel.scss";
+@import "standard-overrides.scss";

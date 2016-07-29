@@ -15,12 +15,15 @@ html(lang="en" class="responsive")
     #wrapper
         header
           include ../src/banner.pug
-        include ../build/anewevent.html
-        include ../build/whyhowwhat.html
-        include ../build/agendatitle.html
-        include ../build/agenda.html
-        include ../build/prices.html
-        include ../build/venue.html
+        #main-content.full-screen-layout
+          div.portlet-dropzone.portlet-column-content
+            include ../build/anewevent.html
+            include ../build/whyhowwhat.html
+            include ../build/agendatitle.html
+            include ../build/agenda.html
+            include ../build/prices.html
+            include ../build/venue.html
+            include ../build/hotels.html
         include ../build/all.js   
         script 
             include ../../devcon/src/liferay/js/h-main.js
