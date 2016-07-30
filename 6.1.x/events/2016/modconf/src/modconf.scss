@@ -14,7 +14,7 @@ $darkgray: #58595b; /* number text*/
 
 $darkgray2: #6d6e71;  /* border, agenda day selected */
 $gray2: #a7a9ac; /* agenda day*/
-
+$agendaborder: #8197ae;
 
 .banner  {
     text-align: center;
@@ -50,12 +50,12 @@ $gray2: #a7a9ac; /* agenda day*/
     transform: translateX( -50%) translateY(-50%);
     -webkit-transform:  translateX( -50%) translateY(-50%);
     -ms-transform: translateX( -50%) translateY(-50%);
-    width: 70%;
-    height: 70%;
+    width: 60%;
+    height: 60%;
 }
 
-.lego-article, #agenda {
-    font-size: calc(16px + (24 - 16)*(100vw - 400px)/ ( 1600 - 400) );
+.lego-article, #agenda, .footer {
+    font-size: calc(12px + (22 - 12)*(100vw - 400px)/ ( 1920 - 400) );
 }
 
 .anewevent {
@@ -71,7 +71,7 @@ $gray2: #a7a9ac; /* agenda day*/
 .anewevent__header {
     color: $red;
     margin: 0;
-    font-size: 4em;
+    font-size: 5em;
     line-height: 1em;
     text-align: left;
 }
@@ -188,8 +188,12 @@ $gray2: #a7a9ac; /* agenda day*/
         .content-column-content {
           border-left: 0.8em solid $darkgray2;
           padding-left: 0.8em;
-          margin: 0 2em 2em 2em;   
-          display: inline-block; 
+          margin: 0 auto;
+          margin-bottom: 2em;
+          display: inline-block;
+          @media (--theme-small-viewport) {
+            width: 10em; 
+          }
         }
     }
 }
@@ -203,6 +207,12 @@ $gray2: #a7a9ac; /* agenda day*/
     color: $white;
     margin: 0;
     text-align: left;
+}
+.prices p.centered {
+    text-align: center;
+}
+.prices__noteblock {
+    margin: 1em 0;
 }
 
 .venue {
@@ -220,11 +230,64 @@ $gray2: #a7a9ac; /* agenda day*/
     }
 }
 
-#agenda #agendaWrapper #agendaTabs span.select-day {
-    background-color: $red;
+#agenda #agendaWrapper {
+    
+    margin: 0 2em;
+    #agendaTabs span.select-day {
+        background-color: $red;
+        font-size: 1.5em;
+    }
+
+    .first-col {
+        font-size: 2em;
+        color: black;
+        text-align: center;
+        vertical-align: middle;
+    }
+
+    .trigger {
+        font-size: 1.25em;
+        font-weight: bold;
+        letter-spacing: normal;
+    }
+    td {
+        display: table-cell;
+    }
+    table, th, td, tr {
+        border: 1px solid $agendaborder;
+        border-collapse: collapse;
+        border-top: none;
+    }
 }
 
+.footer {
+    .lighter-font {
+        font-weight: 100;
+    }
+    .btn {
+            color: $darkestgray;
+            width: initial;
+            border-color: $darkestgray;
 
+            &:hover {
+                color: $white;
+                background-color: $darkestgray;
+            }
+    }
+
+    .countdown-timer {
+        color: $red;
+    }  
+    .social li a:hover {
+    background-color: $red;
+}
+}
+.footer.footer {
+ background-color: $gray;
+}
+.company-footer.company-footer {
+ background-color: $darkestgray;
+}
 
 @import "lego-edit.scss";
 @import "hotel.scss";

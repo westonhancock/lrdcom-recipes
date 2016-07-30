@@ -56,4 +56,16 @@
     "filename": "build/hotels.html",
     "locale": "de_DE"
 }
+,
+
+{ 
+  "groupId": "67510365",
+    "articleId": "77160888",
+    "filename": "build/footer.html",
+    "locale": "de_DE"
+}
+
+
+
+
 ]

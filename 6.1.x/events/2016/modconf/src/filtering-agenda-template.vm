@@ -86,7 +86,7 @@
 
 ## Loop Through records and place them in the correct place in the map
 #foreach ($record in $records)
-  #if ($record.getFieldValue("display_on_live"))
+  #if ($record.getFieldValue("display_on_live") && ($record.getFieldValue("filter_categories").contains("modularity")))
     ## Get date, start-time, end-time and room for sorting purposes
     #set ($date = $record.getFieldValue("date"))
 
