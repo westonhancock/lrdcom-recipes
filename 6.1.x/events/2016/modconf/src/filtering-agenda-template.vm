@@ -1101,11 +1101,7 @@
                 ($room_name)
               #end
 
-              #if ($user_has_permissions)
-                <a class="taglib-icon edit-only" href="${admineditlink}recordId=$record.getRecordId()">
-                  <img class="icon" src="/osb-community-theme/images/common/edit.png" alt="Edit DDL Record" title="Edit DDL Record">
-                </a>
-              #end
+     
               
               
             </td>
