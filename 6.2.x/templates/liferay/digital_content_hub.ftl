@@ -10,8 +10,20 @@
 
 <div class="content-hub info-hub">
 	<#list article_ids.siblings as article_id>
+		<#assign end_content = article_ids.siblings?size - 2 />
+
 		<#if article_id.data?has_content>
-			<div class="article-wrapper">
+			<#assign css_class = "article-wrapper" />
+
+			<#if article_id_index == 1>
+				<#assign css_class = css_class + " max-med" />
+			</#if>
+
+			<#if article_id_index == 2>
+				<div class="content-wrapper large-padding-vertical">
+			</#if>
+
+			<div class="${css_class}">
 				${journalContentUtil.getContent(groupId, article_id.data, "", locale, xmlRequest)}
 
 				<#assign article = journal_article_local_service.fetchLatestArticle(groupId, article_id.data, 0)! />
@@ -33,6 +45,10 @@
 					</div>
 				</#if>
 			</div>
+
+			<#if article_id_index == end_content>
+				</div>
+			</#if>
 		</#if>
 	</#list>
 
