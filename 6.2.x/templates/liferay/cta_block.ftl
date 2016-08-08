@@ -1,4 +1,5 @@
 <#assign article_namespace = "article${.vars['reserved-article-id'].data}" />
+
 <div class="align-center block-container justify-center" id="${article_namespace}">
 	<#list cta_url.siblings as cta>
 		<#assign cta_href = "javascript:;" />
@@ -26,6 +27,7 @@
 				<#if cta.cta_text.data?has_content>
 					<div class="cta standard-padding-vertical text-center">
 						${cta.cta_text.data}
+
 						<svg class="cta-icon" height="10" width="8"><use xlink:href="#caret" /></svg>
 					</div>
 				</#if>
