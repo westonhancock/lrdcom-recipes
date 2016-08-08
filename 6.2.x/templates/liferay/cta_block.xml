@@ -213,7 +213,7 @@
 				<![CDATA[]]>
 			</entry>
 			<entry name="tip">
-				<![CDATA[]]>
+				<![CDATA[If this element opens up a popup instead of redirecting to a page, there is no need to fill out the URL. Instead, create a popup article and pass in the trigger class name. For example, "pop-up-trigger-article163953381-cta-1" where the long number is the ID of this article and the last number is the number of CTA block.]]>
 			</entry>
 		</meta-data>
 	</dynamic-element>

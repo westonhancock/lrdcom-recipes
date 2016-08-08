@@ -2,13 +2,15 @@
 <div class="align-center block-container justify-center" id="${article_namespace}">
 	<#list cta_url.siblings as cta>
 		<#assign cta_href = "javascript:;" />
+		<#assign popup_trigger_class = "pop-up-trigger-" + article_namespace + "-cta-" + (cta_index + 1) />
 
 		<#if cta.data?has_content>
 			<#assign cta_href = cta.data />
+			<#assign popup_trigger_class = "" />
 		</#if>
 
 		<div class="block card-block preview-block">
-			<a class="large-padding-vertical cta-${cta_index + 1} cta-block standard-padding-horizontal text-center" href="${cta_href}">
+			<a class="large-padding-vertical cta-${cta_index + 1} cta-block standard-padding-horizontal text-center ${popup_trigger_class}" href="${cta_href}">
 				<#if cta.svg_icon.data?has_content>
 					<div>${cta.svg_icon.data}</div>
 				</#if>
