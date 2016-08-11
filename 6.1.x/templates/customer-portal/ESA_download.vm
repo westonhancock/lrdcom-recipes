@@ -1,317 +1,363 @@
-#set ($articleId = ${reserved-article-id.data.toString()})
+#if ($request.lifecycle == 'RENDER_PHASE')
 
-#set ($articleHeader = $download_heading.data)
+	#set ($articleId = ${reserved-article-id.data.toString()})
 
-#set ($userLocalService = $serviceLocator.findService("com.liferay.portal.service.UserLocalService"))
-#set ($accountCustomerLocalService = $serviceLocator.findService("osb-portlet", "com.liferay.osb.service.AccountCustomerLocalService"))
-#set ($partnerWorkerLocalService = $serviceLocator.findService("osb-portlet", "com.liferay.osb.service.PartnerWorkerLocalService"))
+	#set ($articleHeader = $download_heading.data)
 
-#set ($userId = $permissionChecker.getUserId())
-#set ($user = $userLocalService.getUser($userId))
-#set ($companyId = $user.getxCompanyId())
+	#set ($userLocalService = $serviceLocator.findService("com.liferay.portal.service.UserLocalService"))
+	#set ($accountCustomerLocalService = $serviceLocator.findService("osb-portlet", "com.liferay.osb.service.AccountCustomerLocalService"))
+	#set ($partnerWorkerLocalService = $serviceLocator.findService("osb-portlet", "com.liferay.osb.service.PartnerWorkerLocalService"))
 
-#set ($themeDisplay = $request.get("theme-display"))
-#set ($scopeGroupId = $themeDisplay.get("scope-group-id"))
+	#set ($userId = $permissionChecker.getUserId())
+	#set ($user = $userLocalService.getUser($userId))
+	#set ($companyId = $user.getCompanyId())
 
-#set ($companies = "")
+	#set ($themeDisplay = $request.get("theme-display"))
+	#set ($scopeGroupId = $themeDisplay.get("scope-group-id"))
 
-#set ($accountCustomers = $accountCustomerLocalService.getUserAccountCustomers($userId))
+	#set ($companies = "")
 
-#foreach ($accountCustomer in $accountCustomers)
-	#set ($accountEntry = $accountCustomer.getAccountEntry())
+	#set ($namespace = $request.portlet-namespace)
 
-	#if ($validator.isNotNull($companies))
-		#set ($companies = "$companies/")
+	#set ($accountCustomers = $accountCustomerLocalService.getUserAccountCustomers($userId))
+
+	#foreach ($accountCustomer in $accountCustomers)
+		#set ($accountEntry = $accountCustomer.getAccountEntry())
+
+		#if ($validator.isNotNull($companies))
+			#set ($companies = "$companies/")
+		#end
+
+		#set ($companies = "$companies$accountEntry.getName()")
 	#end
 
-	#set ($companies = "$companies$accountEntry.getName()")
-#end
+	#if ($validator.isNull($companies))
+		#set ($partnerWorker = $partnerWorkerLocalService.getUserPartnerWorker($userId))
 
-#if ($validator.isNull($companies))
-	#set ($partnerWorker = $partnerWorkerLocalService.getUserPartnerWorker($userId))
+		#set ($partnerEntry = $partnerWorker.getPartnerEntry())
 
-	#set ($partnerEntry = $partnerWorker.getPartnerEntry())
-
-	#set ($companies = $partnerEntry.getCode())
-#end
-
-#set ($esaLanguageId = "en_US")
-
-#set ($expandoBridge = $user.getExpandoBridge())
-
-#set ($esa = $expandoBridge.getAttribute('osbESA'))
-
-#set ($companies = $stringUtil.replace($companies, ",", ""))
-
-#set ($timeStamp = $dateUtil.newDate().getTime())
-
-#set ($requiresESA = true)
-
-## update these to be dynamic once we figure out a workflow with @Weston Davis
-#set ($esaVersion = 1.0)
-#set ($esaVersionRequired = 1.0)
-
-#if ($validator.isNotNull($esa) && ($arrayUtil.getLength($esa) >= 4))
-	#set ($esaVersionAccepted = $getterUtil.getDouble($esa.get(3)))
-
-	#if ($esaVersionAccepted >= $esaVersionRequired)
-		#set ($requiresESA = false)
-	#end
-#end
-
-#set ($buttonStyle = "style-b")
-
-#if ($download_style.data != "false" || !$download_style.data)
-	<div class="$download_style.data">
-
-	#if ($box_heading.data != "")
-		<h4>
-			$box_heading.data
-		</h4>
+		#set ($companies = $partnerEntry.getCode())
 	#end
 
-	#set ($buttonStyle = "")
-#end
+	#set ($esaLanguageId = "en_US")
 
-	<div class="download-section esa-download">
-		#set ($selectCssClass = "")
+	#set ($expandoBridge = $user.getExpandoBridge())
 
-		#if (!$download_heading.data != "")
+	#set ($esa = $expandoBridge.getAttribute('osbESA'))
+
+	#set ($companies = $stringUtil.replace($companies, ",", ""))
+
+	#set ($timeStamp = $dateUtil.newDate().getTime())
+
+	#set ($requiresESA = true)
+
+	## update these to be dynamic once we figure out a workflow with @Weston Davis
+	#set ($esaVersion = 1.0)
+	#set ($esaVersionRequired = 1.0)
+
+	#if ($validator.isNotNull($esa) && ($arrayUtil.getLength($esa) >= 4))
+		#set ($esaVersionAccepted = $getterUtil.getDouble($esa.get(3)))
+
+		#if ($esaVersionAccepted >= $esaVersionRequired)
+			#set ($requiresESA = false)
+		#end
+	#end
+
+	#set ($buttonStyle = "style-b")
+
+	#if ($download_style.data != "false" || !$download_style.data)
+		<div class="$download_style.data">
+
+		#if ($box_heading.data != "")
 			<h4>
-				$download_heading.data
+				$box_heading.data
 			</h4>
 		#end
 
-		<div class="download">
-			#set ($more_than_one_download = ($download_groups.siblings.size() > 1 || $download_groups.downloads.siblings.size() > 1))
+		#set ($buttonStyle = "")
+	#end
 
-			#if ($download_groups.downloads.data != "")
-				#if ($more_than_one_download)
-					<select id="downloadSelect${articleId}" onChange="updateDownloadDetails${articleId}(this.selectedIndex);">
+		<div class="download-section esa-download">
+			#set ($selectCssClass = "")
 
-					#set ($selectCssClass = "float-right")
-				#end
-
-				#set ($counter = 0)
-				#set ($downloadDetails = {})
-				#set ($releaseNotes = [])
-
-				#foreach ($download_group in $download_groups.siblings)
-					#if ($more_than_one_download)
-						<optgroup label="$download_group.data">
-					#end
-
-					#foreach ($download in $download_group.downloads.siblings)
-						#if ($more_than_one_download)
-							<option value="$download.link.data">$download.data</option>
-						#end
-
-						#set ($currentDownloadDetails = {})
-
-						#foreach ($downloadDetails in $download.details.siblings)
-							#if($downloadDetails.key.data != "")
-								#set ($detail = {"key": $downloadDetails.key.data, "value": $downloadDetails.value.data})
-
-								#set ($void = $currentDownloadDetails.put($velocityCount, $detail))
-							#end
-						#end
-
-						#if (!$currentDownloadDetails.isEmpty())
-							#set ($void = $downloadDetails.put($counter, $currentDownloadDetails))
-						#end
-
-						#set ($void = $releaseNotes.add($download.release_notes.data))
-						#set ($counter = $counter + 1)
-					#end
-
-					#if ($more_than_one_download)
-						</optgroup>
-					#end
-				#end
-
-				#if ($more_than_one_download)
-					</select>
-				#end
+			#if (!$download_heading.data != "")
+				<h4>
+					$download_heading.data
+				</h4>
 			#end
 
-			<div class="aui-helper-clearfix button-group $selectCssClass">
-				#if (!$releaseNotes.isEmpty())
-					#set ($hide = "")
+			<div class="download">
+				#set ($more_than_one_download = ($download_groups.siblings.size() > 1 || $download_groups.downloads.siblings.size() > 1))
 
-					#if ($download_groups.downloads.release_notes_link.data == "")
-						#set ($hide = "aui-helper-hidden")
+				#if ($download_groups.downloads.data != "")
+					#if ($more_than_one_download)
+						<select id="downloadSelect${articleId}" onChange="updateDownloadDetails${articleId}(this.selectedIndex);">
+
+						#set ($selectCssClass = "float-right")
 					#end
 
-					<a class="article-${articleId} btn $buttonStyle $hide release-notes" href="$download_groups.downloads.release_notes_link.data">Release Notes</a>
-				#end
+					#set ($counter = 0)
+					#set ($downloadDetails = {})
+					#set ($releaseNotes = [])
 
-				<a class="btn download-btn $buttonStyle" href="javascript:;" id="downloadButton${articleId}">#language('download')</a>
-			</div>
-		</div>
-
-		#if (!$downloadDetails.isEmpty())
-			<div class="details-section" id="detailsSection${articleId}">
-				<a class="class-toggle" data-target-node="#detailsSection${articleId}" href="javascript:;">#language("details")</a>
-
-				<div class="details toggle-content">
-					#foreach ($detail_set in $downloadDetails)
-						#set ($hide = "aui-helper-hidden")
-						#set ($index = $velocityCount - 1)
-
-						#if ($velocityCount == 1)
-							#set ($hide = "")
+					#foreach ($download_group in $download_groups.siblings)
+						#if ($more_than_one_download)
+							<optgroup label="$download_group.data">
 						#end
 
-						<div class="article-${articleId} details download-info ${hide}" id="downloadDetail${articleId}_${index}">
-							#foreach($detail in $detail_set)
-								<dl>
-									<dt title="${detail.key}">
-										${detail.key}:
-									</dt>
-									<dd>
-										${detail.value}
-									</dd>
-								</dl>
+						#foreach ($download in $download_group.downloads.siblings)
+							#if ($more_than_one_download)
+								<option value="$download.link.data">$download.data</option>
 							#end
-						</div>
+
+							#set ($currentDownloadDetails = {})
+
+							#foreach ($downloadDetails in $download.details.siblings)
+								#if($downloadDetails.key.data != "")
+									#set ($detail = {"key": $downloadDetails.key.data, "value": $downloadDetails.value.data})
+
+									#set ($void = $currentDownloadDetails.put($velocityCount, $detail))
+								#end
+							#end
+
+							#if (!$currentDownloadDetails.isEmpty())
+								#set ($void = $downloadDetails.put($counter, $currentDownloadDetails))
+							#end
+
+							#set ($void = $releaseNotes.add($download.release_notes.data))
+							#set ($counter = $counter + 1)
+						#end
+
+						#if ($more_than_one_download)
+							</optgroup>
+						#end
 					#end
+
+					#if ($more_than_one_download)
+						</select>
+					#end
+				#end
+
+				<div class="aui-helper-clearfix button-group $selectCssClass">
+					#if (!$releaseNotes.isEmpty())
+						#set ($hide = "")
+
+						#if ($download_groups.downloads.release_notes_link.data == "")
+							#set ($hide = "aui-helper-hidden")
+						#end
+
+						<a class="article-${articleId} btn $buttonStyle $hide release-notes" href="$download_groups.downloads.release_notes_link.data">Release Notes</a>
+					#end
+
+					<a class="btn download-btn $buttonStyle" href="javascript:;" id="downloadButton${articleId}">#language('download')</a>
 				</div>
 			</div>
-		#end
 
-		#if ($requiresESA && !$articleHeader.contains("Developer Studio 3"))
-			#set ($currentURL = $request.get("attributes").get("CURRENT_URL"))
+			#if (!$downloadDetails.isEmpty())
+				<div class="details-section" id="detailsSection${articleId}">
+					<a class="class-toggle" data-target-node="#detailsSection${articleId}" href="javascript:;">#language("details")</a>
 
-			<form action="$currentURL" name="esafm">
-				<div class="esa-checkbox">
-					<p>By checking the "I Accept" box, you confirm that you have read, understand, and agree to be bound by the terms and conditions set forth at <a href="//www.liferay.com/legal">www.liferay.com/legal</a>. Notwithstanding the foregoing, if you have entered into a separate agreement with Liferay or one of its affiliates regarding the use of this software, such separate agreement controls. IF YOU ARE AN INDIVIDUAL ACTING ON BEHALF OF AN ENTITY, YOU REPRESENT THAT YOU HAVE THE AUTHORITY TO ENTER INTO THIS AGREEMENT ON BEHALF OF THAT ENTITY.</p>
-					<input id="acceptESA" name="acceptESA" type="checkbox" />
-					<label for="acceptESA">I Accept</label>
+					<div class="details toggle-content">
+						#foreach ($detail_set in $downloadDetails)
+							#set ($hide = "aui-helper-hidden")
+							#set ($index = $velocityCount - 1)
+
+							#if ($velocityCount == 1)
+								#set ($hide = "")
+							#end
+
+							<div class="article-${articleId} details download-info ${hide}" id="downloadDetail${articleId}_${index}">
+								#foreach($detail in $detail_set)
+									<dl>
+										<dt title="${detail.key}">
+											${detail.key}:
+										</dt>
+										<dd>
+											${detail.value}
+										</dd>
+									</dl>
+								#end
+							</div>
+						#end
+					</div>
 				</div>
-			</form>
-		#end
+			#end
+
+			#if ($requiresESA && !$articleHeader.contains("Developer Studio 3"))
+				#set ($currentURL = $request.get("attributes").get("CURRENT_URL"))
+
+				<form action="$currentURL" name="esafm">
+					<div class="esa-checkbox">
+						<p>By checking the "I Accept" box, you confirm that you have read, understand, and agree to be bound by the terms and conditions set forth at <a href="//www.liferay.com/legal">www.liferay.com/legal</a>. Notwithstanding the foregoing, if you have entered into a separate agreement with Liferay or one of its affiliates regarding the use of this software, such separate agreement controls. IF YOU ARE AN INDIVIDUAL ACTING ON BEHALF OF AN ENTITY, YOU REPRESENT THAT YOU HAVE THE AUTHORITY TO ENTER INTO THIS AGREEMENT ON BEHALF OF THAT ENTITY.</p>
+						<input id="acceptESA" name="acceptESA" type="checkbox" />
+						<label for="acceptESA">I Accept</label>
+					</div>
+				</form>
+			#end
+		</div>
+	#if ($download_style.data != "false")
 	</div>
-#if ($download_style.data != "false")
-</div>
-#end
+	#end
 
-<script type="text/javascript">
-	function updateDownloadDetails${articleId}(index) {
-		var A = AUI();
+	<script type="text/javascript">
+		function updateDownloadDetails${articleId}(index) {
+			var A = AUI();
 
-		var articleId = '${articleId}';
+			var articleId = '${articleId}';
 
-		var releaseNotesURLS = $releaseNotes;
+			var releaseNotesURLS = $releaseNotes;
 
-		var currentDetailNode = A.one('#downloadDetail' + articleId + '_' + index);
-		var detailNodes = A.all('.download-info.article-' + articleId);
-		var releaseNotes = A.one('.release-nodes.article-' + articleId);
+			var currentDetailNode = A.one('#downloadDetail' + articleId + '_' + index);
+			var detailNodes = A.all('.download-info.article-' + articleId);
+			var releaseNotes = A.one('.release-nodes.article-' + articleId);
 
-		if (detailNodes) {
-			detailNodes.hide();
-		}
-
-		if (currentDetailNode) {
-			currentDetailNode.show();
-		}
-
-		if (releaseNotes) {
-			if (!releaseNotesURLS[index]) {
-				releaseNotes.hide();
-			}
-			else {
-				releaseNotes.attr('href', releaseNotesURLS[index]);
-				releaseNotes.show();
-			}
-		}
-	}
-
-	AUI().ready(
-		'aui-base',
-		'aui-dialog',
-		function(A) {
-			var downloadSelect = A.one('#downloadSelect${articleId}');
-			var submitButton = A.one('#downloadButton${articleId}');
-
-			var requiresESA = $requiresESA;
-
-			var esaConfig = {
-				className: 'com.liferay.portal.model.User',
-				classPK: $user.userId,
-				columnName: 'osbESA',
-				companyId: 1,
-				p_auth: Liferay.authToken,
-				tableName: 'CUSTOM_FIELDS'
-			};
-
-			function getESAData(obj) {
-				Liferay.Service(
-					'/expandovalue/get-data',
-					esaConfig,
-					confirmESASubmitted
-				);
+			if (detailNodes) {
+				detailNodes.hide();
 			}
 
-			function confirmESASubmitted(obj) {
-				if (obj[3] && Number(obj[3]) >= Number($esaVersionRequired)) {
-					startDownload();
+			if (currentDetailNode) {
+				currentDetailNode.show();
+			}
+
+			if (releaseNotes) {
+				if (!releaseNotesURLS[index]) {
+					releaseNotes.hide();
+				}
+				else {
+					releaseNotes.attr('href', releaseNotesURLS[index]);
+					releaseNotes.show();
 				}
 			}
+		}
 
-			function startDownload() {
-				var downloadLink = '${download_groups.downloads.link.data}';
+		AUI().ready(
+			'aui-base',
+			'aui-dialog',
+			'aui-io-plugin',
+			'aui-io-request',
+			function(A) {
+				var downloadSelect = A.one('#downloadSelect${articleId}');
+				var submitButton = A.one('#downloadButton${articleId}');
 
-				if (downloadSelect) {
-					var selectValue = downloadSelect.val();
+				var getESADataAttempts = 0;
 
-					if (selectValue) {
-						downloadLink = selectValue;
+				var requiresESA = $requiresESA;
+
+				var esaConfig = {
+					className: 'com.liferay.portal.model.User',
+					classPK: ${userId},
+					columnName: 'osbESA',
+					companyId: ${companyId},
+					p_auth: Liferay.authToken,
+					tableName: 'CUSTOM_FIELDS'
+				};
+
+				function getESAData(obj) {
+					Liferay.Service(
+						'/expandovalue/get-data',
+						esaConfig,
+						confirmESASubmitted
+					);
+				}
+
+				function confirmESASubmitted(obj) {
+					getESADataAttempts++;
+
+					if (obj[3] && Number(obj[3]) >= Number($esaVersionRequired)) {
+						startDownload();
+					}
+					else if (getESADataAttempts < 4) {
+						getESAData(obj);
+					}
+					else {
+						alert('Unable to retrieve your downlad at this time.')
 					}
 				}
 
-				if (downloadLink) {
-					window.open(downloadLink);
+				function startDownload() {
+					var downloadLink = '${download_groups.downloads.link.data}';
+
+					if (downloadSelect) {
+						var selectValue = downloadSelect.val();
+
+						if (selectValue) {
+							downloadLink = selectValue;
+						}
+					}
+
+					if (downloadLink) {
+						window.open(downloadLink);
+					}
 				}
-			}
 
-			function submitESA() {
-				if (document.esafm && document.esafm.acceptESA.checked) {
-					submitViaAjax();
+				function submitESA() {
+					if (document.esafm && document.esafm.acceptESA.checked) {
+						getESADataAttempts = 0;
 
-					document.esafm.acceptESA.disabled = true;
+						submitViaAjax();
+
+						document.esafm.acceptESA.disabled = true;
+					}
+					else if (!requiresESA || $articleHeader.contains("Developer Studio 3")) {
+						startDownload();
+					}
+					else {
+						alert('$unicodeLanguageUtil.get($locale, "you-must-agree-with-the-end-user-license-agreement-to-continue")');
+					}
 				}
-				else if (!requiresESA || $articleHeader.contains("Developer Studio 3")) {
-					startDownload();
+
+				function submitViaAjax() {
+					if (requiresESA) {
+						A.io.request(
+							'${request.resource-url}',
+							{
+								data: {
+									${namespace}classPK: ${userId},
+									${namespace}companies: '${companies}',
+									${namespace}companyId: ${companyId},
+									${namespace}esaLanguageId: '${esaLanguageId}',
+									${namespace}esaVersion: '${esaVersion}',
+									${namespace}timeStamp: '${timeStamp}'
+								},
+								dataType: 'json',
+								on: {
+									success: getESAData
+								}
+							}
+						)
+					}
 				}
-				else {
-					alert('$unicodeLanguageUtil.get($locale, "you-must-agree-with-the-end-user-license-agreement-to-continue")');
-				}
-			}
 
-			function submitViaAjax() {
-				if (requiresESA) {
-					var esa = ["$timeStamp", "$companies", "$esaLanguageId", "$esaVersion"];
-
-					esaConfig.data = esa;
-
-					Liferay.Service(
-						'/expandovalue/add-value',
-						esaConfig,
-						getESAData
+				if (submitButton) {
+					submitButton.on(
+						['click', 'keypress'],
+						function(event) {
+							if (event.type == 'click' || (event.type == 'keypress' && event.keyCode == 13)) {
+								submitESA();
+							}
+						}
 					);
 				}
 			}
+		);
+	</script>
+#elseif ($request.lifecycle == 'RESOURCE_PHASE')
+	#set ($classPK = $request.parameters.classPK)
+	#set ($companies = $request.parameters.companies)
+	#set ($companyId = $request.parameters.companyId)
+	#set ($esaLanguageId = $request.parameters.esaLanguageId)
+	#set ($esaVersion = $request.parameters.esaVersion)
+	#set ($timeStamp = $request.parameters.timeStamp)
 
-			if (submitButton) {
-				submitButton.on(
-					['click', 'keypress'],
-					function(event) {
-						if (event.type == 'click' || (event.type == 'keypress' && event.keyCode == 13)) {
-							submitESA();
-						}
-					}
-				);
-			}
-		}
-	);
-</script>
+	#set ($data = [])
+	#set ($VOID = $data.add($timeStamp))
+	#set ($VOID = $data.add($companies))
+	#set ($VOID = $data.add($esaLanguageId))
+	#set ($VOID = $data.add($esaVersion))
+
+	#set ($data = $arrayUtil.toStringArray($data.toArray()))
+
+	#set ($expandoValueLocalService = $serviceLocator.findService("com.liferay.portlet.expando.service.ExpandoValueLocalService"))
+
+	#set ($VOID = $expandoValueLocalService.addValue($getterUtil.getLong($companyId), 'com.liferay.portal.model.User', 'CUSTOM_FIELDS', 'osbESA', $getterUtil.getLong($classPK), $data))
+#end
