@@ -270,7 +270,7 @@
 						getESAData(obj);
 					}
 					else {
-						alert('Unable to retrieve your downlad at this time.')
+						alert('Unable to retrieve your download at this time.')
 					}
 				}
 
