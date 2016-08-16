@@ -1,4 +1,4 @@
-<#assign request_url = "/osb-portlet/training/events?" />
+<#assign request_url = "/osb-portlet/training/training_events?" />
 
 <#if course_id.data?has_content>
 	<#assign request_url = request_url + "trainingCourseId=" + course_id.data />
@@ -13,7 +13,7 @@
 </#if>
 
 <#assign request_url = request_url + "&startDate=" + .now?long + online_course_only />
-<#assign css_padding_class = "standard-padding"/>
+<#assign css_padding_class = "large-padding"/>
 
 <#if number_of_classes.data == "0">
 	<#assign css_padding_class = "no-padding"/>
@@ -24,7 +24,7 @@
 		<h3 class="primary-color">${class_section_heading.data}</h3>
 	</#if>
 
-	<div class="standard-padding-vertical" id="${randomNamespace}trainingEvents"></div>
+	<div class="block-container justify-space-between no-padding standard-padding-vertical" id="${randomNamespace}trainingEvents"></div>
 
 	<#if number_of_classes.data != "0">
 		<#assign css_class = "cta font-color link"/>
@@ -50,12 +50,6 @@
 
 .training-class-container td {
 	padding: 1em 1em 0 0;
-}
-
-.training-class-container .training-class {
-	float: left;
-	vertical-align: top;
-	width: 33%;
 }
 
 .training-class-container .training-class .registration {
@@ -194,6 +188,7 @@
 				{
 					data: {},
 					dataType: 'json',
+					method: 'GET',
 					on: {
 						success: function (event, id, obj) {
 							var responseData = this.get('responseData');

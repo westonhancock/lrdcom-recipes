@@ -1,32 +1,23 @@
-#set ($articleId = ${reserved-article-id.data.toString()})
+#if ($request.lifecycle == 'RENDER_PHASE')
 
-#set ($userLocalService = $serviceLocator.findService("com.liferay.portal.service.UserLocalService"))
-#set ($userGroupRoleLocalService = $serviceLocator.findService("com.liferay.portal.service.UserGroupRoleLocalService"))
-#set ($roleLocalService = $serviceLocator.findService("com.liferay.portal.service.RoleLocalService"))
-#set ($roleLocalServiceUtil = $serviceLocator.findService("com.liferay.portal.service.RoleLocalServiceUtil"))
-#set ($accountCustomerLocalService = $serviceLocator.findService("osb-portlet", "com.liferay.osb.service.AccountCustomerLocalService"))
-#set ($partnerWorkerLocalService = $serviceLocator.findService("osb-portlet", "com.liferay.osb.service.PartnerWorkerLocalService"))
+	#set ($articleId = ${reserved-article-id.data.toString()})
 
-#set ($userId = $permissionChecker.getUserId())
-#set ($user = $userLocalService.getUser($userId))
-#set ($companyId = $user.getxCompanyId())
+	#set ($articleHeader = $download_heading.data)
 
-#set ($themeDisplay = $request.get("theme-display"))
-#set ($scopeGroupId = $themeDisplay.get("scope-group-id"))
+	#set ($userLocalService = $serviceLocator.findService("com.liferay.portal.service.UserLocalService"))
+	#set ($accountCustomerLocalService = $serviceLocator.findService("osb-portlet", "com.liferay.osb.service.AccountCustomerLocalService"))
+	#set ($partnerWorkerLocalService = $serviceLocator.findService("osb-portlet", "com.liferay.osb.service.PartnerWorkerLocalService"))
 
-#set ($roleNames = $stringUtil.split($required_role_names.data))
+	#set ($userId = $permissionChecker.getUserId())
+	#set ($user = $userLocalService.getUser($userId))
+	#set ($companyId = $user.getCompanyId())
 
-#foreach ($roleName in $roleNames)
-	#set ($role = $roleLocalService.getRole($companyId, $stringUtil.trim($roleName)))
-	#set ($hasRole = $userGroupRoleLocalService.hasUserGroupRole($userId, $getterUtil.getLong($scopeGroupId), $role.getRoleId(), true))
+	#set ($themeDisplay = $request.get("theme-display"))
+	#set ($scopeGroupId = $themeDisplay.get("scope-group-id"))
 
-	#if (!$hasRole)
-		#break
-	#end
-#end
-
-#if ($hasRole)
 	#set ($companies = "")
+
+	#set ($namespace = $request.portlet-namespace)
 
 	#set ($accountCustomers = $accountCustomerLocalService.getUserAccountCustomers($userId))
 
@@ -49,8 +40,6 @@
 	#end
 
 	#set ($esaLanguageId = "en_US")
-
-	#set ($user = $userLocalService.getUser($userId))
 
 	#set ($expandoBridge = $user.getExpandoBridge())
 
@@ -194,7 +183,7 @@
 				</div>
 			#end
 
-			#if ($requiresESA)
+			#if ($requiresESA && !$articleHeader.contains("Developer Studio 3"))
 				#set ($currentURL = $request.get("attributes").get("CURRENT_URL"))
 
 				<form action="$currentURL" name="esafm">
@@ -244,17 +233,21 @@
 		AUI().ready(
 			'aui-base',
 			'aui-dialog',
+			'aui-io-plugin',
+			'aui-io-request',
 			function(A) {
 				var downloadSelect = A.one('#downloadSelect${articleId}');
 				var submitButton = A.one('#downloadButton${articleId}');
+
+				var getESADataAttempts = 0;
 
 				var requiresESA = $requiresESA;
 
 				var esaConfig = {
 					className: 'com.liferay.portal.model.User',
-					classPK: $user.userId,
+					classPK: ${userId},
 					columnName: 'osbESA',
-					companyId: 1,
+					companyId: ${companyId},
 					p_auth: Liferay.authToken,
 					tableName: 'CUSTOM_FIELDS'
 				};
@@ -268,8 +261,16 @@
 				}
 
 				function confirmESASubmitted(obj) {
+					getESADataAttempts++;
+
 					if (obj[3] && Number(obj[3]) >= Number($esaVersionRequired)) {
 						startDownload();
+					}
+					else if (getESADataAttempts < 4) {
+						getESAData(obj);
+					}
+					else {
+						alert('Unable to retrieve your download at this time. Please try again later.')
 					}
 				}
 
@@ -291,11 +292,13 @@
 
 				function submitESA() {
 					if (document.esafm && document.esafm.acceptESA.checked) {
+						getESADataAttempts = 0;
+
 						submitViaAjax();
 
 						document.esafm.acceptESA.disabled = true;
 					}
-					else if (!requiresESA) {
+					else if (!requiresESA || $articleHeader.contains("Developer Studio 3")) {
 						startDownload();
 					}
 					else {
@@ -305,15 +308,23 @@
 
 				function submitViaAjax() {
 					if (requiresESA) {
-						var esa = ["$timeStamp", "$companies", "$esaLanguageId", "$esaVersion"];
-
-						esaConfig.data = esa;
-
-						Liferay.Service(
-							'/expandovalue/add-value',
-							esaConfig,
-							getESAData
-						);
+						A.io.request(
+							'${request.resource-url}',
+							{
+								data: {
+									${namespace}classPK: ${userId},
+									${namespace}companies: '${companies}',
+									${namespace}companyId: ${companyId},
+									${namespace}esaLanguageId: '${esaLanguageId}',
+									${namespace}esaVersion: '${esaVersion}',
+									${namespace}timeStamp: '${timeStamp}'
+								},
+								dataType: 'json',
+								on: {
+									success: getESAData
+								}
+							}
+						)
 					}
 				}
 
@@ -330,11 +341,23 @@
 			}
 		);
 	</script>
-#else
-	<div class="requires-subscription">
-		<p class="portlet-msg-alert">
-			You will need to upgrade to a Liferay DXP Subscription before you can download this software. Please contact your Sales Representative for more information. In the mean time, if you would like to try Liferay DXP, you can download the <a href="https://www.liferay.com/downloads">free trial</a>.
+#elseif ($request.lifecycle == 'RESOURCE_PHASE')
+	#set ($classPK = $request.parameters.classPK)
+	#set ($companies = $request.parameters.companies)
+	#set ($companyId = $request.parameters.companyId)
+	#set ($esaLanguageId = $request.parameters.esaLanguageId)
+	#set ($esaVersion = $request.parameters.esaVersion)
+	#set ($timeStamp = $request.parameters.timeStamp)
 
-		</p>
-	</div>
+	#set ($data = [])
+	#set ($VOID = $data.add($timeStamp))
+	#set ($VOID = $data.add($companies))
+	#set ($VOID = $data.add($esaLanguageId))
+	#set ($VOID = $data.add($esaVersion))
+
+	#set ($data = $arrayUtil.toStringArray($data.toArray()))
+
+	#set ($expandoValueLocalService = $serviceLocator.findService("com.liferay.portlet.expando.service.ExpandoValueLocalService"))
+
+	#set ($VOID = $expandoValueLocalService.addValue($getterUtil.getLong($companyId), 'com.liferay.portal.model.User', 'CUSTOM_FIELDS', 'osbESA', $getterUtil.getLong($classPK), $data))
 #end

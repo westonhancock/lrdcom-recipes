@@ -157,6 +157,7 @@
 #set ($void = $sponsor_rank.put("gold", 4) )
 #set ($void = $sponsor_rank.put("silver", 5) )
 #set ($void = $sponsor_rank.put("exhibitor", 6) )
+#set ($void = $sponsor_rank.put("technology", 7) )
 
 #foreach ($rank in $sponsor_rank.keySet())
 	#set ($void = $rank_to_sponsor.put( $sponsor_rank.get($rank), $rank))
