@@ -91,7 +91,7 @@
 		},
 
 		i_work_for_a_development_firm_agency_or_partner: {
-			de_DE: 'Ich arbeite für ein Unternehmen, das Software entwickelt, für eine Agentur bzw. einen Partner',
+			de_DE: 'Ich arbeite für einen Systemintegrator, eine Agentur oder einen Liferay Partner.',
 			en_US: 'I work for a development firm, agency, or partner'
 		},
 
