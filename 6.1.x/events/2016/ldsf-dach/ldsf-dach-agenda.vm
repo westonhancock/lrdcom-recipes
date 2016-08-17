@@ -567,7 +567,12 @@ var agenda_entries = {};
 		display: table;
 	}
 
-	#wrapper .agenda-3, #wrapper.class-toggle-carousel-day-2 .agenda-1, #wrapper.class-toggle-carousel-day-2 .agenda-3, #wrapper.class-toggle-carousel-day-3 .agenda-1, #wrapper.class-toggle-carousel-day-3 .agenda-2, #wrapper.hide-all td {
+	#wrapper .agenda-3, 
+	#wrapper.class-toggle-carousel-day-2 .agenda-1, 
+	#wrapper.class-toggle-carousel-day-2 .agenda-3, 
+	#wrapper.class-toggle-carousel-day-3 .agenda-1, 
+	#wrapper.class-toggle-carousel-day-3 .agenda-2, 
+	#wrapper.hide-all td {
 		display: none;
 	}
 
