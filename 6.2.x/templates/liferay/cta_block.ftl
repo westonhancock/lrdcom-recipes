@@ -60,17 +60,16 @@
 	}
 </#list>
 
-#${article_namespace} .preview-block {
-	height: 400px;
-	width: 33.33%;
-}
-
 @media (min-width: 768px) and (max-width: 1199px) {
 	<#assign count = cta_url.siblings?size />
 
 	<#if count % 2 = 0>
 		#${article_namespace} .preview-block {
 			width: 50%;
+		}
+	<#else>
+		#${article_namespace} .preview-block {
+			width: 33.33%;
 		}
 	</#if>
 }
