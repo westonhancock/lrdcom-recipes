@@ -1,4 +1,4 @@
-<#assign request_url = "/osb-portlet/training/training_events?" />
+<#assign request_url = "/osb-portlet/training/events?" />
 
 <#if course_id.data?has_content>
 	<#assign request_url = request_url + "trainingCourseId=" + course_id.data />
@@ -52,6 +52,12 @@
 	padding: 1em 1em 0 0;
 }
 
+.training-class-container .training-class {
+	float: left;
+	vertical-align: top;
+	width: 33%;
+}
+
 .training-class-container .training-class .registration {
 	padding-top: .5em;
 }
@@ -71,6 +77,10 @@
 
 .training-class-container .location:before {
 	background: url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxNiIgaGVpZ2h0PSIxNiIgdmlld0JveD0iMCAwIDE2IDE2Ij48ZyBmaWxsPSJub25lIiBzdHJva2U9IiMxQzc1QjkiIHN0cm9rZS1taXRlcmxpbWl0PSIxMCI+PHBhdGggZD0iTTExLjQgOC45TDggMTQgNC40IDguNiIvPjxjaXJjbGUgY3g9IjgiIGN5PSI2LjIiIHI9IjQuMiIvPjxjaXJjbGUgY3g9IjgiIGN5PSI2LjIiIHI9IjEuOCIvPjwvZz48L3N2Zz4=") no-repeat center;
+}
+
+.training-class .title {
+	font-weight: 500;
 }
 </style>
 
