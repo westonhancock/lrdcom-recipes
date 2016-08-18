@@ -60,17 +60,29 @@
 	}
 </#list>
 
-@media (min-width: 768px) and (max-width: 1199px) {
-	<#assign count = cta_url.siblings?size />
+<#assign current_url = request.attributes.CURRENT_COMPLETE_URL! />
 
-	<#if count % 2 = 0>
-		#${article_namespace} .preview-block {
-			width: 50%;
-		}
-	<#else>
-		#${article_namespace} .preview-block {
-			width: 33.33%;
-		}
-	</#if>
-}
+<#assign count = cta_url.siblings?size />
+
+<#if current_url?contains("/services/training") && (count < 4) >
+    #${article_namespace} .block.card-block {
+    	width: 33.33%;
+    }
+
+    #${article_namespace}  a.cta-block {
+    	height: 320px;
+    }
+ <#else>
+	@media (min-width: 768px) and (max-width: 1199px) {
+		<#if count % 2 = 0>
+			#${article_namespace} .preview-block {
+				width: 50%;
+			}
+		<#else>
+			#${article_namespace} .preview-block {
+				width: 33.33%;
+			}
+		</#if>
+	}
+</#if>
 </style>
