@@ -10,22 +10,14 @@
 
 <div class="content-hub">
 	<#list article_ids.siblings as article_id>
-		<#assign content_wrapper_created = "" />
-		<#assign end_content = article_ids.siblings?size - 2 />
-
 		<#if article_id.data?has_content>
 			<#assign css_class = "article-wrapper" />
 
 			<#if article_id_index == 1>
-				<#if article_id.no_copy.data?string == "true">
-					<#assign css_class = css_class + " max-med" />
-				<#else>
-					<div class="content-wrapper large-padding-vertical">
-					<#assign content_wrapper_created = "true" />
-				</#if>
+				<#assign css_class = css_class + " max-med" />
 			</#if>
 
-			<#if article_id_index == 2 && content_wrapper_created != "true">
+			<#if article_id_index == 2>
 				<div class="content-wrapper large-padding-vertical">
 			</#if>
 
@@ -51,6 +43,8 @@
 					</div>
 				</#if>
 			</div>
+
+			<#assign end_content = article_ids.siblings?size - 2 />
 
 			<#if article_id_index == end_content>
 				</div>
@@ -78,7 +72,7 @@
 				<div class="alt-font-color sources standard-padding">
 					<#assign sources_title = '${languageUtil.get(locale, "sources", "Sources")}' />
 
-					<h5>${sources_title?upper_case}</h5>
+					<h5 class="small-caps">${sources_title}</h5>
 
 					<ul class="source-list unstyled">
 						<#list sources.siblings as cur_source>

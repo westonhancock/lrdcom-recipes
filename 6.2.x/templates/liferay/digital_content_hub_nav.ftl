@@ -4,19 +4,22 @@
 <#assign http_servlet_request = service_context.getRequest() />
 
 <#assign current_url = htmlUtil.escapeURL(portalUtil.getCurrentCompleteURL(http_servlet_request)) />
+
+<#assign summary_text = "" />
+
+<#macro social_icons>
+	<a aria-label="Share on Facebook" class="share-facebook social-icon" href="https://facebook.com/sharer/sharer.php?u=${current_url}" target="_blank"><span class="icon icon-facebook"></span></a>
+	<a aria-label="Share on LinkedIn" class="share-linkedin social-icon" href="https://www.linkedin.com/shareArticle?mini=true&url=${current_url}&title=${htmlUtil.escapeURL(summary_text)}&summary=${htmlUtil.escapeURL(summary_text)}&source=${current_url}" target="_blank"><span class="icon icon-linkedin"></span></a>
+	<a aria-label="Share on Twitter" class="share-twitter social-icon" href="https://twitter.com/intent/tweet/?text=${current_url}&url=${current_url}" target="_blank"><span class="icon icon-twitter"></span></a>
+</#macro>
 <div class="side-nav">
 	<nav class="nav-wrapper standard-padding">
-
-		<#assign summary_text = "" />
-
 		<div class="nav-bar-mobile">
 			<div class="social-icons">
-				<a aria-label="Share on Facebook" class="share-facebook social-icon" href="https://facebook.com/sharer/sharer.php?u=${current_url}" target="_blank"><span class="icon icon-facebook"></span></a>
-				<a aria-label="Share on LinkedIn" class="share-linkedin social-icon" href="https://www.linkedin.com/shareArticle?mini=true&url=${current_url}&title=${htmlUtil.escapeURL(summary_text)}&summary=${htmlUtil.escapeURL(summary_text)}&source=${current_url}" target="_blank"><span class="icon icon-linkedin"></span></a>
-				<a aria-label="Share on Twitter" class="share-twitter social-icon" href="https://twitter.com/intent/tweet/?text=${current_url}&url=${current_url}" target="_blank"><span class="icon icon-twitter"></span></a>
+				<@social_icons />
 			</div>
 
-			<div class="mobile-nav-button">
+			<div class="class-toggle mobile-nav-button" data-target-class="nav-open" data-target-nodes=".nav-wrapper">
 				<svg height="44" width="40"><use xlink:href="#moreIcon"></use></svg>
 			</div>
 		</div>
@@ -49,9 +52,7 @@
 				<h5 class="alt-font-color small-caps"><small>Share This Article</small></h5>
 
 				<div class="small-padding-vertical social-icons">
-					<a aria-label="Share on Facebook" class="share-facebook social-icon" href="https://facebook.com/sharer/sharer.php?u=${current_url}" target="_blank"><span class="icon icon-facebook"></span></a>
-					<a aria-label="Share on LinkedIn" class="share-linkedin social-icon" href="https://www.linkedin.com/shareArticle?mini=true&url=${current_url}&title=${htmlUtil.escapeURL(summary_text)}&summary=${htmlUtil.escapeURL(summary_text)}&source=${current_url}" target="_blank"><span class="icon icon-linkedin"></span></a>
-					<a aria-label="Share on Twitter" class="share-twitter social-icon" href="https://twitter.com/intent/tweet/?text=${htmlUtil.escapeURL(summary_text)}&url=${current_url}" target="_blank"><span class="icon icon-twitter"></span></a>
+					<@social_icons />
 				</div>
 			</div>
 
@@ -285,8 +286,43 @@
 			var navHeight;
 			var navOffset;
 			var navOffsetAbs;
+			var scrollListener;
 			var style;
 			var windowBottom;
+
+			function bind() {
+				WIN.on(
+					'resize',
+					A.debounce(
+						function() {
+							if (!Liferay.Util.isTablet()) {
+								setDimensions()
+
+								if (!scrollListener) {
+									bindOnce();
+								}
+							}
+						},
+						100
+					)
+				);
+
+				if (!scrollListener && (!A.UA.mobile || !Liferay.Util.isTablet())) {
+					bindOnce();
+				}
+			}
+
+			function bindOnce() {
+				WIN.on(
+					['mousewheel', 'scroll'],
+					A.throttle(
+						setNavbarPositionController,
+						100
+					)
+				);
+
+				scrollListener = true;
+			}
 
 			function createStyleTag() {
 				var css = '.content-hub .nav-wrapper.nav-offset {top: ' + navOffset + 'px;} .content-hub .nav-wrapper.nav-bottom {top: ' + navBottom + 'px;}';
@@ -299,7 +335,7 @@
 				head.appendChild(style);
 			}
 
-			function getUpdatedContentDimensions() {
+			function getContentDimensions() {
 				if (content) {
 					headerHeight = content.getY();
 					contentHeight = content.get(STR_CLIENT_HEIGHT);
@@ -333,34 +369,10 @@
 			function init() {
 				createStyleTag();
 				setDimensions();
-
-				if (mobileNavButton) {
-					mobileNavButton.on(
-						'click',
-						toggleMobileNav
-					);
-				}
-
-				if (!A.UA.mobile) {
-					WIN.on(
-						['mousewheel', 'scroll'],
-						A.throttle(
-							setNavbarScrollController,
-							100
-						)
-					);
-
-					WIN.on(
-						'resize',
-						A.debounce(
-							setDimensions,
-							100
-						)
-					);
-				}
+				bind();
 			}
 
-			function setNavbarScroll(winScrollPos) {
+			function setNavbarPosition(winScrollPos) {
 				var sideNav = A.one('.nav-wrapper');
 
 				if (sideNav) {
@@ -419,29 +431,25 @@
 			function setDimensions(event) {
 				windowHeight = window.innerHeight;
 
-				getUpdatedContentDimensions();
+				getContentDimensions();
 
 				style.innerHTML = '.content-hub .nav-wrapper.nav-offset {top: ' + navOffset + 'px;} .content-hub .nav-wrapper.nav-bottom {top: ' + navBottom + 'px;}';
 
 				var winScrollPos = WIN.get('scrollY') || WIN.get('docScrollY');
 
-				setNavbarScroll(winScrollPos);
+				setNavbarPosition(winScrollPos);
 			}
 
-			function setNavbarScrollController(event) {
+			function setNavbarPositionController(event) {
 				var winScrollPos = WIN.get('scrollY') || WIN.get('docScrollY');
 
 				if (winScrollPos <= headerHeight + navOffsetAbs || winScrollPos >= windowBottom - INT_3EM) {
-					setNavbarScroll(winScrollPos);
+					setNavbarPosition(winScrollPos);
 				}
 				else if (winScrollPos < windowBottom && winScrollPos > headerHeight + navOffsetAbs && Math.abs(winScrollPos - previousWinScrollPos) > INT_SCROLL_DIRECTION_BUFFER) {
 					previousWinScrollPos = winScrollPos;
-					setNavbarScroll(winScrollPos);
+					setNavbarPosition(winScrollPos);
 				}
-			}
-
-			function toggleMobileNav(event) {
-				sideNav.toggleClass('nav-open');
 			}
 
 			init();
