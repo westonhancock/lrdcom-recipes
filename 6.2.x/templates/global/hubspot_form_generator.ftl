@@ -168,6 +168,8 @@
 						<@print_item item=item />
 					</#list>
 
+					<input class="field hide please-leave-blank" name="please_leave_blank" />
+
 					<#if submit_text.data?has_content>
 						<#assign btn_text = submit_text.data />
 					<#else>
@@ -292,7 +294,7 @@
 										value = node.get('checked');
 									}
 
-									if ((node.hasClass('field-required') && value == '') || (node.hasClass('field-required') && !value)) {
+									if ((node.hasClass('field-required') && value == '') || (node.hasClass('field-required') && !value) || (node.hasClass('please-leave-blank') && value != '')) {
 										leave = true;
 
 										return;
