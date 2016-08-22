@@ -1,4 +1,4 @@
-<#assign request_url = "/osb-portlet/training/events?" />
+<#assign request_url = "/osb-portlet/training/training_events?" />
 
 <#if course_id.data?has_content>
 	<#assign request_url = request_url + "trainingCourseId=" + course_id.data />
