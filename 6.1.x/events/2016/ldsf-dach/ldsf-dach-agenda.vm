@@ -100,22 +100,26 @@
 
 ## Loop Through records and place them in the correct place in the map
 #foreach ($record in $records)
+	#set ($agenda_speakers_uuid = "")
 
+	#if ($record.getFieldValue("speakers_uuid"))
+		#set ($agenda_speakers_uuid = $record.getFieldValue("speakers_uuid"))
+	#end
 
-	#set ($agenda_speakers_uuid = $record.getFieldValue("speakers_uuid"))
-	#if ((!$found_speaker_record_set_id) && ($validator.isNotNull($agenda_speakers_uuid)))
+	#if ((!$found_speaker_record_set_id) && $validator.isNotNull($agenda_speakers_uuid))
 		#set ($agenda_speaker_array_uuid = $stringUtil.split($agenda_speakers_uuid))
+
 		#set ($agenda_speaker_uuid = $stringUtil.trim($agenda_speaker_array_uuid.get(0)))
+
 		#if ($validator.isNotNull($agenda_speaker_uuid))
 			#set ($speaker_record_info = $ddl_records_local_service.getDDLRecordByUuidAndGroupId($agenda_speaker_uuid, $groupId))
+
 			#set ($speaker_recordset_id = $speaker_record_info.recordSetId)
 			#set ($found_speaker_record_set_id = true)
 		#end
 	#end
 
-
-
-  #if ($record.getFieldValue("display_on_live"))
+  #if ($record.getField("display_on_live") && $record.getFieldValue("display_on_live"))
 	## Get date, start-time, end-time and room for sorting purposes
 	#set ($date = $record.getFieldValue("date"))
 
@@ -248,8 +252,13 @@ var agenda_speakers = {
 	#foreach ($speaker_record in $speaker_records)
 
 		## remove newlines
-		#set ($speaker_bio = $htmlUtil.escape($speaker_record.getFieldValue("speaker_bio")).replaceAll("\n", ""))
-		 #set ($speaker_image_group_id = $speaker_record.getGroupId())
+		#set ($speaker_bio = "")
+
+		#if ($speaker_record.getField("speaker_bio"))
+			#set ($speaker_bio = $htmlUtil.escape($speaker_record.getFieldValue("speaker_bio")).replaceAll("\n", ""))
+		#end
+
+		#set ($speaker_image_group_id = $speaker_record.getGroupId())
 
 		#set ($speaker_image = "")
 
@@ -257,7 +266,12 @@ var agenda_speakers = {
 			#set ($speaker_image = $speaker_record.getFieldValue("speaker_image"))
 		#end
 
-		#set ($speaker_json_object = $jsonFactoryUtil.createJSONObject($speaker_image))
+		#set ($speaker_json_object = $jsonFactoryUtil.createJSONObject())
+
+		#if ($stringUtil.startsWith($speaker_image, "{") && $stringUtil.endsWith($speaker_image, "}"))
+			#set ($speaker_json_object = $jsonFactoryUtil.createJSONObject($speaker_image))
+		#end
+
 		#set ($speaker_image_uuid = $speaker_json_object.getString("uuid"))
 
 		#if ($velocityCount != 1)
@@ -277,10 +291,7 @@ var agenda_speakers = {
 var agenda_entries = {};
 </script>
 
-
 #set( $tabWidth = 100 / $agenda.keySet().size() )
-
-
 
 <style type="text/css">
 	#feedbackContainer {
@@ -567,12 +578,7 @@ var agenda_entries = {};
 		display: table;
 	}
 
-	#wrapper .agenda-3, 
-	#wrapper.class-toggle-carousel-day-2 .agenda-1, 
-	#wrapper.class-toggle-carousel-day-2 .agenda-3, 
-	#wrapper.class-toggle-carousel-day-3 .agenda-1, 
-	#wrapper.class-toggle-carousel-day-3 .agenda-2, 
-	#wrapper.hide-all td {
+	#wrapper .agenda-3, #wrapper.class-toggle-carousel-day-2 .agenda-1, #wrapper.class-toggle-carousel-day-2 .agenda-3, #wrapper.class-toggle-carousel-day-3 .agenda-1, #wrapper.class-toggle-carousel-day-3 .agenda-2, #wrapper.hide-all td {
 		display: none;
 	}
 
@@ -1058,9 +1064,7 @@ var agenda_entries = {};
 
 	#set ($tactic_record = $ddl_records_local_service.fetchDDLRecord($getterUtil.getLong($tactic_id)))
 
-
 	#if ($tactic_record)
-
 		#foreach ($field in $hs_field_values)
 			#set ($field_name = "")
 
@@ -1107,7 +1111,7 @@ var agenda_entries = {};
 			#set ($asset_url = $tactic_record.getFieldValue("asset_url"))
 		#end
 
-		#set ($asset_json_object = $jsonFactoryUtil.getNullJSON())
+		#set ($asset_json_object = $jsonFactoryUtil.createJSONObject())
 
 		#if ($stringUtil.startsWith($asset_record, "{") && $stringUtil.endsWith($asset_record, "}"))
 			#set ($asset_json_object = $jsonFactoryUtil.createJSONObject($asset_record))
@@ -1331,8 +1335,6 @@ var agenda_entries = {};
 
 			#set ($pop_up_css_class = "pop-up")
 
-
-
 			#if ($custom_css_class)
 			  #set ($pop_up_css_class = "$pop_up_css_class $custom_css_class")
 			#end
@@ -1449,7 +1451,6 @@ var agenda_entries = {};
 				  <div class="room-session">
 					#if ($room_name != "") Room: $room_name,#end Time: $start_time_display - $end_time_display<br>
 				  </div>
-
 
 				  #foreach ($speakers_uuid in $speaker_array_uuid)
 					#set ($speakers_uuid = $stringUtil.trim($speakers_uuid))
