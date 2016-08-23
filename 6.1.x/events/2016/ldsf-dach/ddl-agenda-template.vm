@@ -42,6 +42,8 @@
 #set ($agendabutton = $enable_agenda_button.data.equalsIgnoreCase("true"))
 #set ($selector_color = "#0067aa")
 
+#set ($show_agenda_with_columns = ($column_view && ($column_view.data == true)))
+
 #set($void = $portalUtil.setPageSubtitle("", $request))
 
 
@@ -65,7 +67,14 @@
   #end
 #end
 
+
+
+
 #set ($default_col_span = 2)
+
+#if ($show_agenda_with_columns && $validator.isNotNull($num_columns) && $validator.isNotNull($num_columns.data))
+  #set ($default_col_span = $num_columns.data)
+#end
 #set ($integer = 0)
 
 
@@ -86,7 +95,8 @@
 
 ## Loop Through records and place them in the correct place in the map
 #foreach ($record in $records)
-  #if ($record.getFieldValue("display_on_live"))
+  #if ($record.getFieldValue("display_on_live") && (!$validator.isNotNull($agenda_filter.data) || ($validator.isNotNull($agenda_filter.data) && $record.getFieldValue("filter_categories").contains($agenda_filter.data))))
+
     ## Get date, start-time, end-time and room for sorting purposes
     #set ($date = $record.getFieldValue("date"))
 
@@ -192,7 +202,9 @@
     ##set ($void = $existing_session_map.put("room-$mod_room_number", $session_map_info))
     ## changed the session map key to title to allow parallel sessions in same room. 
     ## todo - pick something better than title? 
-    #set ($void = $existing_session_map.put($record.getFieldValue("title"), $session_map_info))
+
+    #set ($session_title = $record.getFieldValue("title"))
+    #set ($void = $existing_session_map.put("room-${mod_room_number}-${session_title}", $session_map_info))
     
     #set ($void = $existing_row_map.put("sessions", $existing_session_map))
 
@@ -508,7 +520,12 @@
         display: table;
     }
 
-    #wrapper .agenda-3, #wrapper.class-toggle-carousel-day-2 .agenda-1, #wrapper.class-toggle-carousel-day-2 .agenda-3, #wrapper.class-toggle-carousel-day-3 .agenda-1, #wrapper.class-toggle-carousel-day-3 .agenda-2, #wrapper.hide-all td {
+    #wrapper .agenda-3, 
+    #wrapper.class-toggle-carousel-day-2 .agenda-1, 
+    #wrapper.class-toggle-carousel-day-2 .agenda-3, 
+    #wrapper.class-toggle-carousel-day-3 .agenda-1, 
+    #wrapper.class-toggle-carousel-day-3 .agenda-2, 
+    #wrapper.hide-all td {
         display: none;
     }
 
@@ -824,6 +841,19 @@
     	margin-bottom: 30px;
     	text-size: 1.25em;
     }
+
+#if ($show_agenda_with_columns) 
+
+  @media all and (min-width: 720px) {
+    #agendaWrapper td, #agendaWrapper td.multi-room-td {
+        display: table-cell;
+    }
+
+    #agendaWrapper table {
+      table-layout: fixed;
+    }	
+  }
+#end
 </style>
 
  <div id="agenda">
@@ -1006,7 +1036,7 @@
              ##   <span>$session_type:</span>
              ## #end
                 <div class="mobile-only">
-                  $start_time_display - $row_end_time_display
+                  $start_time_display - $end_time_display
                </div>
 
               #if ($company_logo_uuid != "")
@@ -1433,7 +1463,7 @@ AUI().ready(
         if (selectday) {
  	        var daynum = selectday.getAttribute("data-target-class");
              if (daynum) {
-                A.one('#wrapper').addClass("class-toggle-carousel-" + daynum);
+                A.one('#wrapper').setAttribute("class", " class-toggle-carousel-" + daynum);
              }
         }
        

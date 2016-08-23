@@ -2081,3 +2081,23 @@ AUI().ready(
 
 </script>
 #end
+
+
+
+#if ($validator.isNotNull($agenda_default_day) && $validator.isNotNull($agenda_default_day.data))
+<script>
+AUI().ready(
+	'node',
+	function(A) {
+		var selectday = A.one('.select-day[data-date="$agenda_default_day.data"]');
+        if (selectday) {
+ 	        var daynum = selectday.getAttribute("data-target-class");
+             if (daynum) {
+                A.one('#wrapper').setAttribute("class", " class-toggle-carousel-" + daynum);
+             }
+        }
+       
+	}
+);
+</script>
+        #end
