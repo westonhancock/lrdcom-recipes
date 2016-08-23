@@ -31,7 +31,6 @@
     "gulp-svgmin": "^1.2.2",
     "jshint": "^2.9.2",
     "minimist": "^1.2.0",
-    "mocha-phantomjs": "^4.1.0",
     "postcss": "^5.0.21",
     "postcss-advanced-variables": "^1.2.2",
     "precss": "^1.4.0",

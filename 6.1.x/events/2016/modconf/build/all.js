@@ -36,5 +36,5 @@
 	A.one('.js-viewhotels').on('click', function () {
         hotelPanel.show();
     });
-    
+
 });</script>

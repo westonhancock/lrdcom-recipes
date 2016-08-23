@@ -218,6 +218,7 @@ gulp.task('css', function () {
         .pipe(postcss([
             require('precss'),
             require("css-mqpacker"),
+            require("postcss-discard-comments"),
             require('postcss-advanced-variables')({
                 variables:
                 environment
