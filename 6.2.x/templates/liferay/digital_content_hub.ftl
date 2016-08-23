@@ -8,10 +8,8 @@
 <#assign layout_local_service = serviceLocator.findService("com.liferay.portal.service.LayoutLocalService") />
 <#assign layout = layout_local_service.getLayout(plid)! />
 
-<div class="content-hub info-hub">
+<div class="content-hub">
 	<#list article_ids.siblings as article_id>
-		<#assign end_content = article_ids.siblings?size - 2 />
-
 		<#if article_id.data?has_content>
 			<#assign css_class = "article-wrapper" />
 
@@ -46,6 +44,8 @@
 				</#if>
 			</div>
 
+			<#assign end_content = article_ids.siblings?size - 2 />
+
 			<#if article_id_index == end_content>
 				</div>
 			</#if>
@@ -72,7 +72,7 @@
 				<div class="alt-font-color sources standard-padding">
 					<#assign sources_title = '${languageUtil.get(locale, "sources", "Sources")}' />
 
-					<h5>${sources_title?upper_case}</h5>
+					<h5 class="small-caps">${sources_title}</h5>
 
 					<ul class="source-list unstyled">
 						<#list sources.siblings as cur_source>
@@ -101,5 +101,29 @@
 <style type="text/css">
 	.article-wrapper {
 		position: relative;
+	}
+
+	.aui .quote-section .source-text {
+		font-size: 0.8em;
+		margin: 0;
+		padding: 1em 0;
+	}
+
+	.content-hub .content-wrapper .introduction {
+		font-size: 1.5em;
+	}
+
+	.content-hub .content-wrapper .quote-section p {
+		font-size: 1em;
+	}
+
+	.content-hub .content-wrapper table p {
+		font-size: 1em;
+		line-height: 20px;
+	}
+
+	.content-hub .content-wrapper p, .content-hub .content-wrapper li {
+		font-size: 1.3em;
+		line-height: 1.6;
 	}
 </style>
