@@ -400,10 +400,19 @@
         width: 20%;
     }
 
+#if (!$show_agenda_with_columns) 
     #agendaWrapper .pop-up {
         width: 100%;
         width: calc(100% - 20px)
     }
+#else
+  #agendaWrapper .single-row-td {
+        width: 100%;
+      
+    }
+
+#end
+
 
     #agendaWrapper .pop-up:hover {
         cursor: pointer;
@@ -693,10 +702,13 @@
         max-width: 100%;
       }
 
+
+#if (!$show_agenda_with_columns) 
       #agendaWrapper td.multi-room-td {
         box-sizing: border-box;
         width: 100%;
       }
+#end
 
       .agenda-table.sticky-nav {
         margin-top: 0;

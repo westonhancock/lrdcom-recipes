@@ -1,0 +1,31 @@
+[{
+        "groupId": "67510365",
+        "articleId": "77062063",
+        "defaultLocale": "en_US",
+        "locales": [
+        {
+            "locale": "en_US",
+            "filename": "build/modconf.css"
+        }]   
+},
+{
+        "groupId": "67510365",
+        "articleId": "77062154",
+        "defaultLocale": "en_US",
+        "locales": [
+        {
+            "locale": "en_US",
+            "filename": "build/all.js"
+        }]
+},
+{
+        "groupId": "67510365",
+        "articleId": "77062078",
+        "defaultLocale": "en_US",
+        "locales": [
+        {
+            "locale": "en_US",
+            "filename": "build/banner.html"
+        }]
+}
+]

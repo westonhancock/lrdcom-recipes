@@ -175,6 +175,15 @@ $agendaborder: #8197ae;
         color: $darkestgray;
 }
 
+.btn--onwhitebackground {
+   color: $darkestgray;
+   border-color: $darkestgray;
+    &:hover {
+        color: $white;
+        background: $darkestgray;
+    }
+}
+
 .agenda__header {
     color: $red;
     text-align: center;
@@ -232,7 +241,7 @@ $agendaborder: #8197ae;
 
 #agenda #agendaWrapper {
     
-    margin: 0 2em;
+    margin: 2em;
     #agendaTabs span.select-day {
         background-color: $red;
         font-size: 1.5em;
