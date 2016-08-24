@@ -105,7 +105,8 @@
 
 	.aui .quote-section .source-text {
 		font-size: 0.8em;
-		margin: 0;
+		margin-bottom: 0;
+		margin-top: 0;
 		padding: 1em 0;
 	}
 
