@@ -122,7 +122,7 @@
     ## lower case for am pm instead of ampm
     #set ($startTimeDate = $dateTool.toDate("HH:mm" , $start_time_hour.concat(":").concat($start_time_minutes), $localeEn))
     #set ($start_time_display = $dateTool.format($timeFormat,$startTimeDate,$localePage).toLowerCase())
-    
+
     #set ($start_time_sort = $start_time_hour_sort + $start_time_minutes)
 
     #set ($end_time_hour = $record.getFieldValue("end_time_hour"))
@@ -144,7 +144,7 @@
       #set ($end_time_minutes = "0" + $end_time_minutes)
     #end
 
-	## lower case for am pm instead of ampm
+    ## lower case for am pm instead of ampm
     #set ($endTimeDate = $dateTool.toDate("HH:mm" , $end_time_hour.concat(":").concat($end_time_minutes), $localeEn))
     #set ($end_time_display = $dateTool.format($timeFormat,$endTimeDate,$localePage).toLowerCase())
     #set ($end_time_sort = $end_time_hour_sort + $end_time_minutes)
@@ -154,7 +154,7 @@
     #set ($room_uuid = $stringUtil.replace($room_uuid, "]", ""))
     #set ($room_uuid = $stringUtil.replace($room_uuid, '"', ''))
 #set ($room_record_info = false)
-	#set ($room_record = false)
+    #set ($room_record = false)
     #set ($room_record_info = $ddl_records_local_service.getDDLRecordByUuidAndGroupId($room_uuid, $groupId))
     #set ($room_record = $ddl_records_local_service.fetchDDLRecord($getterUtil.getLong($room_record_info.recordId)))
 
@@ -200,12 +200,12 @@
     #set ($mod_room_number = 100 + $int_room_number)
     #set ($void = $session_map_info.put("room-number", $mod_room_number))
     ##set ($void = $existing_session_map.put("room-$mod_room_number", $session_map_info))
-    ## changed the session map key to title to allow parallel sessions in same room. 
-    ## todo - pick something better than title? 
+    ## changed the session map key to title to allow parallel sessions in same room.
+    ## todo - pick something better than title?
 
     #set ($session_title = $record.getFieldValue("title"))
     #set ($void = $existing_session_map.put("room-${mod_room_number}-${session_title}", $session_map_info))
-    
+
     #set ($void = $existing_row_map.put("sessions", $existing_session_map))
 
     #set ($existing_end_time = $existing_row_map.get("end-time"))
@@ -350,7 +350,7 @@
         border-bottom-width: 0;
     }
 
-    #agendaWrapper.hide-all  tr:not([data-numselect]), 
+    #agendaWrapper.hide-all  tr:not([data-numselect]),
     #agendaWrapper.hide-all  tr[data-numselect="0"],
     #agendaWrapper.hide-all  tr[data-numselect] td.pop-up:not([data-selected="true"])
     {
@@ -408,7 +408,7 @@
         width: 20%;
     }
 
-#if (!$show_agenda_with_columns) 
+#if (!$show_agenda_with_columns)
     #agendaWrapper .pop-up {
         width: 100%;
         width: calc(100% - 20px)
@@ -416,7 +416,7 @@
 #else
   #agendaWrapper .single-row-td {
         width: 100%;
-      
+
     }
 
 #end
@@ -537,11 +537,11 @@
         display: table;
     }
 
-    #wrapper .agenda-3, 
-    #wrapper.class-toggle-carousel-day-2 .agenda-1, 
-    #wrapper.class-toggle-carousel-day-2 .agenda-3, 
-    #wrapper.class-toggle-carousel-day-3 .agenda-1, 
-    #wrapper.class-toggle-carousel-day-3 .agenda-2, 
+    #wrapper .agenda-3,
+    #wrapper.class-toggle-carousel-day-2 .agenda-1,
+    #wrapper.class-toggle-carousel-day-2 .agenda-3,
+    #wrapper.class-toggle-carousel-day-3 .agenda-1,
+    #wrapper.class-toggle-carousel-day-3 .agenda-2,
     #wrapper.hide-all td {
         display: none;
     }
@@ -704,7 +704,7 @@
       }
 
 
-#if (!$show_agenda_with_columns) 
+#if (!$show_agenda_with_columns)
       #agendaWrapper td.multi-room-td {
         box-sizing: border-box;
         width: 100%;
@@ -761,8 +761,8 @@
         }
     }
 
-  
-  
+
+
 
     .pop-up-content {
         display: none;
@@ -843,17 +843,17 @@
     }
 
     .agenda-arrow.active svg {
-    	-webkit-transform: rotate(90deg);
+        -webkit-transform: rotate(90deg);
         -ms-transform: rotate(90deg);
         transform: rotate(90deg);
     }
-    
+
     .agenda-aenderungen {
-    	margin-bottom: 30px;
-    	text-size: 1.25em;
+        margin-bottom: 30px;
+        text-size: 1.25em;
     }
 
-#if ($show_agenda_with_columns) 
+#if ($show_agenda_with_columns)
 
   @media all and (min-width: 720px) {
     #agendaWrapper td, #agendaWrapper td.multi-room-td {
@@ -865,7 +865,7 @@
     }*/
     #agendaWrapper table {
       table-layout: fixed;
-    }	
+    }
   }
 #end
 </style>
@@ -873,38 +873,36 @@
  <div id="agenda">
  #if ($agendabutton)
  <div class="lego-article" id="article-54196071">
- 	 <div class="lego-article-content max-960">
- 	 	<div class="agenda-section aui-helper-clearfix lego-section section-1"> 
- 	 		<div class="aui-w100 block-1 centered content-column lego-block"> 
- 	 			<div class="content-column-content only-column"> 
- 	 				<div class="class-toggle lego-element btn" data-target-node="#agendaPop"> $agenda_button_text.data </div>
- 	 				#if ($agenda_button_subtext.data != "")
- 	 				<div class="agenda-aenderungen">$agenda_button_subtext.data</div>
- 	 				#end
- 	 			 </div> 
- 	 		</div> 
- 	 	</div> 
- 	 </div> 
- </div> 
- 
+     <div class="lego-article-content max-960">
+        <div class="agenda-section aui-helper-clearfix lego-section section-1">
+            <div class="aui-w100 block-1 centered content-column lego-block">
+                <div class="content-column-content only-column">
+                    <div class="class-toggle lego-element btn" data-target-node="#agendaPop"> $agenda_button_text.data </div>
+                    #if ($agenda_button_subtext.data != "")
+                    <div class="agenda-aenderungen">$agenda_button_subtext.data</div>
+                    #end
+                 </div>
+            </div>
+        </div>
+     </div>
+ </div>
+
  <div class="agenda-pop-up" id="agendaPop">
- 
+
 #end
 
 #if ($validator.isNotNull($show_filters) && $validator.isNotNull($show_filters.data) && $show_filters.data)
+    <div class="categorySelectors category-toggle-container desktop-hidden">
+      <div class="aui-toggler-header aui-toggler-header-collapsed toggle-header">
+        Filter by <span class="arrow"></span>
+      </div>
 
-
-<div class="categorySelectors category-toggle-container desktop-hidden">
-  <div class="aui-toggler-header aui-toggler-header-collapsed toggle-header">
-    Filter by <span class="arrow"></span>
-  </div>
-
-  <div class="aui-toggler-content aui-toggler-content-collapsed toggle-content">
-  #foreach ($filter_setting in $show_filters.filter_settings.siblings)
-         <a class="category" data-target-class="$filter_setting.filter_code.data" data-selected="false">$filter_setting.filter_name.data</a>  
-  #end
-  </div>
-</div>
+      <div class="aui-toggler-content aui-toggler-content-collapsed toggle-content">
+      #foreach ($filter_setting in $show_filters.filter_settings.siblings)
+             <a class="category" data-target-class="$filter_setting.filter_code.data" data-selected="false">$filter_setting.filter_name.data</a>
+      #end
+      </div>
+    </div>
 #end
 
 ## day navigation
@@ -1015,7 +1013,7 @@
               #set ($speaker_name = "")
               #set ($speaker_title = "")
             #end
-            
+
             ## company logo
             #if ($record.getFieldValue("company_logo") && $record.getFieldValue("company_logo") != "")
               #set ($company_logo_json_object = $jsonFactoryUtil.createJSONObject($record.getFieldValue("company_logo")))
@@ -1059,9 +1057,9 @@
               #set ($rowspan = "")
             #end
 
- 			#if ($session_type != "blank" && $session_type == "Break")
- 			   #set ($pop_up_css_class = "$pop_up_css_class break-row-td")
- 			#end
+            #if ($session_type != "blank" && $session_type == "Break")
+               #set ($pop_up_css_class = "$pop_up_css_class break-row-td")
+            #end
             ## Print td
             #set ($session-title = "$title - $speaker_name")
             <td class="$pop_up_css_class" $colspan data-session-title='$htmlUtil.escape($session-title)' $rowspan>
@@ -1083,12 +1081,12 @@
               #if ($is_liferay_seven == "true" && $validator.isNotNull($is_liferay_seven))
                   <div class="liferay-seven-icon"></div>
               #end
-       
+
 
               <div class="pop-up-content">
                 <span class="data">
                   <div class="room-session">
-                    #if ($room_name != "") Room: $room_name,#end Time: $start_time_display - $end_time_display<br>
+                    #if ($room_name != "") $languageUtil.get($locale, "room", "Room"): $room_name,#end Time: $start_time_display - $end_time_display<br>
                   </div>
 
                   #set ($speaker_array_uuid = $stringUtil.split($record.getFieldValue("speakers_uuid")))
@@ -1125,7 +1123,7 @@
                   #end
 
                   #if ($session_summary != "")
-                    Session Summary:<br /><p>$session_summary</p>
+                    $languageUtil.get($locale, "session-summary", "Session Summary"):<br /><p>$session_summary</p>
                   #end
                 </span>
               </div>
@@ -1152,7 +1150,7 @@
                     <div class="speaker-entry">
                       #if ($speaker_name != "" && $speaker_company != "")
                         $speaker_name, $speaker_company
-                                                    #else 
+                                                    #else
                                  $speaker_name
                       #end
                     </div>
@@ -1169,8 +1167,8 @@
                   <img class="icon" src="/osb-community-theme/images/common/edit.png" alt="Edit DDL Record" title="Edit DDL Record">
                 </a>
               #end
-              
-              
+
+
             </td>
           #end
         </tr>
@@ -1185,10 +1183,10 @@
     <span class="filter-header">Filter by:</span>
 
 #foreach ($filter_setting in $show_filters.filter_settings.siblings)
-         <a class="category" data-target-class="$filter_setting.filter_code.data" data-selected="false">$filter_setting.filter_name.data</a>  
+         <a class="category" data-target-class="$filter_setting.filter_code.data" data-selected="false">$filter_setting.filter_name.data</a>
   #end
 
-  
+
   </div>
 #end
 </div>
@@ -1196,22 +1194,23 @@
 
 
 <script>
-AUI().use(
+AUI().ready(
+  'aui-base',
   'node',
   function(A) {
-  
+
     A.all('span.select-day').on("click", function(event) {
       if (window.ga && event && event.currentTarget) {
-      	ga('send', 'event', '$ga_conference_name', 'Agenda Day Clicks', event.currentTarget.attr('data-date'));
+        ga('send', 'event', '$ga_conference_name', 'Agenda Day Clicks', event.currentTarget.attr('data-date'));
       }
     });
      A.all('#agendaPop td.pop-up').on("click", function(event) {
       if (window.ga && event && event.currentTarget) {
-      	ga('send', 'event', '$ga_conference_name', 'Agenda Session Clicks', event.currentTarget.attr('data-session-title'));
+        ga('send', 'event', '$ga_conference_name', 'Agenda Session Clicks', event.currentTarget.attr('data-session-title'));
       }
     });
-      
-  
+
+
     var category = A.all('.category');
 
     var displayClass = function(event) {
@@ -1254,14 +1253,14 @@ AUI().use(
             if (selectedParent && selectedParent.hasClass("table-row")) {
                 var tablerow = selectedParent;
                 var numselect = tablerow.getAttribute("data-numselect");
-              
+
                 if (numselect) {
                   numselect = (+numselect) + factor;
                 }
                 else {
                   numselect = (factor == 1) ? 1 : 0;
                 }
-                tablerow.setAttribute("data-numselect", numselect); 
+                tablerow.setAttribute("data-numselect", numselect);
             }
             node.setAttribute("data-selected", currentTargetNode.getAttribute('data-selected'));
           }
@@ -1386,123 +1385,127 @@ AUI().use(
   }
 );
 
-AUI().use(
+AUI().ready(
+    'aui-base',
   'aui-toggler',
   function(A) {
-    new A.TogglerDelegate(
-      {
-        animated: false,
-        closeAllOnExpand: false,
-        container: '.category-toggle-container',
-        content: '.toggle-content',
-        expanded: false,
-        header: '.toggle-header'
-      }
-    );
+    var container = A.one('.category-toggle-container');
+
+    if (container) {
+        new A.TogglerDelegate(
+          {
+            animated: false,
+            closeAllOnExpand: false,
+            container: '.category-toggle-container',
+            content: '.toggle-content',
+            expanded: false,
+            header: '.toggle-header'
+          }
+        );
+    }
   }
 );
 </script>
 
-
-
-
 <script>
 AUI().ready(
-	'node',
-	function(A) {
-		var pagePopUp = A.one('#pagePopUp');
+    'aui-base',
+    'node',
+    function(A) {
+        var pagePopUp = A.one('#pagePopUp');
 
-		if (!pagePopUp) {
-			A.one('#wrapper').append('<div class="aui-helper-hidden" id="pagePopUp"><div id="agendaclosePopUp"></div></div>')
+        if (!pagePopUp) {
+            A.one('#wrapper').append('<div class="aui-helper-hidden" id="pagePopUp"><div id="agendaclosePopUp"></div></div>')
 
-			pagePopUp = A.one('#pagePopUp');
-		};
+            pagePopUp = A.one('#pagePopUp');
+        };
 
-		var copyToPopUp = function(event) {
-			var newPopUpContent = event.currentTarget.one('.pop-up-content');
+        var copyToPopUp = function(event) {
+            var newPopUpContent = event.currentTarget.one('.pop-up-content');
 
-			var oldPopUpContent = pagePopUp.one('.pop-up-content');
+            var oldPopUpContent = pagePopUp.one('.pop-up-content');
 
-			if (!newPopUpContent) {
-				return
-			}
+            if (!newPopUpContent) {
+                return
+            }
 
-			if (oldPopUpContent) {
-				oldPopUpContent.remove();
-			}
+            if (oldPopUpContent) {
+                oldPopUpContent.remove();
+            }
 
-			event.stopPropagation();
+            event.stopPropagation();
 
-			pagePopUp.append(newPopUpContent.cloneNode(true));
+            pagePopUp.append(newPopUpContent.cloneNode(true));
 
-			pagePopUp.removeClass('aui-helper-hidden');
+            pagePopUp.removeClass('aui-helper-hidden');
 
-			var popUpContent = pagePopUp.one('.pop-up-content')
+            var popUpContent = pagePopUp.one('.pop-up-content')
 
-			popUpContent.on(
-				'clickoutside',
-				function(event) {
-					pagePopUp.addClass('aui-helper-hidden');
+            popUpContent.on(
+                'clickoutside',
+                function(event) {
+                    pagePopUp.addClass('aui-helper-hidden');
 
-					popUpContent.detach('clickoutside');
-				}
-			);
-		};
+                    popUpContent.detach('clickoutside');
+                }
+            );
+        };
 
-		var WIN = A.getWin();
+        var WIN = A.getWin();
 
-		var centerOnPage = function(node) {
-			var currentScrollPos = WIN.get('docScrollY');
+        var centerOnPage = function(node) {
+            var currentScrollPos = WIN.get('docScrollY');
 
-			var winHeight = WIN.get('innerHeight');
+            var winHeight = WIN.get('innerHeight');
 
-			if (winHeight == undefined) {
-				winHeight = document.documentElement.clientHeight;
-			}
+            if (winHeight == undefined) {
+                winHeight = document.documentElement.clientHeight;
+            }
 
-			var contentWidth = A.one('#content').get('clientWidth');
+            var contentWidth = A.one('#content').get('clientWidth');
 
-			var nodeHeight = node.get('clientHeight');
-			var nodeWidth = node.get('clientWidth');
+            var nodeHeight = node.get('clientHeight');
+            var nodeWidth = node.get('clientWidth');
 
-			xCenter = (contentWidth / 2) - (nodeWidth / 2);
-			yCenter = ((winHeight / 2) - (nodeHeight / 2)) + currentScrollPos;
+            xCenter = (contentWidth / 2) - (nodeWidth / 2);
+            yCenter = ((winHeight / 2) - (nodeHeight / 2)) + currentScrollPos;
 
-			node.setStyle('right', xCenter);
-			node.setStyle('top', yCenter);
-		};
+            node.setStyle('right', xCenter);
+            node.setStyle('top', yCenter);
+        };
 
-		A.all('.pop-up').on(
-			'click',
-			function(event) {
-				copyToPopUp(event);
+        A.all('.pop-up').on(
+            'click',
+            function(event) {
+                copyToPopUp(event);
 
-				centerOnPage(pagePopUp);
-			}
-		);
-	}
+                centerOnPage(pagePopUp);
+            }
+        );
+    }
 );
 </script>
 
 #if ($agendabutton)
-	<div class="blur-container">
-		&nbsp;
+    <div class="blur-container">
+        &nbsp;
     </div>
 </div>
 
 
 <p class="centered">
-	<a class="class-toggle animate-scroll agenda-arrow" data-target-node="#agendaPop" href="#agenda"> <svg enable-background="new 0 0 15 30" height="30px" id="Layer_1" version="1.1" viewbox="0 0 15 30" width="15px" x="0px" xml:space="preserve" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" y="0px"> <polyline fill="none" points="14.5,29 0.5,15 14.5,1 " stroke="#909295" stroke-miterlimit="10"></polyline> </svg></a>
+    <a class="class-toggle animate-scroll agenda-arrow" data-target-node="#agendaPop" href="#agenda"> <svg enable-background="new 0 0 15 30" height="30px" id="Layer_1" version="1.1" viewbox="0 0 15 30" width="15px" x="0px" xml:space="preserve" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" y="0px"> <polyline fill="none" points="14.5,29 0.5,15 14.5,1 " stroke="#909295" stroke-miterlimit="10"></polyline> </svg></a>
 </p>
 
 <script>
 AUI().ready(
-	'node',
-	function(A) {
-		A.one('.agenda-arrow').on('click', function(e) {
-			this.toggleClass('active');
-		});
-	}
+    'aui-base',
+    'node',
+    function(A) {
+        A.one('.agenda-arrow').on('click', function(e) {
+            this.toggleClass('active');
+        });
+    }
 );
 </script>
 #end
@@ -1512,17 +1515,18 @@ AUI().ready(
 #if ($validator.isNotNull($agenda_default_day) && $validator.isNotNull($agenda_default_day.data))
 <script>
 AUI().ready(
-	'node',
-	function(A) {
-		var selectday = A.one('.select-day[data-date="$agenda_default_day.data"]');
+    'aui-base',
+    'node',
+    function(A) {
+        var selectday = A.one('.select-day[data-date="$agenda_default_day.data"]');
         if (selectday) {
- 	        var daynum = selectday.getAttribute("data-target-class");
+            var daynum = selectday.getAttribute("data-target-class");
              if (daynum) {
                 A.one('#wrapper').setAttribute("class", " class-toggle-carousel-" + daynum);
              }
         }
-       
-	}
+
+    }
 );
 </script>
         #end

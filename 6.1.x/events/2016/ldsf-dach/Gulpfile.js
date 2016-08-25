@@ -635,26 +635,6 @@ gulp.task('devcon-perms', function () {
     });
 });
 
-
-
-
-gulp.task("get-template", function () {
-    var biggulp = require("./biggulp.js")
-    var cmd = {
-        '/journaltemplate/get-template': {
-            "groupId": 67510365,
-            "templateId": false
-        }
-    };
-
-    biggulp.invoke_liferay(config, cmd, function (body) {
-        body.forEach(function (elem) {
-
-            console.log(elem.plid + " " + elem.friendlyURL);
-        });
-    });
-});
-
 gulp.task("get-structures", function () {
       var config = JSON.parse(fs.readFileSync('./config_local.json'));
     var biggulp = require("./biggulp.js");

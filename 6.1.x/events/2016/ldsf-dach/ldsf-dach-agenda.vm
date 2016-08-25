@@ -23,13 +23,13 @@
 					record={},
 			room-name=Grand Ballroom,
 			room-number=1
-		  }
+			}
 		},
 		start-time=000800,
 		start-time=8:00am
-	  }
+		}
 	}
-  }
+	}
 *#
 
 ## get Locale objects for converting dates
@@ -58,21 +58,21 @@
 
 
 #macro (mark_as_extended5 $end_time $row_end_time $row_start_time)
-  #if ($end_time > $row_end_time)
+	#if ($end_time > $row_end_time)
 	#set ($extension_count = $extension_count + 1)
 	#set ($next_row = false)
 	#set ($next_row = $day.higherEntry("row-$row_start_time"))
 
 	#if ($next_row)
-	  #set($next_row = $next_row.getValue())
-	  #set($void = $next_row.get("extended-sessions").put("room-$room_number", $end_time))
+		#set($next_row = $next_row.getValue())
+		#set($void = $next_row.get("extended-sessions").put("room-$room_number", $end_time))
 
-	  #set($next_row_end_time = $integer.parseInt($next_row.get("end-time")))
-	  #set($next_row_start_time = $next_row.get("start-time"))
+		#set($next_row_end_time = $integer.parseInt($next_row.get("end-time")))
+		#set($next_row_start_time = $next_row.get("start-time"))
 
-	  #mark_as_extended5($end_time $next_row_end_time $next_row_start_time)
+		#mark_as_extended5($end_time $next_row_end_time $next_row_start_time)
 	#end
-  #end
+	#end
 #end
 
 #set ($default_col_span = 2)
@@ -119,7 +119,7 @@
 		#end
 	#end
 
-  #if ($record.getField("display_on_live") && $record.getFieldValue("display_on_live"))
+	#if ($record.getField("display_on_live") && $record.getFieldValue("display_on_live"))
 	## Get date, start-time, end-time and room for sorting purposes
 	#set ($date = $record.getFieldValue("date"))
 
@@ -129,9 +129,9 @@
 	#set ($start_time_hour = $stringUtil.replace($start_time_hour, '"', ''))
 
 	#if ($start_time_hour.length() == 1)
-	  #set ($start_time_hour_sort = "0" + $start_time_hour)
+		#set ($start_time_hour_sort = "0" + $start_time_hour)
 	#else
-	  #set ($start_time_hour_sort = $start_time_hour)
+		#set ($start_time_hour_sort = $start_time_hour)
 	#end
 
 	#set ($start_time_minutes = $record.getFieldValue("start_time_minutes"))
@@ -139,7 +139,7 @@
 	#set ($start_time_minutes = $stringUtil.replace($start_time_minutes, "]", ""))
 	#set ($start_time_minutes = $stringUtil.replace($start_time_minutes, '"', ''))
 	#if ($start_time_minutes == "0" || $start_time_minutes == "5")
-	  #set ($start_time_minutes = "0" + $start_time_minutes)
+		#set ($start_time_minutes = "0" + $start_time_minutes)
 	#end
 
 	## lower case for am pm instead of ampm
@@ -154,9 +154,9 @@
 	#set ($end_time_hour = $stringUtil.replace($end_time_hour, '"', ''))
 
 	#if ($end_time_hour.length() == 1)
-	  #set ($end_time_hour_sort = "0" + $end_time_hour)
+		#set ($end_time_hour_sort = "0" + $end_time_hour)
 	#else
-	  #set ($end_time_hour_sort = $end_time_hour)
+		#set ($end_time_hour_sort = $end_time_hour)
 	#end
 
 	#set ($end_time_minutes = $record.getFieldValue("end_time_minutes"))
@@ -164,7 +164,7 @@
 	#set ($end_time_minutes = $stringUtil.replace($end_time_minutes, "]", ""))
 	#set ($end_time_minutes = $stringUtil.replace($end_time_minutes, '"', ''))
 	#if ($end_time_minutes == "0" || $end_time_minutes == "5")
-	  #set ($end_time_minutes = "0" + $end_time_minutes)
+		#set ($end_time_minutes = "0" + $end_time_minutes)
 	#end
 
 	## lower case for am pm instead of ampm
@@ -181,31 +181,31 @@
 	#set ($room_record = false)
 	#set ($room_record_info = $ddl_records_local_service.getDDLRecordByUuidAndGroupId($room_uuid, $groupId))
 	#set ($room_record = $ddl_records_local_service.fetchDDLRecord($getterUtil.getLong($room_record_info.recordId)))
-	
+
 	#if ($room_record)
-	  #set ($room_name = $room_record.getFieldValue("room_name"))
-	  #set ($room_number = $room_record.getFieldValue("room_number"))
-	  #set ($map_id = $room_record.getFieldValue("map_id"))
+		#set ($room_name = $room_record.getFieldValue("room_name"))
+		#set ($room_number = $room_record.getFieldValue("room_number"))
+		#set ($map_id = $room_record.getFieldValue("map_id"))
 	#else
-	  #set ($room_name = "")
-	  #set ($room_number = 0)
-	  #set ($map_id = "")
+		#set ($room_name = "")
+		#set ($room_number = 0)
+		#set ($map_id = "")
 	#end
 
 	## Create parts of map that dont exist
 	#if (!$agenda.get("day-$date"))
-	  #set ($void = $agenda.put("day-$date", $portal.getClass().forName("java.util.TreeMap").newInstance()))
+		#set ($void = $agenda.put("day-$date", $portal.getClass().forName("java.util.TreeMap").newInstance()))
 	#end
 
 	#if (!$agenda.get("day-$date").get("row-$start_time_sort"))
-	  #set ($row_map = $portal.getClass().forName("java.util.TreeMap").newInstance())
-	  #set ($void = $row_map.put("end-time", $end_time_sort))
-	  #set ($void = $row_map.put("end-time-display", $end_time_display))
-	  #set ($void = $row_map.put("extended-sessions", $portal.getClass().forName("java.util.TreeMap").newInstance()))
-	  #set ($void = $row_map.put("sessions", $portal.getClass().forName("java.util.TreeMap").newInstance()))
-	  #set ($void = $row_map.put("start-time", $start_time_sort))
-	  #set ($void = $row_map.put("start-time-display", $start_time_display))
-	  #set ($void = $agenda.get("day-$date").put("row-$start_time_sort", $row_map))
+		#set ($row_map = $portal.getClass().forName("java.util.TreeMap").newInstance())
+		#set ($void = $row_map.put("end-time", $end_time_sort))
+		#set ($void = $row_map.put("end-time-display", $end_time_display))
+		#set ($void = $row_map.put("extended-sessions", $portal.getClass().forName("java.util.TreeMap").newInstance()))
+		#set ($void = $row_map.put("sessions", $portal.getClass().forName("java.util.TreeMap").newInstance()))
+		#set ($void = $row_map.put("start-time", $start_time_sort))
+		#set ($void = $row_map.put("start-time-display", $start_time_display))
+		#set ($void = $agenda.get("day-$date").put("row-$start_time_sort", $row_map))
 	#end
 
 	## Add content to map
@@ -233,10 +233,10 @@
 	#set ($existing_end_time = $existing_row_map.get("end-time"))
 
 	#if ($integer.parseInt($end_time_sort) < $integer.parseInt($existing_end_time))
-	  #set ($void = $existing_row_map.put("end-time", $end_time_sort))
-	  #set ($void = $existing_row_map.put("end-time-display", $end_time_display))
+		#set ($void = $existing_row_map.put("end-time", $end_time_sort))
+		#set ($void = $existing_row_map.put("end-time-display", $end_time_display))
 	#end
-  #end
+	#end
 #end
 
 <script type="text/javascript">
@@ -544,7 +544,7 @@ var agenda_entries = {};
 	#wrapper.class-toggle-carousel-day-1 #agendaWrapper .select-day-1,
 	#wrapper.class-toggle-carousel-day-2 #agendaWrapper .select-day-2,
 	#wrapper.class-toggle-carousel-day-3 #agendaWrapper .select-day-3 {
-	  font-weight: normal;
+		font-weight: normal;
 	}
 
 	#wrapper #agendaWrapper .select-day-1,
@@ -732,44 +732,44 @@ var agenda_entries = {};
 			max-width: 100%;
 		}
 
-	  #agendaWrapper .first-col, .on-screen-bop div, .on-screen-bop.on-screen-boo-bop div {
+		#agendaWrapper .first-col, .on-screen-bop div, .on-screen-bop.on-screen-boo-bop div {
 		width: 120px;
-	  }
+		}
 
-	  #agendaWrapper .togglers {
+		#agendaWrapper .togglers {
 		margin-right: 0;
 		position: initial;
 		width: 100%;
-	  }
+		}
 
-	  #agendaWrapper table {
+		#agendaWrapper table {
 		max-width: 100%;
-	  }
+		}
 
-	  #agendaWrapper td.multi-room-td {
+		#agendaWrapper td.multi-room-td {
 		box-sizing: border-box;
 		width: 100%;
-	  }
+		}
 
-	  .agenda-table.sticky-nav {
+		.agenda-table.sticky-nav {
 		margin-top: 0;
-	  }
+		}
 
-	  .desktop-hidden {
+		.desktop-hidden {
 		display: block;
-	  }
+		}
 
-	  .desktop-only {
+		.desktop-only {
 		display: none;
-	  }
+		}
 
-	  .first-col div {
+		.first-col div {
 		text-align: left;
-	  }
+		}
 
-	  .on-screen-bop div, .on-screen-bop.on-screen-boo-bop div  {
+		.on-screen-bop div, .on-screen-bop.on-screen-boo-bop div  {
 		position: initial;
-	  }
+		}
 	}
 
 	@media all and (min-width: 720px) {
@@ -1189,7 +1189,7 @@ var agenda_entries = {};
 				</span>
 				<input type="text" value="" onclick="this.select()" readonly />
 			</div>
-			<div class="pop-up-slides">
+			<div class="aui-helper-hidden pop-up-slides">
 				<div id="embedded-hs-form">
 					<runtime-portlet name="56" instance="targeted_$reserved-article-id.data" queryString=""/>
 				</div>
@@ -1226,10 +1226,10 @@ var agenda_entries = {};
 
 
 <div class="categorySelectors category-toggle-container desktop-hidden">
-  <div class="aui-toggler-header aui-toggler-header-collapsed toggle-header">
+	<div class="aui-toggler-header aui-toggler-header-collapsed toggle-header">
 	Filter by <span class="arrow"></span>
-  </div>
-  <div class="aui-toggler-content aui-toggler-content-collapsed toggle-content">
+	</div>
+	<div class="aui-toggler-content aui-toggler-content-collapsed toggle-content">
 	<a class="category" data-target-class="marketing" data-selected="false">Digital Marketing & Web Experiences</a>
 	<a class="category" data-target-class="using" data-selected="false">Case Study</a>
 	<a class="category" data-target-class="customize" data-selected="false">Customizing Liferay</a>
@@ -1238,51 +1238,51 @@ var agenda_entries = {};
 	<a class="category" data-target-class="features" data-selected="false">Liferay New Products & Features</a>
 	<a class="category" data-target-class="technologies" data-selected="false">Mobile Technologies & Development</a>
 	<a class="category" data-target-class="ui" data-selected="false">UI & UX</a>
-  </div>
+	</div>
 </div>
 
 ## day navigation
 
 <div class="" id="agendaWrapper">
-  <div id="agendaTabs" class="togglers sticky-watch" data-offset='{"top": "-88"}'>
+	<div id="agendaTabs" class="togglers sticky-watch" data-offset='{"top": "-88"}'>
 	#foreach ($day_to_print in $agenda.keySet())
-	  <span class="select-day select-day-$velocityCount class-toggle-carousel" data-date="$day_to_print.substring(4)"  data-target-class="day-$velocityCount" data-target-node="#wrapper" data-value="date-$velocityCount">
+		<span class="select-day select-day-$velocityCount class-toggle-carousel" data-date="$day_to_print.substring(4)"  data-target-class="day-$velocityCount" data-target-node="#wrapper" data-value="date-$velocityCount">
 		## snip off "day-" from date, parse and reformat
 		#set ($agendaDate = $dateTool.toDate("yyyy-MM-dd" , $day_to_print.substring(4), $localeEn))
 		#set ($agendaDateFormatted = $dateTool.format($agendaDateFormat,$agendaDate,$localePage))
 		$agendaDateFormatted
-	  </span>
+		</span>
 	#end
-  </div>
+	</div>
 
-  #foreach ($day_to_print in $agenda.keySet())
+	#foreach ($day_to_print in $agenda.keySet())
 
 	#set ($day = {})
 	#set ($day = $agenda.get("$day_to_print"))
 	#set ($start_time_display = {})
 
 	<table id="agenda-$day_to_print" class="agenda-table agenda-$velocityCount">
-	  #foreach ($row in $day)
+		#foreach ($row in $day)
 		#set ($row_count = $velocityCount)
 
 		<tr class="table-row $row_count">
-		  #set ($room_count = 0)
-		  #set ($row_end_time_display = $row.get("end-time-display"))
-		  #set ($start_time = $row.get("start-time"))
-		  #if ($start_time_display == $row.get("start-time-display"))
+			#set ($room_count = 0)
+			#set ($row_end_time_display = $row.get("end-time-display"))
+			#set ($start_time = $row.get("start-time"))
+			#if ($start_time_display == $row.get("start-time-display"))
 			#set($same-as-previous = true)
-		  #end
-		  #set ($start_time_display = $row.get("start-time-display"))
+			#end
+			#set ($start_time_display = $row.get("start-time-display"))
 
-		  #if ($same-as-previous)
+			#if ($same-as-previous)
 			<td class="first-col"></td>
-		  #else
+			#else
 			<td class="first-col on-ryan-screen-helper" data-offset='{"top": "-155"}'>
-			  <div>$start_time_display</div>
+				<div>$start_time_display</div>
 			</td>
-		  #end
+			#end
 
-		  #foreach ($session in $row.get("sessions"))
+			#foreach ($session in $row.get("sessions"))
 			#set ($custom_css_class = $session.get("custom-css-class"))
 			#set ($end_time = $integer.parseInt($session.get("end-time")))
 			#set ($extensions_time = false)
@@ -1317,13 +1317,13 @@ var agenda_entries = {};
 
 			## company logo
 			#if ($record.getFieldValue("company_logo") && $record.getFieldValue("company_logo") != "")
-			  #set ($company_logo_json_object = $jsonFactoryUtil.createJSONObject($record.getFieldValue("company_logo")))
-			  #set ($company_logo_group_id = $company_logo_json_object.getString("groupId"))
-			  #set ($company_logo_uuid = $company_logo_json_object.getString("uuid"))
+				#set ($company_logo_json_object = $jsonFactoryUtil.createJSONObject($record.getFieldValue("company_logo")))
+				#set ($company_logo_group_id = $company_logo_json_object.getString("groupId"))
+				#set ($company_logo_uuid = $company_logo_json_object.getString("uuid"))
 			#else
-			  #set ($company_logo_json_object = "")
-			  #set ($company_logo_group_id = "")
-			  #set ($company_logo_uuid = "")
+				#set ($company_logo_json_object = "")
+				#set ($company_logo_group_id = "")
+				#set ($company_logo_uuid = "")
 			#end
 
 			#set ($title = $record.getFieldValue("title"))
@@ -1336,26 +1336,26 @@ var agenda_entries = {};
 			#set ($pop_up_css_class = "pop-up")
 
 			#if ($custom_css_class)
-			  #set ($pop_up_css_class = "$pop_up_css_class $custom_css_class")
+				#set ($pop_up_css_class = "$pop_up_css_class $custom_css_class")
 			#end
 
 			#if ($row_sessions_size == 1 && $extensions.size() == 0)
-			  #set ($colspan = "colspan='$default_col_span'")
-			  #set ($pop_up_css_class = "$pop_up_css_class single-row-td")
+				#set ($colspan = "colspan='$default_col_span'")
+				#set ($pop_up_css_class = "$pop_up_css_class single-row-td")
 			#else
-			  #set ($colspan = "")
+				#set ($colspan = "")
 
-			  #set ($pop_up_css_class = "$pop_up_css_class multi-room-td room-$room_number")
+				#set ($pop_up_css_class = "$pop_up_css_class multi-room-td room-$room_number")
 			#end
 
 			#if ($filter_categories != "" && $filter_categories)
-			  #set ($pop_up_css_class = "$pop_up_css_class $filter_categories")
+				#set ($pop_up_css_class = "$pop_up_css_class $filter_categories")
 			#end
 
 			#if($extension_count > 1)
-			  #set ($rowspan = "rowspan='$extension_count'")
+				#set ($rowspan = "rowspan='$extension_count'")
 			#else
-			  #set ($rowspan = "")
+				#set ($rowspan = "")
 			#end
 
 			##-------------------------------get extra info for recapping ----
@@ -1385,7 +1385,7 @@ var agenda_entries = {};
 
 			#set ($hs_slides_map = "")
 			#if ($slides_tactic_id != "")
-			   #get_tactic_info71($slides_tactic_id, $hs_slides_map)
+				 #get_tactic_info71($slides_tactic_id, $hs_slides_map)
 			#end
 
 			#if ($validator.isNotNull($video_url))
@@ -1393,7 +1393,7 @@ var agenda_entries = {};
 			#end
 
 			#if ($validator.isNotNull($hs_slides_map))
-			   #set ($data_sources = $data_sources + " " + "data-slides-tactic-info='$hs_slides_map'")
+				 #set ($data_sources = $data_sources + " " + "data-slides-tactic-info='$hs_slides_map'")
 			#end
 
 			#set ($my_session_id = $record.getUuid())
@@ -1411,7 +1411,7 @@ var agenda_entries = {};
 
 
 			#if ($session_type != "blank" && $session_type == "Break")
-			   #set ($pop_up_css_class = "$pop_up_css_class break-row-td")
+				 #set ($pop_up_css_class = "$pop_up_css_class break-row-td")
 			#end
 			## Print td
 			<td class="agenda-item $pop_up_css_class" $colspan data-session-title='$htmlUtil.escape($title)' $data_sources id='$my_session_id' $rowspan>
@@ -1419,14 +1419,14 @@ var agenda_entries = {};
 			 ##   <span>$session_type:</span>
 			 ## #end
 				<div class="mobile-only">
-				  $start_time_display - $row_end_time_display
-			   </div>
+					$start_time_display - $row_end_time_display
+				 </div>
 
-			  #if ($company_logo_uuid != "")
+				#if ($company_logo_uuid != "")
 				<div class="company-logo lazy-load"><img src="/documents/$company_logo_group_id/$company_logo_uuid"></div>
-			  #end
+				#end
 
-			  #if ($title != "")
+				#if ($title != "")
 				<span class="title-name trigger">$title</span>
 
 				#if ($recap)
@@ -1441,99 +1441,99 @@ var agenda_entries = {};
 				<br>
 			#end
 
-			  #if ($is_liferay_seven == "true" && $validator.isNotNull($is_liferay_seven))
-				  <div class="liferay-seven-icon"></div>
-			  #end
+				#if ($is_liferay_seven == "true" && $validator.isNotNull($is_liferay_seven))
+					<div class="liferay-seven-icon"></div>
+				#end
 
 
-			  <div class="pop-up-content">
+				<div class="pop-up-content">
 				<span class="data">
-				  <div class="room-session">
-					#if ($room_name != "") Room: $room_name,#end Time: $start_time_display - $end_time_display<br>
-				  </div>
+					<div class="room-session">
+					#if ($room_name != "") $languageUtil.get($locale, "room", "Room"): $room_name,#end Time: $start_time_display - $end_time_display<br>
+					</div>
 
-				  #foreach ($speakers_uuid in $speaker_array_uuid)
+					#foreach ($speakers_uuid in $speaker_array_uuid)
 					#set ($speakers_uuid = $stringUtil.trim($speakers_uuid))
 					#set ($speaker_record = false)
 					#if ("$speakers_uuid" != "")
-					  #set ($speaker_record_info = $ddl_records_local_service.getDDLRecordByUuidAndGroupId($speakers_uuid, $groupId))
-					  #set ($speaker_record = $ddl_records_local_service.fetchDDLRecord($getterUtil.getLong($speaker_record_info.recordId)))
+						#set ($speaker_record_info = $ddl_records_local_service.getDDLRecordByUuidAndGroupId($speakers_uuid, $groupId))
+						#set ($speaker_record = $ddl_records_local_service.fetchDDLRecord($getterUtil.getLong($speaker_record_info.recordId)))
 					#end
 					#if ($speaker_record)
-					  #set ($speaker_company = $speaker_record.getFieldValue("speaker_company"))
-					  #set ($speaker_name = $speaker_record.getFieldValue("speaker_name"))
-					  #set ($speaker_title = $speaker_record.getFieldValue("speaker_title"))
+						#set ($speaker_company = $speaker_record.getFieldValue("speaker_company"))
+						#set ($speaker_name = $speaker_record.getFieldValue("speaker_name"))
+						#set ($speaker_title = $speaker_record.getFieldValue("speaker_title"))
 					#else
-					  #set ($speaker_company = "")
-					  #set ($speaker_name = "")
-					  #set ($speaker_title = "")
+						#set ($speaker_company = "")
+						#set ($speaker_name = "")
+						#set ($speaker_title = "")
 					#end
 
 					<div class="speaker-information">
-					  #if ($speaker_name != "")
+						#if ($speaker_name != "")
 						<strong>$speaker_name</strong>
-					  #end
-					  <div>
-						#if ($speaker_title != "" && $speaker_company != "")
-						  $speaker_title, $speaker_company
 						#end
-					  </div>
+						<div>
+						#if ($speaker_title != "" && $speaker_company != "")
+							$speaker_title, $speaker_company
+						#end
+						</div>
 					</div>
-				  #end
+					#end
 
-				  #if ($session_summary != "")
-					Session Summary:<br /><p>$session_summary</p>
-				  #end
+					#if ($session_summary != "")
+					$languageUtil.get($locale, "session-summary", "Session Summary"):<br /><p>$session_summary</p>
+					#end
 				</span>
-			  </div>
+				</div>
 
-			  #if ("speakers_uuid" != "")
+				#if ("speakers_uuid" != "")
 				<div class="speakers-agenda-info">
-				  #foreach ($speakers_uuid in $speaker_array_uuid)
+					#foreach ($speakers_uuid in $speaker_array_uuid)
 					#set ($speakers_uuid = $stringUtil.trim($speakers_uuid))
 					#set ($speaker_record = false)
 					#if ("$speakers_uuid" != "")
-					  #set ($speaker_record_info = $ddl_records_local_service.getDDLRecordByUuidAndGroupId($speakers_uuid, $groupId))
-					  #set ($speaker_record = $ddl_records_local_service.fetchDDLRecord($getterUtil.getLong($speaker_record_info.recordId)))
+						#set ($speaker_record_info = $ddl_records_local_service.getDDLRecordByUuidAndGroupId($speakers_uuid, $groupId))
+						#set ($speaker_record = $ddl_records_local_service.fetchDDLRecord($getterUtil.getLong($speaker_record_info.recordId)))
 					#end
 					#if ($speaker_record)
-					  #set ($speaker_name = $speaker_record.getFieldValue("speaker_name"))
-					  #set ($speaker_company = $speaker_record.getFieldValue("speaker_company"))
+						#set ($speaker_name = $speaker_record.getFieldValue("speaker_name"))
+						#set ($speaker_company = $speaker_record.getFieldValue("speaker_company"))
 					#else
-					  #set ($speaker_name = "")
-					  #set ($speaker_company = "")
+						#set ($speaker_name = "")
+						#set ($speaker_company = "")
 					#end
 
 					<div class="speaker-entry">
-					  #if ($speaker_name != "" && $speaker_company != "")
+						#if ($speaker_name != "" && $speaker_company != "")
 						$speaker_name, $speaker_company
 													#else
 								 $speaker_name
-					  #end
+						#end
 					</div>
-				  #end
+					#end
 				</div>
-			  #end
+				#end
 
-			  #if ($room_name != "")
+				#if ($room_name != "")
 				($room_name)
-			  #end
+				#end
 
-			  #if ($user_has_permissions)
+				#if ($user_has_permissions)
 				<a class="taglib-icon edit-only" href="${admineditlink}recordId=$record.getRecordId()">
-				  <img class="icon" src="/osb-community-theme/images/common/edit.png" alt="Edit DDL Record" title="Edit DDL Record">
+					<img class="icon" src="/osb-community-theme/images/common/edit.png" alt="Edit DDL Record" title="Edit DDL Record">
 				</a>
-			  #end
+				#end
 
 
 			</td>
-		  #end
+			#end
 		</tr>
-	  #end
+		#end
 	</table>
-  #end
+	#end
 
-  <div class="categorySelectors desktop-only sticky-watch" data-offset='{"top": "-176"}'>
+	<div class="categorySelectors desktop-only sticky-watch" data-offset='{"top": "-176"}'>
 	<span class="filter-header">Filter by:</span>
 	<a class="category" data-target-class="marketing" data-selected="false">Digital Marketing & Web Experiences</a>
 	<a class="category" data-target-class="using" data-selected="false">Case Study</a>
@@ -1543,290 +1543,309 @@ var agenda_entries = {};
 	<a class="category" data-target-class="features" data-selected="false">Liferay New Products & Features</a>
 	<a class="category" data-target-class="technologies" data-selected="false">Mobile Technologies & Development</a>
 	<a class="category" data-target-class="ui" data-selected="false">UI & UX</a>
-  </div>
+	</div>
 </div>
 </div>
 
 
 <script>
-AUI().use(
-  'node',
-  function(A) {
+	AUI().ready(
+		'aui-base',
+		'node',
+		function(A) {
 
-	A.all('span.select-day').on("click", function(event) {
-	  if (window.ga && event && event.currentTarget) {
-		ga('send', 'event', '$ga_conference_name', 'Agenda Day Clicks', event.currentTarget.attr('data-date'));
-	  }
-	});
-	 A.all('#agendaPop td.pop-up').on("click", function(event) {
-	  if (window.ga && event && event.currentTarget) {
-
-		var title = event.currentTarget.attr('data-session-title');
-		var id = event.currentTarget.attr('id');
-		for (var i = 0; i < agenda_entries[id].length; i++) {
-			if (i == 0) title += " - ";
-			title += agenda_entries[id][i].speaker_name + " ";
-		}
-		ga('send', 'event', '$ga_conference_name', 'Agenda Session Clicks', title);
-	  }
-	});
-
-
-	var category = A.all('.category');
-
-	var displayClass = function(event) {
-	  event.stopPropagation();
-
-	  var agendaTable = A.all('.agenda-table');
-
-	  var agendaWrapper = A.one('#agendaWrapper');
-
-	  var currentTargetNode = event.currentTarget;
-
-	  var dataSelected = currentTargetNode.attr('data-selected');
-
-	  var targetClass = currentTargetNode.attr('data-target-class');
-
-	  var displayTargetClass = 'display-' + targetClass;
-
-	  var selectedCategoryClass = targetClass + '-selected';
-
-	  if (targetClass) {
-		agendaTable.toggleClass(displayTargetClass);
-
-		A.all('.' + targetClass).each(
-		  function(node) {
-			node.ancestorsByClassName('table-row').addClass(targetClass);
-		  }
-		);
-	  }
-
-	  if (dataSelected == 'false') {
-		currentTargetNode.setAttribute('data-selected', 'true');
-	  }
-	  else {
-		currentTargetNode.setAttribute('data-selected', 'false');
-	  }
-
-	  var hideAll = false;
-
-	  category.each(
-		function(node) {
-		  if (node.getAttribute('data-selected') == 'true') {
-			hideAll = true;
-		  }
-		}
-	  );
-
-	  if (hideAll) {
-		agendaWrapper.addClass('hide-all');
-
-		currentTargetNode.toggleClass(selectedCategoryClass);
-	  }
-	  else {
-		agendaWrapper.removeClass('hide-all');
-
-		currentTargetNode.toggleClass(selectedCategoryClass);
-	  }
-	};
-
-	category.on('click', displayClass);
-
-	/**
-	 * Multiple Room Action
-	 **/
-
-	var MRAction= function() {
-	  this.prototype = {
-		get_categories : function(node) {
-		  var data = [];
-
-		  A.all(node).each(
-			function(el) {
-			  if (el.getAttribute("data-selected") === "true") {
-				data.push(el.getAttribute("data-target-class"));
-			  }
-			}
-		  );
-
-		  return data;
-		},
-
-		get_table_cells : function(filterArray, nodes) {
-		  var data = [];
-		  var queryNode = A.all(nodes);
-
-		  queryNode.each(
-			function(node) {
-			  var nodeCollectionSet = [];
-
-			  var containerNode = A.one(node.getDOM().parentNode);
-			  var classListenerNode = containerNode.all('.pop-up');
-
-			  classListenerNode.each(
-				function(el) {
-				  var nodeHasProperty = false;
-
-				  A.all(filterArray).each(
-					function(filter) {
-					  if (el.hasClass(filter)) {
-						nodeHasProperty = true;
-					  }
+			A.all('span.select-day').on(
+				"click",
+				function(event) {
+					if (window.ga && event && event.currentTarget) {
+						ga('send', 'event', '$ga_conference_name', 'Agenda Day Clicks', event.currentTarget.attr('data-date'));
 					}
-				  );
-
-				  if (nodeHasProperty) {
-					nodeCollectionSet.push(el);
-				  }
 				}
-			  );
+			);
 
-			  data.push(nodeCollectionSet);
-			}
-		  );
+			A.all('#agendaPop td.pop-up').on(
+				"click",
+				function(event) {
+					if (window.ga && event && event.currentTarget) {
 
-		  return data;
-		},
+						var title = event.currentTarget.attr('data-session-title');
+						var id = event.currentTarget.attr('id');
 
-		remove_last_class : function(valueArray) {
-		  A.each(valueArray, function(nodeArray) {
-			A.each(nodeArray, function(node) {
-			  if (node.hasClass('last')) {
-				node.removeClass('last');
-			  }
-			});
-		  });
-		},
+						for (var i = 0; i < agenda_entries[id].length; i++) {
+							if (i == 0) title += " - ";
+							title += agenda_entries[id][i].speaker_name + " ";
+						}
 
-		apply_last_class : function(valueArray) {
-		  A.each(valueArray, function(sousArray) {
-			if (sousArray.length !== 0) {
-			  var node = sousArray[sousArray.length - 1];
+						ga('send', 'event', '$ga_conference_name', 'Agenda Session Clicks', title);
+					}
+				}
+			);
 
-			  node.addClass('last');
-			}
-		  });
+			var category = A.all('.category');
+
+			var displayClass = function(event) {
+				event.stopPropagation();
+
+				var agendaTable = A.all('.agenda-table');
+
+				var agendaWrapper = A.one('#agendaWrapper');
+
+				var currentTargetNode = event.currentTarget;
+
+				var dataSelected = currentTargetNode.attr('data-selected');
+
+				var targetClass = currentTargetNode.attr('data-target-class');
+
+				var displayTargetClass = 'display-' + targetClass;
+
+				var selectedCategoryClass = targetClass + '-selected';
+
+				if (targetClass) {
+					agendaTable.toggleClass(displayTargetClass);
+
+					A.all('.' + targetClass).each(
+						function(node) {
+							node.ancestorsByClassName('table-row').addClass(targetClass);
+						}
+					);
+				}
+
+				if (dataSelected == 'false') {
+					currentTargetNode.setAttribute('data-selected', 'true');
+				}
+				else {
+					currentTargetNode.setAttribute('data-selected', 'false');
+				}
+
+				var hideAll = false;
+
+				category.each(
+					function(node) {
+						if (node.getAttribute('data-selected') == 'true') {
+							hideAll = true;
+						}
+					}
+				);
+
+				if (hideAll) {
+					agendaWrapper.addClass('hide-all');
+
+					currentTargetNode.toggleClass(selectedCategoryClass);
+				}
+				else {
+					agendaWrapper.removeClass('hide-all');
+
+					currentTargetNode.toggleClass(selectedCategoryClass);
+				}
+			};
+
+			category.on('click', displayClass);
+
+			/**
+			 * Multiple Room Action
+			 **/
+
+			var MRAction= function() {
+				this.prototype = {
+					get_categories : function(node) {
+						var data = [];
+
+						A.all(node).each(
+							function(el) {
+								if (el.getAttribute("data-selected") === "true") {
+									data.push(el.getAttribute("data-target-class"));
+								}
+							}
+						);
+
+						return data;
+					},
+
+					get_table_cells : function(filterArray, nodes) {
+						var data = [];
+						var queryNode = A.all(nodes);
+
+						queryNode.each(
+							function(node) {
+								var nodeCollectionSet = [];
+
+								var containerNode = A.one(node.getDOM().parentNode);
+								var classListenerNode = containerNode.all('.pop-up');
+
+								classListenerNode.each(
+									function(el) {
+										var nodeHasProperty = false;
+
+										A.all(filterArray).each(
+											function(filter) {
+												if (el.hasClass(filter)) {
+													nodeHasProperty = true;
+												}
+											}
+										);
+
+										if (nodeHasProperty) {
+										nodeCollectionSet.push(el);
+										}
+									}
+								);
+
+								data.push(nodeCollectionSet);
+							}
+						);
+
+						return data;
+					},
+
+					remove_last_class : function(valueArray) {
+						A.each(
+							valueArray,
+							function(nodeArray) {
+								A.each(
+									nodeArray,
+									function(node) {
+										if (node.hasClass('last')) {
+											node.removeClass('last');
+										}
+									}
+								);
+							}
+						);
+					},
+
+					apply_last_class : function(valueArray) {
+						A.each(
+							valueArray,
+							function(sousArray) {
+								if (sousArray.length !== 0) {
+									var node = sousArray[sousArray.length - 1];
+
+									node.addClass('last');
+								}
+							}
+						);
+					}
+				};
+
+				return this.prototype;
+			};
+
+			category.on(
+				'click',
+				function() {
+					var multiple_room = new MRAction();
+					var cat = multiple_room.get_categories(".categorySelectors .category");
+					var tableCells = multiple_room.get_table_cells(cat, '#agendaWrapper .first-col');
+
+					multiple_room.remove_last_class(tableCells);
+					multiple_room.apply_last_class(tableCells);
+				}
+			);
 		}
-	  };
-
-	  return this.prototype;
-	};
-
-	category.on(
-	  'click', function() {
-		var multiple_room = new MRAction();
-
-		var cat = multiple_room.get_categories(".categorySelectors .category");
-		var tableCells = multiple_room.get_table_cells(cat, '#agendaWrapper .first-col');
-
-		multiple_room.remove_last_class(tableCells);
-		multiple_room.apply_last_class(tableCells);
-	  }
 	);
-  }
-);
 
-AUI().use(
-  'aui-toggler',
-  function(A) {
-	new A.TogglerDelegate(
-	  {
-		animated: false,
-		closeAllOnExpand: false,
-		container: '.category-toggle-container',
-		content: '.toggle-content',
-		expanded: false,
-		header: '.toggle-header'
-	  }
+	AUI().ready(
+		'aui-base',
+		'aui-toggler',
+		function(A) {
+			new A.TogglerDelegate(
+				{
+					animated: false,
+					closeAllOnExpand: false,
+					container: '.category-toggle-container',
+					content: '.toggle-content',
+					expanded: false,
+					header: '.toggle-header'
+				}
+			);
+		}
 	);
-  }
-);
 </script>
 
 
 
 #if (!$recap)
-<script>
-AUI().ready(
-	'node',
-	function(A) {
-		var pagePopUp = A.one('#pagePopUp');
+	<script>
+		AUI().ready(
+			'aui-base',
+			'node',
+			function(A) {
+				var pagePopUp = A.one('#pagePopUp');
 
-		if (!pagePopUp) {
-			A.one('#wrapper').append('<div class="aui-helper-hidden" id="pagePopUp"><div id="agendaclosePopUp"></div></div>')
+				if (!pagePopUp) {
+					A.one('#wrapper').append('<div class="aui-helper-hidden" id="pagePopUp"><div id="agendaclosePopUp"></div></div>')
 
-			pagePopUp = A.one('#pagePopUp');
-		};
+					pagePopUp = A.one('#pagePopUp');
+				};
 
-		var copyToPopUp = function(event) {
-			var newPopUpContent = event.currentTarget.one('.pop-up-content');
+				var copyToPopUp = function(event) {
+					var newPopUpContent = event.currentTarget.one('.pop-up-content');
 
-			var oldPopUpContent = pagePopUp.one('.pop-up-content');
+					var oldPopUpContent = pagePopUp.one('.pop-up-content');
 
-			if (!newPopUpContent) {
-				return
-			}
+					if (!newPopUpContent) {
+						return
+					}
 
-			if (oldPopUpContent) {
-				oldPopUpContent.remove();
-			}
+					if (oldPopUpContent) {
+						oldPopUpContent.remove();
+					}
 
-			event.stopPropagation();
+					event.stopPropagation();
 
-			pagePopUp.append(newPopUpContent.cloneNode(true));
+					pagePopUp.append(newPopUpContent.cloneNode(true));
 
-			pagePopUp.removeClass('aui-helper-hidden');
+					pagePopUp.removeClass('aui-helper-hidden');
 
-			var popUpContent = pagePopUp.one('.pop-up-content')
+					var popUpContent = pagePopUp.one('.pop-up-content')
 
-			popUpContent.on(
-				'clickoutside',
-				function(event) {
-					pagePopUp.addClass('aui-helper-hidden');
+					popUpContent.on(
+						'clickoutside',
+						function(event) {
+							pagePopUp.addClass('aui-helper-hidden');
 
-					popUpContent.detach('clickoutside');
-				}
-			);
-		};
+							popUpContent.detach('clickoutside');
+						}
+					);
+				};
 
-		var WIN = A.getWin();
+				var WIN = A.getWin();
 
-		var centerOnPage = function(node) {
-			var currentScrollPos = WIN.get('docScrollY');
+				var centerOnPage = function(node) {
+					var currentScrollPos = WIN.get('docScrollY');
 
-			var winHeight = WIN.get('innerHeight');
+					var winHeight = WIN.get('innerHeight');
 
-			if (winHeight == undefined) {
-				winHeight = document.documentElement.clientHeight;
-			}
+					if (winHeight == undefined) {
+						winHeight = document.documentElement.clientHeight;
+					}
 
-			var contentWidth = A.one('#content').get('clientWidth');
+					var contentWidth = A.one('#content').get('clientWidth');
+					var nodeHeight = node.get('clientHeight');
+					var nodeWidth = node.get('clientWidth');
 
-			var nodeHeight = node.get('clientHeight');
-			var nodeWidth = node.get('clientWidth');
+					xCenter = (contentWidth / 2) - (nodeWidth / 2);
+					yCenter = ((winHeight / 2) - (nodeHeight / 2)) + currentScrollPos;
 
-			xCenter = (contentWidth / 2) - (nodeWidth / 2);
-			yCenter = ((winHeight / 2) - (nodeHeight / 2)) + currentScrollPos;
+					if (nodeHeight > winHeight) {
+						yCenter += ((nodeHeight - winHeight) / 2);
+					}
 
-			if (nodeHeight > winHeight) {
-				yCenter += ((nodeHeight - winHeight) / 2);
-			}
+					node.setStyle('right', xCenter);
+					node.setStyle('top', yCenter);
+				};
 
-			node.setStyle('right', xCenter);
-			node.setStyle('top', yCenter);
-		};
+				A.all('.pop-up').on(
+					'click',
+					function(event) {
+						copyToPopUp(event);
 
-		A.all('.pop-up').on(
-			'click',
-			function(event) {
-				copyToPopUp(event);
-
-				centerOnPage(pagePopUp);
+						centerOnPage(pagePopUp);
+					}
+				);
 			}
 		);
-	}
-);
-</script>
+	</script>
 #end
 
 #if ($agendabutton)
@@ -1836,268 +1855,285 @@ AUI().ready(
 </div>
 
 
-<p class="centered">
-	<a class="class-toggle animate-scroll agenda-arrow" data-target-node="#agendaPop" href="#$agendaid"> <svg enable-background="new 0 0 15 30" height="30px" id="Layer_1" version="1.1" viewbox="0 0 15 30" width="15px" x="0px" xml:space="preserve" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" y="0px"> <polyline fill="none" points="14.5,29 0.5,15 14.5,1 " stroke="#909295" stroke-miterlimit="10"></polyline> </svg></a>
-</p>
+	<p class="centered">
+		<a class="class-toggle animate-scroll agenda-arrow" data-target-node="#agendaPop" href="#$agendaid"> <svg enable-background="new 0 0 15 30" height="30px" id="Layer_1" version="1.1" viewbox="0 0 15 30" width="15px" x="0px" xml:space="preserve" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" y="0px"> <polyline fill="none" points="14.5,29 0.5,15 14.5,1 " stroke="#909295" stroke-miterlimit="10"></polyline> </svg></a>
+	</p>
 
-<script>
-AUI().ready(
-	'node',
-	function(A) {
-		A.one('.agenda-arrow').on('click', function(e) {
-			this.toggleClass('active');
-		});
+	<script>
+		AUI().ready(
+			'aui-base',
+			'node',
+			function(A) {
+				A.one('.agenda-arrow').on('click',
+					function(e) {
+						this.toggleClass('active');
+					}
+				);
 
-		if (window.location.hash == "#${fullagendahash}") {
-			A.one('#agendaPop').addClass('class-toggle-active');
-			A.one('.agenda-arrow').addClass('active');
-		}
-	}
-);
-</script>
+				if (window.location.hash == "#${fullagendahash}") {
+					A.one('#agendaPop').addClass('class-toggle-active');
+					A.one('.agenda-arrow').addClass('active');
+				}
+			}
+		);
+	</script>
 #end
 
 #if ($recap)
-<script>
+	<script>
+		AUI().ready(
+			'aui-base',
+			'aui-overlay-mask',
+			'node',
+			'node-base',
+			'node-event-delegate',
+			'node-event-simulate',
+			function(A) {
+				var popup = A.one('#popup');
+				var popuphome = A.one('#popuphome');
 
-
-
-AUI().ready(
-	'aui-overlay-mask',
-	'node',
-	'node-base',
-	'node-event-delegate',
-	'node-event-simulate',
-	function(A) {
-		var popup = A.one('#popup');
-		var popuphome = A.one('#popuphome');
-		var copyToPopUp = function(node) {
-			if (!node) {
-				return;
-			}
-
-			var newPopUpTitle = node.one('.title-name');
-
-			var oldPopUpTitle = popup.one('.pop-up-title');
-
-			if (!newPopUpTitle) {
-				return;
-			}
-
-			popup.one(".share-link input").setAttribute("value", window.location.protocol + "//" + window.location.hostname + window.location.pathname + "?pt=" + node.getAttribute("id"));
-
-			var oldPopUpImg = popup.one('.pop-up-img');
-			var oldPopUpName = popup.one('.pop-up-name');
-			var oldPopUpRole = popup.one('.pop-up-role');
-			var oldPopUpBio = popup.one('.pop-up-bio');
-			var oldPopUpSlides = popup.one('.pop-up-slides');
-
-			if (oldPopUpSlides) {
-				var slides = node.getAttribute('data-download-url');
-
-				if (slides) {
-					slidesForm = oldPopUpSlides.one('form');
-
-					if (slidesForm) {
-						slidesForm.setAttribute('data-asset-url', slides);
+				var copyToPopUp = function(node) {
+					if (!node) {
+						return;
 					}
 
-				}
-				if (slides || node.getAttribute('data-slides-tactic-info')) {
-					oldPopUpSlides.removeClass('aui-helper-hidden');
-				}
-			}
+					var newPopUpTitle = node.one('.title-name');
 
-			var oldPopUpVideo = popup.one('.pop-up-video');
+					var oldPopUpTitle = popup.one('.pop-up-title');
 
-			if (oldPopUpVideo) {
-				var video = node.getAttribute('data-video-url');
-
-				if (video) {
-					oldPopUpVideo.setContent('<div class="video-overlay" data-embed="' + video + '" style="background-image: url(//img.youtube.com/vi/' + video + '/hqdefault.jpg);" ></div>');
-				}
-			}
-
-
-			var tacticID = node.getAttribute('data-slides-tactic-info');
-
-			if (tacticID) {
-				oldPopUpSlides.one('form').setAttribute('data-tactic-item-fields', tacticID);
-			}
-
-			oldPopUpTitle.setContent(newPopUpTitle.getContent());
-
-			popup.removeClass('aui-helper-hidden');
-
-			createOverlayMask();
-
-			centerOnPage(popup, popuphome);
-
-			var popUpContent = popup.one('.pop-up-content');
-
-
-			var agendaId = node.getAttribute("id");
-			var myspeakers = agenda_entries[agendaId];
-			var agendaIndex = 0;
-			function setSpeakerInfo(speakerindex) {
-				if (oldPopUpName) oldPopUpName.setContent(myspeakers[speakerindex].speaker_name);
-				if (oldPopUpBio) oldPopUpBio.setContent(myspeakers[speakerindex].speaker_bio);
-				if (oldPopUpRole) oldPopUpRole.setContent(myspeakers[speakerindex].speaker_title);
-				if (oldPopUpImg) oldPopUpImg.one('img').setAttribute('src', myspeakers[speakerindex].speaker_image);
-			}
-			setSpeakerInfo(0);
-
-			var timeoutId = window.setInterval(function() {
-				if ((agendaIndex + 1) ==  myspeakers.length) {
-					agendaIndex = 0;
-				} else {
-					agendaIndex++;
-				}
-				setSpeakerInfo(agendaIndex);
-			}, 6000);
-
-			popUpContent.on(
-				'clickoutside',
-				function(event) {
-					window.clearInterval(timeoutId);
-					popup.addClass('aui-helper-hidden');
-
-					popUpContent.detach('clickoutside');
-
-					if (oldPopUpSlides.one('.backup-anchor')) {
-						oldPopUpSlides.one('.backup-anchor').setAttribute('href', '');
+					if (!newPopUpTitle) {
+						return;
 					}
 
-					if (oldPopUpSlides.one('form')) {
-						oldPopUpSlides.one('form').setAttribute('data-tactic-item-fields', '');
-					}
-					oldPopUpImg.one('img').setAttribute('src', "");
-					oldPopUpSlides.addClass('aui-helper-hidden');
-					oldPopUpVideo.setContent('');
+					popup.one(".share-link input").setAttribute("value", window.location.protocol + "//" + window.location.hostname + window.location.pathname + "?pt=" + node.getAttribute("id"));
 
-					var overlayMask = A.one('.aui-overlaymask');
+					var oldPopUpBio = popup.one('.pop-up-bio');
+					var oldPopUpImg = popup.one('.pop-up-img');
+					var oldPopUpName = popup.one('.pop-up-name');
+					var oldPopUpRole = popup.one('.pop-up-role');
+					var oldPopUpSlides = popup.one('.pop-up-slides');
 
-					if (overlayMask) {
-						overlayMask.remove(true);
+					if (oldPopUpSlides) {
+						var slides = node.getAttribute('data-download-url');
+
+						if (slides) {
+							slidesForm = oldPopUpSlides.one('form');
+
+							if (slidesForm) {
+								slidesForm.setAttribute('data-asset-url', slides);
+							}
+
+						}
+						if (slides || node.getAttribute('data-slides-tactic-info')) {
+							oldPopUpSlides.removeClass('aui-helper-hidden');
+						}
 					}
+
+					var oldPopUpVideo = popup.one('.pop-up-video');
+
+					if (oldPopUpVideo) {
+						var video = node.getAttribute('data-video-url');
+
+						if (video) {
+							oldPopUpVideo.setContent('<div class="video-overlay" data-embed="' + video + '" style="background-image: url(//img.youtube.com/vi/' + video + '/hqdefault.jpg);" ></div>');
+						}
+					}
+
+
+					var tacticID = node.getAttribute('data-slides-tactic-info');
+
+					if (tacticID) {
+						oldPopUpSlides.one('form').setAttribute('data-tactic-item-fields', tacticID);
+					}
+
+					oldPopUpTitle.setContent(newPopUpTitle.getContent());
+
+					popup.removeClass('aui-helper-hidden');
+
+					createOverlayMask();
+
+					centerOnPage(popup, popuphome);
+
+					var agendaId = node.getAttribute("id");
+					var agendaIndex = 0;
+					var myspeakers = agenda_entries[agendaId];
+					var popUpContent = popup.one('.pop-up-content');
+
+					function setSpeakerInfo(speakerindex) {
+						if (oldPopUpName) {
+							oldPopUpName.setContent(myspeakers[speakerindex].speaker_name);
+						}
+
+						if (oldPopUpBio) {
+							oldPopUpBio.setContent(myspeakers[speakerindex].speaker_bio);
+						}
+
+						if (oldPopUpRole) {
+							oldPopUpRole.setContent(myspeakers[speakerindex].speaker_title);
+						}
+
+						if (oldPopUpImg) {
+							oldPopUpImg.one('img').setAttribute('src', myspeakers[speakerindex].speaker_image);
+						}
+					}
+
+					setSpeakerInfo(0);
+
+					var timeoutId = window.setInterval(
+						function() {
+							if ((agendaIndex + 1) ==  myspeakers.length) {
+								agendaIndex = 0;
+							}
+							else {
+								agendaIndex++;
+							}
+
+							setSpeakerInfo(agendaIndex);
+						},
+						6000
+					);
+
+					popUpContent.on(
+						'clickoutside',
+						function(event) {
+							window.clearInterval(timeoutId);
+
+							popup.addClass('aui-helper-hidden');
+
+							popUpContent.detach('clickoutside');
+
+							if (oldPopUpSlides.one('.backup-anchor')) {
+								oldPopUpSlides.one('.backup-anchor').setAttribute('href', '');
+							}
+
+							if (oldPopUpSlides.one('form')) {
+								oldPopUpSlides.one('form').setAttribute('data-tactic-item-fields', '');
+							}
+
+							oldPopUpImg.one('img').setAttribute('src', "");
+							oldPopUpSlides.addClass('aui-helper-hidden');
+							oldPopUpVideo.setContent('');
+
+							var overlayMask = A.one('.aui-overlaymask');
+
+							if (overlayMask) {
+								overlayMask.remove(true);
+							}
+						}
+					);
+				};
+
+				var createOverlayMask = function() {
+					if (A.one('.aui-overlaymask')) {
+						return;
+					}
+
+					var overlay = new A.OverlayMask().render();
+
+					overlay.set('z-index', 20);
+					overlay.show();
+				};
+
+				var WIN = A.getWin();
+
+				var centerOnPage = function(node, top) {
+					var currentScrollPos = WIN.get('docScrollY');
+					var winHeight = WIN.get('innerHeight');
+					var winWidth = WIN.get('innerWidth');
+
+					if (winHeight == undefined) {
+						winHeight = document.documentElement.clientHeight;
+					}
+
+					var contentWidth = A.one('#wrapper').get('clientWidth');
+
+					var nodeHeight = node.get('clientHeight');
+					var nodeWidth = node.get('clientWidth');
+
+					var xCenter = (contentWidth / 2) - (nodeWidth / 2);
+					var yCenter = ((winHeight / 2) - (nodeHeight / 2)) + currentScrollPos - top.getY();
+
+					if (nodeHeight > winHeight) {
+						yCenter += ((nodeHeight - winHeight) / 2);
+					}
+
+					if (node && xCenter && yCenter) {
+						node.setStyle('right', xCenter);
+						node.setStyle('top', yCenter);
+					}
+				};
+
+				var iOS = /iPad/i.test(navigator.userAgent) || /iPhone/i.test(navigator.userAgent);
+				var mouseEvent = 'click';
+
+				if (iOS) {
+					mouseEvent = 'mousemove';
 				}
-			);
-		};
 
-		var createOverlayMask = function() {
-			if (A.one('.aui-overlaymask')) {
-				return;
-			}
+				A.all('.pop-up').on(
+					mouseEvent,
+					function(event) {
+						event.stopPropagation();
 
-			var overlay = new A.OverlayMask().render();
+						copyToPopUp(event.currentTarget);
+					}
+				);
 
-			overlay.set('z-index', 20);
-			overlay.show();
-		};
+				#set ($current_url  = $request.get("attributes").get("CURRENT_URL"))
+				#set ($session_id = $httpUtil.getParameter($current_url, "pt", false))
 
-		var WIN = A.getWin();
+				#if ($session_id != "")
+					A.on(
+						'load',
+						function() {
+							copyToPopUp(A.one('#$session_id'));
+						}
+					);
+				#end
 
-		var centerOnPage = function(node, top) {
-			var currentScrollPos = WIN.get('docScrollY');
-			var winHeight = WIN.get('innerHeight');
-			var winWidth = WIN.get('innerWidth');
+				popup.delegate(
+					'click',
+					function () {
+						var embed = this.getAttribute('data-embed');
 
+						if (embed) {
+							this.addClass('video-playing');
+							this.removeClass('video-overlay');
+							this.setContent('<iframe allowfullscreen="true" frameborder="0" height="250px" src="//www.youtube.com/embed/' + embed + '?autoplay=1&enablejsapi=1&wmode=transparent" width="100%"></iframe>');
 
-			if (winHeight == undefined) {
-				winHeight = document.documentElement.clientHeight;
-			}
-
-			var contentWidth = A.one('#wrapper').get('clientWidth');
-
-			var nodeHeight = node.get('clientHeight');
-			var nodeWidth = node.get('clientWidth');
-
-			var xCenter = (contentWidth / 2) - (nodeWidth / 2);
-			var yCenter = ((winHeight / 2) - (nodeHeight / 2)) + currentScrollPos - top.getY();
-
-			if (nodeHeight > winHeight) {
-				yCenter += ((nodeHeight - winHeight) / 2);
-			}
-
-			if (node && xCenter && yCenter) {
-				node.setStyle('right', xCenter);
-				node.setStyle('top', yCenter);
-			}
-		};
-
-		var iOS = /iPad/i.test(navigator.userAgent) || /iPhone/i.test(navigator.userAgent);
-		var mouseEvent = 'click';
-
-		if (iOS) {
-			mouseEvent = 'mousemove';
-		}
-
-		A.all('.pop-up').on(
-			mouseEvent,
-			function(event) {
-				event.stopPropagation();
-
-				copyToPopUp(event.currentTarget);
+						}
+					},
+					'.video-overlay'
+				);
 			}
 		);
-
-
-		#set ($current_url  = $request.get("attributes").get("CURRENT_URL"))
-		#set ($session_id = $httpUtil.getParameter($current_url, "pt", false))
-		#if ($session_id != "")
-			A.on(
-				'load',
-				function() {
-					copyToPopUp(A.one('#$session_id'));
-				}
-			);
-		#end
-
-		popup.delegate(
-			'click',
-			function () {
-				var embed = this.getAttribute('data-embed');
-
-				if (embed) {
-					this.addClass('video-playing');
-					this.removeClass('video-overlay');
-					this.setContent('<iframe allowfullscreen="true" frameborder="0" height="250px" src="//www.youtube.com/embed/' + embed + '?autoplay=1&enablejsapi=1&wmode=transparent" width="100%"></iframe>');
-
-				}
-			},
-			'.video-overlay'
-		);
-	}
-);
-</script>
+	</script>
 #end
 
 #if ($user_has_permissions)
-<script>
-
-	if (window.console) {
-		console.log("Recap: $recap");
-	}
-
-</script>
+	<script>
+		if (window.console) {
+			console.log("Recap: $recap");
+		}
+	</script>
 #end
 
 
 
 #if ($validator.isNotNull($agenda_default_day) && $validator.isNotNull($agenda_default_day.data))
-<script>
-AUI().ready(
-	'node',
-	function(A) {
-		var selectday = A.one('.select-day[data-date="$agenda_default_day.data"]');
-        if (selectday) {
- 	        var daynum = selectday.getAttribute("data-target-class");
-             if (daynum) {
-                A.one('#wrapper').setAttribute("class", " class-toggle-carousel-" + daynum);
-             }
-        }
-       
-	}
-);
-</script>
-        #end
+	<script>
+		AUI().ready(
+			'aui-base',
+			'node',
+			function(A) {
+				var selectday = A.one('.select-day[data-date="$agenda_default_day.data"]');
+				if (selectday) {
+					var daynum = selectday.getAttribute("data-target-class");
+					 if (daynum) {
+						A.one('#wrapper').setAttribute("class", " class-toggle-carousel-" + daynum);
+					 }
+				}
+			}
+		);
+	</script>
+#end
