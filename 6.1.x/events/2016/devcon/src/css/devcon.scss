@@ -7,6 +7,7 @@ $white: #fff;
 
 @custom-media --small-viewport (max-width: 720px);
 @custom-media --big-viewport (min-width: 721px);
+@custom-media --desktop-viewport (min-width: 769px);
 @custom-media --small-navigation (max-width:1199px);
 @custom-media --big-navigation (min-width:1200px);
 
@@ -517,8 +518,12 @@ $white: #fff;
 	background-size: cover;
 	color: white;
 	min-height: 400px;
-	@media (--big-viewport) {
+
+	@media (--desktop-viewport) {
 		background-attachment: fixed;
+	}
+	@media (--big-viewport) {
+		
 		
 		p {
 			font-size: 150%;
@@ -629,8 +634,11 @@ $white: #fff;
 	background-size: cover;
 	color: white;
 	min-height: 400px;
-	@media (--big-viewport) {
+	@media (--desktop-viewport) {
 		background-attachment: fixed;
+	}
+	@media (--big-viewport) {
+
 		.btn {
 			margin: 50px;
 		}
