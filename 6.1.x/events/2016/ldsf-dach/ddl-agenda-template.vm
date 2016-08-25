@@ -350,9 +350,17 @@
         border-bottom-width: 0;
     }
 
+    #agendaWrapper.hide-all  tr:not([data-numselect]), 
+    #agendaWrapper.hide-all  tr[data-numselect="0"],
+    #agendaWrapper.hide-all  tr[data-numselect] td.pop-up:not([data-selected="true"])
+    {
+      display: none;
+    }
+/*
     #agendaWrapper.hide-all tr, #agendaWrapper.hide-all td {
         display: none;
     }
+
 
     #agendaWrapper.hide-all .display-marketing .marketing .first-col,
     #agendaWrapper.hide-all .display-customize .customize .first-col,
@@ -387,7 +395,7 @@
     #agendaWrapper.hide-all .display-ui tr.ui,
     #agendaWrapper.hide-all .display-using tr.using {
         display: table-row;
-    }
+    }*/
 
     #agendaWrapper .first-col {
         background: #FFF;
@@ -591,16 +599,9 @@
         padding: 15px;
     }
 
-    .categorySelectors .marketing-selected,
-    .categorySelectors .customize-selected,
-    .categorySelectors .develop-selected,
-    .categorySelectors .production-selected,
-    .categorySelectors .features-selected,
-    .categorySelectors .technologies-selected,
-    .categorySelectors .ui-selected,
-    .categorySelectors .using-selected {
+    .categorySelectors .category[data-selected=true] {
         background-position: 92% 50%;
-        color: #selector_color;
+        color: $selector_color;
         font-weight: normal;
     }
 
@@ -760,10 +761,8 @@
         }
     }
 
-    ## hide filters for now
-    .categorySelectors {
-        display: none;
-    }
+  
+  
 
     .pop-up-content {
         display: none;
@@ -860,7 +859,10 @@
     #agendaWrapper td, #agendaWrapper td.multi-room-td {
         display: table-cell;
     }
-
+    /*
+   #agendaWrapper.hide-all tr, #agendaWrapper.hide-all td {
+        display: none;
+    }*/
     #agendaWrapper table {
       table-layout: fixed;
     }	
@@ -889,22 +891,21 @@
  
 #end
 
+#if ($validator.isNotNull($show_filters) && $validator.isNotNull($show_filters.data) && $show_filters.data)
+
 
 <div class="categorySelectors category-toggle-container desktop-hidden">
   <div class="aui-toggler-header aui-toggler-header-collapsed toggle-header">
     Filter by <span class="arrow"></span>
   </div>
+
   <div class="aui-toggler-content aui-toggler-content-collapsed toggle-content">
-    <a class="category" data-target-class="marketing" data-selected="false">Digital Marketing & Web Experiences</a>
-    <a class="category" data-target-class="using" data-selected="false">Case Study</a>
-    <a class="category" data-target-class="customize" data-selected="false">Customizing Liferay</a>
-    <a class="category" data-target-class="develop" data-selected="false">Developing with Liferay</a>
-    <a class="category" data-target-class="production" data-selected="false">Liferay in Production</a>
-    <a class="category" data-target-class="features" data-selected="false">Liferay New Products & Features</a>
-    <a class="category" data-target-class="technologies" data-selected="false">Mobile Technologies & Development</a>
-    <a class="category" data-target-class="ui" data-selected="false">UI & UX</a>
+  #foreach ($filter_setting in $show_filters.filter_settings.siblings)
+         <a class="category" data-target-class="$filter_setting.filter_code.data" data-selected="false">$filter_setting.filter_name.data</a>  
+  #end
   </div>
 </div>
+#end
 
 ## day navigation
 
@@ -927,6 +928,26 @@
     #set ($start_time_display = {})
 
     <table id="agenda-$day_to_print" class="agenda-table agenda-$velocityCount">
+
+
+      #if ($validator.isNotNull($show_tracks) && $validator.isNotNull($show_tracks.data) && $show_tracks.data)
+        <thead>
+        #foreach ($track_day_entry in $show_tracks.track_day.siblings)
+          <!-- $day_to_print $track_day_entry.data -->
+          #if ($day_to_print.equalsIgnoreCase("day-$track_day_entry.data"))
+            <tr>
+            <th></th>
+            #foreach($track in $track_day_entry.track_settings.siblings)
+                <th class="$track.track_css_class.data">
+                    $track.track_name.data
+                </th>
+            #end
+            </tr>
+          #end
+        #end
+        </thead>
+      #end
+
       #foreach ($row in $day)
         #set ($row_count = $velocityCount)
 
@@ -1157,17 +1178,19 @@
     </table>
   #end
 
+
+#if ($validator.isNotNull($show_filters) && $validator.isNotNull($show_filters.data) && $show_filters.data)
+
   <div class="categorySelectors desktop-only sticky-watch" data-offset='{"top": "-176"}'>
     <span class="filter-header">Filter by:</span>
-    <a class="category" data-target-class="marketing" data-selected="false">Digital Marketing & Web Experiences</a>
-    <a class="category" data-target-class="using" data-selected="false">Case Study</a>
-    <a class="category" data-target-class="customize" data-selected="false">Customizing Liferay</a>
-    <a class="category" data-target-class="develop" data-selected="false">Developing with Liferay</a>
-    <a class="category" data-target-class="production" data-selected="false">Liferay in Production</a>
-    <a class="category" data-target-class="features" data-selected="false">Liferay New Products & Features</a>
-    <a class="category" data-target-class="technologies" data-selected="false">Mobile Technologies & Development</a>
-    <a class="category" data-target-class="ui" data-selected="false">UI & UX</a>
+
+#foreach ($filter_setting in $show_filters.filter_settings.siblings)
+         <a class="category" data-target-class="$filter_setting.filter_code.data" data-selected="false">$filter_setting.filter_name.data</a>  
+  #end
+
+  
   </div>
+#end
 </div>
 </div>
 
@@ -1208,21 +1231,41 @@ AUI().use(
 
       var selectedCategoryClass = targetClass + '-selected';
 
+
+
+      var factor = 1;
+      if (dataSelected == 'false') {
+        currentTargetNode.setAttribute('data-selected', 'true');
+      }
+      else {
+        currentTargetNode.setAttribute('data-selected', 'false');
+        factor = -1;
+      }
+
+
       if (targetClass) {
         agendaTable.toggleClass(displayTargetClass);
 
         A.all('.' + targetClass).each(
           function(node) {
             node.ancestorsByClassName('table-row').addClass(targetClass);
+
+            var selectedParent = node.get("parentNode");
+            if (selectedParent && selectedParent.hasClass("table-row")) {
+                var tablerow = selectedParent;
+                var numselect = tablerow.getAttribute("data-numselect");
+              
+                if (numselect) {
+                  numselect = (+numselect) + factor;
+                }
+                else {
+                  numselect = (factor == 1) ? 1 : 0;
+                }
+                tablerow.setAttribute("data-numselect", numselect); 
+            }
+            node.setAttribute("data-selected", currentTargetNode.getAttribute('data-selected'));
           }
         );
-      }
-
-      if (dataSelected == 'false') {
-        currentTargetNode.setAttribute('data-selected', 'true');
-      }
-      else {
-        currentTargetNode.setAttribute('data-selected', 'false');
       }
 
       var hideAll = false;
