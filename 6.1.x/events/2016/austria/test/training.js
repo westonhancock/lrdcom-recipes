@@ -12,12 +12,21 @@ var sizes = [
     { width: 1280, height: 1024 }
 ];
 
-sizes = [ { width: 1280, height: 1024 }];
+sizes = [ 
+    { width: 768, height: 1024 },
+    { width: 1920, height: 1080 },
+    { width: 320, height: 568 }
+];
 
 var url = "http://www.liferay.com/solutionsforum-de";
 var url = "http://localhost:3000";
 var url = "http://www.liferay.com/web/events2016/austria";
-var pageName = "austria";
+var url = "https://www.liferay.com/es/services/training";
+var pageName = "training-es";
+
+var url = "https://www.liferay.com/en/services/training";
+var pageName = "training";
+
 var desktopSafari="User-Agent	Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_6) AppleWebKit/601.7.7 (KHTML, like Gecko) Version/9.1.2 Safari/601.7.7";
 
 function savePage(size, filename) {
