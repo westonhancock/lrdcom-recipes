@@ -80,7 +80,7 @@
 	</div>
 
 	<#if source?? && source.data?has_content>
-		<#assign source_css_class = "source-text text-center" />
+		<#assign source_css_class = "max-sm source-text text-center" />
 		<#assign source_attrs = "" />
 
 		<#if hasUpdatePermissons>

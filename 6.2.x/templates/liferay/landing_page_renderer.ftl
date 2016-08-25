@@ -1,5 +1,6 @@
 <#assign landing_page_path = "/resources/l" />
 <#assign landing_page_admin_path = "/resources/l/admin" />
+<#assign journal_article_service_util = objectUtil("com.liferay.portlet.journal.service.JournalArticleServiceUtil") />
 <#assign journal_article_local_service = serviceLocator.findService("com.liferay.portlet.journal.service.JournalArticleLocalService") />
 
 <#assign service_context = objectUtil("com.liferay.portal.service.ServiceContextThreadLocal").getServiceContext() />
@@ -17,9 +18,15 @@
 <#include "${templatesPath}/1561886" />
 
 <#if title?has_content>
-	<#assign article = journal_article_local_service.fetchLatestArticleByUrlTitle(groupId, title, 0)! />
+	<#attempt>
+		<#assign article = journal_article_service_util.getArticleByUrlTitle(groupId, title)! />
+	<#recover>
+	</#attempt>
 <#elseif template_article_id?has_content>
-	<#assign article = journal_article_local_service.fetchLatestArticle(groupId, template_article_id, 0)! />
+	<#attempt>
+		<#assign article = journal_article_service_util.getLatestArticle(groupId, template_article_id, 0)! />
+	<#recover>
+	</#attempt>
 </#if>
 
 <#if update_url && article?has_content>
@@ -27,7 +34,10 @@
 
 	<#assign new_article_url_title = stringUtil.replace(stringUtil.lowerCase(article.getTitle(default_language_id)), " ", "-") />
 
-	<#assign existing_article = journal_article_local_service.fetchArticleByUrlTitle(groupId, new_article_url_title)! />
+	<#attempt>
+		<#assign existing_article = journal_article_service_util.getArticleByUrlTitle(groupId, new_article_url_title)! />
+	<#recover>
+	</#attempt>
 
 	<#if existing_article?has_content>
 		<p class="alert alert-info">

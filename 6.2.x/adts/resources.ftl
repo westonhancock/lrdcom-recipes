@@ -68,6 +68,8 @@
 		<#assign featured_case_study = false />
 
 		<#if asset_renderer.getClassName() == "com.liferay.portlet.documentlibrary.model.DLFileEntry">
+			<#assign svg_id = "#businessWPIcon" />
+
 			<#if category_names?seq_contains("Business Whitepapers")>
 				<#assign svg_id = "#businessWPIcon" />
 			<#elseif category_names?seq_contains("ebooks")>
