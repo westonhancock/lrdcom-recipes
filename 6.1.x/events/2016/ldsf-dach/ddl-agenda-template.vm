@@ -350,9 +350,10 @@
         border-bottom-width: 0;
     }
 
-    #agendaWrapper.hide-all  tr:not([data-numselect]),
-    #agendaWrapper.hide-all  tr[data-numselect="0"],
-    #agendaWrapper.hide-all  tr[data-numselect] td.pop-up:not([data-selected="true"])
+    #agenda #agendaWrapper.hide-all  tr:not([data-selected]),
+    #agenda #agendaWrapper.hide-all  tr[data-selected="false"],
+    #agenda #agendaWrapper.hide-all  tr[data-selected="true"] td.pop-up[data-selected="false"],
+    #agenda #agendaWrapper.hide-all  tr[data-selected="true"] td.pop-up:not([data-selected])
     {
       display: none;
     }
@@ -549,6 +550,13 @@
     .agenda-table {
         width: 100%;
     }
+  #if ($validator.isNotNull($show_filters) && $validator.isNotNull($show_filters.data) && $show_filters.data)
+    @media all and (min-width: 901px) {
+        .agenda-table {
+             width: calc(100% - 200px);
+        }
+    }
+    #end
 
     .agenda-table.sticky-nav {
         margin-top: 60px;
@@ -868,6 +876,14 @@
     }
   }
 #end
+
+
+    #agendaWrapper th {
+        font-size: 18px;
+        font-weight: normal;
+        text-align: center;
+        padding: 1em;
+    }
 </style>
 
  <div id="agenda">
@@ -933,10 +949,10 @@
         #foreach ($track_day_entry in $show_tracks.track_day.siblings)
           <!-- $day_to_print $track_day_entry.data -->
           #if ($day_to_print.equalsIgnoreCase("day-$track_day_entry.data"))
-            <tr>
+            <tr >
             <th></th>
             #foreach($track in $track_day_entry.track_settings.siblings)
-                <th class="$track.track_css_class.data">
+                <th class="track__heading $track.track_css_class.data">
                     $track.track_name.data
                 </th>
             #end
@@ -1247,12 +1263,9 @@ AUI().ready(
 
         A.all('.' + targetClass).each(
           function(node) {
-            node.ancestorsByClassName('table-row').addClass(targetClass);
-
-            var selectedParent = node.get("parentNode");
-            if (selectedParent && selectedParent.hasClass("table-row")) {
-                var tablerow = selectedParent;
-                var numselect = tablerow.getAttribute("data-numselect");
+           
+            var registerSelect = function(selectednode, factor) {
+                var numselect = selectednode.getAttribute("data-numselect");
 
                 if (numselect) {
                   numselect = (+numselect) + factor;
@@ -1260,9 +1273,15 @@ AUI().ready(
                 else {
                   numselect = (factor == 1) ? 1 : 0;
                 }
-                tablerow.setAttribute("data-numselect", numselect);
+                selectednode.setAttribute("data-numselect", numselect);
+                selectednode.setAttribute("data-selected", numselect > 0);
+            };
+
+            var selectedParent = node.get("parentNode");
+            if (selectedParent && selectedParent.hasClass("table-row")) {
+                registerSelect(selectedParent, factor);
             }
-            node.setAttribute("data-selected", currentTargetNode.getAttribute('data-selected'));
+            registerSelect(node, factor);
           }
         );
       }

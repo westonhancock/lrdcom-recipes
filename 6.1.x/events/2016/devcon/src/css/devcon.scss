@@ -197,7 +197,9 @@ $white: #fff;
 
 .quote-section { 
 	display: flex;
+	display: -webkit-flex;
   	flex-flow: row wrap;
+	-webkit-flex-flow: row wrap;
   
 	> div {
  		min-height: 400px;
@@ -207,8 +209,11 @@ $white: #fff;
   		float: left;
   		align-items: center;
   		display: flex;
+		display: -webkit-flex;
   		justify-content: center;
-		  
+		-webkit-align-items: center;
+		-webkit-justify-content: center;
+
 		  @media (--small-viewport) {
  				padding: 20px 10px;
 				 min-height: initial;
@@ -655,8 +660,46 @@ $white: #fff;
 }
 /*----------------------------------*/
 
+#agenda #agendaWrapper {
+    
+    margin: 2em 0;
+
+	table,tr,th,td {
+    	border-collapse: collapse;
+	}
+
+	@media (--big-viewport) { 
+		table, tr {
+			border: 1px solid black;
+			border-top: none;
+		}
+
+		th.track__heading, td.multi-room-td {
+			border-right: 1px solid black;
+			border-bottom: 1px solid black;
+		}
+	}
+	.first-col {
+		text-align: center;
+	}
+
+	@media (--small-viewport) {
+		th {
+			display: none;
+			}
+	}
 
 
+}
+
+#agenda #agenda-day-2016-11-14 td.pop-up {
+	display: block;
+	border-right: none;
+}
+
+#agenda #agenda-day-2016-11-14 td.multi-room-td:last-child {
+	border-bottom: none;
+}
 
 table.lfr-table {
 	counter-reset: section;

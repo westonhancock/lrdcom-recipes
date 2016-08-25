@@ -211,6 +211,7 @@ function updateLocal() {
 }
 gulp.task('update-local', ["js", "pug"], updateLocal);
 
+// gulp update --articleId 74655881
 gulp.task('update', ["js", "pug"], function () {
     var biggulp = require("./biggulp.js");
     var fs = require("fs");
